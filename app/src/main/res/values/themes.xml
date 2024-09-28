@@ -13,10 +13,5 @@
         <item name="android:navigationBarColor" tools:ignore="NewApi">@android:color/transparent</item>
     </style>
 
-    <style name="Widget.Catalog.BottomSheet.Modal.Scrollable" parent="Widget.Material3.BottomSheet.Modal">
-        <item name="paddingTopSystemWindowInsets">false</item>
-        <item name="paddingBottomSystemWindowInsets">false</item>
-        <item name="background">@color/white</item>
-    </style>
 
 </resources>

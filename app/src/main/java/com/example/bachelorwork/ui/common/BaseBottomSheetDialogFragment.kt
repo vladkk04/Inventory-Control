@@ -39,10 +39,6 @@ abstract class BaseBottomSheetDialogFragment<T : ViewBinding> : BottomSheetDialo
     private var appBarLayout: AppBarLayout? = null
     private var dragHandleView: BottomSheetDragHandleView? = null
 
-    companion object {
-        private const val EXPANDED_STATE_THRESHOLD = 0.93f
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -52,6 +48,7 @@ abstract class BaseBottomSheetDialogFragment<T : ViewBinding> : BottomSheetDialo
 
         appBarLayout = binding.root.findViewById(R.id.bottom_sheet_app_bar_layout)
         dragHandleView = binding.root.findViewById(R.id.bottom_sheet_drag_handle_view)
+
 
         return binding.root
     }
@@ -67,20 +64,8 @@ abstract class BaseBottomSheetDialogFragment<T : ViewBinding> : BottomSheetDialo
             bottomSheetDialog.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)?.let { bottomSheet ->
                 val behavior = BottomSheetBehavior.from(bottomSheet)
                 behavior.state = BottomSheetBehavior.STATE_EXPANDED
-                bottomSheet.fitsSystemWindows = false
+
                 setupFullHeight(bottomSheet)
-
-                behavior.addBottomSheetCallback(object : BottomSheetCallback() {
-                    override fun onStateChanged(bottomSheet: View, newState: Int) {
-                        Log.d("debug", bottomSheet.paddingTop.toString())
-                    }
-
-                    override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                        TODO("Not yet implemented")
-                    }
-
-                })
-
             }
         }
         return dialog
@@ -89,7 +74,7 @@ abstract class BaseBottomSheetDialogFragment<T : ViewBinding> : BottomSheetDialo
 
     private fun setupFullHeight(bottomSheetLayout: FrameLayout) {
         val layoutParams = bottomSheetLayout.layoutParams
-        layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
+        layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
         bottomSheetLayout.layoutParams = layoutParams
     }
 
