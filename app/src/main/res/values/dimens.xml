@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Product List Fragment -->
+    <!-- =========================== -->
+    <dimen name="margin_add_product_fab_button">16dp</dimen>
+    <dimen name="margin_additional_start_text_products">12dp</dimen>
+
+    <!-- Recycle View -->
+    <dimen name="padding_bottom_recycler_view_products">90dp</dimen>
+    <!-- End Recycle View -->
+
+    <!-- Product Item -->
+    <dimen name="width_image_view_product_item">96dp</dimen>
+    <dimen name="height_image_view_product_item">96dp</dimen>
+    <dimen name="padding_horizontal_product_item">8dp</dimen>
+
+    <dimen name="margin_horizontal_text_product_item_row">4dp</dimen>
+    <dimen name="margin_bottom_product_item">16dp</dimen>
+
+    <dimen name="text_size_product_item_name">22sp</dimen>
+    <dimen name="text_size_product_item_pcs">11sp</dimen>
+    <dimen name="text_size_product_item">14sp</dimen>
+    <!-- End of Product Item -->
+
+    <!-- =========================== -->
+    <!-- End of Product List Fragment -->
+
+    <!-- Product Create Bottom Sheet Fragment -->
+    <!-- =========================== -->
+
+    <dimen name="margin_vertical_product_create_text_input_layout">10dp</dimen>
+
+    <!-- =========================== -->
+    <!-- End of Product Create Bottom Sheet Fragment -->
+
+</resources>
