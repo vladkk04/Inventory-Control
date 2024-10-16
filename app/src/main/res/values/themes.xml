@@ -5,7 +5,6 @@
     </style>
 
     <style name="Theme.BachelorWork" parent="Base.Theme.BachelorWork">
-        <item name="colorSurfaceContainer">@android:color/transparent</item>
         <item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
     </style>
 
@@ -13,5 +12,35 @@
         <item name="android:navigationBarColor" tools:ignore="NewApi">@android:color/transparent</item>
     </style>
 
+    <style name="Widget.App.TextInputLayout.Calculator" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.TextInputLayout.Calculator</item>
+        <item name="boxStrokeWidth">0dp</item>
+    </style>
+
+    <style name="ThemeOverlay.App.TextInputLayout.Calculator" parent="">
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="colorOutline">@android:color/transparent</item>
+        <item name="editTextStyle">@style/Widget.Material3.TextInputEditText.OutlinedBox</item>
+    </style>
+
+    <style name="Widget.App.Button.Calculator" parent="Widget.Material3.Button">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">72dp</item>
+        <item name="android:layout_weight">0.25</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:textSize">28sp</item>
+        <item name="cornerRadius">32dp</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Calculator</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Calculator" parent="ThemeOverlay.Material3.Button">
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="colorOnPrimary">#191919</item>
+    </style>
+
+    <style name="Theme.App.NumberPicker" parent="Theme.BachelorWork">
+        <item name="colorControlNormal">@android:color/transparent</item>
+    </style>
 
 </resources>

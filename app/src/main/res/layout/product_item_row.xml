@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- TODO: Create values in Color.xml !-->
-
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="100dp"
+    android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/margin_bottom_product_item"
     android:paddingHorizontal="@dimen/padding_horizontal_product_item">
 
     <com.google.android.material.card.MaterialCardView
         style="@style/Widget.Material3.CardView.Filled"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         app:cardBackgroundColor="#B8B5B5"
         app:contentPadding="4dp">
 

@@ -1,7 +1,6 @@
 package com.example.bachelorwork.ui.productList
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,15 +8,15 @@ import android.view.animation.AnimationUtils
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.FragmentProductListBinding
-import com.example.bachelorwork.domain.model.ProductUI
+import com.example.bachelorwork.ui.common.showPopupMenu
 import com.example.bachelorwork.ui.productCreate.ProductCreateModalBottomSheet
 import com.example.bachelorwork.ui.utils.createStateListDrawableChecked
-import com.google.android.material.search.SearchView
 
 class ProductListFragment : Fragment() {
 
@@ -26,6 +25,8 @@ class ProductListFragment : Fragment() {
 
     private lateinit var listAdapter: ProductListAdapter
     private lateinit var gridLayoutManager: GridLayoutManager
+
+    private val viewModel: ProductListViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,25 +37,25 @@ class ProductListFragment : Fragment() {
         adaptLayoutToEdge()
         setupRecyclerView()
 
-        setupSearchView()
         setupSearchViewMenuClickListener()
 
         setupSwipeRefreshLayoutListener()
         setupFabButtonsOnClickListener()
-        setupCheckBoxChangeProductsViewTypeListener()
+        setupCheckboxChangeViewTypeProductsListener()
+        setupCheckboxSortByProductsListener()
 
         return binding.root
     }
 
-    private fun setupCheckBoxChangeProductsViewTypeListener() {
-        binding.checkboxChangeViewProducts.apply {
+    private fun setupCheckboxChangeViewTypeProductsListener() {
+        binding.checkboxChangeViewTypeProducts.apply {
             buttonDrawable = createStateListDrawableChecked(
                 requireContext(),
                 R.drawable.ic_view_grid,
                 R.drawable.ic_view_row
             )
         }.setOnCheckedChangeListener { _, isChecked ->
-            if(binding.recyclerViewProducts.itemAnimator?.isRunning == true) return@setOnCheckedChangeListener
+            if (binding.recyclerViewProducts.itemAnimator?.isRunning == true) return@setOnCheckedChangeListener
 
             if (isChecked) {
                 gridLayoutManager.spanCount = 2
@@ -62,6 +63,26 @@ class ProductListFragment : Fragment() {
             } else {
                 gridLayoutManager.spanCount = 1
                 listAdapter.setViewType(ProductListAdapter.ProductViewType.ROW)
+            }
+        }
+    }
+
+    private fun setupCheckboxSortByProductsListener() {
+        binding.checkboxSortByProducts.apply {
+            buttonDrawable = createStateListDrawableChecked(
+                requireContext(),
+                R.drawable.ic_arrow_up,
+                R.drawable.ic_arrow_down
+            )
+        }
+
+        binding.textViewSortByProducts.setOnClickListener {
+            showPopupMenu(it, R.menu.popup_sort_by_products_menu) { menuItem ->
+                when(menuItem.itemId) {
+                    R.id.sort_by_name -> {}
+                    R.id.sort_by_price -> {}
+                    R.id.sort_by_weight -> {}
+                }
             }
         }
     }
@@ -87,24 +108,7 @@ class ProductListFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-
-        //TODO delete this
-        listAdapter = ProductListAdapter().apply {
-            val listOfProduct: ArrayList<ProductUI> = ArrayList()
-            for (i in 0..200) {
-                val product = ProductUI(
-                    name = "Wood",
-                    upcCode = "234234",
-                    //image = Uri.parse("android.resource://com.example.bachelorwork/drawable/ic_add"),
-                    price = 20.0,
-                    weight = 10.0,
-                    quantity = 100
-                )
-                listOfProduct.add(product)
-            }
-            submitList(listOfProduct)
-        }
-
+        listAdapter = ProductListAdapter()
         gridLayoutManager = GridLayoutManager(requireContext(), 1)
 
         with(binding.recyclerViewProducts) {
@@ -124,9 +128,7 @@ class ProductListFragment : Fragment() {
 
     private fun setupFabButtonsOnClickListener() {
         binding.fabCreateProduct.setOnClickListener {
-            ProductCreateModalBottomSheet().also {
-                it.show(parentFragmentManager, it.TAG)
-            }
+            ProductCreateModalBottomSheet().also { it.show(parentFragmentManager, it.TAG) }
         }
         binding.fabScrollUpProducts.setOnClickListener {
             binding.recyclerViewProducts.smoothScrollToPosition(0)
@@ -153,9 +155,9 @@ class ProductListFragment : Fragment() {
         }
     }
 
-    private fun setupSearchView() {
+/*    private fun setupSearchView() {
         binding.searchViewProducts.addTransitionListener { _, _, newState ->
-            val bottomNavigationBar = requireActivity().findViewById<View>(R.id.bottom_navigation)
+            val bottomNavigationBar = requireActivity() as MainActivity)
 
             when (newState) {
                 SearchView.TransitionState.HIDING -> bottomNavigationBar.visibility = View.VISIBLE
@@ -163,7 +165,7 @@ class ProductListFragment : Fragment() {
                 else -> return@addTransitionListener
             }
         }
-    }
+    }*/
 
     private fun setupSearchViewMenuClickListener() {
         /*binding.searchBarProducts.setOnMenuItemClickListener {

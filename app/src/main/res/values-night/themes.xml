@@ -3,5 +3,33 @@
         <item name="android:windowLightStatusBar">false</item>
     </style>
 
+    <style name="Widget.App.TextInputLayout.Calculator" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.TextInputLayout.Calculator</item>
+        <item name="boxStrokeWidth">0dp</item>
+    </style>
+
+    <style name="ThemeOverlay.App.TextInputLayout.Calculator" parent="">
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="colorOutline">@android:color/transparent</item>
+        <item name="editTextStyle">@style/Widget.Material3.TextInputEditText.OutlinedBox</item>
+    </style>
+
+    <style name="Widget.App.Button.Calculator" parent="Widget.Material3.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:textSize">28sp</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Calculator</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Calculator" parent="ThemeOverlay.Material3.Button">
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="colorOnPrimary">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="Theme.App.NumberPicker" parent="Theme.BachelorWork">
+        <item name="colorControlNormal">@android:color/transparent</item>
+    </style>
 
 </resources>

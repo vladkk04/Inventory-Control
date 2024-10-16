@@ -3,11 +3,11 @@
 
     <!-- Main Activity -->
     <!-- =========================== -->
-        <!-- Bottom Navigation Bar -->
-        <string name="title_item_profile_bottom_navigation_bar">Profile</string>
-        <string name="title_item_warehouse_bottom_navigation_bar">Warehouse</string>
-        <string name="title_item_home_bottom_navigation_bar">Home</string>
-        <!-- End of Bottom Navigation Bar -->
+    <!-- Bottom Navigation Bar -->
+    <string name="title_item_profile_bottom_navigation_bar">Profile</string>
+    <string name="title_item_warehouse_bottom_navigation_bar">Warehouse</string>
+    <string name="title_item_home_bottom_navigation_bar">Home</string>
+    <!-- End of Bottom Navigation Bar -->
 
     <!-- =========================== -->
     <!-- End of Main Activity -->
@@ -15,36 +15,49 @@
 
     <!-- Product List Fragment -->
     <!-- =========================== -->
-        <string name="text_products">Products</string>
+    <string name="text_products">Products</string>
 
-        <!-- Search Menu -->
-        <string name="title_search_bar_item_filter_products">Filter</string>
-        <!-- End of Search Menu -->
+    <!-- Search Menu -->
+    <string name="title_search_bar_item_filter_products">Filters</string>
+    <!-- End of Search Menu -->
 
-        <!-- Product Item -->
-        <string name="product_item_upc_code">UPC Code: %1$s</string>
-        <string name="product_item_price">Price: %1$.2f € </string>
-        <string name="product_item_weight">Weight: %1$.2f %2$s</string>
-        <string name="product_item_text_pcs">pcs</string>
+    <!-- Product Item -->
+    <string name="product_item_upc_code">UPC Code: %1$s</string>
+    <string name="product_item_price">Price: %1$.2f € </string>
+    <string name="product_item_weight">Weight: %1$.2f %2$s</string>
+    <string name="product_item_text_pcs">pcs</string>
 
-        <string name="search_bar_hint_products">Enter text to search</string>
-        <string name="content_description_text_add_product_fab_button">Add new product</string>
-        <!-- End of Product Item -->
+    <string name="search_bar_hint_products">Enter text to search</string>
+    <string name="content_description_text_add_product_fab_button">Add new product</string>
+    <!-- End of Product Item -->
 
     <!-- =========================== -->
     <!-- End of Product List Fragment -->
 
 
-
     <!-- Product Create Bottom Sheet Fragment -->
     <!-- =========================== -->
-        <!-- Top Toolbar Create Product -->
-        <string name="title_toolbar_item_barcode_scanner">Barcode Scanner</string>
-        <string name="title_toolbar_item_product_save">Save</string>
-        <string name="hint_create_product_name">Name*</string>
-        <string name="hint_create_product_barcode">Barcode*</string>
-        <string name="hint_create_product_price">Price*</string>
-        <!-- End of Top Toolbar Create Product -->
+    <!-- Top Toolbar Create Product -->
+    <string name="title_toolbar_item_barcode_scanner">Barcode Scanner</string>
+    <string name="title_toolbar_item_product_save">Save</string>
+    <string name="hint_name">Name*</string>
+    <string name="hint_barcode">Barcode*</string>
+    <string name="hint_price">Price per unit*</string>
+    <string name="hint_weight">Weight*</string>
+    <string name="hint_date">Date purchase*</string>
+    <string name="hint_min_stock_level">Minimal Stock Level*</string>
+    <string name="hint_quantity">Quantity</string>
+    <string name="hint_description">Description</string>
+    <string name="hint_category">Category</string>
+    <string name="hint_new_category_name">Name category</string>
+    <string name="hint_tags">Tags</string>
+
+    <string name="helper_text_required">*required</string>
+    <string name="helper_text_date">MM/DD/YYYY</string>
+    <string name="helper_text_optional">(optional)</string>
+    <string name="text_total_price">Total price %1$.2f</string>
+    <string name="text_price_per_unit">Price per %1$s</string>
+    <!-- End of Top Toolbar Create Product -->
 
     <!-- =========================== -->
     <!-- End of Product Create Bottom Sheet Fragment -->

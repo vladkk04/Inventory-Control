@@ -1,9 +1,7 @@
 package com.example.bachelorwork.ui.utils
 
-import android.content.ContentResolver
 import android.content.Context
 import android.graphics.drawable.StateListDrawable
-import android.net.Uri
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 

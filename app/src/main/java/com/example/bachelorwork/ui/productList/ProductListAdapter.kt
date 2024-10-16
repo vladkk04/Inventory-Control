@@ -46,7 +46,7 @@ class ProductListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                 textViewName.text = item.name
                 textViewPrice.text = context.getString(R.string.product_item_price, item.price)
-                textViewUpcCode.text = context.getString(R.string.product_item_upc_code, item.upcCode)
+                textViewUpcCode.text = context.getString(R.string.product_item_upc_code, item.barcode)
                 textViewWeight.text = context.getString(R.string.product_item_weight, item.weight, "g")
                 textViewQuantity.text = item.quantity.toString()
             }
@@ -67,7 +67,7 @@ class ProductListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                 textViewName.text = item.name
                 textViewPrice.text = context.getString(R.string.product_item_price, item.price)
-                textViewUpcCode.text = context.getString(R.string.product_item_upc_code, item.upcCode)
+                textViewUpcCode.text = context.getString(R.string.product_item_upc_code, item.barcode)
                 textViewWeight.text = context.getString(R.string.product_item_weight, item.weight, "g")
                 textViewQuantity.text = item.quantity.toString()
             }
@@ -78,10 +78,8 @@ class ProductListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemId(position: Int): Long = currentList[position].hashCode().toLong()
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-
         return when (viewType) {
             ProductViewType.ROW.ordinal -> {
                 ViewHolderRow(

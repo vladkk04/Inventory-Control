@@ -14,29 +14,51 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <TextView
+            android:id="@+id/textView_products"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
             android:layout_above="@+id/swipe_refresh_layout_products"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:layout_marginStart="@dimen/margin_additional_start_text_products"
             android:text="@string/text_products" />
 
         <CheckBox
-            android:id="@+id/checkbox_change_view_products"
+            android:id="@+id/checkbox_change_view_type_products"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
             android:button="@null"
-            tools:button="@drawable/ic_view_grid"/>
+            tools:button="@drawable/ic_view_grid" />
+
+        <Button
+            style="@style/Widget.Material3.Button.TextButton.Dialog"
+            android:id="@+id/textView_sort_by_products"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/checkbox_sort_by_products"
+            android:layout_above="@+id/swipe_refresh_layout_products"
+            android:gravity="center"
+            android:minWidth="0dp"
+            android:text="Name" />
+
+        <CheckBox
+            android:id="@+id/checkbox_sort_by_products"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/checkbox_change_view_type_products"
+            android:button="@null"
+            android:minWidth="32dp"
+            tools:button="@drawable/ic_arrow_up" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh_layout_products"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/checkbox_change_view_products"
+            android:layout_below="@+id/checkbox_change_view_type_products"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true">
@@ -70,7 +92,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/content_description_text_add_product_fab_button"
             android:visibility="invisible"
-            app:srcCompat="@drawable/ic_arrow_upward" />
+            app:srcCompat="@drawable/ic_arrow_up" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_create_product"

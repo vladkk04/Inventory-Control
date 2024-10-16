@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- TODO: DELETE !-->
+    <array name="initial_slider_values">
+        <item>Create new category</item>
+        <item>Hello1</item>
+        <item>Hello2</item>
+        <item>Hello3</item>
+        <item>Hello4</item>
+        <item>Hello5</item>
+        <item>Hello6</item>
+        <item>Hello7</item>
+        <item>Hello8</item>
+        <item>Hello9</item>
+        <item>Hello10</item>
+        <item>Hello11</item>
+        <item>Hello12</item>
+        <item>Hello13</item>
+        <item>Hello14</item>
+        <item>Hello15</item>
+        <item>Hello16</item>
+        <item>Hello17</item>
+        <item>Hello18</item>
+        <item>Hello19</item>
+    </array>
+</resources>

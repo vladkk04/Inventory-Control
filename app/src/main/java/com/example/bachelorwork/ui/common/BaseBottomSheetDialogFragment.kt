@@ -1,81 +1,100 @@
 package com.example.bachelorwork.ui.common
 
 import android.app.Dialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.FrameLayout
-import androidx.annotation.RequiresApi
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.marginTop
-import androidx.core.view.updatePadding
+import androidx.activity.OnBackPressedCallback
 import androidx.viewbinding.ViewBinding
-import com.example.bachelorwork.R
 import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
+import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.bottomsheet.BottomSheetDragHandleView
-import com.google.android.material.color.MaterialColors
 
-abstract class BaseBottomSheetDialogFragment<T : ViewBinding> : BottomSheetDialogFragment() {
 
-    private var _binding: T? = null
-
-    private val binding
-        get() = requireNotNull(_binding)
+abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDialogFragment() {
 
     open val TAG: String = this::class.java.simpleName
 
-    private var appBarLayout: AppBarLayout? = null
-    private var dragHandleView: BottomSheetDragHandleView? = null
+    protected abstract val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> VB
+
+    private var _binding: VB? = null
+
+    protected val binding
+        get() = requireNotNull(_binding)
+
+    private val customToolbar: MaterialToolbar?
+        get() = setupToolbar()
+
+    private val customAppBarLayout: AppBarLayout?
+        get() = setupAppBarLayout()
+
+    protected open val onBackPressedDispatcher: OnBackPressedCallback? = null
+
+    protected open fun setupToolbar(): MaterialToolbar? = null
+
+    protected open fun setupAppBarLayout(): AppBarLayout? = null
+
+    protected open fun setupViews() {}
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = setupViewBinding(inflater, container)
-
-        appBarLayout = binding.root.findViewById(R.id.bottom_sheet_app_bar_layout)
-        dragHandleView = binding.root.findViewById(R.id.bottom_sheet_drag_handle_view)
-
-
+        _binding = bindingInflater.invoke(inflater, container, false)
+        setupViews()
+        customToolbar?.let {
+            (dialog as BottomSheetDialog).behavior.addBottomSheetCallback(
+                bottomSheetCallback
+            )
+        }
         return binding.root
     }
 
-    abstract fun setupViewBinding(inflater: LayoutInflater, container: ViewGroup?): T
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = super.onCreateDialog(savedInstanceState)
-
-        dialog.setOnShowListener { dialogInterface ->
-            val bottomSheetDialog = dialogInterface as BottomSheetDialog
-
-            bottomSheetDialog.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)?.let { bottomSheet ->
-                val behavior = BottomSheetBehavior.from(bottomSheet)
-                behavior.state = BottomSheetBehavior.STATE_EXPANDED
-
-                setupFullHeight(bottomSheet)
-            }
-        }
-        return dialog
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupFullScreen()
     }
 
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return (super.onCreateDialog(savedInstanceState) as BottomSheetDialog).apply {
+            behavior.state = STATE_EXPANDED
+            behavior.isShouldRemoveExpandedCorners = true
+            this@BaseBottomSheetDialogFragment.onBackPressedDispatcher?.let {
+                onBackPressedDispatcher.addCallback(
+                    this,
+                    it
+                )
+            }
+        }
+    }
 
-    private fun setupFullHeight(bottomSheetLayout: FrameLayout) {
-        val layoutParams = bottomSheetLayout.layoutParams
-        layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
-        bottomSheetLayout.layoutParams = layoutParams
+    private val bottomSheetCallback = object : BottomSheetCallback() {
+        override fun onStateChanged(bottomSheet: View, newState: Int) {
+            customToolbar?.visibility = if (newState == STATE_EXPANDED) View.VISIBLE else View.GONE
+        }
+
+        override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            //customToolbar?.animate()?.y(slideOffset * 100)?.setDuration(0)?.start()
+        }
+    }
+
+    private fun setupFullScreen() {
+        /*Bottom Sheet Container*/
+        (requireView().parent as? ViewGroup)?.let {
+            it.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+        }
+
+        /*dialog?.window?.apply {
+            setFlags(
+                WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+            )
+        }*/
     }
 
     override fun onDestroy() {
