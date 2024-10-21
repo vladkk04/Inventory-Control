@@ -8,13 +8,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/bottom_sheet_app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@android:color/transparent">
-
-       <!-- <com.google.android.material.bottomsheet.BottomSheetDragHandleView
-            android:id="@+id/bottom_sheet_drag_handle_view"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize" />-->
+        android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/bottom_sheet_toolbar"
@@ -59,12 +53,11 @@
                 android:hint="@string/hint_name"
                 android:layout_marginVertical="@dimen/margin_vertical_product_create_text_input_layout"
                 app:helperTextEnabled="true"
-                app:counterEnabled="true"
-                app:counterMaxLength="30"
                 app:helperText="@string/helper_text_required"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
@@ -81,8 +74,6 @@
                 app:endIconDrawable="@drawable/ic_barcode_scanner"
                 app:helperTextEnabled="true"
                 app:helperText="@string/helper_text_required"
-                app:counterEnabled="true"
-                app:counterMaxLength="30"
                 app:endIconMode="custom">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -147,7 +138,7 @@
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_input_price"
+                android:id="@+id/text_input_price_per_unit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_price"
@@ -158,7 +149,7 @@
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_text_price"
+                    android:id="@+id/edit_text_price_per_unit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
@@ -182,6 +173,7 @@
                 android:hint="@string/hint_date"
                 android:layout_marginVertical="@dimen/margin_vertical_product_create_text_input_layout"
                 app:endIconDrawable="@drawable/ic_calendar"
+                app:errorIconDrawable="@drawable/ic_calendar"
                 app:helperTextEnabled="true"
                 app:helperText="@string/helper_text_date"
                 app:endIconMode="custom">
@@ -224,6 +216,7 @@
                 app:helperText="@string/helper_text_required">
 
                 <AutoCompleteTextView
+                    android:id="@+id/auto_complete_text_view_category"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -260,12 +253,11 @@
                 android:hint="@string/hint_description"
                 android:layout_marginVertical="@dimen/margin_vertical_product_create_text_input_layout"
                 app:helperTextEnabled="true"
-                app:counterEnabled="true"
-                app:counterMaxLength="30"
                 app:helperText="@string/helper_text_optional"
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"

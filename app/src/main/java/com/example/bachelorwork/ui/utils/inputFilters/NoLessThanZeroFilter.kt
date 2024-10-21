@@ -2,6 +2,7 @@ package com.example.bachelorwork.ui.utils.inputFilters
 
 import android.text.InputFilter
 import android.text.Spanned
+import android.util.Log
 
 object NoLessThanZeroFilter : InputFilter {
     override fun filter(

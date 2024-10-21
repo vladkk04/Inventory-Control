@@ -8,8 +8,4 @@
         android:id="@+id/sort_by_price"
         android:title="Price" />
 
-    <item
-        android:id="@+id/sort_by_weight"
-        android:title="Weight" />
-
 </menu>

@@ -9,7 +9,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.ProductItemGridBinding
 import com.example.bachelorwork.databinding.ProductItemRowBinding
-import com.example.bachelorwork.domain.model.ProductUI
+import com.example.bachelorwork.ui.model.ProductUI
 
 
 class ProductListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -47,7 +47,6 @@ class ProductListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 textViewName.text = item.name
                 textViewPrice.text = context.getString(R.string.product_item_price, item.price)
                 textViewUpcCode.text = context.getString(R.string.product_item_upc_code, item.barcode)
-                textViewWeight.text = context.getString(R.string.product_item_weight, item.weight, "g")
                 textViewQuantity.text = item.quantity.toString()
             }
         }
@@ -68,7 +67,6 @@ class ProductListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 textViewName.text = item.name
                 textViewPrice.text = context.getString(R.string.product_item_price, item.price)
                 textViewUpcCode.text = context.getString(R.string.product_item_upc_code, item.barcode)
-                textViewWeight.text = context.getString(R.string.product_item_weight, item.weight, "g")
                 textViewQuantity.text = item.quantity.toString()
             }
         }

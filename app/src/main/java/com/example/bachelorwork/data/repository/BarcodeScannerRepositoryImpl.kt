@@ -6,11 +6,11 @@ import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
-class BarcodeScannerImplRepository @Inject constructor(
+class BarcodeScannerRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : BarcodeScannerRepository {
 
@@ -20,11 +20,14 @@ class BarcodeScannerImplRepository @Inject constructor(
 
         val scanner = GmsBarcodeScanning.getClient(context, options)
 
-        return try {
-            val barcode = scanner.startScan().result
-            Result.success(barcode)
-        } catch (exception: Exception) {
-            Result.failure(exception)
+        return suspendCoroutine { continuation ->
+            scanner.startScan()
+                .addOnSuccessListener { barcode ->
+                    continuation.resume(Result.success(barcode))
+                }
+                .addOnFailureListener {
+                    continuation.resume(Result.failure(it))
+                }
         }
     }
 }

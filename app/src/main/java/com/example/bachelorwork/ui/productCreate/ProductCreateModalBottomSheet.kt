@@ -1,10 +1,9 @@
 package com.example.bachelorwork.ui.productCreate
 
-import android.text.Spanned
-import android.text.style.ImageSpan
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
+import android.widget.ArrayAdapter
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.core.widget.doAfterTextChanged
@@ -12,15 +11,19 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.bachelorwork.R
+import com.google.android.material.R.*
 import com.example.bachelorwork.databinding.ModalBottomSheetProductCreateBinding
-import com.example.bachelorwork.domain.model.ProductCreateUIState
+import com.example.bachelorwork.domain.model.ProductCategory
+import com.example.bachelorwork.domain.model.ProductUnit
 import com.example.bachelorwork.ui.common.BaseBottomSheetDialogFragment
 import com.example.bachelorwork.ui.common.showDatePicker
 import com.example.bachelorwork.ui.common.showDialog
-import com.example.bachelorwork.ui.common.showDiscardDialog
+import com.example.bachelorwork.ui.model.ProductCreateFormEvent
+import com.example.bachelorwork.ui.model.ProductCreateFormState
+import com.example.bachelorwork.ui.model.ProductCreateUIState
+import com.example.bachelorwork.ui.productList.ProductListAdapter
 import com.example.bachelorwork.ui.utils.inputFilters.NoLessThanZeroFilter
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.chip.ChipDrawable
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -42,54 +45,39 @@ class ProductCreateModalBottomSheet :
             .into(binding.imageViewCreateProduct)
     }
 
-    override val onBackPressedDispatcher: OnBackPressedCallback
-        get() = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                showDiscardDialog(
-                    positiveButtonAction = { dismiss() },
-                    negativeButtonAction = { }
-                )
+    override fun setupCustomToolbar(): MaterialToolbar = binding.bottomSheetToolbar
+
+    override fun onMenuItemToolbarClickListener(menuItem: MenuItem): Boolean {
+        return when (menuItem.itemId) {
+            R.id.item_save_new_product -> {
+                viewModel.onEvent(ProductCreateFormEvent.CreateProduct)
+                true
             }
-        }
 
-    override fun setupToolbar(): MaterialToolbar? = binding.bottomSheetToolbar
-
-    override fun setupViews() {
-        setupImageViewOnClickListener()
-        setupInputFields()
-        setupNumberPicker()
-        setupAutoCompleteTextViewCategory()
-        viewLifecycleOwner.lifecycleScope.launch {
-            observeUIState()
+            else -> false
         }
     }
 
-    /*private fun setupToolbar() {
-        binding.bottomSheetToolbar.setNavigationOnClickListener {
-            onBackPressedDispatcher.handleOnBackPressed()
-        }
-        binding.bottomSheetToolbar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.item_save_new_product -> {
-                    true
-                }
+    override fun setupViews() {
+        setupInputEditTextFields()
+        setupOnInputFieldIconClickListeners()
 
-                else -> { false }
-            }
+        setupImageViewOnClickListener()
+        setupNumberPicker()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            launch { observeUIState() }
+            launch { observeFormUIState() }
         }
-    }*/
+    }
 
     private fun setupNumberPicker() {
-        val stringValues = arrayOf("PCS", "KG", "CM", "KM", "T", "G", "BOX")
-
         binding.numberPickerCreateProductSelectUnit.apply {
             minValue = 0
-            maxValue = stringValues.size - 1
-            displayedValues = stringValues
+            maxValue = ProductUnit.entries.size - 1
+            displayedValues = ProductUnit.entries.map { it.name }.toTypedArray()
         }.setOnScrollListener { view, _ ->
-            binding.textInputPrice.hint = requireContext().getString(
-                R.string.text_price_per_unit, stringValues[view.value].lowercase()
-            )
+            viewModel.onEvent(ProductCreateFormEvent.UnitChanged(ProductUnit.entries[view.value]))
         }
     }
 
@@ -99,93 +87,161 @@ class ProductCreateModalBottomSheet :
         }
     }
 
-    private fun setupInputFields() {
+    private fun setupOnInputFieldIconClickListeners() {
         binding.textInputQuantity.apply {
-            setEndIconOnClickListener { viewModel.increaseQuantity() }
-            setStartIconOnClickListener { viewModel.decreaseQuantity() }
+            /*Minus Icon*/
+            setEndIconOnClickListener { viewModel.onEvent(ProductCreateFormEvent.QuantityDecreased) }
+            /*Plus Icon*/
+            setStartIconOnClickListener { viewModel.onEvent(ProductCreateFormEvent.QuantityIncreased) }
         }
 
-        binding.editTextQuantity.apply {
-            doAfterTextChanged { text -> viewModel.setQuantity(text.toString().toIntOrNull()) }
-            setOnFocusChangeListener { _, hasFocus -> if (!hasFocus) setText(viewModel.uiState.value.quantity.toString()) }
-            filters = arrayOf(NoLessThanZeroFilter)
+        binding.textInputBarcode.setEndIconOnClickListener {
+            viewModel.onEvent(
+                ProductCreateFormEvent.StartScanBarcode
+            )
         }
-
-        binding.editTextPrice.apply {
-            doAfterTextChanged { text -> viewModel.setPrice(text.toString().toDoubleOrNull()) }
-            setOnFocusChangeListener { _, hasFocus -> if (!hasFocus) setText(viewModel.uiState.value.price.toString()) }
-        }
-
-        binding.textInputBarcode.setEndIconOnClickListener { viewModel.startScanBarcode() }
 
         binding.textInputDatePurchase.setEndIconOnClickListener {
-            showDatePicker { date ->
-                viewModel.setDatePurchase(date)
-            }
-        }
-
-        binding.textInputCategory.setStartIconOnClickListener {
-
+            showDatePicker { date -> }
         }
     }
 
-    private fun setupAutoCompleteTextViewCategory() {
-        val items = arrayOf("Create new category", "Item 2", "Item 3", "Item 4")
-        (binding.textInputCategory.editText as? MaterialAutoCompleteTextView)?.let {
-            it.setSimpleItems(items)
-            it.setOnItemClickListener { parent, view, position, id ->
-                items[position].let { item ->
-                    if (item == "Create new category") {
-                        showDialog(
-                            title = "Create new category",
-                            iconRes = R.drawable.ic_category_add,
-                            theme = com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered,
-                            viewLayoutResId = R.layout.view_create_new_category,
-                            positiveButtonText = "Create",
-                        )
-                    }
-                    it.text = null
-                }
-            }
+    private fun setupInputEditTextFields() {
+        binding.editTextName.doAfterTextChanged {
+            viewModel.onEvent(ProductCreateFormEvent.NameChanged(it.toString()))
         }
-        binding.editTextTags.doAfterTextChanged { text ->
-            text?.let {
-                // Get the position of the last space, meaning the beginning of the latest word
-                val startIndex = it.lastIndexOf(" ") + 1
-
-                if (startIndex < it.length) {
-                    // Extract the last word
-                    val lastWord = it.substring(startIndex)
-
-                    // Create a ChipDrawable for the last word
-                    val chip = ChipDrawable.createFromResource(requireContext(), R.xml.chip)
-                    chip.text = lastWord
-                    chip.setBounds(0, 0, chip.intrinsicWidth, chip.intrinsicHeight)
-
-                    // Apply ImageSpan only to the last word
-                    val span = ImageSpan(chip)
-                    it.setSpan(span, startIndex, it.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                }
+        binding.editTextBarcode.doAfterTextChanged {
+            viewModel.onEvent(ProductCreateFormEvent.BarcodeChanged(it.toString()))
+        }
+        binding.editTextQuantity.apply {
+            doAfterTextChanged {
+                viewModel.onEvent(ProductCreateFormEvent.QuantityChanged(it.toString()))
             }
+            setOnFocusChangeListener { _, hasFocus ->
+                setText(if (hasFocus) text else viewModel.uiFormState.value.quantity.toString())
+            }
+            filters = arrayOf(NoLessThanZeroFilter)
+        }
+        binding.editTextPricePerUnit.doAfterTextChanged {
+            viewModel.onEvent(ProductCreateFormEvent.PricePerUnitChanged(it.toString()))
+        }
+        binding.editTextDatePurchase.doAfterTextChanged {
+            viewModel.onEvent(ProductCreateFormEvent.DatePurchaseChanged(it.toString()))
+        }
+        binding.editTextMinStockLevel.doAfterTextChanged {
+            viewModel.onEvent(ProductCreateFormEvent.MinStockLevelChanged(it.toString()))
+        }
+        binding.autoCompleteTextViewCategory.doAfterTextChanged {
+            viewModel.onEvent(ProductCreateFormEvent.CategoryChanged(it.toString()))
+        }
+        binding.editTextTags.doAfterTextChanged {
+            viewModel.onEvent(ProductCreateFormEvent.TagsChanged(emptyList()))
+        }
+        binding.editTextDescription.doAfterTextChanged {
+            viewModel.onEvent(ProductCreateFormEvent.DescriptionChanged(it.toString()))
         }
     }
+
+    private fun setupAutoCompleteTextViewCategory(categories: List<ProductCategory>) {
+        (binding.textInputCategory.editText as? MaterialAutoCompleteTextView)?.apply {
+            setAdapter(setupCategoryAdapter(categories))
+            /*setOnItemClickListener { _, _, position, _ ->
+                val selectedItem = enhancedCategories[position]
+                if (selectedItem.name == newCategory.name) {
+                    showCategoryCreationDialog()
+                    text = null
+                }
+            }*/
+        }
+        /* binding.editTextTags.doAfterTextChanged { text ->
+             text?.let {
+                 // Get the position of the last space, meaning the beginning of the latest word
+                 val startIndex = it.lastIndexOf(" ") + 1
+
+                 if (startIndex < it.length) {
+                     // Extract the last word
+                     val lastWord = it.substring(startIndex)
+
+                     // Create a ChipDrawable for the last word
+                     val chip = ChipDrawable.createFromResource(requireContext(), R.xml.chip)
+                     chip.text = lastWord
+                     chip.setBounds(0, 0, chip.intrinsicWidth, chip.intrinsicHeight)
+
+                     // Apply ImageSpan only to the last word
+                     val span = ImageSpan(chip)
+                     it.setSpan(span, startIndex, it.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                 }
+             }
+         }*/
+    }
+
+    private fun showCreateCategoryDialog() {
+        showDialog(
+            title = "Create new category",
+            iconRes = R.drawable.ic_category_add,
+            theme = style.ThemeOverlay_Material3_MaterialAlertDialog_Centered,
+            viewLayoutResId = R.layout.create_new_category_layout,
+            positiveButtonText = "Create",
+            positiveButtonAction = {
+                viewModel.createCategory("Nigga")
+            }
+        )
+    }
+
+    private fun showEditCategoryDialog() {
+        showDialog(
+            title = "Edit category",
+            iconRes = R.drawable.ic_category_add,
+            theme = style.ThemeOverlay_Material3_MaterialAlertDialog_Centered,
+            viewLayoutResId = R.layout.create_new_category_layout,
+            positiveButtonText = "Save",
+            positiveButtonAction = {
+                viewModel.createCategory("Nigga")
+            }
+        )
+    }
+
+    private fun setupCategoryAdapter(categories: List<ProductCategory>): CategoryArrayAdapter =
+        CategoryArrayAdapter(
+            requireContext(),
+            R.layout.category_item_list_autocomplete,
+            categories.toTypedArray()
+        ).apply {
+            setOnEditClickListener { item ->
+                showEditCategoryDialog()
+            }
+            setOnDeleteClickListener { item ->
+                viewModel.deleteCategory(item)
+            }
+        }
+
 
     private suspend fun observeUIState() = viewModel.uiState.collectLatest { uiState ->
         updateUIState(uiState)
     }
 
-    private fun updateUIState(uiState: ProductCreateUIState) {
-        with(uiState) {
-            binding.textViewCreateProductTotalPrice.text =
-                requireContext().getString(R.string.text_total_price, totalPrice)
-            binding.editTextDatePurchase.setText(datePurchase)
-            binding.editTextQuantity.apply {
-                setText(quantity.toString())
-                setSelection(quantity.toString().length)
-            }
-            binding.editTextBarcode.setText(barcode)
-        }
+    private suspend fun observeFormUIState() = viewModel.uiFormState.collectLatest { uiState ->
+        updateFormUIState(uiState)
+    }
 
+    private fun updateUIState(uiState: ProductCreateUIState) {
+        if (uiState.isProductCreated) {
+            dismiss()
+        }
+        setupAutoCompleteTextViewCategory(uiState.categories)
+    }
+
+    private fun updateFormUIState(uiState: ProductCreateFormState) {
+        binding.textInputName.error = uiState.nameError
+        binding.textInputBarcode.error = uiState.barcodeError
+        binding.textInputPricePerUnit.error = uiState.pricePerUnitError
+        binding.textInputCategory.error = uiState.categoryError
+        binding.textInputDatePurchase.error = uiState.datePurchaseError
+        binding.textInputMinStockLevel.error = uiState.minStockLevelError
+
+        binding.editTextQuantity.setText(uiState.quantity.toString())
+        binding.textViewCreateProductTotalPrice.text =
+            requireContext().getString(R.string.text_total_price, uiState.totalPrice)
     }
 }
 

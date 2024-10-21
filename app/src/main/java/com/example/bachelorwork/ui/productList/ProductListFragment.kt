@@ -81,7 +81,6 @@ class ProductListFragment : Fragment() {
                 when(menuItem.itemId) {
                     R.id.sort_by_name -> {}
                     R.id.sort_by_price -> {}
-                    R.id.sort_by_weight -> {}
                 }
             }
         }

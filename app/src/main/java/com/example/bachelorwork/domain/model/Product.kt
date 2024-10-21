@@ -3,10 +3,15 @@ package com.example.bachelorwork.domain.model
 import android.net.Uri
 
 data class Product(
-    val name: String,
     val image: Uri? = null,
-    val category: String,
+    val name: String,
+    val barcode: String,
     val quantity: Int,
-    val weight: Double,
-    val price: Double,
+    val pricePerUnit: Double,
+    val totalPrice: Double,
+    val datePurchase: String,
+    val minStockLevel: Int,
+    val category: String,
+    val tags: List<String>,
+    val description: String,
 )

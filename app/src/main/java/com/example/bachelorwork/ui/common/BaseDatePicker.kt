@@ -19,9 +19,15 @@ fun Fragment.showDatePicker(
                 .setValidator(DateValidatorPointBackward.now()).build()
         )
         .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-        .build().apply {
+        .build()
+        .apply {
             addOnPositiveButtonClickListener {
-                onPositiveButtonClick(SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(it))
+                onPositiveButtonClick(
+                    SimpleDateFormat(
+                        "dd/MM/yyyy",
+                        Locale.getDefault()
+                    ).format(it)
+                )
             }
         }
         .show(childFragmentManager, "${this::class.simpleName} DataPicker")

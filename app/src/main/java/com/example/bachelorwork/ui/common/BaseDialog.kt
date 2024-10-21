@@ -6,6 +6,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.viewbinding.ViewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 fun Fragment.showDialog(
@@ -30,7 +31,7 @@ fun Fragment.showDialog(
     )
         .setTitle(title)
         .setMessage(message)
-        .setView(view ?: viewLayoutResId?.let { View.inflate(requireContext(), it, null) })
+        .setView(view ?: viewLayoutResId?.let { layoutInflater.inflate(it, null) })
         .setIcon(icon ?: iconRes?.let { ContextCompat.getDrawable(requireContext(), it) })
         .setCustomTitle(customTitleView)
         .apply {

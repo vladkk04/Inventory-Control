@@ -3,13 +3,13 @@ package com.example.bachelorwork.ui.common
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -27,18 +27,29 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
         get() = requireNotNull(_binding)
 
     private val customToolbar: MaterialToolbar?
-        get() = setupToolbar()
+        get() = setupCustomToolbar()
 
     private val customAppBarLayout: AppBarLayout?
         get() = setupAppBarLayout()
 
-    protected open val onBackPressedDispatcher: OnBackPressedCallback? = null
+    protected open val onBackPressedDispatcher: OnBackPressedCallback
+        get() = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                showDiscardDialog(
+                    positiveButtonAction = { dismiss() },
+                )
+            }
+        }
 
-    protected open fun setupToolbar(): MaterialToolbar? = null
+    protected open fun onMenuItemToolbarClickListener(menuItem: MenuItem): Boolean = false
+
+    protected open fun onNavigationIconToolbarClickListener() = Unit
+
+    protected open fun setupCustomToolbar(): MaterialToolbar? = null
 
     protected open fun setupAppBarLayout(): AppBarLayout? = null
 
-    protected open fun setupViews() {}
+    protected open fun setupViews(): Unit = Unit
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,12 +58,17 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
     ): View? {
         _binding = bindingInflater.invoke(inflater, container, false)
         setupViews()
-        customToolbar?.let {
-            (dialog as BottomSheetDialog).behavior.addBottomSheetCallback(
-                bottomSheetCallback
-            )
-        }
+        setupToolbarOnClickListeners()
         return binding.root
+    }
+
+    private fun setupToolbarOnClickListeners() {
+        customToolbar?.setNavigationOnClickListener {
+            onNavigationIconToolbarClickListener()
+        }
+        customToolbar?.setOnMenuItemClickListener { menuItem ->
+            onMenuItemToolbarClickListener(menuItem)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,21 +81,8 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
             behavior.state = STATE_EXPANDED
             behavior.isShouldRemoveExpandedCorners = true
             this@BaseBottomSheetDialogFragment.onBackPressedDispatcher?.let {
-                onBackPressedDispatcher.addCallback(
-                    this,
-                    it
-                )
+                onBackPressedDispatcher.addCallback(this, it)
             }
-        }
-    }
-
-    private val bottomSheetCallback = object : BottomSheetCallback() {
-        override fun onStateChanged(bottomSheet: View, newState: Int) {
-            customToolbar?.visibility = if (newState == STATE_EXPANDED) View.VISIBLE else View.GONE
-        }
-
-        override fun onSlide(bottomSheet: View, slideOffset: Float) {
-            //customToolbar?.animate()?.y(slideOffset * 100)?.setDuration(0)?.start()
         }
     }
 
@@ -97,8 +100,8 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
         }*/
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 }
