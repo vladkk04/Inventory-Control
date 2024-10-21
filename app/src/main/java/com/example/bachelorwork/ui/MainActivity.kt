@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bachelorwork.databinding.ActivityMainBinding
+import com.example.bachelorwork.ui.productFilters.ProductFiltersFragment
 import com.example.bachelorwork.ui.productList.ProductListFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction().apply {
-                replace(binding.fragmentContainerView.id, ProductListFragment())
+                replace(binding.fragmentContainerView.id, ProductFiltersFragment())
                 setReorderingAllowed(true)
             }.commit()
         }

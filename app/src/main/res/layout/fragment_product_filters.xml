@@ -1,87 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="16dp"
     tools:context=".ui.productFilters.ProductFiltersFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/app_bar_filters"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        app:title="Filters"
+        app:navigationIcon="@drawable/ic_close"
+        app:menu="@menu/filters_product_menu"/>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_marginHorizontal="12dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView_category"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Category"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true"/>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:id="@+id/text_input_layout_filters_category"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/margin_vertical_product_create_text_input_layout"
-                android:layout_marginHorizontal="4dp"
-                android:layout_below="@id/textView_category"
-                app:startIconDrawable="@drawable/ic_category">
-
-                <AutoCompleteTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:inputType="none" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
                 android:id="@+id/textView_price_range"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Price Range"
+                android:text="Price range"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:layout_below="@id/text_input_layout_filters_category"/>
+                android:layout_marginVertical="12dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"/>
 
             <com.google.android.material.slider.RangeSlider
                 android:id="@+id/slider_price_range"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/margin_vertical_product_create_text_input_layout"
-                android:layout_marginHorizontal="4dp"
+                android:layout_below="@id/textView_price_range"
                 android:valueFrom="0"
                 android:valueTo="100"
-                app:values="@array/initial_slider_values"
-                android:layout_below="@id/textView_price_range"
-                />
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                app:labelBehavior="visible"
+                app:values="@array/initial_slider_values" />
 
             <TextView
-                android:id="@+id/textView_date"
+                android:id="@+id/textView_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/slider_price_range"
-                android:text="Date of addition"
+                android:layout_below="@id/slider_price_range"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginVertical="12dp"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:text="Category"/>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_input_layout_filters_date_added"
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textView_date"
-                android:layout_marginHorizontal="4dp"
-                android:layout_marginVertical="@dimen/margin_vertical_product_create_text_input_layout"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/textView_category">
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Electronics"
+                    />
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/textView_tags"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/chipGroup_category"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginVertical="12dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="Tags"/>
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup_tags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/textView_tags">
+
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Custom Tag"
+                    />
+
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/textView_barcode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/chipGroup_tags"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginVertical="12dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:labelFor="@id/text_input_layout_barcode"
+                android:text="Barcode" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_barcode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView_barcode"
+                app:endIconDrawable="@drawable/ic_barcode_scanner"
+                app:endIconMode="custom">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:maxLines="1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/textView_purchase_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date of pucrhase"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginVertical="12dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/text_input_layout_barcode"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_purchase_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView_purchase_date"
                 app:endIconDrawable="@drawable/ic_calendar"
                 app:endIconMode="custom"
                 app:helperText="@string/helper_text_date"
@@ -95,11 +166,48 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:id="@+id/textView_create_product_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date of create"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginVertical="12dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/text_input_layout_purchase_date"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_created_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView_create_product_date"
+                app:endIconDrawable="@drawable/ic_calendar"
+                app:endIconMode="custom"
+                app:helperText="@string/helper_text_date"
+                app:helperTextEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"
+                    android:maxLines="1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_below="@id/text_input_layout_created_date"
+                android:textSize="16sp"
+                android:text="Image Attached"/>
+
 
         </RelativeLayout>
 
     </androidx.core.widget.NestedScrollView>
 
 
-
-</FrameLayout>
+</LinearLayout>

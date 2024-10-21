@@ -9,7 +9,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
-        android:id="@+id/text_view_category"
+        android:id="@+id/textView_category"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:textSize="20sp"

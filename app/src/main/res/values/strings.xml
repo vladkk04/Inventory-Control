@@ -12,6 +12,13 @@
     <!-- =========================== -->
     <!-- End of Main Activity -->
 
+    <!-- Product Filters Fragment-->
+    <!-- =========================== -->
+    <string name="title_toolbar_filters_clear">Clear</string>
+    <string name="title_toolbar_filters_apply">Apply</string>
+    <!-- =========================== -->
+    <!-- End of Product Filters Fragment -->
+
 
     <!-- Product List Fragment -->
     <!-- =========================== -->
@@ -57,7 +64,10 @@
     <string name="helper_text_optional">(optional)</string>
     <string name="text_total_price">Total price %1$.2f</string>
     <string name="text_price_per_unit">Price per %1$s</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!-- End of Top Toolbar Create Product -->
+
 
     <!-- =========================== -->
     <!-- End of Product Create Bottom Sheet Fragment -->
