@@ -1,14 +1,10 @@
 package com.example.bachelorwork.di
 
 import android.content.Context
+import androidx.room.Room
+import com.example.bachelorwork.data.local.ProductDatabase
 import com.example.bachelorwork.data.repository.BarcodeScannerRepositoryImpl
-import com.example.bachelorwork.data.repository.ProductCategoryRepositoryImpl
 import com.example.bachelorwork.domain.repository.BarcodeScannerRepository
-import com.example.bachelorwork.domain.repository.ProductCategoryRepository
-import com.example.bachelorwork.domain.usecase.category.CategoryUseCases
-import com.example.bachelorwork.domain.usecase.category.CreateCategoryUseCase
-import com.example.bachelorwork.domain.usecase.category.DeleteCategoryUseCase
-import com.example.bachelorwork.domain.usecase.category.GetCategoryUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,24 +18,22 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideProductDatabase(
+        @ApplicationContext applicationContext: Context
+    ): ProductDatabase =
+        Room.databaseBuilder(
+            applicationContext,
+            ProductDatabase::class.java,
+            ProductDatabase.DATABASE_NAME
+        ).build()
+
+
+    @Provides
+    @Singleton
     fun provideBarcodeScannerRepository(
-        @ApplicationContext context: Context
+        @ApplicationContext applicationContext: Context
     ): BarcodeScannerRepository {
-        return BarcodeScannerRepositoryImpl(context)
+        return BarcodeScannerRepositoryImpl(applicationContext)
     }
 
-    @Provides
-    @Singleton
-    fun provideCategoryRepository(): ProductCategoryRepository = ProductCategoryRepositoryImpl()
-
-    @Provides
-    @Singleton
-    fun provideCategoryUseCases(repository: ProductCategoryRepository): CategoryUseCases {
-        return CategoryUseCases(
-            createCategory = CreateCategoryUseCase(repository),
-            getCategory = GetCategoryUseCase(repository),
-            deleteCategory = DeleteCategoryUseCase(repository)
-        )
-    }
-
- }
+}

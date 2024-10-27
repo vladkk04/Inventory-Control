@@ -22,7 +22,7 @@
             android:layout_height="match_parent">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/shapeableImageView"
+                android:id="@+id/shapeable_ImageView"
                 android:layout_width="@dimen/width_image_view_product_item"
                 android:layout_height="@dimen/height_image_view_product_item"
                 android:layout_alignParentStart="true"
@@ -37,7 +37,7 @@
                 android:id="@+id/textView_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/shapeableImageView"
+                android:layout_below="@+id/shapeable_ImageView"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
                 android:textAlignment="center"

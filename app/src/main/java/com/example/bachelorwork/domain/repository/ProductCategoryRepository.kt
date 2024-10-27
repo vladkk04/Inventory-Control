@@ -6,7 +6,9 @@ interface ProductCategoryRepository {
 
     suspend fun createCategory(name: String): Result<ProductCategory>
 
+    suspend fun updateCategory(category: ProductCategory): Result<ProductCategory>
+
     suspend fun deleteCategory(category: ProductCategory)
 
-    suspend fun getAllCategories(): Result<List<ProductCategory>>
+    suspend fun getCategories(): Result<List<ProductCategory>>
 }

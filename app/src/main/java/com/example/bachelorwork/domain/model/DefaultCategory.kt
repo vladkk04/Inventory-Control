@@ -4,12 +4,11 @@ enum class DefaultCategory {
     WOOD,
     PLASTIC,
     PAPER,
-    METAL,
-    ELECTRONICSk;
+    METAL;
 
     fun toCategory(): ProductCategory {
         return ProductCategory(
-            name = name.lowercase()
+            name = name.lowercase().replaceFirstChar(Char::titlecase)
         )
     }
 }

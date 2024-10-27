@@ -1,17 +1,21 @@
 package com.example.bachelorwork.domain.model
 
-import android.net.Uri
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity(tableName = "productList")
 data class Product(
-    val image: Uri? = null,
+    @PrimaryKey(autoGenerate = true) val id: Int,
+    //@Ignore val image: Uri? = null,
     val name: String,
     val barcode: String,
     val quantity: Int,
-    val pricePerUnit: ProductUnit,
+    val price: Double,
+    //@Ignore val unit: ProductUnit,
     val totalPrice: Double,
-    val datePurchase: String,
+   //@Ignore val datePurchase: Date,
     val minStockLevel: Int,
-    val category: ProductCategory,
-    val tags: List<ProductTag>,
+    //@Ignore val category: ProductCategory,
+    //@Ignore val tags: List<ProductTag>,
     val description: String,
 )
