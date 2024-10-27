@@ -8,7 +8,6 @@
     tools:context=".ui.productList.ProductListFragment">
 
     <RelativeLayout
-        android:id="@+id/relative_layout_products"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -40,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_toStartOf="@+id/checkbox_sort_by_products"
-            android:layout_above="@+id/swipe_refresh_layout_products"
+            android:layout_above="@+id/swipeRefresh_layout_products"
             android:gravity="center"
             android:minWidth="0dp"
             android:text="Name" />
@@ -55,7 +54,7 @@
             tools:button="@drawable/ic_arrow_up" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh_layout_products"
+            android:id="@+id/swipeRefresh_layout_products"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/checkbox_change_view_type_products"
@@ -64,7 +63,7 @@
             android:layout_alignParentBottom="true">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view_products"
+                android:id="@+id/recyclerView_products"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layoutAnimation="@anim/recycle_view_layout"
@@ -106,26 +105,26 @@
     </LinearLayout>
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar_products"
+        android:id="@+id/appbar_products"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <com.google.android.material.search.SearchBar
-            android:id="@+id/search_bar_products"
+            android:id="@+id/searchBar_products"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/search_bar_hint_products"
             app:menu="@menu/search_products_menu"
-            app:navigationIcon="@drawable/ic_search_product_filled" />
+            app:navigationIcon="@drawable/ic_search_product" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.search.SearchView
-        android:id="@+id/search_view_products"
+        android:id="@+id/searchView_products"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:hint="@string/search_bar_hint_products"
-        app:layout_anchor="@id/search_bar_products">
+        app:layout_anchor="@id/searchBar_products">
 
     </com.google.android.material.search.SearchView>
 

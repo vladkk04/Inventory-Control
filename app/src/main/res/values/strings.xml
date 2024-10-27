@@ -72,4 +72,9 @@
     <!-- =========================== -->
     <!-- End of Product Create Bottom Sheet Fragment -->
 
+
+    <string name="text_delete_item">Delete %1$s</string>
+    <string name="text_delete_item_confirm">Are you sure you want to delete %1$s? This action cannot be undone.</string>
+
+
 </resources>

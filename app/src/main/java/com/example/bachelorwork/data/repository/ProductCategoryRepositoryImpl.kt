@@ -12,11 +12,15 @@ class ProductCategoryRepositoryImpl @Inject constructor() : ProductCategoryRepos
         return Result.success(ProductCategory(name))
     }
 
+    override suspend fun updateCategory(category: ProductCategory): Result<ProductCategory> {
+        return Result.success(ProductCategory("fd"))
+    }
+
     override suspend fun deleteCategory(category: ProductCategory) {
 
     }
 
-    override suspend fun getAllCategories(): Result<List<ProductCategory>> {
+    override suspend fun getCategories(): Result<List<ProductCategory>> {
         return Result.success(DefaultCategory.entries.map {
             it.toCategory()
         })

@@ -41,28 +41,37 @@ android {
 }
 
 dependencies {
-
+    // AndroidX Libraries
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-
-    implementation(libs.androidx.activity)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.activity) 
     implementation(libs.androidx.fragment)
 
-    implementation(libs.androidx.constraintlayout)
+    // UI Components
+    implementation(libs.androidx.swiperefreshlayout) // SwipeRefreshLayout
+    implementation(libs.android.gms.codeScanner) // Barcode Scanner
+    implementation(libs.glide) // Image loading
 
-    implementation(libs.androidx.swiperefreshlayout)
-
-    implementation(libs.android.gms.codeScanner)
-
-    implementation(libs.glide)
-
+    // Navigation Components
     implementation(libs.androidx.navigation.ui)
     implementation(libs.androidx.navigation.fragment)
 
-    implementation(libs.android.hilt)
-    ksp(libs.compiler.hilt)
+    // Layout
+    implementation(libs.flexbox.layout)
 
+    // Room
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room)
+    implementation(libs.androidx.room.ktx)
+    annotationProcessor(libs.androidx.room.compiler)
+
+    // Hilt
+    ksp(libs.compiler.hilt)
+    implementation(libs.android.hilt)
+
+    // Tests
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

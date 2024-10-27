@@ -10,7 +10,7 @@ import javax.inject.Inject
 class BarcodeScannerUseCase @Inject constructor(
     private val repository: BarcodeScannerRepository
 ) {
-    suspend operator fun invoke(): Flow<Resources<Barcode>> = flow {
+    operator fun invoke(): Flow<Resources<Barcode>> = flow {
         repository.startScan().mapCatching { result ->
             emit(Resources.Success(result))
         }.onFailure { error ->

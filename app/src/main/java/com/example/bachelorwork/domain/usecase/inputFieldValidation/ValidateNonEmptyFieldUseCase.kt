@@ -1,5 +1,6 @@
 package com.example.bachelorwork.domain.usecase.inputFieldValidation
 
+import com.example.bachelorwork.domain.model.ValidationResult
 import javax.inject.Inject
 
 class ValidateNonEmptyFieldUseCase @Inject constructor() {
