@@ -27,6 +27,12 @@ android {
                 "proguard-rules.pro"
             )
         }
+
+        create("profile") {
+            initWith(getByName("debug"))
+            isDebuggable = false
+            isProfileable = true
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -60,6 +66,9 @@ dependencies {
 
     // Layout
     implementation(libs.flexbox.layout)
+
+    //Gson
+    implementation(libs.gson)
 
     // Room
     ksp(libs.androidx.room.compiler)

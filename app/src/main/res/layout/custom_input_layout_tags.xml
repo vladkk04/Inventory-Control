@@ -17,7 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:paddingHorizontal="6dp"
             app:alignContent="space_around"
             app:alignItems="center"
             app:flexWrap="wrap">
@@ -29,6 +28,7 @@
                 android:backgroundTint="@android:color/transparent"
                 android:hint="@string/hint_tags"
                 android:inputType="text"
+                android:imeOptions="actionNext"
                 app:layout_flexGrow="1" />
 
         </com.google.android.flexbox.FlexboxLayout>

@@ -1,11 +1,11 @@
-package com.example.bachelorwork.domain.usecase.inputFieldValidation
+package com.example.bachelorwork.domain.usecase.inputFieldValidators
 
 import com.example.bachelorwork.domain.model.ValidationResult
 import javax.inject.Inject
 
-class ValidateNonEmptyFieldUseCase @Inject constructor() {
+class ValidatorNotEmptyUseCase @Inject constructor() {
     operator fun invoke(value: String): ValidationResult {
-        val hasError = value.isBlank()
+        val hasError = value.isEmpty()
 
         return ValidationResult(
             hasError,

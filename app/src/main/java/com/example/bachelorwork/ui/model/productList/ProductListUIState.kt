@@ -1,16 +1,14 @@
 package com.example.bachelorwork.ui.model.productList
 
-import com.example.bachelorwork.domain.model.Product
+import com.example.bachelorwork.domain.model.product.Product
+import com.example.bachelorwork.domain.model.product.ProductViewType
+import com.example.bachelorwork.domain.model.product.ProductOrder
 
 data class ProductListUIState(
-    val productList: List<Product> = emptyList(),
+    val products: List<Product> = emptyList(),
+    val viewType: ProductViewType = ProductViewType.ROW,
+    val orderBy: ProductOrder = ProductOrder(),
+    val isRefreshing: Boolean = false,
+    val isLoading: Boolean = false,
+    val error: String? = null
 )
-
-fun List<Product>.toProductListUI(): List<ProductListUI> = map {
-    ProductListUI(
-        name = it.name,
-        price = it.price,
-        barcode = "32423",
-        quantity = 10
-    )
-}

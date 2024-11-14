@@ -1,26 +1,27 @@
 package com.example.bachelorwork.ui.fragments.productList
 
-import android.graphics.drawable.StateListDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.FragmentProductListBinding
-import com.example.bachelorwork.ui.common.base.showPopupMenu
-import com.example.bachelorwork.ui.common.extensions.createStateListDrawableChecked
+import com.example.bachelorwork.domain.model.product.SortBy
+import com.example.bachelorwork.domain.model.product.toProductListUI
+import com.example.bachelorwork.ui.common.StateListDrawableFactory
 import com.example.bachelorwork.ui.fragments.productCreate.ProductCreateModalBottomSheetFragment
 import com.example.bachelorwork.ui.model.productList.ProductListUIState
-import com.example.bachelorwork.ui.model.productList.toProductListUI
+import com.example.bachelorwork.ui.utils.menu.createPopupMenu
+import com.example.bachelorwork.ui.utils.recyclerview.SpeedyLinearSmoothScroller
+import com.example.bachelorwork.ui.utils.recyclerview.UpwardScrollButtonListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -31,10 +32,12 @@ class ProductListFragment : Fragment() {
     private var _binding: FragmentProductListBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var listAdapter: ProductListAdapter
-    private lateinit var gridLayoutManager: GridLayoutManager
-
     private val viewModel: ProductListViewModel by viewModels()
+
+    private lateinit var gridLayoutManager: GridLayoutManager
+    private lateinit var listAdapter: ProductListAdapter
+
+    private var isSubmitRecyclerViewList = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,57 +45,65 @@ class ProductListFragment : Fragment() {
     ): View {
         _binding = FragmentProductListBinding.inflate(inflater, container, false)
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            observeUiState()
+        }
+
         adaptLayoutToEdge()
         setupRecyclerView()
 
         setupSwipeRefreshLayoutListener()
         setupFabButtonsOnClickListener()
         setupCheckboxChangeViewTypeProductsListener()
-        setupCheckboxSortByProductsListener()
-
-        viewModel.viewModelScope.launch {
-            observeUiState()
-        }
+        setupCheckboxOrderByProductsListener()
 
         return binding.root
     }
 
     private fun setupCheckboxChangeViewTypeProductsListener() {
         binding.checkboxChangeViewTypeProducts.apply {
-            buttonDrawable = StateListDrawable().createStateListDrawableChecked(
+            buttonDrawable = StateListDrawableFactory.createCheckedDrawable(
                 requireContext(),
                 R.drawable.ic_view_grid,
                 R.drawable.ic_view_row
             )
-        }.setOnCheckedChangeListener { _, isChecked ->
-            if (binding.recyclerViewProducts.itemAnimator?.isRunning == true) return@setOnCheckedChangeListener
-
-            if (isChecked) {
-                gridLayoutManager.spanCount = 2
-                listAdapter.setViewType(ProductListAdapter.ProductViewType.GRID)
-            } else {
-                gridLayoutManager.spanCount = 1
-                listAdapter.setViewType(ProductListAdapter.ProductViewType.ROW)
-            }
+        }.setOnClickListener {
+            if (binding.recyclerViewProducts.itemAnimator?.isRunning == true) return@setOnClickListener
+            viewModel.changeViewType()
         }
     }
 
-    private fun setupCheckboxSortByProductsListener() {
-        binding.checkboxSortByProducts.apply {
-            buttonDrawable = StateListDrawable().createStateListDrawableChecked(
+    private fun setupCheckboxOrderByProductsListener() {
+        binding.checkboxOrderTypeProducts.apply {
+            buttonDrawable = StateListDrawableFactory.createCheckedDrawable(
                 requireContext(),
                 R.drawable.ic_arrow_up,
                 R.drawable.ic_arrow_down
             )
+        }.setOnClickListener {
+            viewModel.getProductsChangeSortDirection()
+            binding.recyclerViewProducts.itemAnimator = null
         }
 
-        binding.textViewSortByProducts.setOnClickListener {
-            showPopupMenu(it, R.menu.popup_sort_by_products_menu) { menuItem ->
-                when(menuItem.itemId) {
-                    R.id.sort_by_name -> {}
-                    R.id.sort_by_price -> {}
+        binding.textViewOrderByProducts.setOnClickListener {
+            createPopupMenu(it, R.menu.popup_sort_by_products_menu).apply {
+                setOnMenuItemClickListener { menuItem ->
+                    binding.textViewOrderByProducts.text = menuItem.title
+                    when (menuItem.itemId) {
+                        R.id.sort_by_name -> {
+                            viewModel.getProductsChangeSortBy(SortBy.NAME)
+                            true
+                        }
+
+                        R.id.sort_by_price -> {
+                            viewModel.getProductsChangeSortBy(SortBy.PRICE)
+                            true
+                        }
+
+                        else -> false
+                    }
                 }
-            }
+            }.show()
         }
     }
 
@@ -118,15 +129,27 @@ class ProductListFragment : Fragment() {
 
     private fun setupRecyclerView() {
         listAdapter = ProductListAdapter()
-        gridLayoutManager = GridLayoutManager(requireContext(), 1)
+
+        gridLayoutManager = GridLayoutManager(
+            requireContext(),
+            viewModel.uiState.value.viewType.ordinal + 1
+        )
 
         with(binding.recyclerViewProducts) {
             adapter = listAdapter
             layoutManager = gridLayoutManager
+            itemAnimator = null
             setHasFixedSize(true)
-            setItemViewCacheSize(20)
-            addOnScrollListener(onScrollRecyclerViewListener())
+            setItemViewCacheSize(10)
+            addOnScrollListener(
+                UpwardScrollButtonListener(
+                    requireContext(),
+                    binding.fabScrollUpProducts,
+                    gridLayoutManager
+                )
+            )
         }
+
     }
 
     private fun setupSwipeRefreshLayoutListener() {
@@ -140,40 +163,35 @@ class ProductListFragment : Fragment() {
             ProductCreateModalBottomSheetFragment().also { it.show(parentFragmentManager, it.TAG) }
         }
         binding.fabScrollUpProducts.setOnClickListener {
-            binding.recyclerViewProducts.smoothScrollToPosition(0)
+            binding.recyclerViewProducts.layoutManager?.startSmoothScroll(
+                SpeedyLinearSmoothScroller(requireContext())
+            )
         }
     }
 
-    private fun onScrollRecyclerViewListener(): OnScrollListener {
-        val slideUpAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_up)
-        val slideDownAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.slide_down)
 
-        return object : OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                val firstVisibleItemPosition = gridLayoutManager.findFirstVisibleItemPosition()
-                val fabVisibility = binding.fabScrollUpProducts.visibility
+    private suspend fun observeUiState() =
+        viewModel.uiState.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.CREATED)
+            .collectLatest { uiState -> updateUIState(uiState) }
 
-                if ((firstVisibleItemPosition < 1 || dy > 0) && fabVisibility == View.VISIBLE) {
-                    binding.fabScrollUpProducts.startAnimation(slideDownAnimation)
-                    binding.fabScrollUpProducts.visibility = View.INVISIBLE
-                } else if (dy < 0 && firstVisibleItemPosition > 1 && fabVisibility == View.INVISIBLE) {
-                    binding.fabScrollUpProducts.startAnimation(slideUpAnimation)
-                    binding.fabScrollUpProducts.visibility = View.VISIBLE
-                }
+    private fun updateUIState(uiState: ProductListUIState) {
+        val firstVisiblePosition = gridLayoutManager.findFirstVisibleItemPosition()
+
+        gridLayoutManager.spanCount = uiState.viewType.ordinal + 1
+        listAdapter.setViewType(uiState.viewType)
+        listAdapter.submitList(uiState.products.toProductListUI()) {
+            if (!isSubmitRecyclerViewList) {
+                binding.recyclerViewProducts.startLayoutAnimation()
+                isSubmitRecyclerViewList = true
             }
+            val firstVisibleView = gridLayoutManager.findViewByPosition(firstVisiblePosition)
+            val offset = firstVisibleView?.top ?: 0
+            gridLayoutManager.scrollToPositionWithOffset(firstVisiblePosition, offset)
         }
     }
 
-    private suspend fun observeUiState() = viewModel.uiState.collectLatest { uiState ->
-        updateUiState(uiState)
-    }
-
-    private fun updateUiState(uiState: ProductListUIState) {
-        listAdapter.submitList(uiState.productList.toProductListUI())
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 }

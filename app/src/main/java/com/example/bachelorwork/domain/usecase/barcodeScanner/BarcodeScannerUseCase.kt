@@ -1,6 +1,5 @@
 package com.example.bachelorwork.domain.usecase.barcodeScanner
 
-import com.example.bachelorwork.common.Resources
 import com.example.bachelorwork.domain.repository.BarcodeScannerRepository
 import com.google.mlkit.vision.barcode.common.Barcode
 import kotlinx.coroutines.flow.Flow
@@ -10,11 +9,11 @@ import javax.inject.Inject
 class BarcodeScannerUseCase @Inject constructor(
     private val repository: BarcodeScannerRepository
 ) {
-    operator fun invoke(): Flow<Resources<Barcode>> = flow {
+    operator fun invoke(): Flow<Result<Barcode>> = flow {
         repository.startScan().mapCatching { result ->
-            emit(Resources.Success(result))
+            emit(Result.success(result))
         }.onFailure { error ->
-            emit(Resources.Error(error.message.toString()))
+            emit(Result.failure(error))
         }
     }
 }

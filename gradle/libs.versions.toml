@@ -11,6 +11,7 @@ material = "1.12.0"
 activity = "1.9.0"
 fragment = "1.8.3"
 constraintlayout = "2.1.4"
+gson = "2.11.0"
 
 #Additional Libraries
 playServicesCodeScanner = "16.1.0"
@@ -53,6 +54,9 @@ compiler-hilt = { group = "com.google.dagger", name = "hilt-compiler" , version.
 
 #Glide
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
+
+#Gson
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson"}
 
 #Tests
 junit = { group = "junit", name = "junit", version.ref = "junit" }

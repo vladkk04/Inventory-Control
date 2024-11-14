@@ -1,10 +1,11 @@
 package com.example.bachelorwork.di
 
-import com.example.bachelorwork.data.local.ProductDatabase
+import com.example.bachelorwork.data.local.AppDatabase
+import com.example.bachelorwork.data.local.repository.ProductCategoryRepositoryImpl
 import com.example.bachelorwork.data.local.repository.ProductRepositoryImpl
-import com.example.bachelorwork.data.repository.ProductCategoryRepositoryImpl
 import com.example.bachelorwork.domain.repository.ProductCategoryRepository
 import com.example.bachelorwork.domain.repository.ProductRepository
+import com.example.bachelorwork.domain.usecase.product.CreateProductUseCase
 import com.example.bachelorwork.domain.usecase.product.DeleteProductUseCase
 import com.example.bachelorwork.domain.usecase.product.GetProductsUseCase
 import com.example.bachelorwork.domain.usecase.product.ProductUseCases
@@ -17,36 +18,38 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
-import javax.inject.Singleton
+import dagger.hilt.android.scopes.ViewModelScoped
 
 @Module
 @InstallIn(ViewModelComponent::class)
-object RepositoryModule {
+object ProductRepositoryModule {
 
     @Provides
-    @Singleton
-    fun provideProductRepository(db: ProductDatabase): ProductRepository =
+    @ViewModelScoped
+    fun provideProductRepository(db: AppDatabase): ProductRepository =
         ProductRepositoryImpl(db.productDao)
 
     @Provides
-    @Singleton
+    @ViewModelScoped
     fun provideProductUseCases(repository: ProductRepository): ProductUseCases =
         ProductUseCases(
-            getProducts = GetProductsUseCase(repository),
-            deleteProduct = DeleteProductUseCase(repository)
+            createProduct = CreateProductUseCase(repository),
+            deleteProduct = DeleteProductUseCase(repository),
+            getProducts = GetProductsUseCase(repository)
         )
 
     @Provides
-    @Singleton
-    fun provideCategoryRepository(): ProductCategoryRepository = ProductCategoryRepositoryImpl()
+    @ViewModelScoped
+    fun provideProductCategoryRepository(db: AppDatabase): ProductCategoryRepository =
+        ProductCategoryRepositoryImpl(db.productCategoryDao)
 
     @Provides
-    @Singleton
+    @ViewModelScoped
     fun provideProductCategoryUseCases(repository: ProductCategoryRepository): ProductCategoryUseCases =
         ProductCategoryUseCases(
             createCategory = CreateProductCategoryUseCase(repository),
             deleteCategory = DeleteProductCategoryUseCase(repository),
             updateCategory = UpdateProductCategoryUseCase(repository),
-            getAllCategory = GetProductCategoriesUseCase(repository)
+            getCategories = GetProductCategoriesUseCase(repository)
         )
 }

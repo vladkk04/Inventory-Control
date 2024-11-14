@@ -9,30 +9,30 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.ProductItemGridBinding
 import com.example.bachelorwork.databinding.ProductItemRowBinding
+import com.example.bachelorwork.domain.model.product.ProductViewType
 import com.example.bachelorwork.ui.model.productList.ProductListUI
 
 
 class ProductListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    enum class ProductViewType {
-        ROW,
-        GRID
-    }
 
     private val asyncListDiffer = AsyncListDiffer(this, ProductListUIDiffUtilCallbacks)
     private val currentList get() = asyncListDiffer.currentList
 
     private var viewType = ProductViewType.ROW
 
+
     fun setViewType(viewType: ProductViewType) {
+        if (this.viewType == viewType) return
         this.viewType = viewType
         notifyItemRangeChanged(0, currentList.size)
     }
 
-    fun submitList(list: List<ProductListUI>, onComplete: (() -> Unit)? = null) =
+    fun submitList(list: List<ProductListUI>, onComplete: (() -> Unit)? = null) {
+        if (list.isEmpty()) return
         asyncListDiffer.submitList(list) { onComplete?.invoke() }
+    }
 
-    inner class ViewHolderRow(private val binding: ProductItemRowBinding) :
+    private inner class ViewHolderRow(private val binding: ProductItemRowBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ProductListUI) {
             val context = binding.root.context
@@ -46,13 +46,14 @@ class ProductListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                 textViewName.text = item.name
                 textViewPrice.text = context.getString(R.string.product_item_price, item.price)
-                textViewUpcCode.text = context.getString(R.string.product_item_upc_code, item.barcode)
+                textViewUpcCode.text =
+                    context.getString(R.string.product_item_upc_code, item.barcode)
                 textViewQuantity.text = item.quantity.toString()
             }
         }
     }
 
-    inner class ViewHolderGrid(private val binding: ProductItemGridBinding) :
+    private inner class ViewHolderGrid(private val binding: ProductItemGridBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ProductListUI) {
             val context = binding.root.context
@@ -66,7 +67,8 @@ class ProductListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                 textViewName.text = item.name
                 textViewPrice.text = context.getString(R.string.product_item_price, item.price)
-                textViewUpcCode.text = context.getString(R.string.product_item_upc_code, item.barcode)
+                textViewUpcCode.text =
+                    context.getString(R.string.product_item_upc_code, item.barcode)
                 textViewQuantity.text = item.quantity.toString()
             }
         }
@@ -106,5 +108,8 @@ class ProductListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
+
+
     override fun getItemCount(): Int = currentList.size
+
 }
