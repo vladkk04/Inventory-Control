@@ -7,7 +7,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.CustomDialogViewContentCreateCategoryBinding
-import com.example.bachelorwork.domain.model.ProductCategory
+import com.example.bachelorwork.domain.model.product.ProductCategory
 import com.example.bachelorwork.ui.common.base.BaseDialog
 
 enum class CategoryDialogType {
@@ -26,9 +26,20 @@ fun Fragment.createCategoryDialog(
         view = binding.root,
         theme = com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered,
         positiveButtonAction = {
-            onPositiveButtonClick(
-                category?.copy(name = binding.editTextCategory.text.toString()) ?: ProductCategory("")
-            )
+            when (type) {
+                CategoryDialogType.EDIT -> {
+                    if (category != null) {
+                        onPositiveButtonClick(
+                            category.copy(name = binding.editTextCategory.text.toString())
+                        )
+                    }
+                }
+                CategoryDialogType.CREATE -> {
+                    onPositiveButtonClick(
+                        ProductCategory(name = binding.editTextCategory.text.toString())
+                    )
+                }
+            }
         }
     )
 

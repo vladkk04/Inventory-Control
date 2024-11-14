@@ -71,6 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/margin_vertical_product_create_text_input_layout"
                 android:hint="@string/hint_barcode"
+                app:errorIconDrawable="@drawable/ic_barcode_scanner"
                 app:endIconDrawable="@drawable/ic_barcode_scanner"
                 app:endIconMode="custom"
                 app:helperText="@string/helper_text_required"
@@ -127,7 +128,7 @@
                         android:textSize="16sp" />
 
                     <NumberPicker
-                        android:id="@+id/number_picker_create_product_select_unit"
+                        android:id="@+id/number_picker_select_unit"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:descendantFocusability="blocksDescendants"
@@ -171,8 +172,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/margin_vertical_product_create_text_input_layout"
                 android:hint="@string/hint_date"
-                app:endIconMode="custom"
-                app:errorIconDrawable="@drawable/ic_calendar"
                 app:helperText="@string/helper_text_date"
                 app:helperTextEnabled="true"
                 app:startIconDrawable="@drawable/ic_calendar">

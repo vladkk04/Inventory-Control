@@ -2,49 +2,86 @@ package com.example.bachelorwork.ui.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.KeyEvent
 import android.view.LayoutInflater
-import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.core.content.ContextCompat
-import com.example.bachelorwork.R
+import androidx.core.widget.doAfterTextChanged
 import com.example.bachelorwork.databinding.CustomInputLayoutTagsBinding
+import com.example.bachelorwork.domain.model.product.ProductTag
 import com.google.android.material.chip.Chip
 
-class CustomInputLayoutTags(
+class CustomInputLayoutTags @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
-) : FrameLayout(context, attrs) {
+) : FrameLayout(context, attrs), TextView.OnEditorActionListener {
 
-    private var _binding: CustomInputLayoutTagsBinding? = null
-    private val binding get() = _binding!!
+    private var binding: CustomInputLayoutTagsBinding =
+        CustomInputLayoutTagsBinding.inflate(LayoutInflater.from(context), this, true)
+
+    private var onCloseIconClickListener: OnCloseIconClickListener? = null
+
+    private val tags: MutableList<ProductTag> = mutableListOf()
 
     init {
-        _binding = CustomInputLayoutTagsBinding.inflate(LayoutInflater.from(context), this, true)
+        binding.editTextTags.setOnEditorActionListener(this)
     }
 
-    fun addNewTag(tag: String) {
-        val chip = createChip(tag)
-        binding.flexboxLayout.addView(chip, binding.flexboxLayout.childCount - 1)
-    }
-
-    private fun createChip(tag: String): Chip =
-        Chip(context).apply {
-            text = tag
-            isCloseIconVisible = true
-            layoutParams = MarginLayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            ).also {
-                it.setMargins(10, 0, 10, 0)
-            }
-            chipIcon = ContextCompat.getDrawable(context, R.drawable.ic_tag)
-            setOnCloseIconClickListener {
-                binding.flexboxLayout.removeView(this)
+    fun onTextChangeListener(onChange: (tags: List<ProductTag>) -> Unit) {
+        binding.editTextTags.doAfterTextChanged {
+            val tagName = it.toString()
+            if (!it.isNullOrEmpty() && it.last() == ' ') {
+                addChip(ProductTag(tagName.dropLast(1)))
+                onChange.invoke(tags.toList())
             }
         }
+    }
+
+    fun setOnCloseIconClickListener(listener: OnCloseIconClickListener) {
+        onCloseIconClickListener = listener
+    }
+
+    private fun removeChip(chip: Chip) {
+        binding.flexboxLayout.removeView(chip)
+    }
+
+    private fun addChip(tag: ProductTag) {
+        if (tag.name.isBlank() || tags.contains(tag)) return
+        tags.add(tag)
+        binding.editTextTags.text?.clear()
+        binding.flexboxLayout.addView(createChip(tag), binding.flexboxLayout.childCount - 1)
+    }
+
+    private fun createChip(tag: ProductTag): Chip {
+        return Chip(context).apply {
+            text = tag.name
+            isCloseIconVisible = true
+            layoutParams = MarginLayoutParams(
+                LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT
+            ).apply { setMargins(10, 0, 10, 0) }
+            chipIcon = ContextCompat.getDrawable(context, tag.icon)
+            setOnCloseIconClickListener {
+                onCloseIconClickListener?.onCloseIconClickListener(this) ?: run {
+                    tags.remove(tag)
+                    removeChip(this)
+                }
+            }
+        }
+    }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        _binding = null
+        tags.clear()
+    }
+
+    override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+        v?.text?.toString()?.takeIf { it.isNotBlank() }?.let { addChip(ProductTag(it)) }
+        return true
+    }
+
+    fun interface OnCloseIconClickListener {
+        fun onCloseIconClickListener(chip: Chip)
     }
 }

@@ -1,4 +1,4 @@
-package com.example.bachelorwork.ui.common.base
+package com.example.bachelorwork.ui.utils.dialogs
 
 import androidx.fragment.app.Fragment
 import com.example.bachelorwork.ui.constant.Constants
@@ -27,6 +27,4 @@ fun Fragment.showDatePicker(
                 )
             }
         }
-
         .show(childFragmentManager, "${this::class.simpleName} DataPicker")
-

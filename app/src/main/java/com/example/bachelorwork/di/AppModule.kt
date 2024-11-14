@@ -1,8 +1,7 @@
 package com.example.bachelorwork.di
 
 import android.content.Context
-import androidx.room.Room
-import com.example.bachelorwork.data.local.ProductDatabase
+import com.example.bachelorwork.data.local.AppDatabase
 import com.example.bachelorwork.data.repository.BarcodeScannerRepositoryImpl
 import com.example.bachelorwork.domain.repository.BarcodeScannerRepository
 import dagger.Module
@@ -20,12 +19,7 @@ object AppModule {
     @Singleton
     fun provideProductDatabase(
         @ApplicationContext applicationContext: Context
-    ): ProductDatabase =
-        Room.databaseBuilder(
-            applicationContext,
-            ProductDatabase::class.java,
-            ProductDatabase.DATABASE_NAME
-        ).build()
+    ): AppDatabase = AppDatabase.getInstance(applicationContext)
 
 
     @Provides

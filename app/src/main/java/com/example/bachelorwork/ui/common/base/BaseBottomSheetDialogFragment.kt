@@ -2,11 +2,13 @@ package com.example.bachelorwork.ui.common.base
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.FragmentManager
 import androidx.viewbinding.ViewBinding
 import com.example.bachelorwork.ui.utils.dialogs.createDiscardDialog
 import com.google.android.material.appbar.AppBarLayout
@@ -18,11 +20,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDialogFragment() {
 
-    open val TAG: String = this::class.java.simpleName
-
     protected abstract val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> VB
 
     private var _binding: VB? = null
+
+    open val TAG: String = this::class.java.simpleName
 
     protected val binding
         get() = requireNotNull(_binding)
@@ -79,10 +81,27 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
         return (super.onCreateDialog(savedInstanceState) as BottomSheetDialog).apply {
             behavior.state = STATE_EXPANDED
             behavior.isShouldRemoveExpandedCorners = true
-            this@BaseBottomSheetDialogFragment.onBackPressedDispatcher?.let {
+            this@BaseBottomSheetDialogFragment.onBackPressedDispatcher.let {
                 onBackPressedDispatcher.addCallback(this, it)
             }
         }
+    }
+
+    override fun show(manager: FragmentManager, tag: String?) {
+        if (!isFragmentAlreadyCreated(manager, tag)) {
+            super.show(manager, tag)
+        }
+    }
+
+    override fun showNow(manager: FragmentManager, tag: String?) {
+        if (!isFragmentAlreadyCreated(manager, tag)) {
+            super.showNow(manager, tag)
+        }
+    }
+
+    private fun isFragmentAlreadyCreated(manager: FragmentManager, tag: String?): Boolean {
+        val existingFragment = manager.findFragmentByTag(tag)
+        return existingFragment != null && existingFragment.isAdded && !existingFragment.isDetached
     }
 
     private fun setupFullScreen() {
@@ -101,6 +120,7 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
 
     override fun onDestroyView() {
         super.onDestroyView()
+        Log.d("debug", "des")
         _binding = null
     }
 }

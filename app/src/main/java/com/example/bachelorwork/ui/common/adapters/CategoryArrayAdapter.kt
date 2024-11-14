@@ -5,28 +5,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Filter
 import com.example.bachelorwork.databinding.CustomAutocompleteCategoryItemBinding
+import com.example.bachelorwork.domain.model.product.ProductCategory
 
-import com.example.bachelorwork.domain.model.ProductCategory
-
-//TODO Fix last item, when i clicked again on it (means second time) appears create new dialog
 class CategoryArrayAdapter(
     context: Context,
-    items: List<ProductCategory>
+    items: MutableList<ProductCategory>
 ) : ArrayAdapter<ProductCategory>(context, 0, items) {
-
-    var isShowCreateOption = true
-
-    init {
-        if (isShowCreateOption) { insert(ProductCategory("Create new category"), 0) }
-    }
-
-    private val originalItems: List<ProductCategory> = items
 
     private var onCreateNewCategoryClickListener: OnCreateNewCategoryClickListener? = null
     private var onDeleteClickListener: OnDeleteClickListener? = null
     private var onEditClickListener: OnEditClickListener? = null
+    private var onClickItemListener: OnItemClickListener? = null
+
+    init {
+        insert(ProductCategory(name = "Create new category"), 0)
+    }
+
+    fun setOnCreateNewCategory(listener: OnCreateNewCategoryClickListener) {
+        onCreateNewCategoryClickListener = listener
+    }
+
+    fun setOnClickItemListener(listener: OnItemClickListener) {
+        onClickItemListener = listener
+    }
 
     fun setOnDeleteClickListener(listener: OnDeleteClickListener) {
         onDeleteClickListener = listener
@@ -34,10 +36,6 @@ class CategoryArrayAdapter(
 
     fun setOnEditClickListener(listener: OnEditClickListener) {
         onEditClickListener = listener
-    }
-
-    fun setOnCreateNewCategory(listener: OnCreateNewCategoryClickListener) {
-        onCreateNewCategoryClickListener = listener
     }
 
     private fun bind(binding: CustomAutocompleteCategoryItemBinding, item: ProductCategory) {
@@ -52,11 +50,15 @@ class CategoryArrayAdapter(
         } else {
             binding.checkboxEdit.visibility = View.VISIBLE
             binding.checkboxDelete.visibility = View.VISIBLE
+
+            binding.textViewCategory.setOnClickListener {
+                onClickItemListener?.onItemClick(item)
+            }
             binding.checkboxEdit.setOnClickListener {
-                onEditClickListener?.onClick(item)
+                onEditClickListener?.onItemClick(item)
             }
             binding.checkboxDelete.setOnClickListener {
-                onDeleteClickListener?.onClick(item)
+                onDeleteClickListener?.onItemClick(item)
             }
         }
     }
@@ -69,19 +71,20 @@ class CategoryArrayAdapter(
         }
 
         val currentItem = getItem(position) ?: return binding.root
+
         bind(binding, currentItem)
 
         return binding.root
     }
 
-    override fun getFilter(): Filter {
+    /*override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val results = FilterResults()
                 val suggestion = mutableListOf<ProductCategory>()
 
                 if (constraint.isNullOrEmpty()) {
-                    suggestion.addAll(originalItems) // Use the original list for suggestions
+                    suggestion.addAll(originalItems)
                 } else {
                     val filterPattern = constraint.toString().lowercase().trim()
                     for (category in originalItems) {
@@ -108,17 +111,17 @@ class CategoryArrayAdapter(
                 return (resultValue as ProductCategory).name
             }
         }
+    }*/
+
+    fun interface OnItemClickListener {
+        fun onItemClick(item: ProductCategory)
     }
 
     fun interface OnCreateNewCategoryClickListener {
         fun onClick()
     }
 
-    fun interface OnDeleteClickListener {
-        fun onClick(item: ProductCategory)
-    }
+    fun interface OnDeleteClickListener: OnItemClickListener
 
-    fun interface OnEditClickListener {
-        fun onClick(item: ProductCategory)
-    }
+    fun interface OnEditClickListener: OnItemClickListener
 }

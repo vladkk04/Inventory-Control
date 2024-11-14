@@ -4,5 +4,5 @@ data class ProductCategoryUseCases(
     val createCategory: CreateProductCategoryUseCase,
     val deleteCategory: DeleteProductCategoryUseCase,
     val updateCategory: UpdateProductCategoryUseCase,
-    val getAllCategory: GetProductCategoriesUseCase,
+    val getCategories: GetProductCategoriesUseCase,
 )
