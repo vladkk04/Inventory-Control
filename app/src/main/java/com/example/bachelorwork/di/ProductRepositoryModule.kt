@@ -9,6 +9,7 @@ import com.example.bachelorwork.domain.usecase.product.CreateProductUseCase
 import com.example.bachelorwork.domain.usecase.product.DeleteProductUseCase
 import com.example.bachelorwork.domain.usecase.product.GetProductsUseCase
 import com.example.bachelorwork.domain.usecase.product.ProductUseCases
+import com.example.bachelorwork.domain.usecase.product.UpdateProductUseCase
 import com.example.bachelorwork.domain.usecase.productCategory.CreateProductCategoryUseCase
 import com.example.bachelorwork.domain.usecase.productCategory.DeleteProductCategoryUseCase
 import com.example.bachelorwork.domain.usecase.productCategory.GetProductCategoriesUseCase
@@ -34,6 +35,7 @@ object ProductRepositoryModule {
     fun provideProductUseCases(repository: ProductRepository): ProductUseCases =
         ProductUseCases(
             createProduct = CreateProductUseCase(repository),
+            updateProduct = UpdateProductUseCase(repository),
             deleteProduct = DeleteProductUseCase(repository),
             getProducts = GetProductsUseCase(repository)
         )

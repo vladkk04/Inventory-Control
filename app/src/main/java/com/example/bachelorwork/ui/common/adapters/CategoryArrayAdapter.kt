@@ -77,42 +77,6 @@ class CategoryArrayAdapter(
         return binding.root
     }
 
-    /*override fun getFilter(): Filter {
-        return object : Filter() {
-            override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val results = FilterResults()
-                val suggestion = mutableListOf<ProductCategory>()
-
-                if (constraint.isNullOrEmpty()) {
-                    suggestion.addAll(originalItems)
-                } else {
-                    val filterPattern = constraint.toString().lowercase().trim()
-                    for (category in originalItems) {
-                        if (category.name.lowercase().contains(filterPattern)) {
-                            suggestion.add(category)
-                        }
-                    }
-                }
-
-                results.values = suggestion
-                results.count = suggestion.size
-                return results
-            }
-
-            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                clear()
-                results?.values?.let { values ->
-                    addAll(values as List<ProductCategory>)
-                }
-                notifyDataSetChanged()
-            }
-
-            override fun convertResultToString(resultValue: Any?): CharSequence {
-                return (resultValue as ProductCategory).name
-            }
-        }
-    }*/
-
     fun interface OnItemClickListener {
         fun onItemClick(item: ProductCategory)
     }

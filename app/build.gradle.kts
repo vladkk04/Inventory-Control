@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.android.kotlin.ksp)
     alias(libs.plugins.android.hilt)
+    alias(libs.plugins.serialization)
 }
 
 android {
@@ -61,8 +62,8 @@ dependencies {
     implementation(libs.glide) // Image loading
 
     // Navigation Components
-    implementation(libs.androidx.navigation.ui)
     implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.navigation.ui)
 
     // Layout
     implementation(libs.flexbox.layout)
@@ -79,6 +80,9 @@ dependencies {
     // Hilt
     ksp(libs.compiler.hilt)
     implementation(libs.android.hilt)
+
+    // Serialization
+    implementation(libs.serialization.json)
 
     // Tests
     testImplementation(libs.junit)

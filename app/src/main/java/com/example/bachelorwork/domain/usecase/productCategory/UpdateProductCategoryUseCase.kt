@@ -1,16 +1,16 @@
 package com.example.bachelorwork.domain.usecase.productCategory
 
-import com.example.bachelorwork.domain.model.product.ProductCategory
+import com.example.bachelorwork.data.local.entities.ProductCategoryEntity
 import com.example.bachelorwork.domain.repository.ProductCategoryRepository
 
 class UpdateProductCategoryUseCase(
     private val categoryRepository: ProductCategoryRepository
 ) {
-    suspend operator fun invoke(category: ProductCategory) = runCatching {
+    suspend operator fun invoke(category: ProductCategoryEntity) = runCatching {
         categoryRepository.update(category)
     }
 
-    suspend operator fun invoke(vararg category: ProductCategory) = runCatching {
+    suspend operator fun invoke(vararg category: ProductCategoryEntity) = runCatching {
         categoryRepository.updateAll(*category)
     }
 }

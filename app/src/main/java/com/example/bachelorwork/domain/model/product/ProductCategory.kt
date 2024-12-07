@@ -1,28 +1,17 @@
 package com.example.bachelorwork.domain.model.product
 
 import androidx.annotation.DrawableRes
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import com.example.bachelorwork.data.local.entities.ProductCategoryEntity
 
-@Entity(tableName = ProductCategory.TABLE_NAME)
-data class ProductCategory(
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = COLUMN_ID)
+data class ProductCategory (
     val id: Int = 0,
     val name: String,
     @DrawableRes
     val icon: Int? = null
-) {
-    companion object {
-        const val TABLE_NAME = "product_categories"
-        const val COLUMN_ID = "id"
-    }
+)
 
-    enum class DefaultCategories {
-        WOOD,
-        PLASTIC,
-        PAPER,
-        METAL
-    }
-}
+fun ProductCategory.toEntity() = ProductCategoryEntity(
+    id = id,
+    name = name,
+    icon = icon
+)

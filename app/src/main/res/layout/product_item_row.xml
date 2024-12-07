@@ -55,7 +55,7 @@
                 tools:text="@string/product_item_upc_code" />
 
             <TextView
-                android:id="@+id/textView_price"
+                android:id="@+id/textView_price_per_unit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textView_upc_code"
@@ -65,7 +65,7 @@
                 android:textSize="@dimen/text_size_product_item"
                 tools:text="@string/product_item_price" />
 
-            <TextView
+           <!-- <TextView
                 android:id="@+id/textView_weight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
                 android:layout_toEndOf="@+id/shapeable_ImageView"
                 android:textSize="@dimen/text_size_product_item"
                 android:textColor="#3D3C3C"
-                tools:text="@string/product_item_weight" />
+                tools:text="@string/product_item_weight" />-->
 
             <TextView
                 android:id="@+id/textView_quantity"
@@ -83,23 +83,24 @@
                 android:layout_alignParentEnd="true"
                 android:background="@drawable/background_corner_rounded"
                 android:backgroundTint="#A9A9A9"
-                android:padding="3dp"
+                android:padding="4dp"
                 android:textColor="#252525"
                 android:textSize="@dimen/text_size_product_item"
-                tools:text="9999" />
+                android:textAlignment="center"
+                android:minWidth="22dp"
+                tools:text="1" />
 
             <TextView
                 android:id="@+id/textView_pcs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textView_quantity"
-                android:layout_alignStart="@+id/textView_quantity"
                 android:layout_alignParentEnd="true"
                 android:padding="2dp"
+                android:text="@string/product_item_text_pcs"
                 android:textAlignment="center"
                 android:textColor="#353535"
-                android:textSize="@dimen/text_size_product_item_pcs"
-                android:text="@string/product_item_text_pcs" />
+                android:textSize="@dimen/text_size_product_item_pcs" />
 
         </RelativeLayout>
 

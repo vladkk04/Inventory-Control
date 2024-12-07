@@ -59,7 +59,7 @@
                 tools:text="Code: #93249949" />
 
             <TextView
-                android:id="@+id/textView_price"
+                android:id="@+id/textViewPricePerUnit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textView_upc_code"
@@ -69,18 +69,6 @@
                 android:textAlignment="center"
                 android:textSize="@dimen/text_size_product_item"
                 tools:text="@string/product_item_price" />
-
-            <TextView
-                android:id="@+id/textView_weight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textView_price"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentStart="true"
-                android:textAlignment="center"
-                android:textColor="#3D3C3C"
-                android:textSize="@dimen/text_size_product_item"
-                tools:text="@string/product_item_weight" />
 
         </RelativeLayout>
 

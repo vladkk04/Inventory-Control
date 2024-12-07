@@ -1,17 +1,16 @@
 package com.example.bachelorwork.domain.usecase.productCategory
 
-import com.example.bachelorwork.domain.model.product.ProductCategory
+import com.example.bachelorwork.data.local.entities.ProductCategoryEntity
 import com.example.bachelorwork.domain.repository.ProductCategoryRepository
-import javax.inject.Inject
 
-class DeleteProductCategoryUseCase @Inject constructor(
+class DeleteProductCategoryUseCase (
     private val productCategoryRepository: ProductCategoryRepository
 ) {
-    suspend operator fun invoke(productCategory: ProductCategory) = runCatching {
+    suspend operator fun invoke(productCategory: ProductCategoryEntity) = runCatching {
         productCategoryRepository.delete(productCategory)
     }
 
-    suspend operator fun invoke(vararg productCategory: ProductCategory) = runCatching {
+    suspend operator fun invoke(vararg productCategory: ProductCategoryEntity) = runCatching {
         productCategoryRepository.deleteAll(*productCategory)
     }
 }

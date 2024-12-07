@@ -5,5 +5,5 @@
         android:id="@+id/item_product_filter"
         android:title="@string/title_search_bar_item_filter_products"
         android:icon="@drawable/ic_filter"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
 </menu>

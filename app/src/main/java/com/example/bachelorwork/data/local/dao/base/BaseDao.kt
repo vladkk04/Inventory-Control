@@ -2,6 +2,7 @@ package com.example.bachelorwork.data.local.dao.base
 
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Update
 
 interface BaseDao<T> {
@@ -11,10 +12,10 @@ interface BaseDao<T> {
     @Insert
     suspend fun insertAll(vararg obj: T)
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(obj: T)
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateAll(vararg obj: T)
 
     @Delete

@@ -6,7 +6,6 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import com.example.bachelorwork.databinding.CustomInputLayoutTagsBinding
 import com.example.bachelorwork.domain.model.product.ProductTag
@@ -46,6 +45,10 @@ class CustomInputLayoutTags @JvmOverloads constructor(
         binding.flexboxLayout.removeView(chip)
     }
 
+    fun addTags(vararg tags: ProductTag) {
+        tags.forEach { addChip(it) }
+    }
+
     private fun addChip(tag: ProductTag) {
         if (tag.name.isBlank() || tags.contains(tag)) return
         tags.add(tag)
@@ -54,14 +57,8 @@ class CustomInputLayoutTags @JvmOverloads constructor(
     }
 
     private fun createChip(tag: ProductTag): Chip {
-        return Chip(context).apply {
-            text = tag.name
+        return createProductTagChip(context, tag).apply {
             isCloseIconVisible = true
-            layoutParams = MarginLayoutParams(
-                LayoutParams.WRAP_CONTENT,
-                LayoutParams.WRAP_CONTENT
-            ).apply { setMargins(10, 0, 10, 0) }
-            chipIcon = ContextCompat.getDrawable(context, tag.icon)
             setOnCloseIconClickListener {
                 onCloseIconClickListener?.onCloseIconClickListener(this) ?: run {
                     tags.remove(tag)

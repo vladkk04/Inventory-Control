@@ -1,76 +1,48 @@
 package com.example.bachelorwork.domain.model.product
 
 import android.net.Uri
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
-import com.example.bachelorwork.ui.model.productCreate.ProductCreateFormState
-import com.example.bachelorwork.ui.model.productList.ProductListUI
+import com.example.bachelorwork.data.local.entities.ProductEntity
+import com.example.bachelorwork.ui.model.productList.ProductListItemUI
 import java.util.Date
 
-@Entity(
-    tableName = Product.TABLE_NAME,
-    foreignKeys = [ForeignKey(
-        entity = ProductCategory::class,
-        parentColumns = [ProductCategory.COLUMN_ID],
-        childColumns = [Product.COLUMN_CATEGORY_CHILD_ID],
-        onDelete = ForeignKey.CASCADE,
-        onUpdate = ForeignKey.CASCADE
-    )]
-)
 data class Product(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
-    @ColumnInfo(name = COLUMN_CATEGORY_CHILD_ID)
-    val categoryId: Int,
+    var id: Int = 0,
+    val category: ProductCategory,
     val image: Uri = Uri.EMPTY,
     val name: String,
     val barcode: String,
     val quantity: Int,
-    val price: Double,
+    val pricePerUnit: Double,
     val productUnit: ProductUnit,
     val totalPrice: Double,
     val datePurchase: Date,
     val minStockLevel: Int,
     val tags: List<ProductTag> = emptyList(),
     val description: String = "",
-) {
-    constructor(uiFormState: ProductCreateFormState) : this (
-        categoryId = uiFormState.category.id,
-        name = uiFormState.name,
-        barcode = uiFormState.barcode,
-        quantity = uiFormState.quantity,
-        price = uiFormState.pricePerUnit.toDouble(),
-        productUnit = uiFormState.productUnit,
-        totalPrice = uiFormState.totalPrice,
-        datePurchase = Date(uiFormState.datePurchase),
-        minStockLevel = uiFormState.minStockLevel.toInt(),
-        tags = uiFormState.tags,
-        description = uiFormState.description
-    )
+)
 
-    companion object {
-        const val TABLE_NAME = "products"
-        const val COLUMN_CATEGORY_CHILD_ID = "categoryId"
-    }
+fun Product.toProductEntity(): ProductEntity = ProductEntity(
+    id = id,
+    categoryId = category.id,
+    image = image,
+    name = name,
+    barcode = barcode,
+    quantity = quantity,
+    price = pricePerUnit,
+    productUnit = productUnit,
+    totalPrice = totalPrice,
+    datePurchase = datePurchase,
+    minStockLevel = minStockLevel,
+    tags = tags,
+)
 
-    enum class ProductUnit {
-        PCS,
-        KG,
-        CM,
-        KM,
-        T,
-        G,
-        BOX;
-    }
-}
-
-fun List<Product>.toProductListUI(): List<ProductListUI> = map {
-    ProductListUI(
+fun List<Product>.toProductListItemUI(): List<ProductListItemUI> = map {
+    ProductListItemUI(
+        id = it.id,
         name = it.name,
-        price = it.price,
+        price = it.pricePerUnit,
         barcode = it.barcode,
-        quantity = it.quantity
+        quantity = it.quantity,
+        unit = it.productUnit
     )
 }

@@ -1,15 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Product List Fragment -->
-    <!-- =========================== -->
+
+    <!-- Default Dimens -->
+
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_medium">16dp</dimen>
+    <dimen name="padding_large">24dp</dimen>
+
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
+
+    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_medium">16sp</dimen>
+    <dimen name="text_size_large">20sp</dimen>
+    <dimen name="text_size_title">24sp</dimen>
+
+    <dimen name="content_padding_card_extra_small">8dp</dimen>
+    <dimen name="content_padding_card_small">12dp</dimen>
+    <dimen name="content_padding_card_medium">16dp</dimen>
+    <dimen name="content_padding_card_large">24dp</dimen>
+    <dimen name="content_padding_card_extra_large">24dp</dimen>
+
+    <dimen name="list_item_vertical_small">12dp</dimen>
+    <dimen name="list_item_vertical_medium">16dp</dimen>
+    <dimen name="list_item_vertical_large">24dp</dimen>
+
+    <!-- Default Dimens -->
+
+
+    <!-- ProductEntity List Fragment -->
     <dimen name="margin_add_product_fab_button">16dp</dimen>
     <dimen name="margin_additional_start_text_products">12dp</dimen>
 
-    <!-- Recycle View -->
+        <!-- Recycle View -->
     <dimen name="padding_bottom_recycler_view_products">90dp</dimen>
-    <!-- End Recycle View -->
+        <!-- End Recycle View -->
 
-    <!-- Product Item -->
+        <!-- ProductEntity Item -->
     <dimen name="width_image_view_product_item">96dp</dimen>
     <dimen name="height_image_view_product_item">96dp</dimen>
     <dimen name="padding_horizontal_product_item">8dp</dimen>
@@ -20,17 +48,24 @@
     <dimen name="text_size_product_item_name">22sp</dimen>
     <dimen name="text_size_product_item_pcs">11sp</dimen>
     <dimen name="text_size_product_item">14sp</dimen>
-    <!-- End of Product Item -->
+        <!-- End of ProductEntity Item -->
 
-    <!-- =========================== -->
-    <!-- End of Product List Fragment -->
+    <!-- End of ProductEntity List Fragment -->
 
-    <!-- Product Create Bottom Sheet Fragment -->
+
+    <!-- ProductEntity Detail Item Fragment -->
+
+
+
+
+
+
+    <!-- ProductEntity Create Bottom Sheet Fragment -->
     <!-- =========================== -->
 
     <dimen name="margin_vertical_product_create_text_input_layout">10dp</dimen>
 
     <!-- =========================== -->
-    <!-- End of Product Create Bottom Sheet Fragment -->
+    <!-- End of ProductEntity Create Bottom Sheet Fragment -->
 
 </resources>

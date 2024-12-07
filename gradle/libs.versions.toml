@@ -17,11 +17,13 @@ gson = "2.11.0"
 playServicesCodeScanner = "16.1.0"
 swiperefreshlayout = "1.1.0"
 flexboxLayout = "3.0.0"
-navigation = "2.8.2"
+navigation = "2.8.4"
 glide = "4.16.0"
 hilt = "2.51.1"
 room = "2.6.1"
 ksp = "1.9.0-1.0.12"
+serialization = "1.8.20"
+serialization-json = "1.6.0"
 
 [libraries]
 # AndroidX Core Libraries
@@ -42,7 +44,7 @@ androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = 
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 
 #Navigation Components
-androidx-navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigation" }
+androidx-navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
 androidx-navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigation" }
 
 #Barcode Scanner
@@ -58,6 +60,9 @@ glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "gl
 #Gson
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson"}
 
+#Serialization
+serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization-json"}
+
 #Tests
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -67,5 +72,6 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-android-hilt = { id = "com.google.dagger.hilt.android", version.ref ="hilt" }
+android-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serialization"}
 

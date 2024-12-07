@@ -1,11 +1,10 @@
 package com.example.bachelorwork.ui.model.productList
 
-import com.example.bachelorwork.domain.model.product.Product
-import com.example.bachelorwork.domain.model.product.ProductViewType
 import com.example.bachelorwork.domain.model.product.ProductOrder
+import com.example.bachelorwork.domain.model.product.ProductViewType
 
 data class ProductListUIState(
-    val products: List<Product> = emptyList(),
+    val products: List<ProductListItemUI> = emptyList(),
     val viewType: ProductViewType = ProductViewType.ROW,
     val orderBy: ProductOrder = ProductOrder(),
     val isRefreshing: Boolean = false,
