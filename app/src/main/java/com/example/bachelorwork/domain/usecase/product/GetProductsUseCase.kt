@@ -1,5 +1,6 @@
 package com.example.bachelorwork.domain.usecase.product
 
+import com.example.bachelorwork.data.local.pojo.toProduct
 import com.example.bachelorwork.domain.model.product.Product
 import com.example.bachelorwork.domain.model.product.ProductOrder
 import com.example.bachelorwork.domain.model.product.SortBy
@@ -11,29 +12,37 @@ import kotlinx.coroutines.flow.map
 class GetProductsUseCase(
     private val productRepository: ProductRepository
 ) {
-    operator fun invoke(productOrder: ProductOrder): Flow<Result<List<Product>>> {
-        return productRepository.getAll().map { products ->
-            products.runCatching {
-                val sortedProducts: List<Product> = when (productOrder.sortBy) {
-                    SortBy.NAME -> {
-                        when (productOrder.sortDirection) {
-                            SortDirection.ASCENDING -> sortedBy { it.name }
-                            SortDirection.DESCENDING -> sortedByDescending { it.name }
-                        }
-                    }
-                    SortBy.PRICE -> {
-                        when (productOrder.sortDirection) {
-                            SortDirection.ASCENDING -> sortedBy { it.price }
-                            SortDirection.DESCENDING -> sortedByDescending { it.price }
-                        }
-                    }
-                }
-                sortedProducts
-            }
+    fun getProducts(productOrder: ProductOrder): Flow<Result<List<Product>>> {
+        return productRepository.getProductsPojo().map { products ->
+            val toProducts = products.map { it.toProduct() }
+            runCatching { sortProductsByOrder(toProducts, productOrder) }
         }
     }
 
-    operator fun invoke(id: Int): Flow<Result<Product>> =
-        productRepository.getProductById(id).map { runCatching { it } }
+    fun getProductById(id: Int): Flow<Result<Product>> =
+        productRepository.getProductPojoById(id)
+            .map { product -> product.runCatching { product.toProduct() } }
 
+    private fun sortProductsByOrder(
+        products: List<Product>,
+        productOrder: ProductOrder
+    ): List<Product> {
+        return when (productOrder.sortBy) {
+            SortBy.NAME -> {
+                if (productOrder.sortDirection == SortDirection.ASCENDING) {
+                    products.sortedBy { it.name }
+                } else {
+                    products.sortedByDescending { it.name }
+                }
+            }
+
+            SortBy.PRICE -> {
+                if (productOrder.sortDirection == SortDirection.ASCENDING) {
+                    products.sortedBy { it.pricePerUnit }
+                } else {
+                    products.sortedByDescending { it.pricePerUnit }
+                }
+            }
+        }
+    }
 }

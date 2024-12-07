@@ -4,6 +4,9 @@ import android.content.Context
 import com.example.bachelorwork.data.local.AppDatabase
 import com.example.bachelorwork.data.repository.BarcodeScannerRepositoryImpl
 import com.example.bachelorwork.domain.repository.BarcodeScannerRepository
+import com.example.bachelorwork.ui.navigation.Destination
+import com.example.bachelorwork.ui.navigation.Navigator
+import com.example.bachelorwork.ui.navigation.NavigatorImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,6 +24,9 @@ object AppModule {
         @ApplicationContext applicationContext: Context
     ): AppDatabase = AppDatabase.getInstance(applicationContext)
 
+    @Provides
+    @Singleton
+    fun provideNavigator(): Navigator = NavigatorImpl(startDestination = Destination.Warehouse)
 
     @Provides
     @Singleton

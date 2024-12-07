@@ -12,6 +12,13 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <TextView
+            android:id="@+id/textView_content_products"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/text_empty_warehouse"/>
+
+        <TextView
             android:id="@+id/textView_products"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -113,6 +120,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/search_bar_hint_products"
+            app:forceDefaultNavigationOnClickListener="false"
             app:menu="@menu/search_products_menu"
             app:navigationIcon="@drawable/ic_search_product" />
 
@@ -123,7 +131,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:hint="@string/search_bar_hint_products"
+        app:iconifiedByDefault="false"
         app:layout_anchor="@id/searchBar_products">
+
+        <TextView
+            android:id="@+id/textView_search_content_products"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/text_no_result"
+            android:visibility="gone"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_search_products"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingVertical="12dp"
+            android:scrollbars="vertical"/>
 
     </com.google.android.material.search.SearchView>
 

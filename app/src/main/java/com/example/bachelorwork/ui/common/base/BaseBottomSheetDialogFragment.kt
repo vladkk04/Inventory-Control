@@ -88,18 +88,18 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
     }
 
     override fun show(manager: FragmentManager, tag: String?) {
-        if (!isFragmentAlreadyCreated(manager, tag)) {
-            super.show(manager, tag)
+        if (!isFragmentAlreadyCreated(manager, tag ?: TAG)) {
+            super.show(manager, tag ?: TAG)
         }
     }
 
     override fun showNow(manager: FragmentManager, tag: String?) {
-        if (!isFragmentAlreadyCreated(manager, tag)) {
-            super.showNow(manager, tag)
+        if (!isFragmentAlreadyCreated(manager, tag ?: TAG)) {
+            super.showNow(manager, tag ?: TAG)
         }
     }
 
-    private fun isFragmentAlreadyCreated(manager: FragmentManager, tag: String?): Boolean {
+    private fun isFragmentAlreadyCreated(manager: FragmentManager, tag: String): Boolean {
         val existingFragment = manager.findFragmentByTag(tag)
         return existingFragment != null && existingFragment.isAdded && !existingFragment.isDetached
     }
@@ -120,7 +120,6 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.d("debug", "des")
         _binding = null
     }
 }

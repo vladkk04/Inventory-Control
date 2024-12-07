@@ -63,7 +63,6 @@ abstract class BaseDialog(
             }.create()
 
 
-
     fun show() { buildDialog().show() }
 }
 

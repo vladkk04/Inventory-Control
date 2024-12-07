@@ -11,11 +11,11 @@ import com.example.bachelorwork.data.local.dao.ProductDao
 import com.example.bachelorwork.data.local.dao.converters.DateConverter
 import com.example.bachelorwork.data.local.dao.converters.JsonProductTagConverter
 import com.example.bachelorwork.data.local.dao.converters.UriConverter
-import com.example.bachelorwork.domain.model.product.Product
-import com.example.bachelorwork.domain.model.product.ProductCategory
+import com.example.bachelorwork.data.local.entities.ProductCategoryEntity
+import com.example.bachelorwork.data.local.entities.ProductEntity
 
 @Database(
-    entities = [Product::class, ProductCategory::class],
+    entities = [ProductEntity::class, ProductCategoryEntity::class],
     version = 1,
     exportSchema = false
 )
@@ -33,8 +33,8 @@ abstract class AppDatabase : RoomDatabase() {
         private const val DATABASE_NAME = "app_db"
 
         private val QUERY_INSERT_DEFAULT_PRODUCT_CATEGORIES = {
-            val entries = ProductCategory.DefaultCategories.entries.joinToString { "('${it.name}')" }
-            "INSERT INTO ${ProductCategory.TABLE_NAME} (name) VALUES $entries"
+            val entries = ProductCategoryEntity.DefaultCategories.entries.joinToString { "('${it.name}')" }
+            "INSERT INTO ${ProductCategoryEntity.TABLE_NAME} (name) VALUES $entries"
         }
 
         fun getInstance(context: Context): AppDatabase {

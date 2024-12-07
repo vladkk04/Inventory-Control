@@ -19,9 +19,7 @@ class SpeedyLinearSmoothScroller(
     private val scrollSpeed: ScrollSpeed = ScrollSpeed.ULTRA_FAST
 ) : LinearSmoothScroller(context) {
 
-    init {
-        setTargetPosition(targetPosition)
-    }
+    init { setTargetPosition(targetPosition) }
 
     override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics): Float {
         return scrollSpeed.millisecondsPerInch / displayMetrics.densityDpi
