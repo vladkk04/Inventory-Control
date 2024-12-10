@@ -68,6 +68,7 @@ class ProductManageModalBottomSheetFragment(
     }
 
     private fun setupUIComponents() {
+        binding.shapeableImageViewProduct.setOnClickListener { viewModel.select() }
         setupBarcodeScanner()
         setupNumberPicker()
         setupInputEditTextChangeListeners()

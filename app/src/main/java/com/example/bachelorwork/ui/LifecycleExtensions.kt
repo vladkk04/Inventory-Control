@@ -5,6 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
@@ -17,7 +18,7 @@ fun <T> LifecycleOwner.collectInLifecycle(
 ) {
     lifecycleScope.launch(dispatcher) {
         lifecycle.repeatOnLifecycle(lifecycleState) {
-            flow.collect { item -> collector(item) }
+            flow.collectLatest { item -> collector(item) }
         }
     }
 }

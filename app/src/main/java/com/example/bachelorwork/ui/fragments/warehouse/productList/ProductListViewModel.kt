@@ -9,15 +9,13 @@ import com.example.bachelorwork.domain.model.product.SortDirection
 import com.example.bachelorwork.domain.model.product.toProductListItemUI
 import com.example.bachelorwork.domain.usecase.product.ProductUseCases
 import com.example.bachelorwork.ui.model.productList.ProductListUIState
+import com.example.bachelorwork.ui.model.productList.ProductSearchUIState
 import com.example.bachelorwork.ui.navigation.Destination
 import com.example.bachelorwork.ui.navigation.Navigator
 import com.example.bachelorwork.ui.utils.extensions.handleResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,28 +26,37 @@ class ProductListViewModel @Inject constructor(
     private val navigator: Navigator
 ) : ViewModel() {
 
-    private val searchQuery = MutableStateFlow("")
     private val _uiState = MutableStateFlow(ProductListUIState())
+    val uiState get() = _uiState.asStateFlow()
 
-    val uiState = combine(
-        _uiState.asStateFlow(),
-        searchQuery
-    ) { state, query ->
-        if (query.isBlank()) {
-            state
-        } else {
-            state.copy(
-                products = state.products.filter { it.name.contains(query, ignoreCase = true) }
-            )
-        }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ProductListUIState())
+    private val _searchUiState = MutableStateFlow(ProductSearchUIState())
+    val searchUiState get() = _searchUiState.asStateFlow()
 
     init {
         getProducts(_uiState.value.orderBy)
     }
 
     fun searchProducts(query: String) {
-        this.searchQuery.value = query
+        if (query.isEmpty()) {
+            _searchUiState.update { state ->
+                state.copy(
+                    products = emptyList(),
+                    isNoItemsFound = false
+                )
+            }
+            return
+        }
+
+        val filteredProducts = uiState.value.products.filter {
+            it.name.contains(query, ignoreCase = true)
+        }
+
+        _searchUiState.update { state ->
+            state.copy(
+                products = filteredProducts,
+                isNoItemsFound = filteredProducts.isEmpty()
+            )
+        }
     }
 
     fun changeViewType() {
@@ -93,25 +100,19 @@ class ProductListViewModel @Inject constructor(
         handleResult(result, onSuccess = {
             _uiState.value = _uiState.value.copy(
                 products = it.toProductListItemUI(),
-                orderBy = orderBy
+                orderBy = orderBy,
+                isNoProducts = it.isEmpty()
             )
         })
     }
 
     fun navigateToCreateProduct() = viewModelScope.launch {
-        navigator.navigate(Destination.ProductManage()) {
-
-        }
+        navigator.navigate(Destination.ProductManage())
     }
 
     fun navigateToItemDetail(position: Int) = viewModelScope.launch {
         navigator.navigate(Destination.ProductDetail(position)) {
-            popUpTo<Destination.Warehouse> {
-                //inclusive = false
-            }
-
-            //launchSingleTop = true
-            //restoreState = true
+            popUpTo<Destination.Warehouse>()
         }
     }
 }

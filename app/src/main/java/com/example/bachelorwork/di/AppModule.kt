@@ -4,15 +4,19 @@ import android.content.Context
 import com.example.bachelorwork.data.local.AppDatabase
 import com.example.bachelorwork.data.repository.BarcodeScannerRepositoryImpl
 import com.example.bachelorwork.domain.repository.BarcodeScannerRepository
+import com.example.bachelorwork.domain.repository.PermissionRequester
 import com.example.bachelorwork.ui.navigation.Destination
 import com.example.bachelorwork.ui.navigation.Navigator
 import com.example.bachelorwork.ui.navigation.NavigatorImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
+
 
 @Module
 @InstallIn(SingletonComponent::class)

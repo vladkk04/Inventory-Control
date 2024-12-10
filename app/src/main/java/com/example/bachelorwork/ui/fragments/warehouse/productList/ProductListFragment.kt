@@ -16,6 +16,7 @@ import com.example.bachelorwork.domain.model.product.SortBy
 import com.example.bachelorwork.ui.collectInLifecycle
 import com.example.bachelorwork.ui.common.StateListDrawableFactory
 import com.example.bachelorwork.ui.model.productList.ProductListUIState
+import com.example.bachelorwork.ui.model.productList.ProductSearchUIState
 import com.example.bachelorwork.ui.utils.menu.createPopupMenu
 import com.example.bachelorwork.ui.utils.recyclerview.SpeedyLinearSmoothScroller
 import com.example.bachelorwork.ui.utils.recyclerview.UpwardScrollButtonListener
@@ -32,13 +33,20 @@ class ProductListFragment : Fragment() {
 
     private lateinit var gridLayoutManager: GridLayoutManager
     private lateinit var listAdapter: ProductListAdapter
-
+    private lateinit var searchListAdapter: ProductListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProductListBinding.inflate(inflater, container, false)
+
+        viewLifecycleOwner.collectInLifecycle(
+            viewModel.searchUiState,
+            lifecycleState = Lifecycle.State.CREATED
+        ) { searchUiState ->
+            updateSearchUIState(searchUiState)
+        }
 
         viewLifecycleOwner.collectInLifecycle(
             viewModel.uiState,
@@ -128,21 +136,25 @@ class ProductListFragment : Fragment() {
                 )
             )
         }
+
         listAdapter.setOnItemClickListener { position ->
             viewModel.navigateToItemDetail(position)
         }
     }
 
     private fun setupSearchBar() {
-        binding.searchViewProducts.editText.doAfterTextChanged {
-            viewModel.searchProducts(it.toString())
+        searchListAdapter = ProductListAdapter()
+        searchListAdapter.setOnItemClickListener { position ->
+            viewModel.navigateToItemDetail(position)
         }
         with(binding.recyclerViewSearchProducts) {
-            adapter = listAdapter
+            adapter = searchListAdapter
             layoutManager = LinearLayoutManager(requireContext())
             itemAnimator = null
-            setHasFixedSize(true)
-            setItemViewCacheSize(10)
+        }
+
+        binding.searchViewProducts.editText.doAfterTextChanged {
+            viewModel.searchProducts(it.toString())
         }
     }
 
@@ -164,13 +176,9 @@ class ProductListFragment : Fragment() {
     }
 
     private fun updateUIState(uiState: ProductListUIState) {
-
         val firstVisiblePosition = gridLayoutManager.findFirstVisibleItemPosition()
 
-        val visibility = if (uiState.products.isEmpty()) View.VISIBLE else View.GONE
-
-        binding.textViewSearchContentProducts.visibility = visibility
-        binding.textViewContentProducts.visibility = visibility
+        binding.textViewContentProducts.visibility = if (uiState.isNoProducts) View.VISIBLE else View.GONE
 
         gridLayoutManager.spanCount = uiState.viewType.ordinal + 1
         listAdapter.setViewType(uiState.viewType)
@@ -179,6 +187,11 @@ class ProductListFragment : Fragment() {
             val offset = firstVisibleView?.top ?: 0
             gridLayoutManager.scrollToPositionWithOffset(firstVisiblePosition, offset)
         }
+    }
+
+    private fun updateSearchUIState(uiState: ProductSearchUIState) {
+        binding.textViewSearchContentProducts.visibility = if(uiState.isNoItemsFound) View.VISIBLE else View.GONE
+        searchListAdapter.submitList(uiState.products)
     }
 
     override fun onDestroyView() {

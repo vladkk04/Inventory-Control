@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 
 class NavigatorImpl(
     override val startDestination: Destination
-) : Navigator {
+): Navigator {
 
     private val _navigate = Channel<NavigationAction>()
     override val navigationActions = _navigate.receiveAsFlow()

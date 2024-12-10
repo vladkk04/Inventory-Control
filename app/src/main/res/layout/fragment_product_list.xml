@@ -6,6 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </androidx.core.widget.NestedScrollView>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -120,7 +126,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/search_bar_hint_products"
-            app:forceDefaultNavigationOnClickListener="false"
             app:menu="@menu/search_products_menu"
             app:navigationIcon="@drawable/ic_search_product" />
 
@@ -131,7 +136,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:hint="@string/search_bar_hint_products"
-        app:iconifiedByDefault="false"
         app:layout_anchor="@id/searchBar_products">
 
         <TextView
@@ -146,8 +150,10 @@
             android:id="@+id/recyclerView_search_products"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingVertical="12dp"
-            android:scrollbars="vertical"/>
+            android:paddingTop="10dp"
+            android:clipToPadding="false"
+            android:scrollbars="vertical"
+            android:nestedScrollingEnabled="false" />
 
     </com.google.android.material.search.SearchView>
 
