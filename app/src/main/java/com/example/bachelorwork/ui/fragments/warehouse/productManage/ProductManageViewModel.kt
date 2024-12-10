@@ -28,12 +28,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductManageViewModel @Inject constructor(
-    private val startBarcodeScannerUseCase: BarcodeScannerUseCase,
+    private val barcodeScannerUseCase: BarcodeScannerUseCase,
     private val validatorNotEmptyUseCase: ValidatorNotEmptyUseCase,
     private val productUseCase: ProductUseCases,
     private val categoryUseCase: ProductCategoryUseCases,
     private val navigator: Navigator,
-    savedStateHandle: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val productManageRoute = Destination.from<Destination.ProductManage>(savedStateHandle)
 
@@ -91,7 +91,6 @@ class ProductManageViewModel @Inject constructor(
             )
         )
 
-
     private suspend fun updateProduct(id: Int) =
         productUseCase.updateProduct(
             ProductEntity(
@@ -108,7 +107,6 @@ class ProductManageViewModel @Inject constructor(
                 tags = uiFormState.value.tags,
             )
         )
-
 
     fun modifyProduct() = viewModelScope.launch {
         if (validateInputs()) return@launch
@@ -154,11 +152,15 @@ class ProductManageViewModel @Inject constructor(
     }
 
     fun startScanBarcode() {
-        handleResult(startBarcodeScannerUseCase(), onSuccess = { barcode ->
+        handleResult(barcodeScannerUseCase(), onSuccess = { barcode ->
             _uiState.update { it.copy(product = it.product?.copy(barcode = barcode.displayValue.toString())) }
         }, onFailure = {
             sendSnackbarEvent(SnackbarEvent(it.message.toString()))
         })
+    }
+
+    fun select() {
+
     }
 
     fun onEvent(event: ProductCreateFormEvent) {

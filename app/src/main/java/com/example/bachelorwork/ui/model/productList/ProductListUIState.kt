@@ -7,6 +7,7 @@ data class ProductListUIState(
     val products: List<ProductListItemUI> = emptyList(),
     val viewType: ProductViewType = ProductViewType.ROW,
     val orderBy: ProductOrder = ProductOrder(),
+    val isNoProducts: Boolean = false,
     val isRefreshing: Boolean = false,
     val isLoading: Boolean = false,
     val error: String? = null

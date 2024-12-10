@@ -9,6 +9,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.ActivityMainBinding
+import com.example.bachelorwork.domain.repository.PermissionRequester
 import com.example.bachelorwork.ui.navigation.NavigationGraph
 import com.example.bachelorwork.ui.navigation.Navigator
 import com.example.bachelorwork.ui.navigation.setupWithNavController

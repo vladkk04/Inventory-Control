@@ -20,7 +20,6 @@ abstract class BaseDialog(
         val icon: Drawable? = null,
         @DrawableRes val iconRes: Int? = null,
         @LayoutRes val viewLayoutRes: Int? = null,
-        val result: Any? = null,
         val view: View? = null,
         val theme: Int? = null,
         val customTitleView: View? = null,
