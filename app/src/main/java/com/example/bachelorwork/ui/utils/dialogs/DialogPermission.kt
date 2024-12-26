@@ -1,7 +1,6 @@
 package com.example.bachelorwork.ui.utils.dialogs
 
 import android.content.Context
-import com.example.bachelorwork.ui.common.base.BaseDialog
 
 fun showDialogPermission(
     context: Context,

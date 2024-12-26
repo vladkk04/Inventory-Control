@@ -1,7 +1,7 @@
 package com.example.bachelorwork.data.local.repository
 
 import com.example.bachelorwork.data.local.dao.ProductCategoryDao
-import com.example.bachelorwork.data.local.entities.ProductCategoryEntity
+import com.example.bachelorwork.data.local.entity.ProductCategoryEntity
 import com.example.bachelorwork.domain.repository.ProductCategoryRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

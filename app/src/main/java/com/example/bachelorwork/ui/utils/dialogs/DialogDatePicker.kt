@@ -1,6 +1,5 @@
 package com.example.bachelorwork.ui.utils.dialogs
 
-import android.util.Log
 import androidx.fragment.app.Fragment
 import com.example.bachelorwork.ui.constant.Constants
 import com.google.android.material.datepicker.CalendarConstraints
@@ -23,7 +22,6 @@ fun Fragment.showDatePicker(
         .build()
         .apply {
             addOnPositiveButtonClickListener {
-                Log.d("debug", it.toString())
                 onPositiveButtonClick(
                     SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT_PATTERN, Locale.getDefault()).format(it)
                 )

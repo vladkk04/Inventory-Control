@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/product_manage"
-        android:title="@string/title_toolbar_item_product_save"
+        android:title="@string/title_save"
         android:icon="@drawable/ic_save"
         app:showAsAction="ifRoom" />
 

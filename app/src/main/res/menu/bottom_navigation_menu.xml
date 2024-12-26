@@ -16,7 +16,7 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/profile"
+        android:id="@+id/orders"
         android:enabled="true"
         android:icon="@drawable/ic_list"
         android:title="@string/title_orders"
@@ -25,7 +25,7 @@
     <item
         android:id="@+id/more"
         android:enabled="true"
-        android:icon="@drawable/ic_more_horiz"
+        android:icon="@drawable/ic_more_horizontal"
         android:title="@string/title_more"
         app:showAsAction="ifRoom" />
 

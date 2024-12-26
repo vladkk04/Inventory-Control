@@ -2,11 +2,11 @@ package com.example.bachelorwork.ui.fragments.warehouse.productList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.bachelorwork.domain.model.product.ProductOrder
-import com.example.bachelorwork.domain.model.product.ProductViewType
+import com.example.bachelorwork.domain.model.SortDirection
+import com.example.bachelorwork.domain.model.product.ProductDisplayMode
+import com.example.bachelorwork.domain.model.product.ProductSortOptions
 import com.example.bachelorwork.domain.model.product.SortBy
-import com.example.bachelorwork.domain.model.product.SortDirection
-import com.example.bachelorwork.domain.model.product.toProductListItemUI
+import com.example.bachelorwork.domain.model.product.toProductUI
 import com.example.bachelorwork.domain.usecase.product.ProductUseCases
 import com.example.bachelorwork.ui.model.productList.ProductListUIState
 import com.example.bachelorwork.ui.model.productList.ProductSearchUIState
@@ -62,7 +62,7 @@ class ProductListViewModel @Inject constructor(
     fun changeViewType() {
         _uiState.update {
             it.copy(
-                viewType = ProductViewType.entries[(it.viewType.ordinal + 1) % 2]
+                viewType = ProductDisplayMode.entries[(it.viewType.ordinal + 1) % 2]
             )
         }
     }
@@ -73,14 +73,6 @@ class ProductListViewModel @Inject constructor(
                 getProducts(
                     uiState.value.orderBy.copy(
                         sortBy = SortBy.NAME
-                    )
-                )
-            }
-
-            SortBy.PRICE -> {
-                getProducts(
-                    uiState.value.orderBy.copy(
-                        sortBy = SortBy.PRICE
                     )
                 )
             }
@@ -95,19 +87,25 @@ class ProductListViewModel @Inject constructor(
         )
     }
 
-    private fun getProducts(orderBy: ProductOrder) {
+    private fun getProducts(orderBy: ProductSortOptions) {
         val result = productUseCases.getProducts.getProducts(orderBy)
         handleResult(result, onSuccess = {
             _uiState.value = _uiState.value.copy(
-                products = it.toProductListItemUI(),
+                products = it.toProductUI(),
                 orderBy = orderBy,
                 isNoProducts = it.isEmpty()
             )
         })
     }
 
-    fun navigateToCreateProduct() = viewModelScope.launch {
-        navigator.navigate(Destination.ProductManage())
+    fun navigateToCreateItem() = viewModelScope.launch {
+        navigator.navigate(Destination.ProductManage()) {
+            launchSingleTop = true
+        }
+    }
+
+    fun openNavigationDrawer() = viewModelScope.launch {
+        navigator.openNavigationDrawer()
     }
 
     fun navigateToItemDetail(position: Int) = viewModelScope.launch {

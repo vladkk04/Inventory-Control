@@ -8,12 +8,12 @@ plugins {
 
 android {
     namespace = "com.example.bachelorwork"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.bachelorwork"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -70,6 +70,9 @@ dependencies {
 
     //Gson
     implementation(libs.gson)
+
+    //Analytics
+    implementation(libs.vico.views)
 
     // Room
     ksp(libs.androidx.room.compiler)

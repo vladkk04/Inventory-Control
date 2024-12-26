@@ -2,9 +2,9 @@ package com.example.bachelorwork.data.local.pojo
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import com.example.bachelorwork.data.local.entities.ProductCategoryEntity
-import com.example.bachelorwork.data.local.entities.ProductEntity
-import com.example.bachelorwork.data.local.entities.toProductCategory
+import com.example.bachelorwork.data.local.entity.ProductCategoryEntity
+import com.example.bachelorwork.data.local.entity.ProductEntity
+import com.example.bachelorwork.data.local.entity.toProductCategory
 import com.example.bachelorwork.domain.model.product.Product
 
 data class ProductPojo(
@@ -24,10 +24,7 @@ fun ProductPojo.toProduct() = Product(
     name = product.name,
     barcode = product.barcode,
     quantity = product.quantity,
-    pricePerUnit = product.price,
-    productUnit = product.productUnit,
-    totalPrice = product.totalPrice,
-    datePurchase = product.datePurchase,
+    unit = product.productUnit,
     minStockLevel = product.minStockLevel,
     description = product.description,
     tags = product.tags,

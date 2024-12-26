@@ -1,7 +1,6 @@
 package com.example.bachelorwork.ui.utils.dialogs
 
 import androidx.fragment.app.Fragment
-import com.example.bachelorwork.ui.common.base.BaseDialog
 
 
 fun Fragment.createDiscardDialog(
@@ -12,7 +11,6 @@ fun Fragment.createDiscardDialog(
             title = "Discard draft?",
             message = "Are you sure you want to discard this draft?",
             positiveButtonText = "Discard",
-            negativeButtonText = "Cancel",
             positiveButtonAction = onPositiveButtonClick
         )
 }

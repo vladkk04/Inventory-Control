@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/textView_manage_users"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Manage employees"
+        android:layout_margin="@dimen/margin_medium"
+        android:textSize="@dimen/text_size_large_plus" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_manage_users"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/textView_manage_users"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        tools:listitem="@layout/manage_user_item" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab_create_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:text="New user"
+        android:layout_margin="@dimen/margin_medium"
+        app:icon="@drawable/ic_add" />
+
+</RelativeLayout>

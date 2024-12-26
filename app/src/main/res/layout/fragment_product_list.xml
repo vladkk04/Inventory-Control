@@ -6,12 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </androidx.core.widget.NestedScrollView>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,18 +16,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/text_empty_warehouse"/>
+            android:text="@string/text_empty_warehouse" />
 
         <TextView
             android:id="@+id/textView_products"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/swipeRefresh_layout_products"
-            android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:layout_gravity="center"
+            android:layout_marginStart="@dimen/margin_normal"
             android:gravity="center"
-            android:layout_marginStart="@dimen/margin_additional_start_text_products"
             android:text="@string/text_products" />
 
         <CheckBox
@@ -45,13 +39,13 @@
             tools:button="@drawable/ic_view_grid" />
 
         <Button
-            style="@style/Widget.Material3.Button.TextButton.Dialog"
             android:id="@+id/textView_order_by_products"
+            style="@style/Widget.Material3.Button.TextButton.Dialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/swipeRefresh_layout_products"
             android:layout_alignParentTop="true"
             android:layout_toStartOf="@+id/checkbox_order_type_products"
-            android:layout_above="@+id/swipeRefresh_layout_products"
             android:gravity="center"
             android:minWidth="0dp"
             android:text="Name" />
@@ -78,9 +72,9 @@
                 android:id="@+id/recyclerView_products"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layoutAnimation="@anim/recycle_view_layout"
-                android:paddingBottom="@dimen/padding_bottom_recycler_view_products"
                 android:clipToPadding="false"
+                android:layoutAnimation="@anim/recycle_view_layout"
+                android:paddingBottom="90dp"
                 android:scrollbars="vertical"
                 tools:itemCount="5"
                 tools:listitem="@layout/product_item_row" />
@@ -92,25 +86,16 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/margin_medium"
+        android:gravity="center"
         android:orientation="vertical">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            style="?attr/floatingActionButtonSmallStyle"
-            android:id="@+id/fab_scroll_up_products"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/content_description_text_add_product_fab_button"
-            android:visibility="invisible"
-            app:srcCompat="@drawable/ic_arrow_up" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_create_product"
+            android:id="@+id/fab_create_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/margin_add_product_fab_button"
             android:contentDescription="@string/content_description_text_add_product_fab_button"
             app:srcCompat="@drawable/ic_add" />
 
@@ -121,13 +106,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.google.android.material.search.SearchBar
-            android:id="@+id/searchBar_products"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/search_bar_hint_products"
-            app:menu="@menu/search_products_menu"
-            app:navigationIcon="@drawable/ic_search_product" />
+            android:gravity="center"
+            android:paddingStart="@dimen/padding_medium"
+            app:layout_scrollFlags="snap|scroll">
+
+            <include
+                android:id="@+id/profile_circle_picture"
+                layout="@layout/profile_circle_picture" />
+
+            <com.google.android.material.search.SearchBar
+                android:id="@+id/searchBar_products"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/search_bar_hint_products"
+                app:menu="@menu/search_products_menu"
+                app:navigationIcon="@drawable/ic_search_product" />
+
+        </LinearLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -144,16 +142,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/text_no_result"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_search_products"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="10dp"
             android:clipToPadding="false"
-            android:scrollbars="vertical"
-            android:nestedScrollingEnabled="false" />
+            android:nestedScrollingEnabled="false"
+            android:paddingTop="@dimen/padding_small"
+            android:scrollbars="vertical" />
 
     </com.google.android.material.search.SearchView>
 

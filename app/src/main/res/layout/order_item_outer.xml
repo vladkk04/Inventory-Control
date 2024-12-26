@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.Material3.CardView.Filled"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin_medium"
+    app:contentPadding="@dimen/padding_small">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/textView_order_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/checkBox_toggle"
+            android:text="@string/text_order_id"
+            android:textSize="@dimen/text_size_large_plus" />
+
+        <TextView
+            android:id="@+id/textView_ordered_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView_order_id"
+            android:layout_marginVertical="@dimen/margin_extra_small"
+            android:text="@string/text_order_date_timestamp"
+            android:textSize="@dimen/text_size_small" />
+
+        <CheckBox
+            android:id="@+id/checkBox_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:button="@drawable/ic_keyboard_arrow_down" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_subitems"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView_ordered_date"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/textView_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/recyclerView_subitems"
+            android:text="@string/text_order_total"
+            android:textSize="@dimen/text_size_medium" />
+
+
+    </RelativeLayout>
+
+
+</com.google.android.material.card.MaterialCardView>

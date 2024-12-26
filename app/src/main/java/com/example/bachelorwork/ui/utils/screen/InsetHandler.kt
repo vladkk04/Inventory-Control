@@ -1,6 +1,5 @@
 package com.example.bachelorwork.ui.utils.screen
 
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
@@ -39,8 +38,6 @@ object InsetHandler {
                 right = bars.right,
                 bottom = bars.bottom,
             )
-            Log.d("debug", v.paddingTop.toString())
-
             WindowInsetsCompat.CONSUMED
         }
     }

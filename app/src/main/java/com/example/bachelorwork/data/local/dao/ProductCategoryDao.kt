@@ -3,7 +3,7 @@ package com.example.bachelorwork.data.local.dao
 import androidx.room.Dao
 import androidx.room.Query
 import com.example.bachelorwork.data.local.dao.base.BaseDao
-import com.example.bachelorwork.data.local.entities.ProductCategoryEntity
+import com.example.bachelorwork.data.local.entity.ProductCategoryEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

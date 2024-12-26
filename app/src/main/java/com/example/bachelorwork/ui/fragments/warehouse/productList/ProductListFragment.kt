@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,13 +15,12 @@ import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.FragmentProductListBinding
 import com.example.bachelorwork.domain.model.product.SortBy
 import com.example.bachelorwork.ui.collectInLifecycle
-import com.example.bachelorwork.ui.common.StateListDrawableFactory
 import com.example.bachelorwork.ui.model.productList.ProductListUIState
 import com.example.bachelorwork.ui.model.productList.ProductSearchUIState
+import com.example.bachelorwork.ui.utils.StateListDrawableFactory
 import com.example.bachelorwork.ui.utils.menu.createPopupMenu
-import com.example.bachelorwork.ui.utils.recyclerview.SpeedyLinearSmoothScroller
-import com.example.bachelorwork.ui.utils.recyclerview.UpwardScrollButtonListener
 import com.example.bachelorwork.ui.utils.screen.InsetHandler
+import com.google.android.material.search.SearchView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -60,7 +60,7 @@ class ProductListFragment : Fragment() {
         setupSearchBar()
 
         setupSwipeRefreshLayoutListener()
-        setupFabButtonsOnClickListener()
+        setupProfileButtonOnClickListener()
         setupCheckboxChangeViewTypeProductsListener()
         setupCheckboxOrderByProductsListener()
 
@@ -93,7 +93,7 @@ class ProductListFragment : Fragment() {
         }
 
         binding.textViewOrderByProducts.setOnClickListener {
-            createPopupMenu(it, R.menu.popup_sort_by_products_menu).apply {
+            createPopupMenu(requireContext(), it, R.menu.popup_sort_by_products_menu).apply {
                 setOnMenuItemClickListener { menuItem ->
                     binding.textViewOrderByProducts.text = menuItem.title
                     when (menuItem.itemId) {
@@ -101,12 +101,6 @@ class ProductListFragment : Fragment() {
                             viewModel.getProductsChangeSortBy(SortBy.NAME)
                             true
                         }
-
-                        R.id.sort_by_price -> {
-                            viewModel.getProductsChangeSortBy(SortBy.PRICE)
-                            true
-                        }
-
                         else -> false
                     }
                 }
@@ -128,13 +122,13 @@ class ProductListFragment : Fragment() {
             itemAnimator = null
             setHasFixedSize(true)
             setItemViewCacheSize(10)
-            addOnScrollListener(
+            /*addOnScrollListener(
                 UpwardScrollButtonListener(
                     requireContext(),
                     binding.fabScrollUpProducts,
                     gridLayoutManager
                 )
-            )
+            )*/
         }
 
         listAdapter.setOnItemClickListener { position ->
@@ -147,6 +141,7 @@ class ProductListFragment : Fragment() {
         searchListAdapter.setOnItemClickListener { position ->
             viewModel.navigateToItemDetail(position)
         }
+
         with(binding.recyclerViewSearchProducts) {
             adapter = searchListAdapter
             layoutManager = LinearLayoutManager(requireContext())
@@ -156,6 +151,15 @@ class ProductListFragment : Fragment() {
         binding.searchViewProducts.editText.doAfterTextChanged {
             viewModel.searchProducts(it.toString())
         }
+
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, false) {
+            binding.searchViewProducts.hide()
+        }
+
+        binding.searchViewProducts.addTransitionListener { v, _, newState ->
+            callback.isEnabled = newState == SearchView.TransitionState.SHOWN
+        }
+
     }
 
     private fun setupSwipeRefreshLayoutListener() {
@@ -164,14 +168,12 @@ class ProductListFragment : Fragment() {
         }
     }
 
-    private fun setupFabButtonsOnClickListener() {
-        binding.fabCreateProduct.setOnClickListener {
-            viewModel.navigateToCreateProduct()
+    private fun setupProfileButtonOnClickListener() {
+        binding.profileCirclePicture.root.setOnClickListener {
+            viewModel.openNavigationDrawer()
         }
-        binding.fabScrollUpProducts.setOnClickListener {
-            binding.recyclerViewProducts.layoutManager?.startSmoothScroll(
-                SpeedyLinearSmoothScroller(requireContext())
-            )
+        binding.fabCreateItem.setOnClickListener {
+            viewModel.navigateToCreateItem()
         }
     }
 
@@ -192,6 +194,7 @@ class ProductListFragment : Fragment() {
     private fun updateSearchUIState(uiState: ProductSearchUIState) {
         binding.textViewSearchContentProducts.visibility = if(uiState.isNoItemsFound) View.VISIBLE else View.GONE
         searchListAdapter.submitList(uiState.products)
+
     }
 
     override fun onDestroyView() {

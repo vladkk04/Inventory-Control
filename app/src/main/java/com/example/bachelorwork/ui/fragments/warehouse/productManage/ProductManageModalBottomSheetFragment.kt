@@ -13,7 +13,6 @@ import com.example.bachelorwork.domain.model.product.ProductUnit
 import com.example.bachelorwork.ui.collectInLifecycle
 import com.example.bachelorwork.ui.common.adapters.CategoryArrayAdapter
 import com.example.bachelorwork.ui.common.base.BaseBottomSheetDialogFragment
-import com.example.bachelorwork.ui.constant.Constants
 import com.example.bachelorwork.ui.model.productManage.ProductCreateFormEvent
 import com.example.bachelorwork.ui.model.productManage.ProductCreateFormState
 import com.example.bachelorwork.ui.model.productManage.ProductManageUIState
@@ -21,13 +20,11 @@ import com.example.bachelorwork.ui.utils.dialogs.CategoryDialogType
 import com.example.bachelorwork.ui.utils.dialogs.createCategoryDialog
 import com.example.bachelorwork.ui.utils.dialogs.createDeleteDialog
 import com.example.bachelorwork.ui.utils.dialogs.createDiscardDialog
-import com.example.bachelorwork.ui.utils.dialogs.showDatePicker
 import com.example.bachelorwork.ui.utils.inputFilters.NoZeroInputFilter
 import com.example.bachelorwork.util.namesTyped
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.SimpleDateFormat
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -68,12 +65,11 @@ class ProductManageModalBottomSheetFragment(
     }
 
     private fun setupUIComponents() {
-        binding.shapeableImageViewProduct.setOnClickListener { viewModel.select() }
+        //binding.shapeableImageViewProduct.setOnClickListener { viewModel.select() }
         setupBarcodeScanner()
         setupNumberPicker()
         setupInputEditTextChangeListeners()
         setupInputFieldQuantity()
-        setupInputFieldDatePurchase()
     }
 
     private fun setupNumberPicker() {
@@ -109,34 +105,12 @@ class ProductManageModalBottomSheetFragment(
         }
     }
 
-    private fun setupInputFieldDatePurchase() {
-        binding.textInputLayoutDatePurchase.helperText =
-            Constants.DEFAULT_DATE_FORMAT_PATTERN.uppercase()
-
-        binding.editTextDatePurchase.apply {
-            setOnClickListener {
-                showDatePicker { date -> setText(date) }
-            }
-        }
-    }
-
     private fun setupInputEditTextChangeListeners() {
         with(binding) {
             setupTextChangeListener(editTextName, ProductCreateFormEvent::NameChanged)
             setupTextChangeListener(editTextBarcode, ProductCreateFormEvent::BarcodeChanged)
             setupTextChangeListener(editTextQuantity, ProductCreateFormEvent::QuantityChanged)
-            setupTextChangeListener(
-                editTextPricePerUnit,
-                ProductCreateFormEvent::PricePerUnitChanged
-            )
-            setupTextChangeListener(
-                editTextDatePurchase,
-                ProductCreateFormEvent::DatePurchaseChanged
-            )
-            setupTextChangeListener(
-                editTextMinStockLevel,
-                ProductCreateFormEvent::MinStockLevelChanged
-            )
+            setupTextChangeListener(editTextMinStockLevel, ProductCreateFormEvent::MinStockLevelChanged)
             setupTextChangeListener(editTextDescription, ProductCreateFormEvent::DescriptionChanged)
 
             binding.customInputLayoutTags.onTextChangeListener { tags ->
@@ -180,7 +154,7 @@ class ProductManageModalBottomSheetFragment(
                 }.show()
             }
             setOnDeleteClickListener { item ->
-                createDeleteDialog("category") {
+                createDeleteDialog(requireContext(), "category \"${item.name}\"") {
                     viewModel.deleteCategory(item)
                 }.show()
             }
@@ -195,9 +169,6 @@ class ProductManageModalBottomSheetFragment(
             binding.editTextBarcode.setText(uiState.product.barcode)
             binding.editTextMinStockLevel.setText(uiState.product.minStockLevel.toString())
             binding.editTextQuantity.setText(String.format(Locale.getDefault(), "%d", uiState.product.quantity))
-            binding.editTextPricePerUnit.setText(uiState.product.pricePerUnit.toString())
-            binding.editTextPricePerUnit.hint = requireContext().getString(R.string.text_price_per_unit, uiState.product.productUnit)
-            binding.editTextDatePurchase.setText(SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT_PATTERN).format(uiState.product.datePurchase))
             viewModel.onEvent(ProductCreateFormEvent.CategoryChanged(uiState.product.category))
 
             binding.autoCompleteTextViewCategory.setText(uiState.product.category.name, false)
@@ -216,24 +187,16 @@ class ProductManageModalBottomSheetFragment(
     }
 
     private fun updateUIElementsFromState(uiStateForm: ProductCreateFormState) {
-        binding.textInputLayoutPricePerUnit.apply {
-            hint = requireContext().getString(R.string.text_price_per_unit, uiStateForm.productUnit)
-        }
         binding.editTextQuantity.apply {
             setText(String.format(Locale.getDefault(), "%d", uiStateForm.quantity))
             setSelection(uiStateForm.quantity.toString().length)
         }
         binding.autoCompleteTextViewCategory.setText(uiStateForm.category.name, false)
-
-        binding.textViewTotalPrice.text =
-            requireContext().getString(R.string.text_total_price, uiStateForm.totalPrice)
     }
 
     private fun updateFormFieldErrors(uiStateForm: ProductCreateFormState) {
         binding.textInputLayoutName.error = uiStateForm.nameError
         binding.textInputLayoutBarcode.error = uiStateForm.barcodeError
-        binding.textInputLayoutPricePerUnit.error = uiStateForm.pricePerUnitError
-        binding.textInputLayoutDatePurchase.error = uiStateForm.datePurchaseError
         binding.textInputLayoutMinStockLevel.error = uiStateForm.minStockLevelError
         binding.textInputLayoutCategory.error = uiStateForm.categoryError
     }

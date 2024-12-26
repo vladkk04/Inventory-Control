@@ -5,8 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/margin_bottom_product_item"
-    android:paddingHorizontal="@dimen/padding_horizontal_product_item">
+    android:layout_marginBottom="@dimen/margin_medium"
+    android:paddingHorizontal="@dimen/padding_small">
 
     <com.google.android.material.card.MaterialCardView
         style="@style/Widget.Material3.CardView.Filled"
@@ -21,8 +21,8 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/shapeable_ImageView"
-                android:layout_width="@dimen/width_image_view_product_item"
-                android:layout_height="@dimen/height_image_view_product_item"
+                android:layout_width="@dimen/width_image_item"
+                android:layout_height="@dimen/height_image_item"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentBottom="true"
@@ -35,46 +35,35 @@
                 android:id="@+id/textView_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_horizontal_text_product_item_row"
+                android:layout_marginHorizontal="@dimen/margin_small"
                 android:layout_toStartOf="@+id/textView_quantity"
                 android:layout_toEndOf="@+id/shapeable_ImageView"
                 android:textColor="#3D3C3C"
-                android:textSize="@dimen/text_size_product_item_name"
+                android:textSize="@dimen/text_size_medium"
                 android:textStyle="bold"
                 tools:text="Wood" />
 
             <TextView
-                android:id="@+id/textView_upc_code"
+                android:id="@+id/textView_barcode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textView_name"
-                android:layout_marginHorizontal="@dimen/margin_horizontal_text_product_item_row"
+                android:layout_marginHorizontal="@dimen/margin_small"
                 android:layout_toEndOf="@+id/shapeable_ImageView"
                 android:textColor="#3D3C3C"
-                android:textSize="@dimen/text_size_product_item"
-                tools:text="@string/product_item_upc_code" />
+                android:textSize="@dimen/text_size_small"
+                tools:text="@string/text_product_item_barcode" />
 
             <TextView
                 android:id="@+id/textView_price_per_unit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textView_upc_code"
-                android:layout_marginHorizontal="@dimen/margin_horizontal_text_product_item_row"
+                android:layout_below="@+id/textView_barcode"
+                android:layout_marginHorizontal="@dimen/margin_small"
                 android:layout_toEndOf="@+id/shapeable_ImageView"
                 android:textColor="#3D3C3C"
-                android:textSize="@dimen/text_size_product_item"
-                tools:text="@string/product_item_price" />
-
-           <!-- <TextView
-                android:id="@+id/textView_weight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textView_price"
-                android:layout_marginHorizontal="@dimen/margin_horizontal_text_product_item_row"
-                android:layout_toEndOf="@+id/shapeable_ImageView"
-                android:textSize="@dimen/text_size_product_item"
-                android:textColor="#3D3C3C"
-                tools:text="@string/product_item_weight" />-->
+                android:textSize="@dimen/text_size_small"
+                tools:text="@string/text_product_item_price" />
 
             <TextView
                 android:id="@+id/textView_quantity"
@@ -85,7 +74,7 @@
                 android:backgroundTint="#A9A9A9"
                 android:padding="4dp"
                 android:textColor="#252525"
-                android:textSize="@dimen/text_size_product_item"
+                android:textSize="@dimen/text_size_small"
                 android:textAlignment="center"
                 android:minWidth="22dp"
                 tools:text="1" />
@@ -97,10 +86,10 @@
                 android:layout_below="@+id/textView_quantity"
                 android:layout_alignParentEnd="true"
                 android:padding="2dp"
-                android:text="@string/product_item_text_pcs"
+                android:text="@string/text_product_item_text_pcs"
                 android:textAlignment="center"
                 android:textColor="#353535"
-                android:textSize="@dimen/text_size_product_item_pcs" />
+                android:textSize="@dimen/text_size_extra_small" />
 
         </RelativeLayout>
 

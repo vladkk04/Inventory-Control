@@ -1,5 +1,6 @@
 package com.example.bachelorwork.ui.navigation
 
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.view.updatePadding
@@ -7,39 +8,39 @@ import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import com.google.android.material.navigation.NavigationBarView
+import com.google.android.material.navigation.NavigationView
 
 fun NavigationBarView.setupWithNavController(
     navController: NavController,
-    fragmentContainer: FragmentContainerView
 ) {
     navController.addOnDestinationChangedListener { _, destination, _ ->
-        val isTopLevelRoute = topLevelRoutes.any { destination.hasRoute(it.route::class) }
-
-        if (!isTopLevelRoute) {
-            hideNavigationBarWithAnimation(this, fragmentContainer)
-        } else {
-            showNavigationBarWithAnimation(this, fragmentContainer)
-        }
-
         topLevelRoutes.find { destination.hasRoute(it.route::class) }?.let { dest ->
             menu.findItemByTitle(dest.route::class.simpleName)?.isChecked = true
         }
     }
-
     setOnItemSelectedListener { item ->
         topLevelRoutes.find { it.route::class.simpleName == item.title }?.takeIf { route ->
             navController.currentDestination?.hasRoute(route.route::class) != true
         }?.let { route ->
             navController.navigate(route.route) {
-                popUpTo(navController.graph.startDestinationId) {
-                    saveState = true
-                }
-                launchSingleTop = true
                 restoreState = true
+                launchSingleTop = true
             }
             return@setOnItemSelectedListener true
         }
         false
+    }
+}
+
+fun NavigationView.setupWithNavController(
+    navController: NavController
+) {
+    navController.addOnDestinationChangedListener { _, destination, _ ->
+        
+    }
+    this.setNavigationItemSelectedListener {
+        Log.d("debug", "hello")
+        true
     }
 }
 

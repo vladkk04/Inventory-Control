@@ -65,7 +65,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="Cup"
-                    android:textSize="22sp" />
+                    android:textSize="@dimen/text_size_large" />
             </LinearLayout>
 
             <com.google.android.material.tabs.TabLayout
@@ -81,7 +81,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -92,14 +92,14 @@
             android:paddingHorizontal="@dimen/padding_large"
             android:paddingVertical="@dimen/padding_small"
             android:text="Cup"
-            android:textSize="32sp"
+            android:textSize="@dimen/text_size_header_xlarge"
             android:textStyle="bold" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/view_pager_product_detail"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:translationY="58dp"/>
+            android:layout_height="match_parent"
+            android:translationY="58dp" />
 
     </FrameLayout>
 

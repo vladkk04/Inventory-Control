@@ -13,4 +13,7 @@ interface Navigator {
     )
 
     suspend fun navigateUp()
+
+    suspend fun openNavigationDrawer()
+
 }
