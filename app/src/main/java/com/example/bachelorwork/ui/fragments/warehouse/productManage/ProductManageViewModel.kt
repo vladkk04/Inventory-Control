@@ -3,7 +3,7 @@ package com.example.bachelorwork.ui.fragments.warehouse.productManage
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.bachelorwork.data.local.entities.ProductEntity
+import com.example.bachelorwork.data.local.entity.ProductEntity
 import com.example.bachelorwork.domain.model.product.ProductCategory
 import com.example.bachelorwork.domain.model.product.toEntity
 import com.example.bachelorwork.domain.usecase.barcodeScanner.BarcodeScannerUseCase
@@ -82,9 +82,7 @@ class ProductManageViewModel @Inject constructor(
                 name = uiFormState.value.name,
                 barcode = uiFormState.value.barcode,
                 quantity = uiFormState.value.quantity,
-                price = uiFormState.value.pricePerUnit.toDouble(),
                 productUnit = uiFormState.value.productUnit,
-                totalPrice = uiFormState.value.totalPrice,
                 datePurchase = Date(),
                 minStockLevel = uiFormState.value.minStockLevel.toInt(),
                 tags = uiFormState.value.tags,
@@ -99,9 +97,7 @@ class ProductManageViewModel @Inject constructor(
                 name = uiFormState.value.name,
                 barcode = uiFormState.value.barcode,
                 quantity = uiFormState.value.quantity,
-                price = uiFormState.value.pricePerUnit.toDouble(),
                 productUnit = uiFormState.value.productUnit,
-                totalPrice = uiFormState.value.totalPrice,
                 datePurchase = Date(),
                 minStockLevel = uiFormState.value.minStockLevel.toInt(),
                 tags = uiFormState.value.tags,
@@ -159,10 +155,6 @@ class ProductManageViewModel @Inject constructor(
         })
     }
 
-    fun select() {
-
-    }
-
     fun onEvent(event: ProductCreateFormEvent) {
         when (event) {
             is ProductCreateFormEvent.NameChanged -> {
@@ -180,24 +172,6 @@ class ProductManageViewModel @Inject constructor(
 
             is ProductCreateFormEvent.UnitChanged -> {
                 _uiFormState.update { it.copy(productUnit = event.productUnit) }
-            }
-
-            is ProductCreateFormEvent.PricePerUnitChanged -> {
-                _uiFormState.update {
-                    it.copy(
-                        pricePerUnit = event.pricePerUnit,
-                        pricePerUnitError = null
-                    )
-                }
-            }
-
-            is ProductCreateFormEvent.DatePurchaseChanged -> {
-                _uiFormState.update {
-                    it.copy(
-                        datePurchase = event.datePurchase,
-                        datePurchaseError = null
-                    )
-                }
             }
 
             is ProductCreateFormEvent.CategoryChanged -> {
@@ -231,16 +205,12 @@ class ProductManageViewModel @Inject constructor(
     private fun validateInputs(): Boolean {
         val nameResult = validatorNotEmptyUseCase(_uiFormState.value.name)
         val barcodeResult = validatorNotEmptyUseCase(_uiFormState.value.barcode)
-        val pricePerUnit = validatorNotEmptyUseCase(_uiFormState.value.pricePerUnit)
-        val datePurchase = validatorNotEmptyUseCase(_uiFormState.value.datePurchase)
         val minStockLevel = validatorNotEmptyUseCase(_uiFormState.value.minStockLevel)
         val category = validatorNotEmptyUseCase(_uiFormState.value.category.name)
 
         val hasError = listOf(
             nameResult,
             barcodeResult,
-            pricePerUnit,
-            datePurchase,
             minStockLevel,
             category
         ).any { it.success }
@@ -249,8 +219,6 @@ class ProductManageViewModel @Inject constructor(
             it.copy(
                 nameError = nameResult.errorMessage,
                 barcodeError = barcodeResult.errorMessage,
-                pricePerUnitError = pricePerUnit.errorMessage,
-                datePurchaseError = datePurchase.errorMessage,
                 minStockLevelError = minStockLevel.errorMessage,
                 categoryError = category.errorMessage
             )

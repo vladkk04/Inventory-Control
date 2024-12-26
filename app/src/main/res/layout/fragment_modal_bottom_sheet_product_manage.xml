@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dd"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -30,7 +31,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="14dp"
+            android:layout_marginHorizontal="@dimen/margin_normal"
             android:orientation="vertical">
 
             <com.google.android.material.imageview.ShapeableImageView
@@ -38,8 +39,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_gravity="center"
-                android:layout_marginHorizontal="12dp"
-                android:layout_marginVertical="@dimen/margin_vertical_product_create_text_input_layout"
+                android:layout_marginHorizontal="@dimen/margin_normal"
+                android:layout_marginVertical="@dimen/margin_small"
                 android:background="@drawable/background_corner_stroke"
                 android:backgroundTint="#464545"
                 android:backgroundTintMode="add"
@@ -51,7 +52,7 @@
                 android:id="@+id/text_input_layout_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/margin_vertical_product_create_text_input_layout"
+                android:layout_marginVertical="@dimen/margin_vertical_between_items"
                 android:hint="@string/hint_name"
                 app:endIconMode="clear_text"
                 app:helperText="@string/helper_text_required"
@@ -70,11 +71,11 @@
                 android:id="@+id/text_input_layout_barcode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/margin_vertical_product_create_text_input_layout"
+                android:layout_marginVertical="@dimen/margin_vertical_between_items"
                 android:hint="@string/hint_barcode"
-                app:errorIconDrawable="@drawable/ic_barcode_scanner"
                 app:endIconDrawable="@drawable/ic_barcode_scanner"
                 app:endIconMode="custom"
+                app:errorIconDrawable="@drawable/ic_barcode_scanner"
                 app:helperText="@string/helper_text_required"
                 app:helperTextEnabled="true">
 
@@ -90,7 +91,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_vertical_product_create_text_input_layout"
+                android:layout_marginBottom="@dimen/margin_vertical_between_items"
                 android:baselineAligned="false"
                 android:gravity="bottom"
                 android:weightSum="1">
@@ -140,60 +141,10 @@
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_input_layout_price_per_unit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/margin_vertical_product_create_text_input_layout"
-                android:hint="@string/hint_price"
-                app:endIconMode="clear_text"
-                app:helperText="@string/helper_text_required"
-                app:helperTextEnabled="true"
-                app:startIconDrawable="@drawable/ic_euro">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_text_price_per_unit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:maxLines="1" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/textView_total_price"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:text="@string/text_total_price"
-                android:textSize="16sp" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_input_layout_date_purchase"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/margin_vertical_product_create_text_input_layout"
-                android:hint="@string/hint_date"
-                app:helperText="@string/helper_text_date"
-                app:helperTextEnabled="true"
-                app:startIconDrawable="@drawable/ic_calendar">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_text_date_purchase"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:inputType="none"
-                    android:maxLines="1" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/text_input_layout_min_stock_level"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/margin_vertical_product_create_text_input_layout"
+                android:layout_marginVertical="@dimen/margin_vertical_between_items"
                 android:hint="@string/hint_min_stock_level"
                 app:helperText="@string/helper_text_required"
                 app:helperTextEnabled="true">
@@ -212,7 +163,7 @@
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/margin_vertical_product_create_text_input_layout"
+                android:layout_marginVertical="@dimen/margin_vertical_between_items"
                 app:helperText="@string/helper_text_required"
                 app:helperTextEnabled="true"
                 app:startIconDrawable="@drawable/ic_category">
@@ -238,7 +189,7 @@
                 android:id="@+id/text_input_layout_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/margin_vertical_product_create_text_input_layout"
+                android:layout_marginVertical="@dimen/margin_vertical_between_items"
                 android:hint="@string/hint_description"
                 app:endIconMode="clear_text"
                 app:helperText="@string/helper_text_optional"

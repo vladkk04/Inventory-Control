@@ -1,6 +1,6 @@
 package com.example.bachelorwork.domain.usecase.product
 
-import com.example.bachelorwork.data.local.entities.ProductEntity
+import com.example.bachelorwork.data.local.entity.ProductEntity
 import com.example.bachelorwork.domain.repository.ProductRepository
 
 class DeleteProductUseCase(

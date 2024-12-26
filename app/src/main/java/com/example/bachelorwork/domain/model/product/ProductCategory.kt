@@ -1,7 +1,7 @@
 package com.example.bachelorwork.domain.model.product
 
 import androidx.annotation.DrawableRes
-import com.example.bachelorwork.data.local.entities.ProductCategoryEntity
+import com.example.bachelorwork.data.local.entity.ProductCategoryEntity
 
 data class ProductCategory (
     val id: Int = 0,

@@ -1,71 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <!-- Default Dimens -->
-
+    <dimen name="padding_extra_small">4dp</dimen>
     <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_normal">12dp</dimen>
     <dimen name="padding_medium">16dp</dimen>
+    <dimen name="padding_medium_plus">20dp</dimen>
     <dimen name="padding_large">24dp</dimen>
+    <dimen name="padding_large_plus">28dp</dimen>
+    <dimen name="padding_extra_large">32dp</dimen>
 
+    <dimen name="margin_extra_small">4dp</dimen>
     <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_normal">12dp</dimen>
     <dimen name="margin_medium">16dp</dimen>
+    <dimen name="margin_medium_plus">20dp</dimen>
     <dimen name="margin_large">24dp</dimen>
+    <dimen name="margin_large_plus">28dp</dimen>
+    <dimen name="margin_extra_large">32dp</dimen>
 
+    <dimen name="text_size_extra_small">12sp</dimen>
     <dimen name="text_size_small">14sp</dimen>
-    <dimen name="text_size_medium">16sp</dimen>
-    <dimen name="text_size_large">20sp</dimen>
-    <dimen name="text_size_title">24sp</dimen>
+    <dimen name="text_size_normal">16sp</dimen>
+    <dimen name="text_size_medium">18sp</dimen>
+    <dimen name="text_size_medium_plus">20sp</dimen>
+    <dimen name="text_size_large">22sp</dimen>
+    <dimen name="text_size_large_plus">24sp</dimen>
 
-    <dimen name="content_padding_card_extra_small">8dp</dimen>
-    <dimen name="content_padding_card_small">12dp</dimen>
-    <dimen name="content_padding_card_medium">16dp</dimen>
-    <dimen name="content_padding_card_large">24dp</dimen>
-    <dimen name="content_padding_card_extra_large">24dp</dimen>
+    <dimen name="text_size_header_small">26sp</dimen>
+    <dimen name="text_size_header_medium">28sp</dimen>
+    <dimen name="text_size_header_large">30sp</dimen>
+    <dimen name="text_size_header_xlarge">32sp</dimen>
 
-    <dimen name="list_item_vertical_small">12dp</dimen>
-    <dimen name="list_item_vertical_medium">16dp</dimen>
-    <dimen name="list_item_vertical_large">24dp</dimen>
+    <!-- More Fragment -->
+    <dimen name="width_fab_more_item">108dp</dimen>
+    <dimen name="height_fab_more_item">80dp</dimen>
 
-    <!-- Default Dimens -->
+    <!-- Create New Item Fragment -->
+    <dimen name="margin_vertical_between_items">@dimen/margin_small</dimen>
 
+    <!-- Product Detail Item Fragment -->
+    <dimen name="margin_vertical_item_detail_between_items">12dp</dimen>
 
-    <!-- ProductEntity List Fragment -->
-    <dimen name="margin_add_product_fab_button">16dp</dimen>
-    <dimen name="margin_additional_start_text_products">12dp</dimen>
-
-        <!-- Recycle View -->
-    <dimen name="padding_bottom_recycler_view_products">90dp</dimen>
-        <!-- End Recycle View -->
-
-        <!-- ProductEntity Item -->
-    <dimen name="width_image_view_product_item">96dp</dimen>
-    <dimen name="height_image_view_product_item">96dp</dimen>
-    <dimen name="padding_horizontal_product_item">8dp</dimen>
-
-    <dimen name="margin_horizontal_text_product_item_row">4dp</dimen>
-    <dimen name="margin_bottom_product_item">16dp</dimen>
-
-    <dimen name="text_size_product_item_name">22sp</dimen>
-    <dimen name="text_size_product_item_pcs">11sp</dimen>
-    <dimen name="text_size_product_item">14sp</dimen>
-        <!-- End of ProductEntity Item -->
-
-    <!-- End of ProductEntity List Fragment -->
-
-
-    <!-- ProductEntity Detail Item Fragment -->
-
-
-
-
-
-
-    <!-- ProductEntity Create Bottom Sheet Fragment -->
-    <!-- =========================== -->
-
-    <dimen name="margin_vertical_product_create_text_input_layout">10dp</dimen>
-
-    <!-- =========================== -->
-    <!-- End of ProductEntity Create Bottom Sheet Fragment -->
+    <!-- Product Item Grid and Row Fragment -->
+    <dimen name="width_image_item">96dp</dimen>
+    <dimen name="height_image_item">96dp</dimen>
 
 </resources>

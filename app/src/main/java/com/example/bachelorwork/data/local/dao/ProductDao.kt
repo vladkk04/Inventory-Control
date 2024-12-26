@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import com.example.bachelorwork.data.local.dao.base.BaseDao
-import com.example.bachelorwork.data.local.entities.ProductEntity
+import com.example.bachelorwork.data.local.entity.ProductEntity
 import com.example.bachelorwork.data.local.pojo.ProductPojo
 import kotlinx.coroutines.flow.Flow
 

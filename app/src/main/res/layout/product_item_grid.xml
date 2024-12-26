@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- TODO: Create values in Color.xml !-->
-
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="215dp"
-    android:layout_marginBottom="@dimen/margin_bottom_product_item"
-    android:paddingHorizontal="@dimen/padding_horizontal_product_item">
+    android:layout_height="220dp"
+    android:layout_marginBottom="@dimen/margin_medium"
+    android:paddingHorizontal="@dimen/padding_small">
 
     <com.google.android.material.card.MaterialCardView
         style="@style/Widget.Material3.CardView.Filled"
@@ -23,14 +21,14 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/shapeable_ImageView"
-                android:layout_width="@dimen/width_image_view_product_item"
-                android:layout_height="@dimen/height_image_view_product_item"
+                android:layout_width="@dimen/width_image_item"
+                android:layout_height="@dimen/height_image_item"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
                 android:background="#969393"
                 android:src="@drawable/ic_image"
-                android:padding="4dp"
+                android:padding="@dimen/padding_extra_small"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
 
             <TextView
@@ -42,12 +40,12 @@
                 android:layout_alignParentEnd="true"
                 android:textAlignment="center"
                 android:textColor="#3D3C3C"
-                android:textSize="@dimen/text_size_product_item_name"
+                android:textSize="@dimen/text_size_large"
                 android:textStyle="bold"
                 tools:text="Wood" />
 
             <TextView
-                android:id="@+id/textView_upc_code"
+                android:id="@+id/textView_barcode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textView_name"
@@ -55,20 +53,20 @@
                 android:layout_alignParentEnd="true"
                 android:textColor="#3D3C3C"
                 android:textAlignment="center"
-                android:textSize="@dimen/text_size_product_item"
+                android:textSize="@dimen/text_size_normal"
                 tools:text="Code: #93249949" />
 
             <TextView
                 android:id="@+id/textViewPricePerUnit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/textView_upc_code"
+                android:layout_below="@+id/textView_barcode"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
                 android:textColor="#3D3C3C"
                 android:textAlignment="center"
-                android:textSize="@dimen/text_size_product_item"
-                tools:text="@string/product_item_price" />
+                android:textSize="@dimen/text_size_normal"
+                tools:text="@string/text_product_item_price" />
 
         </RelativeLayout>
 
@@ -76,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="3dp"
+            android:padding="@dimen/padding_extra_small"
             android:gravity="center"
             android:layout_gravity="bottom"
             android:layout_alignParentStart="true"
@@ -90,8 +88,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#252525"
-                android:layout_marginHorizontal="4dp"
-                android:textSize="@dimen/text_size_product_item"
+                android:layout_marginHorizontal="@dimen/margin_extra_small"
+                android:textSize="@dimen/text_size_small"
                 tools:text="9999" />
 
             <TextView
@@ -100,8 +98,8 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 android:textColor="#353535"
-                android:textSize="@dimen/text_size_product_item_pcs"
-                android:text="@string/product_item_text_pcs" />
+                android:textSize="@dimen/text_size_extra_small"
+                android:text="@string/text_product_item_text_pcs" />
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

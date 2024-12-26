@@ -9,4 +9,7 @@ sealed class NavigationAction {
     ) : NavigationAction()
 
     data object NavigateUp: NavigationAction()
+
+    data object OpenNavigationDrawer: NavigationAction()
+
 }

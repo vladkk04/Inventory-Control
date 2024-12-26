@@ -9,8 +9,6 @@ sealed class ProductCreateFormEvent {
     data class BarcodeChanged(val barcode: String) : ProductCreateFormEvent()
     data class QuantityChanged(val quantity: String) : ProductCreateFormEvent()
     data class UnitChanged(val productUnit: ProductUnit) : ProductCreateFormEvent()
-    data class PricePerUnitChanged(val pricePerUnit: String) : ProductCreateFormEvent()
-    data class DatePurchaseChanged(val datePurchase: String) : ProductCreateFormEvent()
     data class MinStockLevelChanged(val minStockLevel: String) : ProductCreateFormEvent()
     data class CategoryChanged(val category: ProductCategory) : ProductCreateFormEvent()
     data class TagsChanged(val tags: List<ProductTag>) : ProductCreateFormEvent()

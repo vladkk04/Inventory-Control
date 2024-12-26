@@ -9,8 +9,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.ProductItemGridBinding
 import com.example.bachelorwork.databinding.ProductItemRowBinding
-import com.example.bachelorwork.domain.model.product.ProductViewType
-import com.example.bachelorwork.ui.model.productList.ProductListItemUI
+import com.example.bachelorwork.domain.model.product.ProductDisplayMode
+import com.example.bachelorwork.ui.model.productList.ProductUI
 import java.util.Locale
 
 
@@ -21,9 +21,9 @@ class ProductListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var onItemClickListener: OnItemClickListener? = null
 
-    private var viewType = ProductViewType.ROW
+    private var viewType = ProductDisplayMode.ROW
 
-    fun setViewType(viewType: ProductViewType) {
+    fun setViewType(viewType: ProductDisplayMode) {
         if (this.viewType == viewType) return
         this.viewType = viewType
         //For smoothly change animation
@@ -34,13 +34,13 @@ class ProductListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         this.onItemClickListener = onItemClickListener
     }
 
-    fun submitList(list: List<ProductListItemUI>, onComplete: (() -> Unit)? = null) {
+    fun submitList(list: List<ProductUI>, onComplete: (() -> Unit)? = null) {
         asyncListDiffer.submitList(list) { onComplete?.invoke() }
     }
 
     private inner class ViewHolderRow(private val binding: ProductItemRowBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: ProductListItemUI) {
+        fun bind(item: ProductUI) {
             val context = binding.root.context
 
             with(binding) {
@@ -51,8 +51,7 @@ class ProductListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     .into(shapeableImageView)
 
                 textViewName.text = item.name
-                textViewUpcCode.text = context.getString(R.string.product_item_upc_code, item.barcode)
-                textViewPricePerUnit.text = context.getString(R.string.product_item_price, item.unit.name, item.price)
+                textViewBarcode.text = context.getString(R.string.text_product_item_barcode, item.barcode)
                 textViewQuantity.text = String.format(Locale.getDefault(), item.quantity.toString())
             }
 
@@ -64,7 +63,7 @@ class ProductListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private inner class ViewHolderGrid(private val binding: ProductItemGridBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: ProductListItemUI) {
+        fun bind(item: ProductUI) {
             val context = binding.root.context
 
             with(binding) {
@@ -75,8 +74,7 @@ class ProductListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     .into(shapeableImageView)
 
                 textViewName.text = item.name
-                textViewPricePerUnit.text = context.getString(R.string.product_item_price, item.unit.name, item.price)
-                textViewUpcCode.text = context.getString(R.string.product_item_upc_code, item.barcode)
+                textViewBarcode.text = context.getString(R.string.text_product_item_barcode, item.barcode)
                 textViewQuantity.text = String.format(Locale.getDefault(), item.quantity.toString())
             }
 
@@ -93,13 +91,13 @@ class ProductListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-            ProductViewType.ROW.ordinal -> {
+            ProductDisplayMode.ROW.ordinal -> {
                 ViewHolderRow(
                     ProductItemRowBinding.inflate(inflater, parent, false)
                 )
             }
 
-            ProductViewType.GRID.ordinal -> {
+            ProductDisplayMode.GRID.ordinal -> {
                 ViewHolderGrid(
                     ProductItemGridBinding.inflate(inflater, parent, false)
                 )
@@ -115,8 +113,8 @@ class ProductListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder.itemViewType) {
-            ProductViewType.ROW.ordinal -> (holder as ViewHolderRow).bind(currentList[position])
-            ProductViewType.GRID.ordinal -> (holder as ViewHolderGrid).bind(currentList[position])
+            ProductDisplayMode.ROW.ordinal -> (holder as ViewHolderRow).bind(currentList[position])
+            ProductDisplayMode.GRID.ordinal -> (holder as ViewHolderGrid).bind(currentList[position])
         }
     }
 

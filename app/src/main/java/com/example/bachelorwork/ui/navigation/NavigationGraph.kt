@@ -1,14 +1,20 @@
 package com.example.bachelorwork.ui.navigation
 
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import androidx.navigation.createGraph
 import androidx.navigation.fragment.dialog
 import androidx.navigation.fragment.fragment
+import androidx.navigation.ui.AppBarConfiguration
 import com.example.bachelorwork.ui.collectInLifecycle
 import com.example.bachelorwork.ui.fragments.home.HomeFragment
-import com.example.bachelorwork.ui.fragments.profile.ProfileFragment
+import com.example.bachelorwork.ui.fragments.more.MoreBottomSheetFragment
+import com.example.bachelorwork.ui.fragments.more.manageUsers.ManageUsersFragment
+import com.example.bachelorwork.ui.fragments.orders.OrderManageModalBottomSheetFragment
+import com.example.bachelorwork.ui.fragments.orders.OrdersFragment
+import com.example.bachelorwork.ui.fragments.users.CreateNewUserModalBottomSheetFragment
 import com.example.bachelorwork.ui.fragments.warehouse.productDetail.ProductDetailFragment
 import com.example.bachelorwork.ui.fragments.warehouse.productList.ProductListFragment
 import com.example.bachelorwork.ui.fragments.warehouse.productManage.ProductManageModalBottomSheetFragment
@@ -20,30 +26,46 @@ class NavigationGraph(
     private val navigator: Navigator,
     private val navController: NavController,
 ) {
+    private var appBarConfiguration: AppBarConfiguration? = null
+    private var drawerLayout: DrawerLayout? = null
+
+    constructor(
+        lifecycleOwner: LifecycleOwner,
+        navigator: Navigator,
+        navController: NavController,
+        appBarConfiguration: AppBarConfiguration
+    ) : this(lifecycleOwner, navigator, navController) {
+        this.appBarConfiguration = appBarConfiguration
+    }
+
+    constructor(
+        lifecycleOwner: LifecycleOwner,
+        navigator: Navigator,
+        navController: NavController,
+        drawerLayout: DrawerLayout
+    ) : this(lifecycleOwner, navigator, navController) {
+        this.drawerLayout = drawerLayout
+    }
+
     init {
-        setupWithNavController(lifecycleOwner, navigator, navController)
         createGraph()
+        setupWithNavController(lifecycleOwner, navigator, navController)
     }
 
     private fun createGraph() {
         navController.graph = navController.createGraph(
             startDestination = navigator.startDestination
         ) {
-            fragment<HomeFragment, Destination.Home> {
+            fragment<HomeFragment, Destination.Home>()
+            fragment<ProductListFragment, Destination.Warehouse>()
+            fragment<ProductDetailFragment, Destination.ProductDetail>()
+            fragment<ManageUsersFragment, Destination.ManageUsers>()
+            fragment<OrdersFragment, Destination.Orders>()
 
-            }
-            fragment<ProductListFragment, Destination.Warehouse> {
-
-            }
-            fragment<ProfileFragment, Destination.Profile> {
-
-            }
-            fragment<ProductDetailFragment, Destination.ProductDetail> {
-
-            }
-            dialog<ProductManageModalBottomSheetFragment, Destination.ProductManage> {
-
-            }
+            dialog<ProductManageModalBottomSheetFragment, Destination.ProductManage>()
+            dialog<OrderManageModalBottomSheetFragment, Destination.ManageOrder>()
+            dialog<CreateNewUserModalBottomSheetFragment, Destination.CreateNewUser>()
+            dialog<MoreBottomSheetFragment, Destination.More>()
         }
     }
 
@@ -63,17 +85,16 @@ class NavigationGraph(
                         route = action.destination,
                     ) {
                         action.navOptions(this)
-                        anim {
-                            popEnter =
-                                androidx.navigation.ui.R.anim.nav_default_pop_enter_anim
-                            popExit =
-                                androidx.navigation.ui.R.anim.nav_default_pop_exit_anim
-                            enter = androidx.navigation.ui.R.anim.nav_default_enter_anim
-                            exit = androidx.navigation.ui.R.anim.nav_default_exit_anim
-                        }
                     }
                 }
-                is NavigationAction.NavigateUp -> navController.navigateUp()
+
+                is NavigationAction.NavigateUp -> {
+                    navController.navigateUp()
+                }
+
+                NavigationAction.OpenNavigationDrawer -> {
+                    drawerLayout?.open()
+                }
             }
         }
     }

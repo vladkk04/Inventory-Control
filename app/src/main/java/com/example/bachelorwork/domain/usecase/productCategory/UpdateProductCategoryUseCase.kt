@@ -1,6 +1,6 @@
 package com.example.bachelorwork.domain.usecase.productCategory
 
-import com.example.bachelorwork.data.local.entities.ProductCategoryEntity
+import com.example.bachelorwork.data.local.entity.ProductCategoryEntity
 import com.example.bachelorwork.domain.repository.ProductCategoryRepository
 
 class UpdateProductCategoryUseCase(

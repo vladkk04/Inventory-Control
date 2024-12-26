@@ -2,7 +2,6 @@ package com.example.bachelorwork.ui.common.base
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -24,6 +23,7 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
 
     private var _binding: VB? = null
 
+    @Suppress("PropertyName")
     open val TAG: String = this::class.java.simpleName
 
     protected val binding
@@ -35,7 +35,7 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
     private val customAppBarLayout: AppBarLayout?
         get() = setupAppBarLayout()
 
-    protected open val onBackPressedDispatcher: OnBackPressedCallback
+    protected open val onBackPressedCallback: OnBackPressedCallback
         get() = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 createDiscardDialog { dismiss() }.show()
@@ -60,6 +60,7 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
         _binding = bindingInflater.invoke(inflater, container, false)
         setupViews()
         setupToolbarOnClickListeners()
+
         return binding.root
     }
 
@@ -72,8 +73,8 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onStart() {
+        super.onStart()
         setupFullScreen()
     }
 
@@ -81,21 +82,7 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
         return (super.onCreateDialog(savedInstanceState) as BottomSheetDialog).apply {
             behavior.state = STATE_EXPANDED
             behavior.isShouldRemoveExpandedCorners = true
-            this@BaseBottomSheetDialogFragment.onBackPressedDispatcher.let {
-                onBackPressedDispatcher.addCallback(this, it)
-            }
-        }
-    }
-
-    override fun show(manager: FragmentManager, tag: String?) {
-        if (!isFragmentAlreadyCreated(manager, tag ?: TAG)) {
-            super.show(manager, tag ?: TAG)
-        }
-    }
-
-    override fun showNow(manager: FragmentManager, tag: String?) {
-        if (!isFragmentAlreadyCreated(manager, tag ?: TAG)) {
-            super.showNow(manager, tag ?: TAG)
+            onBackPressedDispatcher.addCallback(this@BaseBottomSheetDialogFragment, onBackPressedCallback)
         }
     }
 
@@ -106,15 +93,22 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
 
     private fun setupFullScreen() {
         /*Bottom Sheet Container*/
-        (requireView().parent as? ViewGroup)?.let {
-            it.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+        (requireView() as? ViewGroup)?.let {
+            it.layoutParams = it.layoutParams.apply {
+                width = ViewGroup.LayoutParams.MATCH_PARENT
+                height = ViewGroup.LayoutParams.MATCH_PARENT
+            }
+           // Log.d("debug", it.toString())
+            //it.addView(customToolbar)
         }
 
-        /*dialog?.window?.apply {
-            setFlags(
-                WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-            )
+
+
+
+
+       /* dialog?.window?.apply {
+
+            //setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         }*/
     }
 

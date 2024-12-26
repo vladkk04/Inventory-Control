@@ -18,6 +18,10 @@ class NavigatorImpl(
         _navigate.send(NavigationAction.Navigate(destination, navOptions))
     }
 
+    override suspend fun openNavigationDrawer() {
+        _navigate.send(NavigationAction.OpenNavigationDrawer)
+    }
+
     override suspend fun navigateUp() {
         _navigate.send(NavigationAction.NavigateUp)
     }
