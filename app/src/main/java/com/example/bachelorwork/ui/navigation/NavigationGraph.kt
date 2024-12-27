@@ -13,11 +13,12 @@ import com.example.bachelorwork.ui.fragments.home.HomeFragment
 import com.example.bachelorwork.ui.fragments.more.MoreBottomSheetFragment
 import com.example.bachelorwork.ui.fragments.more.manageUsers.ManageUsersFragment
 import com.example.bachelorwork.ui.fragments.orders.OrderManageModalBottomSheetFragment
-import com.example.bachelorwork.ui.fragments.orders.OrdersFragment
+import com.example.bachelorwork.ui.fragments.orders.ManageOrdersFragment
 import com.example.bachelorwork.ui.fragments.users.CreateNewUserModalBottomSheetFragment
 import com.example.bachelorwork.ui.fragments.warehouse.productDetail.ProductDetailFragment
 import com.example.bachelorwork.ui.fragments.warehouse.productList.ProductListFragment
-import com.example.bachelorwork.ui.fragments.warehouse.productManage.ProductManageModalBottomSheetFragment
+import com.example.bachelorwork.ui.fragments.warehouse.productCreate.ProductCreateModalBottomSheetFragment
+import com.example.bachelorwork.ui.fragments.warehouse.productEdit.ProductEditModalBottomSheetFragment
 import kotlinx.coroutines.Dispatchers
 
 
@@ -60,10 +61,11 @@ class NavigationGraph(
             fragment<ProductListFragment, Destination.Warehouse>()
             fragment<ProductDetailFragment, Destination.ProductDetail>()
             fragment<ManageUsersFragment, Destination.ManageUsers>()
-            fragment<OrdersFragment, Destination.Orders>()
+            fragment<ManageOrdersFragment, Destination.ManageOrders>()
 
-            dialog<ProductManageModalBottomSheetFragment, Destination.ProductManage>()
-            dialog<OrderManageModalBottomSheetFragment, Destination.ManageOrder>()
+            dialog<ProductCreateModalBottomSheetFragment, Destination.CreateProduct>()
+            dialog<ProductEditModalBottomSheetFragment, Destination.EditProduct>()
+            dialog<OrderManageModalBottomSheetFragment, Destination.ManageOrders>()
             dialog<CreateNewUserModalBottomSheetFragment, Destination.CreateNewUser>()
             dialog<MoreBottomSheetFragment, Destination.More>()
         }

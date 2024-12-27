@@ -1,6 +1,5 @@
-package com.example.bachelorwork.ui.fragments.warehouse.productManage
+package com.example.bachelorwork.ui.fragments.warehouse.productCreate
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bachelorwork.data.local.entity.ProductEntity
@@ -10,12 +9,12 @@ import com.example.bachelorwork.domain.usecase.barcodeScanner.BarcodeScannerUseC
 import com.example.bachelorwork.domain.usecase.inputFieldValidators.ValidatorNotEmptyUseCase
 import com.example.bachelorwork.domain.usecase.product.ProductUseCases
 import com.example.bachelorwork.domain.usecase.productCategory.ProductCategoryUseCases
-import com.example.bachelorwork.ui.model.productManage.ProductCreateFormEvent
-import com.example.bachelorwork.ui.model.productManage.ProductCreateFormState
-import com.example.bachelorwork.ui.model.productManage.ProductManageUIState
-import com.example.bachelorwork.ui.navigation.Destination
+import com.example.bachelorwork.ui.model.productManage.ProductManageFormEvent
+import com.example.bachelorwork.ui.model.productManage.ProductManageFormState
+import com.example.bachelorwork.ui.model.productManage.ProductCreateUIState
 import com.example.bachelorwork.ui.navigation.Navigator
 import com.example.bachelorwork.ui.utils.extensions.handleResult
+import com.example.bachelorwork.ui.utils.snackbar.SnackbarAction
 import com.example.bachelorwork.ui.utils.snackbar.SnackbarController.sendSnackbarEvent
 import com.example.bachelorwork.ui.utils.snackbar.SnackbarEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,55 +26,21 @@ import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
-class ProductManageViewModel @Inject constructor(
+class ProductCreateViewModel @Inject constructor(
     private val barcodeScannerUseCase: BarcodeScannerUseCase,
     private val validatorNotEmptyUseCase: ValidatorNotEmptyUseCase,
     private val productUseCase: ProductUseCases,
-    private val categoryUseCase: ProductCategoryUseCases,
     private val navigator: Navigator,
-    private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    private val productManageRoute = Destination.from<Destination.ProductManage>(savedStateHandle)
 
-    private val _uiState = MutableStateFlow(ProductManageUIState())
+    private val _uiState = MutableStateFlow(ProductCreateUIState())
     val uiState get() = _uiState.asStateFlow()
 
-    private val _uiFormState = MutableStateFlow(ProductCreateFormState())
+    private val _uiFormState = MutableStateFlow(ProductManageFormState())
     val uiFormState get() = _uiFormState.asStateFlow()
 
-    init {
-        fetchProduct()
-        getCategories()
-    }
 
-    private fun getCategories() {
-        handleResult(categoryUseCase.getCategories(), onSuccess = {
-            _uiState.update { state -> state.copy(categories = it) }
-        })
-    }
-
-    private fun fetchProduct() {
-        val productId = productManageRoute.id
-        if (productId != null) {
-            val result = productUseCase.getProducts.getProductById(productId)
-            handleResult(result, onSuccess = {
-                _uiState.update { state ->
-                    state.copy(
-                        titleToolbar = "Edit Product",
-                        product = it
-                    )
-                }
-            })
-        } else {
-            _uiState.update { state ->
-                state.copy(
-                    titleToolbar = "Create Product"
-                )
-            }
-        }
-    }
-
-    private suspend fun createProduct() =
+    private suspend fun createProductRoom() =
         productUseCase.createProduct(
             ProductEntity(
                 categoryId = uiFormState.value.category.id,
@@ -83,60 +48,30 @@ class ProductManageViewModel @Inject constructor(
                 barcode = uiFormState.value.barcode,
                 quantity = uiFormState.value.quantity,
                 productUnit = uiFormState.value.productUnit,
-                datePurchase = Date(),
                 minStockLevel = uiFormState.value.minStockLevel.toInt(),
                 tags = uiFormState.value.tags,
             )
         )
 
-    private suspend fun updateProduct(id: Int) =
-        productUseCase.updateProduct(
-            ProductEntity(
-                id = id,
-                categoryId = uiFormState.value.category.id,
-                name = uiFormState.value.name,
-                barcode = uiFormState.value.barcode,
-                quantity = uiFormState.value.quantity,
-                productUnit = uiFormState.value.productUnit,
-                datePurchase = Date(),
-                minStockLevel = uiFormState.value.minStockLevel.toInt(),
-                tags = uiFormState.value.tags,
-            )
-        )
-
-    fun modifyProduct() = viewModelScope.launch {
+    fun createProduct() = viewModelScope.launch {
         if (validateInputs()) return@launch
 
-        val productId = productManageRoute.id
-
-        val result = if (productId != null) {
-            updateProduct(productId)
-        } else {
-            createProduct()
-        }
+        val result = createProductRoom()
 
         handleResult(result, onSuccess = {
-            sendSnackbarEvent(SnackbarEvent("Product saved successfully"))
+            sendSnackbarEvent(
+                event = SnackbarEvent(
+                    "Product created successfully",
+                    action = SnackbarAction("show") {
+                        // Navigate to product
+                    }
+                )
+            )
         }, onFailure = {
             sendSnackbarEvent(SnackbarEvent(it.message.toString()))
         })
 
         navigator.navigateUp()
-    }
-
-    fun createCategory(category: ProductCategory) = viewModelScope.launch {
-        val result = categoryUseCase.createCategory(category.toEntity())
-        handleResult(result)
-    }
-
-    fun updateCategory(category: ProductCategory) = viewModelScope.launch {
-        val result = categoryUseCase.updateCategory(category.toEntity())
-        handleResult(result)
-    }
-
-    fun deleteCategory(category: ProductCategory) = viewModelScope.launch {
-        val result = categoryUseCase.deleteCategory(category.toEntity())
-        handleResult(result)
     }
 
     fun increaseQuantity() {
@@ -149,32 +84,32 @@ class ProductManageViewModel @Inject constructor(
 
     fun startScanBarcode() {
         handleResult(barcodeScannerUseCase(), onSuccess = { barcode ->
-            _uiState.update { it.copy(product = it.product?.copy(barcode = barcode.displayValue.toString())) }
+            _uiState.update { it.copy(barcode = barcode.displayValue.toString()) }
         }, onFailure = {
             sendSnackbarEvent(SnackbarEvent(it.message.toString()))
         })
     }
 
-    fun onEvent(event: ProductCreateFormEvent) {
+    fun onEvent(event: ProductManageFormEvent) {
         when (event) {
-            is ProductCreateFormEvent.NameChanged -> {
+            is ProductManageFormEvent.NameChanged -> {
                 _uiFormState.update { it.copy(name = event.name, nameError = null) }
             }
 
-            is ProductCreateFormEvent.BarcodeChanged -> {
+            is ProductManageFormEvent.BarcodeChanged -> {
                 _uiFormState.update { it.copy(barcode = event.barcode, barcodeError = null) }
             }
 
-            is ProductCreateFormEvent.QuantityChanged -> {
+            is ProductManageFormEvent.QuantityChanged -> {
                 event.quantity.toIntOrNull()
                     ?.let { quantity -> _uiFormState.update { it.copy(quantity = quantity) } }
             }
 
-            is ProductCreateFormEvent.UnitChanged -> {
+            is ProductManageFormEvent.UnitChanged -> {
                 _uiFormState.update { it.copy(productUnit = event.productUnit) }
             }
 
-            is ProductCreateFormEvent.CategoryChanged -> {
+            is ProductManageFormEvent.CategoryChanged -> {
                 _uiFormState.update {
                     it.copy(
                         category = event.category,
@@ -183,7 +118,7 @@ class ProductManageViewModel @Inject constructor(
                 }
             }
 
-            is ProductCreateFormEvent.MinStockLevelChanged -> {
+            is ProductManageFormEvent.MinStockLevelChanged -> {
                 _uiFormState.update {
                     it.copy(
                         minStockLevel = event.minStockLevel,
@@ -192,11 +127,11 @@ class ProductManageViewModel @Inject constructor(
                 }
             }
 
-            is ProductCreateFormEvent.TagsChanged -> {
+            is ProductManageFormEvent.TagsChanged -> {
                 _uiFormState.update { it.copy(tags = event.tags) }
             }
 
-            is ProductCreateFormEvent.DescriptionChanged -> {
+            is ProductManageFormEvent.DescriptionChanged -> {
                 _uiFormState.update { it.copy(description = event.description) }
             }
         }

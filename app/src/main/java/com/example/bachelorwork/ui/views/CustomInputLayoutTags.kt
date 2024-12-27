@@ -2,19 +2,22 @@ package com.example.bachelorwork.ui.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
+import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
 import com.example.bachelorwork.databinding.CustomInputLayoutTagsBinding
 import com.example.bachelorwork.domain.model.product.ProductTag
 import com.google.android.material.chip.Chip
-
+import com.google.android.material.textfield.TextInputLayout
+// TODO Refactoring Code for Input layout
 class CustomInputLayoutTags @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
-) : FrameLayout(context, attrs), TextView.OnEditorActionListener {
+) : TextInputLayout(context, attrs), TextView.OnEditorActionListener {
 
     private var binding: CustomInputLayoutTagsBinding =
         CustomInputLayoutTagsBinding.inflate(LayoutInflater.from(context), this, true)

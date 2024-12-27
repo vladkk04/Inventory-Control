@@ -144,32 +144,12 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_input_layout_category"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/margin_vertical_between_items"
-                app:helperText="@string/helper_text_required"
-                app:helperTextEnabled="true"
-                app:startIconDrawable="@drawable/ic_category">
 
-                <AutoCompleteTextView
-                    android:id="@+id/autoComplete_textView_category"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:dropDownHeight="200dp"
-                    android:focusable="false"
-                    android:hint="@string/hint_category"
-                    android:inputType="none" />
-
-            </com.google.android.material.textfield.TextInputLayout>
 
             <com.example.bachelorwork.ui.views.CustomInputLayoutTags
                 android:id="@+id/custom_input_layout_tags"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/text_input_layout_description"

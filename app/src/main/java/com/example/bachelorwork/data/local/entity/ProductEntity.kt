@@ -34,7 +34,6 @@ data class ProductEntity(
     val barcode: String,
     val quantity: Int,
     val productUnit: ProductUnit,
-    val datePurchase: Date,
     val minStockLevel: Int,
     val tags: List<ProductTag> = emptyList(),
     val description: String = "",

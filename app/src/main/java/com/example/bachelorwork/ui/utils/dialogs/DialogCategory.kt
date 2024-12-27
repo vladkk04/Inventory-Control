@@ -1,5 +1,6 @@
 package com.example.bachelorwork.ui.utils.dialogs
 
+import android.content.Context
 import android.content.DialogInterface
 import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
@@ -14,11 +15,12 @@ enum class CategoryDialogType {
     CREATE
 }
 
-fun Fragment.createCategoryDialog(
+fun createCategoryDialog(
+    context: Context,
     category: ProductCategory? = null,
     type: CategoryDialogType,
     onPositiveButtonClick: (category: ProductCategory) -> Unit = {},
-) = object : BaseDialog(requireContext()) {
+) = object : BaseDialog(context) {
     private val binding = CustomDialogViewContentCreateCategoryBinding.inflate(LayoutInflater.from(context))
 
     private val defaultConfig = DialogConfig(

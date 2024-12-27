@@ -92,6 +92,16 @@
         android:orientation="vertical">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            style="?attr/floatingActionButtonSmallStyle"
+            android:id="@+id/fab_scroll_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/content_description_text_add_product_fab_button"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/ic_add" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_create_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
