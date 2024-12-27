@@ -1,4 +1,4 @@
-package com.example.bachelorwork.ui.fragments.warehouse.productManage
+package com.example.bachelorwork.ui.fragments.warehouse.productCreate
 
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -13,9 +13,9 @@ import com.example.bachelorwork.domain.model.product.ProductUnit
 import com.example.bachelorwork.ui.collectInLifecycle
 import com.example.bachelorwork.ui.common.adapters.CategoryArrayAdapter
 import com.example.bachelorwork.ui.common.base.BaseBottomSheetDialogFragment
-import com.example.bachelorwork.ui.model.productManage.ProductCreateFormEvent
-import com.example.bachelorwork.ui.model.productManage.ProductCreateFormState
-import com.example.bachelorwork.ui.model.productManage.ProductManageUIState
+import com.example.bachelorwork.ui.model.productManage.ProductManageFormEvent
+import com.example.bachelorwork.ui.model.productManage.ProductManageFormState
+import com.example.bachelorwork.ui.model.productManage.ProductCreateUIState
 import com.example.bachelorwork.ui.utils.dialogs.CategoryDialogType
 import com.example.bachelorwork.ui.utils.dialogs.createCategoryDialog
 import com.example.bachelorwork.ui.utils.dialogs.createDeleteDialog
@@ -28,20 +28,18 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
 @AndroidEntryPoint
-class ProductManageModalBottomSheetFragment(
-) : BaseBottomSheetDialogFragment<FragmentModalBottomSheetProductManageBinding>() {
+class ProductCreateModalBottomSheetFragment
+    : BaseBottomSheetDialogFragment<FragmentModalBottomSheetProductManageBinding>() {
 
-    private val viewModel: ProductManageViewModel by viewModels()
+    private val viewModel: ProductCreateViewModel by viewModels()
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentModalBottomSheetProductManageBinding
         get() = FragmentModalBottomSheetProductManageBinding::inflate
 
-    override fun setupCustomToolbar(): MaterialToolbar = binding.toolbarManageProduct
-
     override fun onMenuItemToolbarClickListener(menuItem: MenuItem): Boolean {
         return when (menuItem.itemId) {
-            R.id.product_manage -> {
-                viewModel.modifyProduct()
+            R.id.product_save -> {
+                viewModel.createProduct()
                 true
             }
 
@@ -77,7 +75,7 @@ class ProductManageModalBottomSheetFragment(
             maxValue = ProductUnit.entries.size - 1
             displayedValues = ProductUnit.entries.namesTyped()
         }.setOnScrollListener { view, _ ->
-            viewModel.onEvent(ProductCreateFormEvent.UnitChanged(ProductUnit.entries[view.value]))
+            viewModel.onEvent(ProductManageFormEvent.UnitChanged(ProductUnit.entries[view.value]))
         }
     }
 
@@ -107,98 +105,51 @@ class ProductManageModalBottomSheetFragment(
 
     private fun setupInputEditTextChangeListeners() {
         with(binding) {
-            setupTextChangeListener(editTextName, ProductCreateFormEvent::NameChanged)
-            setupTextChangeListener(editTextBarcode, ProductCreateFormEvent::BarcodeChanged)
-            setupTextChangeListener(editTextQuantity, ProductCreateFormEvent::QuantityChanged)
-            setupTextChangeListener(editTextMinStockLevel, ProductCreateFormEvent::MinStockLevelChanged)
-            setupTextChangeListener(editTextDescription, ProductCreateFormEvent::DescriptionChanged)
+            setupTextChangeListener(editTextName, ProductManageFormEvent::NameChanged)
+            setupTextChangeListener(editTextBarcode, ProductManageFormEvent::BarcodeChanged)
+            setupTextChangeListener(editTextQuantity, ProductManageFormEvent::QuantityChanged)
+            setupTextChangeListener(
+                editTextMinStockLevel,
+                ProductManageFormEvent::MinStockLevelChanged
+            )
+            setupTextChangeListener(editTextDescription, ProductManageFormEvent::DescriptionChanged)
 
             binding.customInputLayoutTags.onTextChangeListener { tags ->
-                viewModel.onEvent(ProductCreateFormEvent.TagsChanged(tags))
+                viewModel.onEvent(ProductManageFormEvent.TagsChanged(tags))
             }
         }
     }
 
     private fun setupTextChangeListener(
         editText: EditText,
-        event: (String) -> ProductCreateFormEvent,
+        event: (String) -> ProductManageFormEvent,
     ) {
         editText.doAfterTextChanged {
             viewModel.onEvent(event.invoke(it.toString()))
         }
     }
 
-    private fun setupAutoCompleteTextViewCategory(categories: List<ProductCategory>) {
-        (binding.autoCompleteTextViewCategory as? MaterialAutoCompleteTextView)?.setAdapter(
-            setupCategoryAdapter(categories)
-        )
+    private fun updateUIState(uiState: ProductCreateUIState) {
+        //setupAutoCompleteTextViewCategory(uiState.categories)
     }
 
-    private fun setupCategoryAdapter(categories: List<ProductCategory>): CategoryArrayAdapter {
-        return CategoryArrayAdapter(
-            requireContext(),
-            categories.toMutableList()
-        ).apply {
-            setOnClickItemListener { item ->
-                viewModel.onEvent(ProductCreateFormEvent.CategoryChanged(item))
-                binding.autoCompleteTextViewCategory.dismissDropDown()
-            }
-            setOnCreateNewCategory {
-                createCategoryDialog(type = CategoryDialogType.CREATE) {
-                    viewModel.createCategory(it)
-                }.show()
-            }
-            setOnEditClickListener { item ->
-                createCategoryDialog(item, CategoryDialogType.EDIT) {
-                    viewModel.updateCategory(it)
-                }.show()
-            }
-            setOnDeleteClickListener { item ->
-                createDeleteDialog(requireContext(), "category \"${item.name}\"") {
-                    viewModel.deleteCategory(item)
-                }.show()
-            }
-        }
-    }
-
-    private fun updateUIState(uiState: ProductManageUIState) {
-        setupAutoCompleteTextViewCategory(uiState.categories)
-
-        if(uiState.product != null) {
-            binding.editTextName.setText(uiState.product.name)
-            binding.editTextBarcode.setText(uiState.product.barcode)
-            binding.editTextMinStockLevel.setText(uiState.product.minStockLevel.toString())
-            binding.editTextQuantity.setText(String.format(Locale.getDefault(), "%d", uiState.product.quantity))
-            viewModel.onEvent(ProductCreateFormEvent.CategoryChanged(uiState.product.category))
-
-            binding.autoCompleteTextViewCategory.setText(uiState.product.category.name, false)
-            binding.editTextDescription.setText(uiState.product.description)
-            binding.customInputLayoutTags.addTags(*uiState.product.tags.toTypedArray())
-            binding.editTextBarcode.setText(uiState.product.barcode)
-        }
-
-        binding.toolbarManageProduct.title = uiState.titleToolbar
-
-    }
-
-    private fun updateFormFieldUIState(uiStateForm: ProductCreateFormState) {
+    private fun updateFormFieldUIState(uiStateForm: ProductManageFormState) {
         updateFormFieldErrors(uiStateForm)
         updateUIElementsFromState(uiStateForm)
     }
 
-    private fun updateUIElementsFromState(uiStateForm: ProductCreateFormState) {
+    private fun updateUIElementsFromState(uiStateForm: ProductManageFormState) {
         binding.editTextQuantity.apply {
             setText(String.format(Locale.getDefault(), "%d", uiStateForm.quantity))
             setSelection(uiStateForm.quantity.toString().length)
         }
-        binding.autoCompleteTextViewCategory.setText(uiStateForm.category.name, false)
     }
 
-    private fun updateFormFieldErrors(uiStateForm: ProductCreateFormState) {
+    private fun updateFormFieldErrors(uiStateForm: ProductManageFormState) {
         binding.textInputLayoutName.error = uiStateForm.nameError
         binding.textInputLayoutBarcode.error = uiStateForm.barcodeError
         binding.textInputLayoutMinStockLevel.error = uiStateForm.minStockLevelError
-        binding.textInputLayoutCategory.error = uiStateForm.categoryError
+        //binding.textInputLayoutCategory.error = uiStateForm.categoryError
     }
 
 }

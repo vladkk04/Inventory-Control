@@ -19,6 +19,7 @@ import com.example.bachelorwork.ui.model.productList.ProductListUIState
 import com.example.bachelorwork.ui.model.productList.ProductSearchUIState
 import com.example.bachelorwork.ui.utils.StateListDrawableFactory
 import com.example.bachelorwork.ui.utils.menu.createPopupMenu
+import com.example.bachelorwork.ui.utils.recyclerview.UpwardScrollButtonListener
 import com.example.bachelorwork.ui.utils.screen.InsetHandler
 import com.google.android.material.search.SearchView
 import dagger.hilt.android.AndroidEntryPoint
@@ -122,13 +123,13 @@ class ProductListFragment : Fragment() {
             itemAnimator = null
             setHasFixedSize(true)
             setItemViewCacheSize(10)
-            /*addOnScrollListener(
+            addOnScrollListener(
                 UpwardScrollButtonListener(
                     requireContext(),
-                    binding.fabScrollUpProducts,
+                    binding.fabScrollUp,
                     gridLayoutManager
                 )
-            )*/
+            )
         }
 
         listAdapter.setOnItemClickListener { position ->

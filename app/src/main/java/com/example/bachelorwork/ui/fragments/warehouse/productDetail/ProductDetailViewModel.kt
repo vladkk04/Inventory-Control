@@ -42,7 +42,7 @@ class ProductDetailViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), _uiState.value)
 
     fun editProduct() = viewModelScope.launch {
-        navigator.navigate(Destination.ProductManage(productRoute.id))
+        navigator.navigate(Destination.EditProduct(productRoute.id))
     }
 
     fun deleteProduct() = viewModelScope.launch {

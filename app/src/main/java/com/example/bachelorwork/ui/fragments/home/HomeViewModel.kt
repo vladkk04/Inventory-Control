@@ -13,8 +13,8 @@ class HomeViewModel @Inject constructor(
     private val navigator: Navigator
 ): ViewModel() {
 
-    fun navigateToCreateItem() = viewModelScope.launch {
-        navigator.navigate(Destination.ProductManage())
+    fun navigateToCreateProduct() = viewModelScope.launch {
+        navigator.navigate(Destination.CreateProduct)
     }
 
     fun openNavigationDrawer() = viewModelScope.launch {

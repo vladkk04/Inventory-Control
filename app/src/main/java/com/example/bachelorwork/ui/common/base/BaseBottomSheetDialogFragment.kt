@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.FragmentManager
 import androidx.viewbinding.ViewBinding
 import com.example.bachelorwork.ui.utils.dialogs.createDiscardDialog
@@ -15,6 +16,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.bottomsheet.BottomSheetDragHandleView
 
 
 abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDialogFragment() {
@@ -23,17 +25,14 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
 
     private var _binding: VB? = null
 
-    @Suppress("PropertyName")
-    open val TAG: String = this::class.java.simpleName
-
     protected val binding
         get() = requireNotNull(_binding)
 
     private val customToolbar: MaterialToolbar?
         get() = setupCustomToolbar()
 
-    private val customAppBarLayout: AppBarLayout?
-        get() = setupAppBarLayout()
+    private val bottomSheetDragHandleView: BottomSheetDragHandleView?
+        get() = setupCustomSheetDragHandleView()
 
     protected open val onBackPressedCallback: OnBackPressedCallback
         get() = object : OnBackPressedCallback(true) {
@@ -42,13 +41,15 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
             }
         }
 
+    protected open val isAddDragHandleView = true
+
     protected open fun onMenuItemToolbarClickListener(menuItem: MenuItem): Boolean = false
 
     protected open fun onNavigationIconToolbarClickListener() = Unit
 
-    protected open fun setupCustomToolbar(): MaterialToolbar? = null
+    protected open fun setupCustomSheetDragHandleView(): BottomSheetDragHandleView? = null
 
-    protected open fun setupAppBarLayout(): AppBarLayout? = null
+    protected open fun setupCustomToolbar(): MaterialToolbar? = null
 
     protected open fun setupViews(): Unit = Unit
 
@@ -60,7 +61,7 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
         _binding = bindingInflater.invoke(inflater, container, false)
         setupViews()
         setupToolbarOnClickListeners()
-
+        //setupBottomSheetDragHandleView()
         return binding.root
     }
 
@@ -73,6 +74,21 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
         }
     }
 
+    private fun setupBottomSheetDragHandleView() {
+        if (!isAddDragHandleView) return
+
+        bottomSheetDragHandleView?.let {
+            return addBottomSheetDragHandler(it)
+        }
+
+
+        if (bottomSheetDragHandleView == null) {
+            addBottomSheetDragHandler(createBottomSheetDragHandler())
+        } else {
+            addBottomSheetDragHandler(bottomSheetDragHandleView!!)
+        }
+    }
+
     override fun onStart() {
         super.onStart()
         setupFullScreen()
@@ -82,7 +98,10 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
         return (super.onCreateDialog(savedInstanceState) as BottomSheetDialog).apply {
             behavior.state = STATE_EXPANDED
             behavior.isShouldRemoveExpandedCorners = true
-            onBackPressedDispatcher.addCallback(this@BaseBottomSheetDialogFragment, onBackPressedCallback)
+            onBackPressedDispatcher.addCallback(
+                this@BaseBottomSheetDialogFragment,
+                onBackPressedCallback
+            )
         }
     }
 
@@ -98,18 +117,28 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
                 width = ViewGroup.LayoutParams.MATCH_PARENT
                 height = ViewGroup.LayoutParams.MATCH_PARENT
             }
-           // Log.d("debug", it.toString())
+            // Log.d("debug", it.toString())
             //it.addView(customToolbar)
         }
 
 
+        /* dialog?.window?.apply {
 
+             //setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+         }*/
+    }
 
+    private fun addBottomSheetDragHandler(dragHandleView: BottomSheetDragHandleView) {
+       /* (requireView() as? ViewGroup)?.addView(dragHandleView,0)*/
+    }
 
-       /* dialog?.window?.apply {
-
-            //setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-        }*/
+    private fun createBottomSheetDragHandler(): BottomSheetDragHandleView {
+        return BottomSheetDragHandleView(binding.root.context).apply {
+            updateLayoutParams {
+                this.width = ViewGroup.LayoutParams.MATCH_PARENT
+                this.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            }
+        }
     }
 
     override fun onDestroyView() {

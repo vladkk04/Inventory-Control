@@ -48,7 +48,7 @@ class HomeFragment : Fragment() {
     private fun setupCustomFloatingMenu() {
         binding.customFloatingMenu.apply {
             setOnCreateItemClickListener {
-                viewModel.navigateToCreateItem()
+                viewModel.navigateToCreateProduct()
             }
             setOnCreateOrderClickListener {
 

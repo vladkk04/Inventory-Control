@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.textfield.TextInputLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/text_input_layout_category"
+    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:helperText="@string/helper_text_required"
+    app:helperTextEnabled="true"
+    app:startIconDrawable="@drawable/ic_category">
+
+    <AutoCompleteTextView
+        android:id="@+id/autoComplete_textView_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:dropDownHeight="200dp"
+        android:focusable="false"
+        android:hint="@string/hint_category"
+        android:inputType="none" />
+
+</com.google.android.material.textfield.TextInputLayout>

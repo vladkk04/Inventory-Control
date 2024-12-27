@@ -99,7 +99,7 @@ class ProductListViewModel @Inject constructor(
     }
 
     fun navigateToCreateItem() = viewModelScope.launch {
-        navigator.navigate(Destination.ProductManage()) {
+        navigator.navigate(Destination.CreateProduct) {
             launchSingleTop = true
         }
     }
