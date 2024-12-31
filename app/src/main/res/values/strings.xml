@@ -26,7 +26,9 @@
     <string name="hint_date">Date purchase*</string>
     <string name="hint_min_stock_level">Minimal Stock Level*</string>
     <string name="hint_quantity">Quantity</string>
+    <string name="hint_rate">Rate</string>
     <string name="hint_description">Description</string>
+    <string name="hint_comment">Comment</string>
     <string name="hint_category">Category</string>
     <string name="hint_new_category_name">Name category</string>
     <string name="hint_tags">Tags</string>
@@ -39,10 +41,12 @@
     <string name="text_product_item_barcode">Barcode: %1$s</string>
     <string name="text_product_item_price">Price per %1$s: %2$.2f € </string>
     <string name="text_product_item_text_pcs">pcs</string>
-    <string name="text_product_item_pcs">%1$d pcs</string>
+    <string name="text_product_item_pcs">x%1$d</string>
+
+    <string name="toolbar_title_order_id"># %1$s</string>
 
 
-    <string name="search_bar_hint_products">Enter text to search</string>
+    <string name="hint_search_bar_products">Enter text to search product</string>
     <string name="content_description_text_add_product_fab_button">Add new product</string>
 
 
@@ -72,5 +76,8 @@
     <string name="text_delete_item">Delete %1$s</string>
     <string name="text_delete_item_confirm">Are you sure you want to delete %1$s? This action cannot be undone.</string>
     <string name="text_create_new_user">Create new user</string>
+    <string name="title_hide">Hide</string>
+
+    <string name="text_add_product">Add product</string>
 
 </resources>

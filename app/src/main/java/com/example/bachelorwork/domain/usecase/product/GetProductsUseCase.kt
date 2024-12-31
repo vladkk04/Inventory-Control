@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.map
 class GetProductsUseCase(
     private val productRepository: ProductRepository
 ) {
-    fun getProducts(productSortOptions: ProductSortOptions): Flow<Result<List<Product>>> {
+    fun getProducts(productSortOptions: ProductSortOptions = ProductSortOptions()): Flow<Result<List<Product>>> {
         return productRepository.getProductsPojo().map { products ->
             val toProducts = products.map { it.toProduct() }
             runCatching { sortProductsByOrder(toProducts, productSortOptions) }

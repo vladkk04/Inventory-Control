@@ -1,4 +1,4 @@
-package com.example.bachelorwork.ui.constant
+package com.example.bachelorwork.ui.permission
 
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.READ_MEDIA_IMAGES

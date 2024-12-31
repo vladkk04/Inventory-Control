@@ -25,6 +25,7 @@ room = "2.6.1"
 ksp = "1.9.0-1.0.12"
 serialization = "1.8.20"
 serialization-json = "1.6.0"
+element-adapter = "0.7"
 
 [libraries]
 # AndroidX Core Libraries
@@ -66,6 +67,9 @@ gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson"}
 
 #Serialization
 serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization-json"}
+
+#Simple Recycler View Adapter
+element-adapter =  { group = "com.elveum", name = "element-adapter", version.ref = "element-adapter"}
 
 #Tests
 junit = { group = "junit", name = "junit", version.ref = "junit" }

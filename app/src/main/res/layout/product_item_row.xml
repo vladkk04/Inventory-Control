@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/margin_medium"
-    android:paddingHorizontal="@dimen/padding_small">
+    android:paddingBottom="@dimen/margin_medium">
 
     <com.google.android.material.card.MaterialCardView
         style="@style/Widget.Material3.CardView.Filled"

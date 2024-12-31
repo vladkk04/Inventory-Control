@@ -140,12 +140,14 @@
         <com.example.bachelorwork.ui.views.CustomInputLayoutCategories
             android:id="@+id/custom_input_layout_categories"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_vertical_between_items" />
 
         <com.example.bachelorwork.ui.views.CustomInputLayoutTags
             android:id="@+id/custom_input_layout_tags"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_vertical_between_items" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/text_input_layout_description"
@@ -153,9 +155,7 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/margin_vertical_between_items"
             android:hint="@string/hint_description"
-            app:endIconMode="clear_text"
-            app:helperText="@string/helper_text_optional"
-            app:helperTextEnabled="true">
+            app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_text_description"
@@ -168,29 +168,3 @@
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>
-
-<!--<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/dd"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar_layout_manage_product"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar_manage_product"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:menu="@menu/bottom_sheet_modify_product_menu"
-            app:navigationIcon="@drawable/ic_close"
-            tools:title="New product" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>-->

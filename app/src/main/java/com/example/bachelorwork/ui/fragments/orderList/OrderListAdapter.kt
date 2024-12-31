@@ -1,6 +1,5 @@
-package com.example.bachelorwork.ui.fragments.orders
+package com.example.bachelorwork.ui.fragments.orderList
 
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +11,17 @@ import com.example.bachelorwork.databinding.OrderItemOuterBinding
 import com.example.bachelorwork.domain.model.order.Order
 import com.example.bachelorwork.ui.utils.StateListDrawableFactory
 
-class OrdersAdapter : RecyclerView.Adapter<OrdersAdapter.ViewHolder>() {
+
+
+class OrderListAdapter: RecyclerView.Adapter<OrderListAdapter.ViewHolder>() {
 
     private val asyncListDiffer = AsyncListDiffer(this, OrdersDiffUtilCallbacks)
+
+    private var onItemClickListener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        onItemClickListener = listener
+    }
 
     fun submitList(list: List<Order>) {
         if (list.isEmpty()) return
@@ -24,6 +31,12 @@ class OrdersAdapter : RecyclerView.Adapter<OrdersAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: OrderItemOuterBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Order) {
+            binding.root.setOnClickListener {
+                onItemClickListener?.onClick(2)
+            }
+
+            binding.recyclerViewSubitems.visibility = View.GONE
+
             binding.textViewOrderId.text =
                 binding.root.context.getString(R.string.text_order_id, item.id)
             binding.textViewOrderedDate.text =
@@ -42,21 +55,12 @@ class OrdersAdapter : RecyclerView.Adapter<OrdersAdapter.ViewHolder>() {
                         if (isChecked) View.VISIBLE else View.GONE
                 }
             }
-            val params = binding.recyclerViewSubitems.layoutParams
-
-            params.height = if (item.items.size > 4) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                200F,
-                binding.root.context.resources.displayMetrics
-            ).toInt() else ViewGroup.LayoutParams.WRAP_CONTENT
 
             binding.recyclerViewSubitems.apply {
-                setHasFixedSize(true)
-                setRecycledViewPool(RecyclerView.RecycledViewPool())
                 adapter = OrderSubItemAdapter().apply {
                     submitList(item.items)
                 }
-                layoutParams = params
+                setHasFixedSize(true)
                 layoutManager = LinearLayoutManager(binding.root.context)
             }
         }
@@ -72,5 +76,9 @@ class OrdersAdapter : RecyclerView.Adapter<OrdersAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(asyncListDiffer.currentList[position])
+    }
+
+    fun interface OnItemClickListener {
+        fun onClick(id: Int)
     }
 }

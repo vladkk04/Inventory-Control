@@ -27,7 +27,7 @@ class CategoriesViewModel @Inject constructor(
         getCategories()
     }
 
-    fun getCategories() {
+    private fun getCategories() {
         val result = categoryUseCase.getCategories()
 
         handleResult(result, onSuccess = { categories ->

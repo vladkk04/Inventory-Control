@@ -1,17 +1,15 @@
 package com.example.bachelorwork.ui.fragments.warehouse.productCreate
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bachelorwork.data.local.entity.ProductEntity
-import com.example.bachelorwork.domain.model.product.ProductCategory
-import com.example.bachelorwork.domain.model.product.toEntity
 import com.example.bachelorwork.domain.usecase.barcodeScanner.BarcodeScannerUseCase
 import com.example.bachelorwork.domain.usecase.inputFieldValidators.ValidatorNotEmptyUseCase
 import com.example.bachelorwork.domain.usecase.product.ProductUseCases
-import com.example.bachelorwork.domain.usecase.productCategory.ProductCategoryUseCases
+import com.example.bachelorwork.ui.model.productManage.ProductCreateUIState
 import com.example.bachelorwork.ui.model.productManage.ProductManageFormEvent
 import com.example.bachelorwork.ui.model.productManage.ProductManageFormState
-import com.example.bachelorwork.ui.model.productManage.ProductCreateUIState
 import com.example.bachelorwork.ui.navigation.Navigator
 import com.example.bachelorwork.ui.utils.extensions.handleResult
 import com.example.bachelorwork.ui.utils.snackbar.SnackbarAction
@@ -22,7 +20,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,7 +35,6 @@ class ProductCreateViewModel @Inject constructor(
 
     private val _uiFormState = MutableStateFlow(ProductManageFormState())
     val uiFormState get() = _uiFormState.asStateFlow()
-
 
     private suspend fun createProductRoom() =
         productUseCase.createProduct(

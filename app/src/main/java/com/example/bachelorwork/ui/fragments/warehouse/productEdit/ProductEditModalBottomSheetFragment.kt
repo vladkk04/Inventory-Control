@@ -8,21 +8,15 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.FragmentModalBottomSheetProductManageBinding
-import com.example.bachelorwork.domain.model.product.ProductCategory
 import com.example.bachelorwork.domain.model.product.ProductUnit
 import com.example.bachelorwork.ui.collectInLifecycle
-import com.example.bachelorwork.ui.common.adapters.CategoryArrayAdapter
 import com.example.bachelorwork.ui.common.base.BaseBottomSheetDialogFragment
+import com.example.bachelorwork.ui.model.productManage.ProductEditUIState
 import com.example.bachelorwork.ui.model.productManage.ProductManageFormEvent
 import com.example.bachelorwork.ui.model.productManage.ProductManageFormState
-import com.example.bachelorwork.ui.utils.dialogs.CategoryDialogType
-import com.example.bachelorwork.ui.utils.dialogs.createCategoryDialog
-import com.example.bachelorwork.ui.utils.dialogs.createDeleteDialog
 import com.example.bachelorwork.ui.utils.dialogs.createDiscardDialog
 import com.example.bachelorwork.ui.utils.inputFilters.NoZeroInputFilter
 import com.example.bachelorwork.util.namesTyped
-import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
@@ -35,11 +29,12 @@ class ProductEditModalBottomSheetFragment(
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentModalBottomSheetProductManageBinding
         get() = FragmentModalBottomSheetProductManageBinding::inflate
 
-    //override fun setupCustomToolbar(): MaterialToolbar = binding.toolbarManageProduct
+    override val inflateMenu: Int
+        get() = R.menu.bottom_sheet_modify_product_menu
 
     override fun onMenuItemToolbarClickListener(menuItem: MenuItem): Boolean {
         return when (menuItem.itemId) {
-            R.id.product_save -> {
+            R.id.save -> {
                 viewModel.updateProduct()
                 true
             }
@@ -55,12 +50,12 @@ class ProductEditModalBottomSheetFragment(
     override fun setupViews() {
         setupUIComponents()
 
-        /*viewLifecycleOwner.collectInLifecycle(viewModel.uiState) { uiState ->
+        viewLifecycleOwner.collectInLifecycle(viewModel.uiState) { uiState ->
             updateUIState(uiState)
         }
         viewLifecycleOwner.collectInLifecycle(viewModel.uiFormState) { uiState ->
             updateFormFieldUIState(uiState)
-        }*/
+        }
     }
 
     private fun setupUIComponents() {
@@ -127,10 +122,7 @@ class ProductEditModalBottomSheetFragment(
         }
     }
 
-
-
-    /*private fun updateUIState(uiState: ProductManageUIState) {
-        setupAutoCompleteTextViewCategory(uiState.categories)
+    private fun updateUIState(uiState: ProductEditUIState) {
 
         if(uiState.product != null) {
             binding.editTextName.setText(uiState.product.name)
@@ -139,15 +131,13 @@ class ProductEditModalBottomSheetFragment(
             binding.editTextQuantity.setText(String.format(Locale.getDefault(), "%d", uiState.product.quantity))
             viewModel.onEvent(ProductManageFormEvent.CategoryChanged(uiState.product.category))
 
-            binding.autoCompleteTextViewCategory.setText(uiState.product.category.name, false)
             binding.editTextDescription.setText(uiState.product.description)
             binding.customInputLayoutTags.addTags(*uiState.product.tags.toTypedArray())
             binding.editTextBarcode.setText(uiState.product.barcode)
         }
 
-        binding.toolbarManageProduct.title = uiState.titleToolbar
 
-    }*/
+    }
 
     private fun updateFormFieldUIState(uiStateForm: ProductManageFormState) {
         updateFormFieldErrors(uiStateForm)

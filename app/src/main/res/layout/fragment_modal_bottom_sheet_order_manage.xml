@@ -1,176 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/dd"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:menu="@menu/bottom_sheet_modify_order_menu"
-            app:navigationIcon="@drawable/ic_close"
-            tools:title="New order" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.core.widget.NestedScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_marginHorizontal="@dimen/margin_normal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_vertical_between_items"
+            android:text="Select Product"
+            android:textSize="@dimen/text_size_medium" />
 
         <LinearLayout
+            android:id="@+id/product_list_selected"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="@dimen/margin_normal"
-            android:orientation="vertical">
+            android:layout_height="200dp"
+            android:animateLayoutChanges="true"
+            android:background="@drawable/background_corner_stroke"
+            android:orientation="vertical"
+            android:layout_below="@id/textView_title"
+            android:padding="@dimen/padding_small">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_input_layout_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/margin_vertical_between_items"
-                android:hint="@string/hint_name"
-                app:endIconMode="clear_text"
-                app:helperText="@string/helper_text_required"
-                app:helperTextEnabled="true">
+            <ImageView
+                android:id="@+id/textView_select_item"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_box_add"
+                android:textSize="@dimen/text_size_normal" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_text_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:maxLines="1" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_input_layout_barcode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/margin_vertical_between_items"
-                android:hint="@string/hint_barcode"
-                app:endIconDrawable="@drawable/ic_barcode_scanner"
-                app:endIconMode="custom"
-                app:errorIconDrawable="@drawable/ic_barcode_scanner"
-                app:helperText="@string/helper_text_required"
-                app:helperTextEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_text_barcode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:maxLines="1" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_vertical_between_items"
-                android:baselineAligned="false"
-                android:gravity="bottom"
-                android:weightSum="1">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/text_input_layout_quantity"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.95"
-                    android:hint="@string/hint_quantity"
-                    app:endIconDrawable="@drawable/ic_add"
-                    app:endIconMode="custom"
-                    app:startIconDrawable="@drawable/ic_minus">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edit_text_quantity"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:maxLines="1" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="0.05"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Unit"
-                        android:textSize="16sp" />
-
-                    <NumberPicker
-                        android:id="@+id/number_picker_select_unit"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:descendantFocusability="blocksDescendants"
-                        android:theme="@style/Theme.App.NumberPicker" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_input_layout_min_stock_level"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/margin_vertical_between_items"
-                android:hint="@string/hint_min_stock_level"
-                app:helperText="@string/helper_text_required"
-                app:helperTextEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_text_min_stock_level"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:maxLines="1" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-
-            <com.example.bachelorwork.ui.views.CustomInputLayoutTags
-                android:id="@+id/custom_input_layout_tags"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_input_layout_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/margin_vertical_between_items"
-                android:hint="@string/hint_description"
-                app:endIconMode="clear_text"
-                app:helperText="@string/helper_text_optional"
-                app:helperTextEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_text_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textMultiLine" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+            <!--<include layout="@layout/product_item_selected_to_order" />-->
 
         </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
+        <TextView
+            android:id="@+id/textview_subtotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_vertical_between_items"
+            android:text="Subtotal"
+            android:layout_below="@id/product_list_selected"
+            android:textSize="@dimen/text_size_normal" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <TextView
+            android:id="@+id/textview_discount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_vertical_between_items"
+            android:text="Discount 10%"
+            android:layout_below="@id/textview_subtotal"
+            android:textSize="@dimen/text_size_normal" />
+
+        <TextView
+            android:id="@+id/textView_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textview_discount"
+            android:layout_marginVertical="@dimen/margin_vertical_between_items"
+            android:text="Total"
+            android:textSize="@dimen/text_size_normal" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_layout_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_vertical_between_items"
+            android:hint="@string/hint_comment"
+            android:layout_below="@id/textView_total"
+            app:endIconMode="clear_text"
+            app:helperText="@string/helper_text_optional"
+            app:helperTextEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+    </RelativeLayout>
+
+</androidx.core.widget.NestedScrollView>
+

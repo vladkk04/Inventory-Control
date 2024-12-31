@@ -1,16 +1,22 @@
 package com.example.bachelorwork.ui.utils.dialogs
 
-import android.content.Context
+import androidx.fragment.app.Fragment
+import com.example.bachelorwork.ui.permission.PermissionTextProvider
 
-fun showDialogPermission(
-    context: Context,
-    isPermissionGranted: Boolean
-) = object: BaseDialog(context) {
+fun Fragment.createDialogPermission(
+    permissionTextProvider: PermissionTextProvider,
+    isPermanentlyDeclined: Boolean,
+    onGoToAppSettingsClick: () -> Unit,
+) = object : BaseDialog(requireContext()) {
     override val config: DialogConfig
         get() = DialogConfig(
             title = "Permission required",
-            message = if (isPermissionGranted) "Permission granted" else "Permission denied",
-            positiveButtonText = if (isPermissionGranted) "OK" else "Settings"
+            message = permissionTextProvider.getDescription(isPermanentlyDeclined),
+            positiveButtonText = if (isPermanentlyDeclined) "OK" else "Settings",
+            positiveButtonAction = {
+                if (isPermanentlyDeclined) {
+                    onGoToAppSettingsClick()
+                }
+            }
         )
-
 }

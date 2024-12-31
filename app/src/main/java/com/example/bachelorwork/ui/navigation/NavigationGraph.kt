@@ -12,13 +12,15 @@ import com.example.bachelorwork.ui.collectInLifecycle
 import com.example.bachelorwork.ui.fragments.home.HomeFragment
 import com.example.bachelorwork.ui.fragments.more.MoreBottomSheetFragment
 import com.example.bachelorwork.ui.fragments.more.manageUsers.ManageUsersFragment
-import com.example.bachelorwork.ui.fragments.orders.OrderManageModalBottomSheetFragment
-import com.example.bachelorwork.ui.fragments.orders.ManageOrdersFragment
+import com.example.bachelorwork.ui.fragments.orderList.OrderListFragment
+import com.example.bachelorwork.ui.fragments.orderList.create.OrderCreateModalBottomSheetFragment
+import com.example.bachelorwork.ui.fragments.orderList.create.OrderProductPickerModalBottomSheetFragment
+import com.example.bachelorwork.ui.fragments.orderList.detail.OrderDetailFragment
 import com.example.bachelorwork.ui.fragments.users.CreateNewUserModalBottomSheetFragment
-import com.example.bachelorwork.ui.fragments.warehouse.productDetail.ProductDetailFragment
-import com.example.bachelorwork.ui.fragments.warehouse.productList.ProductListFragment
 import com.example.bachelorwork.ui.fragments.warehouse.productCreate.ProductCreateModalBottomSheetFragment
+import com.example.bachelorwork.ui.fragments.warehouse.productDetail.ProductDetailFragment
 import com.example.bachelorwork.ui.fragments.warehouse.productEdit.ProductEditModalBottomSheetFragment
+import com.example.bachelorwork.ui.fragments.warehouse.productList.ProductListFragment
 import kotlinx.coroutines.Dispatchers
 
 
@@ -60,12 +62,18 @@ class NavigationGraph(
             fragment<HomeFragment, Destination.Home>()
             fragment<ProductListFragment, Destination.Warehouse>()
             fragment<ProductDetailFragment, Destination.ProductDetail>()
+            fragment<OrderListFragment, Destination.Orders>()
+
             fragment<ManageUsersFragment, Destination.ManageUsers>()
-            fragment<ManageOrdersFragment, Destination.ManageOrders>()
+            fragment<MoreBottomSheetFragment, Destination.More>()
+
+            fragment<OrderDetailFragment, Destination.OrderDetail>()
+
+            dialog<OrderCreateModalBottomSheetFragment, Destination.CreateOrder>()
+            dialog<OrderProductPickerModalBottomSheetFragment, Destination.AddItemToOrder>()
 
             dialog<ProductCreateModalBottomSheetFragment, Destination.CreateProduct>()
             dialog<ProductEditModalBottomSheetFragment, Destination.EditProduct>()
-            dialog<OrderManageModalBottomSheetFragment, Destination.ManageOrders>()
             dialog<CreateNewUserModalBottomSheetFragment, Destination.CreateNewUser>()
             dialog<MoreBottomSheetFragment, Destination.More>()
         }
