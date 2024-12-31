@@ -1,18 +1,26 @@
 package com.example.bachelorwork.ui.common.base
 
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
+import android.util.TypedValue
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.activity.OnBackPressedCallback
-import androidx.core.view.updateLayoutParams
-import androidx.fragment.app.FragmentManager
+import androidx.annotation.MenuRes
 import androidx.viewbinding.ViewBinding
+import com.example.bachelorwork.R
 import com.example.bachelorwork.ui.utils.dialogs.createDiscardDialog
-import com.google.android.material.appbar.AppBarLayout
+import com.example.bachelorwork.ui.utils.screen.InsetHandler
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
+import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED
+import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_DRAGGING
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -25,14 +33,25 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
 
     private var _binding: VB? = null
 
+    private var toolbar: MaterialToolbar? = null
+
+    private var dragHandleView: BottomSheetDragHandleView? = null
+
     protected val binding
         get() = requireNotNull(_binding)
 
-    private val customToolbar: MaterialToolbar?
-        get() = setupCustomToolbar()
+    protected open val titleToolbar: String = "Bottom Sheet"
 
-    private val bottomSheetDragHandleView: BottomSheetDragHandleView?
-        get() = setupCustomSheetDragHandleView()
+    protected open val navigationIcon: Int = R.drawable.ic_close
+
+    @MenuRes
+    protected open val inflateMenu: Int? = null
+
+    protected open val isAddDragHandleView = true
+
+    protected open val isFullScreen = true
+
+    protected open val isAllowFullScreen = true
 
     protected open val onBackPressedCallback: OnBackPressedCallback
         get() = object : OnBackPressedCallback(true) {
@@ -41,15 +60,9 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
             }
         }
 
-    protected open val isAddDragHandleView = true
-
     protected open fun onMenuItemToolbarClickListener(menuItem: MenuItem): Boolean = false
 
     protected open fun onNavigationIconToolbarClickListener() = Unit
-
-    protected open fun setupCustomSheetDragHandleView(): BottomSheetDragHandleView? = null
-
-    protected open fun setupCustomToolbar(): MaterialToolbar? = null
 
     protected open fun setupViews(): Unit = Unit
 
@@ -60,44 +73,21 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
     ): View? {
         _binding = bindingInflater.invoke(inflater, container, false)
         setupViews()
-        setupToolbarOnClickListeners()
-        //setupBottomSheetDragHandleView()
         return binding.root
     }
 
-    private fun setupToolbarOnClickListeners() {
-        customToolbar?.setNavigationOnClickListener {
-            onNavigationIconToolbarClickListener()
-        }
-        customToolbar?.setOnMenuItemClickListener { menuItem ->
-            onMenuItemToolbarClickListener(menuItem)
-        }
-    }
-
-    private fun setupBottomSheetDragHandleView() {
-        if (!isAddDragHandleView) return
-
-        bottomSheetDragHandleView?.let {
-            return addBottomSheetDragHandler(it)
-        }
-
-
-        if (bottomSheetDragHandleView == null) {
-            addBottomSheetDragHandler(createBottomSheetDragHandler())
-        } else {
-            addBottomSheetDragHandler(bottomSheetDragHandleView!!)
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupBottomSheetDragHandleView()
+        setupToolbar()
         setupFullScreen()
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return (super.onCreateDialog(savedInstanceState) as BottomSheetDialog).apply {
+            behavior.addBottomSheetCallback(callback)
             behavior.state = STATE_EXPANDED
-            behavior.isShouldRemoveExpandedCorners = true
+            behavior.isShouldRemoveExpandedCorners = isAllowFullScreen
             onBackPressedDispatcher.addCallback(
                 this@BaseBottomSheetDialogFragment,
                 onBackPressedCallback
@@ -105,39 +95,109 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
         }
     }
 
-    private fun isFragmentAlreadyCreated(manager: FragmentManager, tag: String): Boolean {
-        val existingFragment = manager.findFragmentByTag(tag)
-        return existingFragment != null && existingFragment.isAdded && !existingFragment.isDetached
+    private val callback = object : BottomSheetCallback() {
+        override fun onStateChanged(bottomSheet: View, newState: Int) {
+            if (newState == STATE_EXPANDED) {
+                toolbar?.visibility = View.VISIBLE
+            }
+            if (newState == STATE_DRAGGING) {
+                toolbar?.visibility = View.GONE
+            }
+        }
+
+        override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            setupBottomSheetDragHandleViewAnimation(slideOffset)
+        }
+    }
+
+    private fun createBottomSheetDragHandleView(): BottomSheetDragHandleView {
+        return BottomSheetDragHandleView(requireContext()).apply {
+            measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+            layout(0, 0, measuredWidth, measuredHeight / 2)
+
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
+            }
+        }
+    }
+
+    private fun createToolbar(): MaterialToolbar {
+        val typedValue = TypedValue()
+
+        requireContext().theme.resolveAttribute(
+            com.google.android.material.R.attr.colorSurfaceContainerLow,
+            typedValue,
+            true
+        )
+
+        return MaterialToolbar(requireContext()).apply {
+            title = titleToolbar
+            minimumHeight = resources.getDimensionPixelSize(androidx.appcompat.R.dimen.abc_action_bar_default_height_material)
+            inflateMenu?.let { inflateMenu(it) }
+            measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+            layout(0, 0, measuredWidth, measuredHeight)
+            setBackgroundColor(typedValue.data)
+            inflateMenu(R.menu.base_bottom_sheet_menu)
+            setNavigationIcon(this@BaseBottomSheetDialogFragment.navigationIcon)
+            setNavigationOnClickListener { onNavigationIconToolbarClickListener() }
+            setupToolbarMenu(this)
+            InsetHandler.adaptToEdgeWithPadding(this)
+        }
+    }
+
+    private fun setupBottomSheetDragHandleView() {
+        if (!isAddDragHandleView) return
+
+        dragHandleView = createBottomSheetDragHandleView().also {
+            (requireView().parent as? ViewGroup)?.addView(it, 0)
+            (requireView() as? ViewGroup)?.setPadding(0, it.height, 0, 0)
+        }
+    }
+
+    private fun setupToolbar() {
+        if (!isAllowFullScreen) return
+
+        toolbar = createToolbar().also {
+            dialog?.addContentView(
+                it,
+                ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+            )
+        }
+    }
+
+    private fun setupToolbarMenu(toolbar: MaterialToolbar) {
+        toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.hide_bottomSheet -> {
+                    (dialog as BottomSheetDialog).behavior.state = STATE_COLLAPSED
+                    toolbar.visibility = View.GONE
+                }
+            }
+            onMenuItemToolbarClickListener(menuItem)
+        }
+        toolbar.setNavigationOnClickListener {
+            onNavigationIconToolbarClickListener()
+        }
+    }
+
+    private fun setupBottomSheetDragHandleViewAnimation(offset: Float) {
+        dragHandleView?.animate()?.alpha(1 - offset)?.setDuration(0)
     }
 
     private fun setupFullScreen() {
-        /*Bottom Sheet Container*/
-        (requireView() as? ViewGroup)?.let {
-            it.layoutParams = it.layoutParams.apply {
-                width = ViewGroup.LayoutParams.MATCH_PARENT
-                height = ViewGroup.LayoutParams.MATCH_PARENT
-            }
-            // Log.d("debug", it.toString())
-            //it.addView(customToolbar)
-        }
+        if(!isFullScreen) return
 
+        val sheetContainer = requireView().parent as? ViewGroup ?: return
+        sheetContainer.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
 
-        /* dialog?.window?.apply {
-
-             //setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-         }*/
-    }
-
-    private fun addBottomSheetDragHandler(dragHandleView: BottomSheetDragHandleView) {
-       /* (requireView() as? ViewGroup)?.addView(dragHandleView,0)*/
-    }
-
-    private fun createBottomSheetDragHandler(): BottomSheetDragHandleView {
-        return BottomSheetDragHandleView(binding.root.context).apply {
-            updateLayoutParams {
-                this.width = ViewGroup.LayoutParams.MATCH_PARENT
-                this.height = ViewGroup.LayoutParams.WRAP_CONTENT
-            }
+        (dialog as BottomSheetDialog).apply {
+            behavior.maxHeight = resources.displayMetrics.heightPixels - (toolbar?.height ?: 0) + (dragHandleView?.height ?: 0)
         }
     }
 

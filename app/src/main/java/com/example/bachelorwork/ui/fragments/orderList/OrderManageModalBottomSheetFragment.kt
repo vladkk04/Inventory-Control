@@ -1,4 +1,4 @@
-package com.example.bachelorwork.ui.fragments.orders
+package com.example.bachelorwork.ui.fragments.orderList
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

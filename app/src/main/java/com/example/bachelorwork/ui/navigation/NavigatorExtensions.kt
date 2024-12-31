@@ -1,6 +1,5 @@
 package com.example.bachelorwork.ui.navigation
 
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.view.updatePadding
@@ -14,15 +13,17 @@ fun NavigationBarView.setupWithNavController(
     navController: NavController,
 ) {
     navController.addOnDestinationChangedListener { _, destination, _ ->
-        topLevelRoutes.find { destination.hasRoute(it.route::class) }?.let { dest ->
-            menu.findItemByTitle(dest.route::class.simpleName)?.isChecked = true
-        }
+        Destination.getTopLevelDestinations().find { destination.hasRoute(it::class) }
+            ?.let { dest ->
+                menu.findItemByTitle(dest::class.simpleName)?.isChecked = true
+            }
     }
     setOnItemSelectedListener { item ->
-        topLevelRoutes.find { it.route::class.simpleName == item.title }?.takeIf { route ->
-            navController.currentDestination?.hasRoute(route.route::class) != true
-        }?.let { route ->
-            navController.navigate(route.route) {
+        Destination.getTopLevelDestinations().find { it::class.simpleName == item.title }
+            ?.takeIf { dest ->
+                navController.currentDestination?.hasRoute(dest::class) != true
+            }?.let { destination ->
+            navController.navigate(destination) {
                 restoreState = true
                 launchSingleTop = true
             }
@@ -36,10 +37,9 @@ fun NavigationView.setupWithNavController(
     navController: NavController
 ) {
     navController.addOnDestinationChangedListener { _, destination, _ ->
-        
+
     }
     this.setNavigationItemSelectedListener {
-        Log.d("debug", "hello")
         true
     }
 }
@@ -70,8 +70,7 @@ private fun hideNavigationBarWithAnimation(
 private fun showNavigationBarWithAnimation(
     navBar: NavigationBarView,
     fragmentContainer: FragmentContainerView
-)
-{
+) {
     fragmentContainer.updatePadding(bottom = 240)
 
     navBar.animate()

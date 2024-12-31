@@ -21,8 +21,8 @@ class HomeViewModel @Inject constructor(
         navigator.openNavigationDrawer()
     }
 
-    private fun navigateToCreateOrder() = viewModelScope.launch {
-       // navigator.navigate(Destination.CreateNewUser)
+    fun navigateToCreateOrder() = viewModelScope.launch {
+        navigator.navigate(Destination.CreateOrder)
     }
 
     fun navigateToCreateUser() = viewModelScope.launch {

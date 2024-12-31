@@ -51,7 +51,7 @@ class HomeFragment : Fragment() {
                 viewModel.navigateToCreateProduct()
             }
             setOnCreateOrderClickListener {
-
+                viewModel.navigateToCreateOrder()
             }
             setOnCreateUserClickListener {
                 viewModel.navigateToCreateUser()

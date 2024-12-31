@@ -87,8 +87,12 @@ dependencies {
     // Serialization
     implementation(libs.serialization.json)
 
+    //Simple Recycler View Adapter
+    implementation(libs.element.adapter)
+
     // Tests
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation(kotlin("reflect"))
 }

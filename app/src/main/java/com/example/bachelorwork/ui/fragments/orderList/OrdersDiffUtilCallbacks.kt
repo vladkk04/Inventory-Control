@@ -1,4 +1,4 @@
-package com.example.bachelorwork.ui.fragments.orders
+package com.example.bachelorwork.ui.fragments.orderList
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.bachelorwork.domain.model.order.Order

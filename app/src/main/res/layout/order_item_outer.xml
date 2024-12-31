@@ -29,7 +29,7 @@
             android:layout_below="@+id/textView_order_id"
             android:layout_marginVertical="@dimen/margin_extra_small"
             android:text="@string/text_order_date_timestamp"
-            android:textSize="@dimen/text_size_small" />
+            android:textSize="@dimen/text_size_extra_small" />
 
         <CheckBox
             android:id="@+id/checkBox_toggle"
@@ -38,14 +38,16 @@
             android:layout_alignParentEnd="true"
             android:button="@drawable/ic_keyboard_arrow_down" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.example.bachelorwork.ui.views.UntouchableRecyclerView
             android:id="@+id/recyclerView_subitems"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/textView_ordered_date"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:visibility="gone" />
+            android:visibility="visible"
+            android:layout_marginVertical="@dimen/margin_extra_small"
+            android:clipToPadding="false"/>
 
         <TextView
             android:id="@+id/textView_total"
@@ -53,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/recyclerView_subitems"
             android:text="@string/text_order_total"
-            android:textSize="@dimen/text_size_medium" />
+            android:textSize="@dimen/text_size_medium_plus" />
 
 
     </RelativeLayout>

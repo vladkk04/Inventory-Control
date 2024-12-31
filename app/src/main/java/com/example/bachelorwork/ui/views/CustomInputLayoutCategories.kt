@@ -1,15 +1,10 @@
 package com.example.bachelorwork.ui.views
 
 import android.content.Context
-import android.graphics.Canvas
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
-import android.widget.EditText
-import android.widget.FrameLayout
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import androidx.lifecycle.get
 import androidx.lifecycle.lifecycleScope
@@ -40,18 +35,13 @@ class CustomInputLayoutCategories @JvmOverloads constructor(
 
     private val viewModel by lazy { findViewTreeViewModelStoreOwner()?.let { ViewModelProvider(it).get<CategoriesViewModel>() } }
 
-
-    init {
-        viewModel?.getCategories()
-    }
+    private lateinit var listener: OnItemClickListener
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        (context as? LifecycleOwner)?.let {
-            it.lifecycleScope.launch {
-                viewModel?.uiState?.collectLatest { uiState ->
-                    setupAutoCompleteTextViewCategory(uiState.categories)
-                }
+        findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
+            viewModel?.uiState?.collectLatest { uiState ->
+                setupAutoCompleteTextViewCategory(uiState.categories)
             }
         }
     }
@@ -62,12 +52,17 @@ class CustomInputLayoutCategories @JvmOverloads constructor(
         )
     }
 
+    fun setOnClickItemListener(itemClickListener: OnItemClickListener) {
+        listener = itemClickListener
+    }
+
     private fun setupCategoryAdapter(categories: List<ProductCategory>): CategoryArrayAdapter {
         return CategoryArrayAdapter(
             context,
             categories.toMutableList()
         ).apply {
             setOnClickItemListener { item ->
+                listener.onClick(item)
                 binding.autoCompleteTextViewCategory.setText(item.name, false)
                 binding.autoCompleteTextViewCategory.dismissDropDown()
             }
@@ -87,5 +82,9 @@ class CustomInputLayoutCategories @JvmOverloads constructor(
                 }.show()
             }
         }
+    }
+
+    fun interface OnItemClickListener {
+        fun onClick(item: ProductCategory)
     }
 }
