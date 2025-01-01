@@ -1,5 +1,6 @@
 package com.example.bachelorwork.ui.fragments.warehouse.productDetail
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -36,10 +37,15 @@ class ProductDetailViewModel @Inject constructor(
     ) { result, state ->
         handleResult(result, onSuccess = { product ->
             _uiState.value = state.copy(product = product)
+        }, onFailure = {
+            Log.d("tag", it.message.toString())
+
         })
         state
     }.flowOn(Dispatchers.Default)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), _uiState.value)
+
+
 
     fun editProduct() = viewModelScope.launch {
         navigator.navigate(Destination.EditProduct(productRoute.id))

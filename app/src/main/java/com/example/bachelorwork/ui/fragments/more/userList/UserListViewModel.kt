@@ -1,4 +1,4 @@
-package com.example.bachelorwork.ui.fragments.more.manageUsers
+package com.example.bachelorwork.ui.fragments.more.userList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class ManageUsersViewModel @Inject constructor(
+class UserListViewModel @Inject constructor(
     val navigator: Navigator,
 ): ViewModel() {
 

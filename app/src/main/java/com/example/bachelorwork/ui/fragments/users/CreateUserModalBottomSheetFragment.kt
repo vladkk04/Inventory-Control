@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.bachelorwork.databinding.FragmentModalBottomSheetCreateNewUserBinding
+import com.example.bachelorwork.databinding.FragmentModalBottomSheetUserManageBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class CreateNewUserModalBottomSheetFragment: BottomSheetDialogFragment() {
-    private var _binding: FragmentModalBottomSheetCreateNewUserBinding? = null
+class CreateUserModalBottomSheetFragment: BottomSheetDialogFragment() {
+    private var _binding: FragmentModalBottomSheetUserManageBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -16,7 +16,7 @@ class CreateNewUserModalBottomSheetFragment: BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentModalBottomSheetCreateNewUserBinding.inflate(inflater, container, false)
+        _binding = FragmentModalBottomSheetUserManageBinding.inflate(inflater, container, false)
         return binding.root
     }
 }

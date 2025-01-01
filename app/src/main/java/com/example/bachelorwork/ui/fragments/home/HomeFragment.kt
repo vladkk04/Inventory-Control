@@ -10,21 +10,24 @@ import androidx.fragment.app.viewModels
 import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.FragmentHomeBinding
 import com.example.bachelorwork.ui.utils.screen.InsetHandler
+import com.example.bachelorwork.ui.views.CustomFloatingMenu
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment()
+{
 
-    private var _binding: FragmentHomeBinding? = null
+    private var _binding : FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: HomeViewModel by viewModels()
+    private val viewModel : HomeViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        inflater : LayoutInflater,container : ViewGroup?,
+        savedInstanceState : Bundle?
+    ) : View
+    {
+        _binding = FragmentHomeBinding.inflate(inflater,container,false)
         InsetHandler.adaptToEdgeWithMargin(binding.root)
 
         setupCustomFloatingMenu()
@@ -37,16 +40,18 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    private fun setupHelloUser() {
-        ObjectAnimator.ofFloat(binding.textViewHelloUser, "alpha", 0f, 1f).apply {
+    private fun setupHelloUser()
+    {
+        ObjectAnimator.ofFloat(binding.textViewHelloUser,"alpha",0f,1f).apply {
             duration = 600
             start()
         }
-        binding.textViewHelloUser.text = getString(R.string.text_hello_user, "Vladyslav")
+        binding.textViewHelloUser.text = getString(R.string.text_hello_user,"Vladyslav")
     }
 
-    private fun setupCustomFloatingMenu() {
-        binding.customFloatingMenu.apply {
+    private fun setupCustomFloatingMenu()
+    {
+        CustomFloatingMenu(requireContext(),binding.fabAll).apply {
             setOnCreateItemClickListener {
                 viewModel.navigateToCreateProduct()
             }
@@ -60,7 +65,8 @@ class HomeFragment : Fragment() {
     }
 
 
-    override fun onDestroyView() {
+    override fun onDestroyView()
+    {
         super.onDestroyView()
         _binding = null
     }

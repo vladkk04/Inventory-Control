@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import com.example.bachelorwork.databinding.CustomAutocompleteCategoryItemBinding
+import com.example.bachelorwork.databinding.CustomCategoryDropdownItemBinding
 import com.example.bachelorwork.domain.model.product.ProductCategory
 
 class CategoryArrayAdapter(
@@ -38,7 +38,7 @@ class CategoryArrayAdapter(
         onEditClickListener = listener
     }
 
-    private fun bind(binding: CustomAutocompleteCategoryItemBinding, item: ProductCategory) {
+    private fun bind(binding: CustomCategoryDropdownItemBinding, item: ProductCategory) {
         binding.textViewCategory.text = item.name
 
         if (item.name == "Create new category") {
@@ -64,10 +64,10 @@ class CategoryArrayAdapter(
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val binding: CustomAutocompleteCategoryItemBinding = if (convertView != null) {
-            CustomAutocompleteCategoryItemBinding.bind(convertView)
+        val binding: CustomCategoryDropdownItemBinding = if (convertView != null) {
+            CustomCategoryDropdownItemBinding.bind(convertView)
         } else {
-            CustomAutocompleteCategoryItemBinding.inflate(LayoutInflater.from(context), parent, false)
+            CustomCategoryDropdownItemBinding.inflate(LayoutInflater.from(context), parent, false)
         }
 
         val currentItem = getItem(position) ?: return binding.root

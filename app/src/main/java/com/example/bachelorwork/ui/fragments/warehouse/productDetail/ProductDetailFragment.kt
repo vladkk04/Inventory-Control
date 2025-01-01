@@ -11,7 +11,7 @@ import com.example.bachelorwork.databinding.FragmentProductDetailBinding
 import com.example.bachelorwork.ui.collectInLifecycle
 import com.example.bachelorwork.ui.common.adapters.ViewPagerAdapter
 import com.example.bachelorwork.ui.common.adapters.ViewPagerFragmentData
-import com.example.bachelorwork.ui.fragments.warehouse.ProductAnalyticsFragment
+import com.example.bachelorwork.ui.fragments.warehouse.ProductDetailAnalyticFragment
 import com.example.bachelorwork.ui.model.productDetail.ProductDetailUIState
 import com.example.bachelorwork.ui.utils.dialogs.createDeleteDialog
 import com.google.android.material.tabs.TabLayoutMediator
@@ -80,12 +80,12 @@ class ProductDetailFragment : Fragment() {
                 R.drawable.ic_description_outline
             ),
             ViewPagerFragmentData(
-                ProductAnalyticsFragment(),
+                ProductDetailAnalyticFragment(),
                 "Analytics",
                 R.drawable.ic_analytics_outline
             ),
             ViewPagerFragmentData(
-                ProductAnalyticsFragment(),
+                ProductDetailAnalyticFragment(),
                 "History",
                 R.drawable.ic_history
             ),

@@ -7,7 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import com.example.bachelorwork.R
-import com.example.bachelorwork.databinding.CustomDialogViewContentCreateCategoryBinding
+import com.example.bachelorwork.databinding.DialogViewManageCategoryBinding
 import com.example.bachelorwork.domain.model.product.ProductCategory
 
 enum class CategoryDialogType {
@@ -21,7 +21,7 @@ fun createCategoryDialog(
     type: CategoryDialogType,
     onPositiveButtonClick: (category: ProductCategory) -> Unit = {},
 ) = object : BaseDialog(context) {
-    private val binding = CustomDialogViewContentCreateCategoryBinding.inflate(LayoutInflater.from(context))
+    private val binding = DialogViewManageCategoryBinding.inflate(LayoutInflater.from(context))
 
     private val defaultConfig = DialogConfig(
         view = binding.root,

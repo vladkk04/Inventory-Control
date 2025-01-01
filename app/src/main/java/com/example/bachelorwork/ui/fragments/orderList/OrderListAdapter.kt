@@ -32,7 +32,7 @@ class OrderListAdapter: RecyclerView.Adapter<OrderListAdapter.ViewHolder>() {
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Order) {
             binding.root.setOnClickListener {
-                onItemClickListener?.onClick(2)
+                onItemClickListener?.onClick(item.id)
             }
 
             binding.recyclerViewSubitems.visibility = View.GONE

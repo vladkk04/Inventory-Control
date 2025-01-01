@@ -1,6 +1,7 @@
 package com.example.bachelorwork.ui.fragments.warehouse.productDetail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,7 @@ class ProductDetailOverviewFragment : Fragment() {
         _binding = FragmentProductDetailOverviewBinding.inflate(inflater, container, false)
 
         viewLifecycleOwner.collectInLifecycle(viewModel.uiState) { uiState ->
+            Log.d("tag", uiState.toString())
             updateUI(uiState)
         }
 
@@ -41,10 +43,10 @@ class ProductDetailOverviewFragment : Fragment() {
                 binding.textViewQuantity.text = getString(R.string.text_quantity, quantity)
                 binding.textViewMinimumStockLevel.text = getString(R.string.text_minimum_stock_level, minStockLevel)
                 binding.textViewMeasurementUnit.text = getString(R.string.text_measurement_unit, unit.name)
+                binding.textViewDescription.text = description
                 tags.forEach { tag ->
                     binding.chipGroupTags.addView(createProductTagChip(requireContext(), tag))
                 }
-                binding.textViewDescription.text = description
             }
         }
     }

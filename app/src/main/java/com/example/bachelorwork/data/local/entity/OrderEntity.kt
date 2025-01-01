@@ -19,8 +19,7 @@ data class OrderEntity(
 }
 
 fun OrderEntity.toOrder() = Order(
-    id = id.toString(),
+    id = id,
     date = date.toString(),
-    total = total,
     items = emptyList()
 )

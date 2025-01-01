@@ -8,7 +8,7 @@ import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import androidx.lifecycle.get
 import androidx.lifecycle.lifecycleScope
-import com.example.bachelorwork.databinding.CustomInputLayoutCategoriesBinding
+import com.example.bachelorwork.databinding.CustomCategoryInputDropdownBinding
 import com.example.bachelorwork.domain.model.product.ProductCategory
 import com.example.bachelorwork.ui.common.adapters.CategoryArrayAdapter
 import com.example.bachelorwork.ui.utils.dialogs.CategoryDialogType
@@ -21,13 +21,13 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CustomInputLayoutCategories @JvmOverloads constructor(
+class CustomCategoryInputDropdown @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
 ) : TextInputLayout(context, attrs) {
 
-    private val binding: CustomInputLayoutCategoriesBinding =
-        CustomInputLayoutCategoriesBinding.inflate(
+    private val binding: CustomCategoryInputDropdownBinding =
+        CustomCategoryInputDropdownBinding.inflate(
             LayoutInflater.from(context), this, true
         )
 

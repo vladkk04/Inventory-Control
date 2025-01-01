@@ -1,4 +1,4 @@
-package com.example.bachelorwork.ui.fragments.more.manageUsers
+package com.example.bachelorwork.ui.fragments.more.userList
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,26 +7,26 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.bachelorwork.databinding.FragmentManageUsersBinding
+import com.example.bachelorwork.databinding.FragmentUserListBinding
 import com.example.bachelorwork.ui.utils.screen.InsetHandler
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ManageUsersFragment: Fragment() {
+class UserListFragment: Fragment() {
 
-    private var _binding: FragmentManageUsersBinding? = null
+    private var _binding: FragmentUserListBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: ManageUsersViewModel by viewModels()
+    private val viewModel: UserListViewModel by viewModels()
 
-    private lateinit var adapter: ManageUsersAdapter
+    private lateinit var adapter: UserListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentManageUsersBinding.inflate(inflater, container, false)
+        _binding = FragmentUserListBinding.inflate(inflater, container, false)
 
         InsetHandler.adaptToEdgeWithMargin(binding.root)
         setupFabButton()
@@ -42,10 +42,10 @@ class ManageUsersFragment: Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = ManageUsersAdapter()
+        adapter = UserListAdapter()
 
         with(binding.recyclerViewManageUsers){
-            adapter = this@ManageUsersFragment.adapter
+            adapter = this@UserListFragment.adapter
             layoutManager = LinearLayoutManager(requireContext())
         }
     }

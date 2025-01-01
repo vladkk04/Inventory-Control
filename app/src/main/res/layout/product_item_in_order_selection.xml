@@ -20,10 +20,10 @@
                 android:id="@+id/shapeable_ImageView"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_image_item"
-                android:scaleType="centerCrop"
                 android:layout_centerHorizontal="true"
-                app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium"
-                android:src="@drawable/cup" />
+                android:scaleType="centerCrop"
+                android:src="@drawable/cup"
+                app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
 
             <TextView
                 android:id="@+id/textView_name"

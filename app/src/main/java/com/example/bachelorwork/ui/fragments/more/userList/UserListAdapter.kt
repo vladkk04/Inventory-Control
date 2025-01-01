@@ -1,4 +1,4 @@
-package com.example.bachelorwork.ui.fragments.more.manageUsers
+package com.example.bachelorwork.ui.fragments.more.userList
 
 import android.content.Context
 import android.os.Build
@@ -6,12 +6,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bachelorwork.R
-import com.example.bachelorwork.databinding.ManageUserItemBinding
+import com.example.bachelorwork.databinding.UserItemBinding
 import com.example.bachelorwork.ui.utils.dialogs.createDeleteDialog
 import com.example.bachelorwork.ui.utils.menu.createPopupMenu
-import dagger.hilt.android.AndroidEntryPoint
 
-class ManageUsersAdapter : RecyclerView.Adapter<ManageUsersAdapter.ViewHolder>() {
+class UserListAdapter : RecyclerView.Adapter<UserListAdapter.ViewHolder>() {
 
     private var onDeleteUser: OnDeleteUser? = null
 
@@ -19,7 +18,7 @@ class ManageUsersAdapter : RecyclerView.Adapter<ManageUsersAdapter.ViewHolder>()
         this.onDeleteUser = onDeleteUser
     }
 
-    inner class ViewHolder(val binding: ManageUserItemBinding) :
+    inner class ViewHolder(val binding: UserItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val context: Context = binding.root.context
 
@@ -57,7 +56,7 @@ class ManageUsersAdapter : RecyclerView.Adapter<ManageUsersAdapter.ViewHolder>()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
-        ManageUserItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        UserItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )
 
 

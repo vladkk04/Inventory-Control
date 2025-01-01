@@ -17,7 +17,9 @@
 
     <string name="text_empty_warehouse">No items in warehouse</string>
     <string name="text_no_result">No result</string>
+    <string name="text_enter_or_scan">Enter text or scan barcode</string>
     <string name="text_products">Products</string>
+    <string name="text_select_product">Select Product</string>
 
     <string name="hint_name">Name*</string>
     <string name="hint_barcode">Barcode*</string>
@@ -30,7 +32,7 @@
     <string name="hint_description">Description</string>
     <string name="hint_comment">Comment</string>
     <string name="hint_category">Category</string>
-    <string name="hint_new_category_name">Name category</string>
+    <string name="hint_category_name">Name category</string>
     <string name="hint_tags">Tags</string>
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
@@ -58,7 +60,7 @@
 
     <string name="text_hello_user">Hello, %1$s</string>">
 
-    <string name="text_order_id">Order #%1$s</string>"
+    <string name="text_order_id">Order #%1$d</string>"
     <string name="text_order_date_timestamp">%1$s</string>
     <string name="text_order_total">Total $%1$.2f</string>
     <string name="text_price">$%1$.2f</string>
@@ -79,5 +81,6 @@
     <string name="title_hide">Hide</string>
 
     <string name="text_add_product">Add product</string>
+    <string name="text_manage_users">Manage Users</string>
 
 </resources>

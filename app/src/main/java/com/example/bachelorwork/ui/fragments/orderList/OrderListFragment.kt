@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bachelorwork.databinding.FragmentOrderListBinding
 import com.example.bachelorwork.domain.model.order.Order
-import com.example.bachelorwork.domain.model.order.OrderSubItemProduct
+import com.example.bachelorwork.domain.model.order.OrderSubItem
 import com.example.bachelorwork.ui.utils.screen.InsetHandler
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -41,8 +41,7 @@ class OrderListFragment : Fragment() {
         adapter = OrderListAdapter()
         adapter.submitList(List(10) {
             Order(
-                items = List(10) { OrderSubItemProduct("Apple", (10 .. 299).random().toDouble(), (10 .. 299).random())  },
-                total = 20.00
+                items = List(10) { OrderSubItem("Apple", (10 .. 299).random().toDouble(), (10 .. 299).random())  },
             )
         })
         adapter.setOnItemClickListener { orderId ->

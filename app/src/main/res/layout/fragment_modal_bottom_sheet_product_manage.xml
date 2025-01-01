@@ -137,7 +137,7 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.example.bachelorwork.ui.views.CustomInputLayoutCategories
+        <com.example.bachelorwork.ui.views.CustomCategoryInputDropdown
             android:id="@+id/custom_input_layout_categories"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
