@@ -15,13 +15,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class OrderProductPickerViewModel @Inject constructor(
+class OrderAddProductViewModel @Inject constructor(
     private val productUseCase: ProductUseCases,
     private val navigator: Navigator,
     private val barcodeScannerUseCase: BarcodeScannerUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(OrderProductPickerUiState())
+    private val _uiState = MutableStateFlow(OrderAddProductUiState())
     val uiState = _uiState.asStateFlow()
 
     fun searchProductByName(query: String) = viewModelScope.launch {
@@ -49,7 +49,9 @@ class OrderProductPickerViewModel @Inject constructor(
     }
 
     fun navigateToProductDetail(id: Int) = viewModelScope.launch {
-        navigator.navigate(Destination.ProductDetail(0))
+        navigator.navigate(Destination.ProductDetail(id)) {
+            popUpTo<Destination.Warehouse>()
+        }
     }
 
     fun scanBarcodeScanner() = viewModelScope.launch {
