@@ -81,6 +81,7 @@
     <string name="title_hide">Hide</string>
 
     <string name="text_add_product">Add product</string>
+    <string name="text_selected">Selected</string>
     <string name="text_manage_users">Manage Users</string>
 
 </resources>
