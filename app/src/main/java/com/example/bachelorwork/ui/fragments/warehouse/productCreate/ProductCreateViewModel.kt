@@ -7,9 +7,9 @@ import com.example.bachelorwork.data.local.entity.ProductEntity
 import com.example.bachelorwork.domain.usecase.barcodeScanner.BarcodeScannerUseCase
 import com.example.bachelorwork.domain.usecase.inputFieldValidators.ValidatorNotEmptyUseCase
 import com.example.bachelorwork.domain.usecase.product.ProductUseCases
-import com.example.bachelorwork.ui.model.productManage.ProductCreateUIState
-import com.example.bachelorwork.ui.model.productManage.ProductManageFormEvent
-import com.example.bachelorwork.ui.model.productManage.ProductManageFormState
+import com.example.bachelorwork.ui.model.product.productManage.ProductCreateUIState
+import com.example.bachelorwork.ui.model.product.productManage.ProductManageFormEvent
+import com.example.bachelorwork.ui.model.product.productManage.ProductManageFormState
 import com.example.bachelorwork.ui.navigation.Navigator
 import com.example.bachelorwork.ui.utils.extensions.handleResult
 import com.example.bachelorwork.ui.utils.snackbar.SnackbarAction

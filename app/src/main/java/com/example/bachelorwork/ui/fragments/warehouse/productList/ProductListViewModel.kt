@@ -8,8 +8,8 @@ import com.example.bachelorwork.domain.model.product.ProductSortOptions
 import com.example.bachelorwork.domain.model.product.SortBy
 import com.example.bachelorwork.domain.model.product.toProductUI
 import com.example.bachelorwork.domain.usecase.product.ProductUseCases
-import com.example.bachelorwork.ui.model.productList.ProductListUIState
-import com.example.bachelorwork.ui.model.productList.ProductSearchUIState
+import com.example.bachelorwork.ui.model.product.productList.ProductListUIState
+import com.example.bachelorwork.ui.model.product.productList.ProductSearchUIState
 import com.example.bachelorwork.ui.navigation.Destination
 import com.example.bachelorwork.ui.navigation.Navigator
 import com.example.bachelorwork.ui.utils.extensions.handleResult

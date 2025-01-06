@@ -1,7 +1,7 @@
 package com.example.bachelorwork.domain.model.product
 
 import android.net.Uri
-import com.example.bachelorwork.ui.model.productList.ProductUI
+import com.example.bachelorwork.ui.model.product.productList.ProductUI
 
 data class Product(
     var id: Int = 0,

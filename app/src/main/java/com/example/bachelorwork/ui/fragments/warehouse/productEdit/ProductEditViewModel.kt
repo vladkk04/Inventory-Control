@@ -7,7 +7,7 @@ import com.example.bachelorwork.domain.usecase.barcodeScanner.BarcodeScannerUseC
 import com.example.bachelorwork.domain.usecase.inputFieldValidators.ValidatorNotEmptyUseCase
 import com.example.bachelorwork.domain.usecase.product.ProductUseCases
 import com.example.bachelorwork.ui.fragments.warehouse.BaseProductManageViewModel
-import com.example.bachelorwork.ui.model.productManage.ProductEditUIState
+import com.example.bachelorwork.ui.model.product.productManage.ProductEditUIState
 import com.example.bachelorwork.ui.navigation.Destination
 import com.example.bachelorwork.ui.navigation.Navigator
 import com.example.bachelorwork.ui.utils.extensions.handleResult

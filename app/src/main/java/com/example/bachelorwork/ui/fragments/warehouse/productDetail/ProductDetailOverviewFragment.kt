@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.FragmentProductDetailOverviewBinding
 import com.example.bachelorwork.ui.collectInLifecycle
-import com.example.bachelorwork.ui.model.productDetail.ProductDetailUIState
+import com.example.bachelorwork.ui.model.product.productDetail.ProductDetailUIState
 import com.example.bachelorwork.ui.views.createProductTagChip
 
 class ProductDetailOverviewFragment : Fragment() {

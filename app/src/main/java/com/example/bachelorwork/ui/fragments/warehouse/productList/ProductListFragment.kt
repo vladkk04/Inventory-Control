@@ -15,8 +15,8 @@ import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.FragmentProductListBinding
 import com.example.bachelorwork.domain.model.product.SortBy
 import com.example.bachelorwork.ui.collectInLifecycle
-import com.example.bachelorwork.ui.model.productList.ProductListUIState
-import com.example.bachelorwork.ui.model.productList.ProductSearchUIState
+import com.example.bachelorwork.ui.model.product.productList.ProductListUIState
+import com.example.bachelorwork.ui.model.product.productList.ProductSearchUIState
 import com.example.bachelorwork.ui.utils.StateListDrawableFactory
 import com.example.bachelorwork.ui.utils.menu.createPopupMenu
 import com.example.bachelorwork.ui.utils.recyclerview.UpwardScrollButtonListener

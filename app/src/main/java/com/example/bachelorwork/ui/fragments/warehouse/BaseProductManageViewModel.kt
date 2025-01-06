@@ -3,8 +3,8 @@ package com.example.bachelorwork.ui.fragments.warehouse
 import androidx.lifecycle.ViewModel
 import com.example.bachelorwork.domain.usecase.barcodeScanner.BarcodeScannerUseCase
 import com.example.bachelorwork.domain.usecase.inputFieldValidators.ValidatorNotEmptyUseCase
-import com.example.bachelorwork.ui.model.productManage.ProductManageFormEvent
-import com.example.bachelorwork.ui.model.productManage.ProductManageFormState
+import com.example.bachelorwork.ui.model.product.productManage.ProductManageFormEvent
+import com.example.bachelorwork.ui.model.product.productManage.ProductManageFormState
 import com.example.bachelorwork.ui.utils.extensions.handleResult
 import com.example.bachelorwork.ui.utils.snackbar.SnackbarController.sendSnackbarEvent
 import com.example.bachelorwork.ui.utils.snackbar.SnackbarEvent
