@@ -5,7 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bachelorwork.domain.usecase.product.ProductUseCases
-import com.example.bachelorwork.ui.model.productDetail.ProductDetailUIState
+import com.example.bachelorwork.ui.model.product.productDetail.ProductDetailUIState
 import com.example.bachelorwork.ui.navigation.Destination
 import com.example.bachelorwork.ui.navigation.Navigator
 import com.example.bachelorwork.ui.utils.extensions.handleResult

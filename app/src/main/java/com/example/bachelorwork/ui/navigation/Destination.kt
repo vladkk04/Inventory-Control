@@ -37,7 +37,7 @@ sealed class Destination {
     data object CreateOrder : Destination()
 
     @Serializable
-    data object AddItemToOrder : Destination()
+    data object OrderAddProduct : Destination()
 
     @Serializable
     data class EditProduct(val id: Int) : Destination()

@@ -12,10 +12,10 @@ import com.example.bachelorwork.ui.collectInLifecycle
 import com.example.bachelorwork.ui.fragments.home.HomeFragment
 import com.example.bachelorwork.ui.fragments.more.MoreBottomSheetFragment
 import com.example.bachelorwork.ui.fragments.more.userList.UserListFragment
-import com.example.bachelorwork.ui.fragments.orderList.OrderListFragment
-import com.example.bachelorwork.ui.fragments.orderList.create.OrderCreateModalBottomSheetFragment
-import com.example.bachelorwork.ui.fragments.orderList.create.OrderAddProductModalBottomSheetFragment
-import com.example.bachelorwork.ui.fragments.orderList.detail.OrderDetailFragment
+import com.example.bachelorwork.ui.fragments.orders.orderList.OrderListFragment
+import com.example.bachelorwork.ui.fragments.orders.create.OrderCreateModalBottomSheetFragment
+import com.example.bachelorwork.ui.fragments.orders.create.addProduct.OrderAddProductModalBottomSheetFragment
+import com.example.bachelorwork.ui.fragments.orders.detail.OrderDetailFragment
 import com.example.bachelorwork.ui.fragments.users.CreateUserModalBottomSheetFragment
 import com.example.bachelorwork.ui.fragments.warehouse.productCreate.ProductCreateModalBottomSheetFragment
 import com.example.bachelorwork.ui.fragments.warehouse.productDetail.ProductDetailFragment
@@ -70,7 +70,7 @@ class NavigationGraph(
             fragment<OrderDetailFragment, Destination.OrderDetail>()
 
             dialog<OrderCreateModalBottomSheetFragment, Destination.CreateOrder>()
-            dialog<OrderAddProductModalBottomSheetFragment, Destination.AddItemToOrder>()
+            dialog<OrderAddProductModalBottomSheetFragment, Destination.OrderAddProduct>()
 
             dialog<ProductCreateModalBottomSheetFragment, Destination.CreateProduct>()
             dialog<ProductEditModalBottomSheetFragment, Destination.EditProduct>()

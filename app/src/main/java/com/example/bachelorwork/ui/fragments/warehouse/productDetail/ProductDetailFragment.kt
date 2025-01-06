@@ -12,7 +12,7 @@ import com.example.bachelorwork.ui.collectInLifecycle
 import com.example.bachelorwork.ui.common.adapters.ViewPagerAdapter
 import com.example.bachelorwork.ui.common.adapters.ViewPagerFragmentData
 import com.example.bachelorwork.ui.fragments.warehouse.ProductDetailAnalyticFragment
-import com.example.bachelorwork.ui.model.productDetail.ProductDetailUIState
+import com.example.bachelorwork.ui.model.product.productDetail.ProductDetailUIState
 import com.example.bachelorwork.ui.utils.dialogs.createDeleteDialog
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint

@@ -10,7 +10,7 @@ import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.ProductItemGridBinding
 import com.example.bachelorwork.databinding.ProductItemRowBinding
 import com.example.bachelorwork.domain.model.product.ProductDisplayMode
-import com.example.bachelorwork.ui.model.productList.ProductUI
+import com.example.bachelorwork.ui.model.product.productList.ProductUI
 import java.util.Locale
 
 

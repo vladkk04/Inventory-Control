@@ -21,27 +21,14 @@
             android:text="@string/text_products"
             android:textSize="@dimen/text_size_medium" />
 
-        <LinearLayout
-            android:id="@+id/product_list_selected"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:animateLayoutChanges="true"
             android:background="@drawable/background_corner_stroke"
             android:orientation="vertical"
             android:layout_below="@id/textView_title"
-            android:padding="@dimen/padding_small">
-
-            <ImageView
-                android:id="@+id/textView_select_item"
-                android:layout_width="48dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_box_add"
-                android:textSize="@dimen/text_size_normal" />
-
-            <!--<include layout="@layout/product_item_selected_to_order" />-->
-
-        </LinearLayout>
+            android:padding="@dimen/padding_small"/>
 
         <TextView
             android:id="@+id/textview_subtotal"
@@ -49,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/margin_vertical_between_items"
             android:text="Subtotal"
-            android:layout_below="@id/product_list_selected"
+            android:layout_below="@id/recyclerView"
             android:textSize="@dimen/text_size_normal" />
 
         <TextView

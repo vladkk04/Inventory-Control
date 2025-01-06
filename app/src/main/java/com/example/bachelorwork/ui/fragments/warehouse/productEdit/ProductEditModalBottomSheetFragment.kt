@@ -11,9 +11,9 @@ import com.example.bachelorwork.databinding.FragmentModalBottomSheetProductManag
 import com.example.bachelorwork.domain.model.product.ProductUnit
 import com.example.bachelorwork.ui.collectInLifecycle
 import com.example.bachelorwork.ui.common.base.BaseBottomSheetDialogFragment
-import com.example.bachelorwork.ui.model.productManage.ProductEditUIState
-import com.example.bachelorwork.ui.model.productManage.ProductManageFormEvent
-import com.example.bachelorwork.ui.model.productManage.ProductManageFormState
+import com.example.bachelorwork.ui.model.product.productManage.ProductEditUIState
+import com.example.bachelorwork.ui.model.product.productManage.ProductManageFormEvent
+import com.example.bachelorwork.ui.model.product.productManage.ProductManageFormState
 import com.example.bachelorwork.ui.utils.dialogs.createDiscardDialog
 import com.example.bachelorwork.ui.utils.inputFilters.NoZeroInputFilter
 import com.example.bachelorwork.util.namesTyped
