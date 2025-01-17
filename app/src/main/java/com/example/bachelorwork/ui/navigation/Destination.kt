@@ -2,6 +2,7 @@ package com.example.bachelorwork.ui.navigation
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
+import com.example.bachelorwork.ui.model.order.create.DiscountType
 import kotlinx.serialization.Serializable
 
 sealed class Destination {
@@ -38,6 +39,15 @@ sealed class Destination {
 
     @Serializable
     data object OrderAddProduct : Destination()
+
+    @Serializable
+    data class OrderEditAddedProduct(val id: Int, val quantity: Double, val rate: Double) : Destination()
+
+    @Serializable
+    data class OrderManageDiscount(
+        val discount: Double = 0.00,
+        val discountType: DiscountType
+    ) : Destination()
 
     @Serializable
     data class EditProduct(val id: Int) : Destination()

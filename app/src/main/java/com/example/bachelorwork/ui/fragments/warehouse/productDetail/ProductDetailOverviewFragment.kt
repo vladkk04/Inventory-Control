@@ -1,7 +1,6 @@
 package com.example.bachelorwork.ui.fragments.warehouse.productDetail
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.FragmentProductDetailOverviewBinding
-import com.example.bachelorwork.ui.collectInLifecycle
-import com.example.bachelorwork.ui.model.product.productDetail.ProductDetailUIState
+import com.example.bachelorwork.ui.model.product.detail.ProductDetailUIState
+import com.example.bachelorwork.ui.utils.extensions.collectInLifecycle
 import com.example.bachelorwork.ui.views.createProductTagChip
 
 class ProductDetailOverviewFragment : Fragment() {
@@ -18,7 +17,7 @@ class ProductDetailOverviewFragment : Fragment() {
     private var _binding: FragmentProductDetailOverviewBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: ProductDetailViewModel by viewModels(ownerProducer = { requireParentFragment() })
+    private val viewModel: ProductDetailOverviewViewModel by viewModels(ownerProducer = { requireParentFragment() })
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +27,6 @@ class ProductDetailOverviewFragment : Fragment() {
         _binding = FragmentProductDetailOverviewBinding.inflate(inflater, container, false)
 
         viewLifecycleOwner.collectInLifecycle(viewModel.uiState) { uiState ->
-            Log.d("tag", uiState.toString())
             updateUI(uiState)
         }
 

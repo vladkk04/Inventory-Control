@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_layout_rate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_medium"
+        android:layout_marginVertical="@dimen/margin_vertical_between_items"
+        android:hint="@string/hint_rate">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_rate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:maxLines="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_layout_quantity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_medium"
+        android:layout_marginVertical="@dimen/margin_vertical_between_items"
+        android:hint="@string/hint_quantity"
+        app:endIconDrawable="@drawable/ic_add"
+        app:endIconMode="custom"
+        app:startIconDrawable="@drawable/ic_minus">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_quantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:maxLines="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/button_manage_product"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_normal"
+        android:layout_marginVertical="@dimen/margin_vertical_between_items"
+        android:text="@string/title_save" />
+
+
+</LinearLayout>

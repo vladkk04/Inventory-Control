@@ -8,13 +8,13 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.FragmentModalBottomSheetProductManageBinding
+import com.example.bachelorwork.domain.model.product.Product
 import com.example.bachelorwork.domain.model.product.ProductUnit
-import com.example.bachelorwork.ui.collectInLifecycle
 import com.example.bachelorwork.ui.common.base.BaseBottomSheetDialogFragment
-import com.example.bachelorwork.ui.model.product.productManage.ProductEditUIState
-import com.example.bachelorwork.ui.model.product.productManage.ProductManageFormEvent
-import com.example.bachelorwork.ui.model.product.productManage.ProductManageFormState
-import com.example.bachelorwork.ui.utils.dialogs.createDiscardDialog
+import com.example.bachelorwork.ui.dialogs.createDiscardDialog
+import com.example.bachelorwork.ui.model.product.manage.ProductManageFormEvent
+import com.example.bachelorwork.ui.model.product.manage.ProductManageFormState
+import com.example.bachelorwork.ui.utils.extensions.collectInLifecycle
 import com.example.bachelorwork.ui.utils.inputFilters.NoZeroInputFilter
 import com.example.bachelorwork.util.namesTyped
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,7 +50,7 @@ class ProductEditModalBottomSheetFragment(
     override fun setupViews() {
         setupUIComponents()
 
-        viewLifecycleOwner.collectInLifecycle(viewModel.uiState) { uiState ->
+        viewLifecycleOwner.collectInLifecycle(viewModel.product) { uiState ->
             updateUIState(uiState)
         }
         viewLifecycleOwner.collectInLifecycle(viewModel.uiFormState) { uiState ->
@@ -122,18 +122,20 @@ class ProductEditModalBottomSheetFragment(
         }
     }
 
-    private fun updateUIState(uiState: ProductEditUIState) {
+    private fun updateUIState(product: Product?) {
 
-        if(uiState.product != null) {
-            binding.editTextName.setText(uiState.product.name)
-            binding.editTextBarcode.setText(uiState.product.barcode)
-            binding.editTextMinStockLevel.setText(uiState.product.minStockLevel.toString())
-            binding.editTextQuantity.setText(String.format(Locale.getDefault(), "%d", uiState.product.quantity))
-            viewModel.onEvent(ProductManageFormEvent.CategoryChanged(uiState.product.category))
+        if(product != null) {
+            binding.editTextName.setText(product.name)
+            binding.editTextBarcode.setText(product.barcode)
+            binding.editTextMinStockLevel.setText(String.format(Locale.getDefault(), "%d", product.minStockLevel))
+            binding.editTextQuantity.setText(String.format(Locale.getDefault(), "%d", product.quantity))
+            binding.numberPickerSelectUnit.value = product.unit.ordinal
+            binding.customInputLayoutCategories.setValue(product.category)
+            viewModel.onEvent(ProductManageFormEvent.CategoryChanged(product.category))
 
-            binding.editTextDescription.setText(uiState.product.description)
-            binding.customInputLayoutTags.addTags(*uiState.product.tags.toTypedArray())
-            binding.editTextBarcode.setText(uiState.product.barcode)
+            binding.editTextDescription.setText(product.description)
+            binding.customInputLayoutTags.addTags(*product.tags.toTypedArray())
+            binding.editTextBarcode.setText(product.barcode)
         }
 
 

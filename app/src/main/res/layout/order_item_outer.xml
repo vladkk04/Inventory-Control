@@ -38,14 +38,14 @@
             android:layout_alignParentEnd="true"
             android:button="@drawable/ic_keyboard_arrow_down" />
 
-        <com.example.bachelorwork.ui.views.UntouchableRecyclerView
+        <com.example.bachelorwork.ui.utils.recyclerview.UntouchableRecyclerView
             android:id="@+id/recyclerView_subitems"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/textView_ordered_date"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_marginVertical="@dimen/margin_extra_small"
             android:clipToPadding="false"/>
 
@@ -54,6 +54,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/recyclerView_subitems"
+            android:layout_alignParentEnd="true"
+            android:layout_marginVertical="@dimen/margin_small"
             android:text="@string/text_order_total"
             android:textSize="@dimen/text_size_medium_plus" />
 

@@ -10,7 +10,7 @@ import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.ProductItemGridBinding
 import com.example.bachelorwork.databinding.ProductItemRowBinding
 import com.example.bachelorwork.domain.model.product.ProductDisplayMode
-import com.example.bachelorwork.ui.model.product.productList.ProductUI
+import com.example.bachelorwork.ui.model.product.list.ProductUI
 import java.util.Locale
 
 
@@ -53,6 +53,7 @@ class ProductListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 textViewName.text = item.name
                 textViewBarcode.text = context.getString(R.string.text_product_item_barcode, item.barcode)
                 textViewQuantity.text = String.format(Locale.getDefault(), item.quantity.toString())
+                textViewUnit.text = item.unit.name
             }
 
             binding.root.setOnClickListener {
@@ -76,6 +77,7 @@ class ProductListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 textViewName.text = item.name
                 textViewBarcode.text = context.getString(R.string.text_product_item_barcode, item.barcode)
                 textViewQuantity.text = String.format(Locale.getDefault(), item.quantity.toString())
+                textViewUnit.text = item.unit.name
             }
 
             binding.root.setOnClickListener {

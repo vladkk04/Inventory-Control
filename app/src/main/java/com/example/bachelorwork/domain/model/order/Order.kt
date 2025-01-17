@@ -1,15 +1,32 @@
 package com.example.bachelorwork.domain.model.order
 
-import com.example.bachelorwork.ui.constant.Constants
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import com.example.bachelorwork.data.local.entity.OrderEntity
+import com.example.bachelorwork.domain.model.product.ProductDetailOrderItem
+import java.util.Date
 
 data class Order(
-    val id: Int = ((100000..999999).random().toString() + System.currentTimeMillis()
-        .toString()).take(7).toInt(),
-    val date: String = LocalDateTime.now()
-        .format(DateTimeFormatter.ofPattern("${Constants.DEFAULT_DATE_FORMAT_PATTERN} 'at' ${Constants.DEFAULT_TIME_FORMAT_WITH_AM_PM}")),
-    val items: List<OrderSubItem>
-) {
-    val total = items.sumOf { it.price * it.quantity }
+    val id: Int,
+    val items: List<OrderProductSubItem>,
+    val total: Double,
+    val orderedAt: Date,
+    val orderedBy: String,
+)
+
+fun Order.toOrderEntity(): OrderEntity = OrderEntity(
+    id = this.id,
+    products = this.items,
+    total = this.total,
+    orderedAt = this.orderedAt,
+    orderedBy = this.orderedBy
+)
+
+
+fun Order.toProductDetailOrderItem(productId: Int): ProductDetailOrderItem {
+    return ProductDetailOrderItem(
+        orderId = this.id,
+        orderedAt = this.orderedAt,
+        orderProductSubItem = items.first { it.id == productId }
+    )
 }
+
+

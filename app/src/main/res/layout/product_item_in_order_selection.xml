@@ -12,7 +12,7 @@
     app:cardBackgroundColor="#825A45"
     app:cardPreventCornerOverlap="false"
     app:cardUseCompatPadding="false"
-    app:strokeColor="#57BCF1">
+    app:strokeColor="#D86451">
 
     <RelativeLayout
         android:id="@+id/layout"
@@ -50,6 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/shapeable_ImageView"
             android:layout_alignParentEnd="true"
+            android:tooltipText="@string/tooltip_text_product_detail_link"
             android:button="@drawable/ic_open_in_new" />
 
     </RelativeLayout>

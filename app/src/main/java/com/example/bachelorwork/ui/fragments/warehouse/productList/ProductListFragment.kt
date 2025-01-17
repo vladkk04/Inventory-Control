@@ -14,10 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.FragmentProductListBinding
 import com.example.bachelorwork.domain.model.product.SortBy
-import com.example.bachelorwork.ui.collectInLifecycle
-import com.example.bachelorwork.ui.model.product.productList.ProductListUIState
-import com.example.bachelorwork.ui.model.product.productList.ProductSearchUIState
+import com.example.bachelorwork.ui.model.product.list.ProductListUIState
+import com.example.bachelorwork.ui.model.product.list.ProductSearchUIState
 import com.example.bachelorwork.ui.utils.StateListDrawableFactory
+import com.example.bachelorwork.ui.utils.extensions.collectInLifecycle
 import com.example.bachelorwork.ui.utils.menu.createPopupMenu
 import com.example.bachelorwork.ui.utils.recyclerview.UpwardScrollButtonListener
 import com.example.bachelorwork.ui.utils.screen.InsetHandler
