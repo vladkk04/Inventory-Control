@@ -21,7 +21,6 @@ The app features a **modern, minimalist design** with an intuitive interface, ma
 
 ## 🖼️ Screenshots
 
-Pinned screenshots in this repository showcase the current functionality:
 - Creating orders and products
   Create Product             |  Create Order
   :-------------------------:|:-------------------------:
