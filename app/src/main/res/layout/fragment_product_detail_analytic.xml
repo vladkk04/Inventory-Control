@@ -1,13 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <com.patrykandpatrick.vico.views.cartesian.CartesianChartView
-        android:id="@+id/cartesian_chart_view"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
 
-</RelativeLayout>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_view_price"
+            style="?attr/materialCardViewElevatedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_small"
+            android:layout_marginVertical="@dimen/margin_vertical_item_detail_between_items"
+            app:contentPadding="@dimen/padding_extra_small">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_small"
+                    android:text="Price"
+                    android:textSize="@dimen/text_size_large" />
+
+                <com.patrykandpatrick.vico.views.cartesian.CartesianChartView
+                    android:id="@+id/chart_view_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:chartStyle="@style/ChartStyle" />
+
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/toggleGroup_period"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+
+                    app:checkedButton="@id/button_week"
+                    app:selectionRequired="true"
+                    app:singleSelection="true">
+
+                    <Button
+                        android:id="@+id/button_week"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="0dp"
+                        android:text="Week" />
+
+                    <Button
+                        android:id="@+id/button_month"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="0dp"
+                        android:text="Month" />
+
+                    <Button
+                        android:id="@+id/button_year"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="0dp"
+                        android:text="Year" />
+
+                    <Button
+                        android:id="@+id/button_all_time"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="0dp"
+                        android:text="All Time" />
+
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+            </LinearLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>

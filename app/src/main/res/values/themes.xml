@@ -5,12 +5,12 @@
     </style>
 
     <style name="Theme.BachelorWork" parent="Base.Theme.BachelorWork">
-        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
+        <!--<item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>-->
     </style>
 
     <style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
-        <item name="android:navigationBarColor" tools:ignore="NewApi">@android:color/transparent</item>
-        <item name="enableEdgeToEdge">true</item>
+        <!--<item name="android:navigationBarColor" tools:ignore="NewApi">@android:color/transparent</item>
+        <item name="enableEdgeToEdge">true</item>-->
     </style>
 
     <style name="Theme.App.NumberPicker" parent="Theme.BachelorWork">
@@ -29,6 +29,12 @@
         <item name="cornerSizeTopRight">0dp</item>
         <item name="cornerSizeBottomLeft">12dp</item>
         <item name="cornerSizeBottomRight">12dp</item>
+    </style>
+
+    <style name="ChartStyle">
+        <item name="layers">line</item>
+        <item name="showBottomAxis">true</item>
+        <item name="showStartAxis">true</item>
     </style>
 
 </resources>

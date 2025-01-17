@@ -11,9 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import com.example.bachelorwork.databinding.CustomCategoryInputDropdownBinding
 import com.example.bachelorwork.domain.model.product.ProductCategory
 import com.example.bachelorwork.ui.common.adapters.CategoryArrayAdapter
-import com.example.bachelorwork.ui.utils.dialogs.CategoryDialogType
-import com.example.bachelorwork.ui.utils.dialogs.createCategoryDialog
-import com.example.bachelorwork.ui.utils.dialogs.createDeleteDialog
+import com.example.bachelorwork.ui.dialogs.CategoryDialogType
+import com.example.bachelorwork.ui.dialogs.createCategoryDialog
+import com.example.bachelorwork.ui.dialogs.createDeleteDialog
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,7 +35,7 @@ class CustomCategoryInputDropdown @JvmOverloads constructor(
 
     private val viewModel by lazy { findViewTreeViewModelStoreOwner()?.let { ViewModelProvider(it).get<CategoriesViewModel>() } }
 
-    private lateinit var listener: OnItemClickListener
+    private var listener: OnItemClickListener? = null
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -56,13 +56,21 @@ class CustomCategoryInputDropdown @JvmOverloads constructor(
         listener = itemClickListener
     }
 
+    fun setValue(value: ProductCategory) {
+        binding.autoCompleteTextViewCategory.setText(value.name)
+    }
+
+    fun setErrorMessage(message: String?) {
+        binding.textInputLayoutCategory.error = message
+    }
+
     private fun setupCategoryAdapter(categories: List<ProductCategory>): CategoryArrayAdapter {
         return CategoryArrayAdapter(
             context,
             categories.toMutableList()
         ).apply {
             setOnClickItemListener { item ->
-                listener.onClick(item)
+                listener?.onClick(item)
                 binding.autoCompleteTextViewCategory.setText(item.name, false)
                 binding.autoCompleteTextViewCategory.dismissDropDown()
             }

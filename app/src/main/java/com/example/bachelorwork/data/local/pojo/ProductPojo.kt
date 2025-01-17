@@ -28,4 +28,5 @@ fun ProductPojo.toProduct() = Product(
     minStockLevel = product.minStockLevel,
     description = product.description,
     tags = product.tags,
+    timelineHistory = product.timelineHistory
 )

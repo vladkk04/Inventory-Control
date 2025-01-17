@@ -14,7 +14,7 @@ import com.example.bachelorwork.databinding.ActivityMainBinding
 import com.example.bachelorwork.ui.navigation.NavigationGraph
 import com.example.bachelorwork.ui.navigation.Navigator
 import com.example.bachelorwork.ui.navigation.setupWithNavController
-import com.example.bachelorwork.ui.utils.snackbar.SnackbarController
+import com.example.bachelorwork.ui.snackbar.SnackbarController
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

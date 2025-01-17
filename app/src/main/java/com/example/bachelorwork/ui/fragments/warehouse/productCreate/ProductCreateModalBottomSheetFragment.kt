@@ -9,12 +9,12 @@ import androidx.fragment.app.viewModels
 import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.FragmentModalBottomSheetProductManageBinding
 import com.example.bachelorwork.domain.model.product.ProductUnit
-import com.example.bachelorwork.ui.collectInLifecycle
 import com.example.bachelorwork.ui.common.base.BaseBottomSheetDialogFragment
-import com.example.bachelorwork.ui.model.product.productManage.ProductCreateUIState
-import com.example.bachelorwork.ui.model.product.productManage.ProductManageFormEvent
-import com.example.bachelorwork.ui.model.product.productManage.ProductManageFormState
-import com.example.bachelorwork.ui.utils.dialogs.createDiscardDialog
+import com.example.bachelorwork.ui.dialogs.createDiscardDialog
+import com.example.bachelorwork.ui.model.product.manage.ProductManageFormEvent
+import com.example.bachelorwork.ui.model.product.manage.ProductManageFormState
+import com.example.bachelorwork.ui.model.product.manage.ProductManageUIState
+import com.example.bachelorwork.ui.utils.extensions.collectInLifecycle
 import com.example.bachelorwork.ui.utils.inputFilters.NoZeroInputFilter
 import com.example.bachelorwork.util.namesTyped
 import dagger.hilt.android.AndroidEntryPoint
@@ -72,8 +72,8 @@ class ProductCreateModalBottomSheetFragment
         binding.numberPickerSelectUnit.apply {
             maxValue = ProductUnit.entries.size - 1
             displayedValues = ProductUnit.entries.namesTyped()
-        }.setOnScrollListener { view, _ ->
-            viewModel.onEvent(ProductManageFormEvent.UnitChanged(ProductUnit.entries[view.value]))
+        }.setOnValueChangedListener { _, _, current ->
+            viewModel.onEvent(ProductManageFormEvent.UnitChanged(ProductUnit.entries[current]))
         }
     }
 
@@ -106,10 +106,7 @@ class ProductCreateModalBottomSheetFragment
             setupTextChangeListener(editTextName, ProductManageFormEvent::NameChanged)
             setupTextChangeListener(editTextBarcode, ProductManageFormEvent::BarcodeChanged)
             setupTextChangeListener(editTextQuantity, ProductManageFormEvent::QuantityChanged)
-            setupTextChangeListener(
-                editTextMinStockLevel,
-                ProductManageFormEvent::MinStockLevelChanged
-            )
+            setupTextChangeListener(editTextMinStockLevel, ProductManageFormEvent::MinStockLevelChanged)
             setupTextChangeListener(editTextDescription, ProductManageFormEvent::DescriptionChanged)
 
             binding.customInputLayoutCategories.setOnClickItemListener {
@@ -131,7 +128,7 @@ class ProductCreateModalBottomSheetFragment
         }
     }
 
-    private fun updateUIState(uiState: ProductCreateUIState) {
+    private fun updateUIState(uiState: ProductManageUIState) {
         binding.editTextBarcode.setText(uiState.barcode)
     }
 
@@ -151,6 +148,7 @@ class ProductCreateModalBottomSheetFragment
         binding.textInputLayoutName.error = uiStateForm.nameError
         binding.textInputLayoutBarcode.error = uiStateForm.barcodeError
         binding.textInputLayoutMinStockLevel.error = uiStateForm.minStockLevelError
+        binding.customInputLayoutCategories.setErrorMessage(uiStateForm.categoryError)
     }
 
 }

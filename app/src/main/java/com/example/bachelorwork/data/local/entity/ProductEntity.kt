@@ -8,19 +8,20 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.example.bachelorwork.data.local.entity.ProductEntity.Companion.CHILD_COLUMN_CATEGORY_ID
 import com.example.bachelorwork.domain.model.product.ProductTag
+import com.example.bachelorwork.domain.model.product.ProductTimelineHistory
 import com.example.bachelorwork.domain.model.product.ProductUnit
-import java.util.Date
-
 
 @Entity(
     tableName = ProductEntity.TABLE_NAME,
-    foreignKeys = [ForeignKey(
-        entity = ProductCategoryEntity::class,
-        parentColumns = [ProductCategoryEntity.COLUMN_ID],
-        childColumns = [CHILD_COLUMN_CATEGORY_ID],
-        onDelete = ForeignKey.CASCADE,
-        onUpdate = ForeignKey.CASCADE
-    )],
+    foreignKeys = [
+        ForeignKey(
+            entity = ProductCategoryEntity::class,
+            parentColumns = [ProductCategoryEntity.COLUMN_ID],
+            childColumns = [CHILD_COLUMN_CATEGORY_ID],
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
+        )
+    ],
     indices = [Index(CHILD_COLUMN_CATEGORY_ID)],
 )
 data class ProductEntity(
@@ -37,6 +38,7 @@ data class ProductEntity(
     val minStockLevel: Int,
     val tags: List<ProductTag> = emptyList(),
     val description: String = "",
+    val timelineHistory: List<ProductTimelineHistory> ,
 ) {
     companion object {
         const val TABLE_NAME = "products"

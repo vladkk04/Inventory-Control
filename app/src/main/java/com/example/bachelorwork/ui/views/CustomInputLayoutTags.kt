@@ -2,22 +2,18 @@ package com.example.bachelorwork.ui.views
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
-import android.view.KeyEvent
 import android.view.LayoutInflater
-import android.widget.EditText
-import android.widget.FrameLayout
-import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
 import com.example.bachelorwork.databinding.CustomInputLayoutTagsBinding
 import com.example.bachelorwork.domain.model.product.ProductTag
 import com.google.android.material.chip.Chip
 import com.google.android.material.textfield.TextInputLayout
+
 // TODO Refactoring Code for Input layout
 class CustomInputLayoutTags @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
-) : TextInputLayout(context, attrs), TextView.OnEditorActionListener {
+) : TextInputLayout(context, attrs) {
 
     private var binding: CustomInputLayoutTagsBinding =
         CustomInputLayoutTagsBinding.inflate(LayoutInflater.from(context), this, true)
@@ -26,16 +22,21 @@ class CustomInputLayoutTags @JvmOverloads constructor(
 
     private val tags: MutableList<ProductTag> = mutableListOf()
 
-    init {
-        binding.editTextTags.setOnEditorActionListener(this)
-    }
 
     fun onTextChangeListener(onChange: (tags: List<ProductTag>) -> Unit) {
         binding.editTextTags.doAfterTextChanged {
             val tagName = it.toString()
-            if (!it.isNullOrEmpty() && it.last() == ' ') {
+            if(it.isNullOrEmpty()) return@doAfterTextChanged
+
+            if (it.isNotEmpty() && it.last() == ' ') {
                 addChip(ProductTag(tagName.dropLast(1)))
                 onChange.invoke(tags.toList())
+            }
+        }
+
+        binding.editTextTags.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus && binding.editTextTags.text?.isNotEmpty() == true) {
+                addChip(ProductTag(binding.editTextTags.text.toString()))
             }
         }
     }
@@ -74,11 +75,6 @@ class CustomInputLayoutTags @JvmOverloads constructor(
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         tags.clear()
-    }
-
-    override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
-        v?.text?.toString()?.takeIf { it.isNotBlank() }?.let { addChip(ProductTag(it)) }
-        return true
     }
 
     fun interface OnCloseIconClickListener {

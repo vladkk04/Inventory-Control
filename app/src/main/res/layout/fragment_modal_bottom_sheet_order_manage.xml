@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <RelativeLayout
@@ -24,29 +23,87 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="@drawable/background_corner_stroke"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_below="@id/textView_title"
-            android:padding="@dimen/padding_small"/>
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="true"
+            android:minHeight="200dp"
+            android:foregroundTintMode="screen"
+            android:padding="@dimen/padding_small"
+            android:foreground="@drawable/background_corner_stroke"/>
+
+        <LinearLayout
+            android:id="@+id/layout_add_product"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/recyclerView"
+            android:layout_alignBottom="@+id/recyclerView"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_box_add"
+                android:scaleType="fitCenter"
+                android:layout_margin="@dimen/margin_normal"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_click_here_to_add_product"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button_add_product"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/recyclerView"
+            android:text="Add prodcut"
+            android:layout_marginVertical="@dimen/margin_vertical_between_items"/>
 
         <TextView
             android:id="@+id/textview_subtotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/button_add_product"
             android:layout_marginVertical="@dimen/margin_vertical_between_items"
-            android:text="Subtotal"
-            android:layout_below="@id/recyclerView"
-            android:textSize="@dimen/text_size_normal" />
+            android:text="@string/text_subtotal"
+            android:textSize="@dimen/text_size_medium"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/textview_discount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/margin_vertical_between_items"
-            android:text="Discount 10%"
+            android:text="@string/text_discount"
             android:layout_below="@id/textview_subtotal"
             android:textSize="@dimen/text_size_normal" />
+
+        <RadioGroup
+            android:id="@+id/radio_group_discount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/textview_discount"
+            android:layout_alignBottom="@+id/textview_discount"
+            android:layout_alignParentEnd="true"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radio_button_percentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="%" />
+
+            <RadioButton
+                android:id="@+id/radio_button_fixed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="fixed" />
+
+        </RadioGroup>
 
         <TextView
             android:id="@+id/textView_total"
@@ -54,8 +111,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/textview_discount"
             android:layout_marginVertical="@dimen/margin_vertical_between_items"
-            android:text="Total"
-            android:textSize="@dimen/text_size_normal" />
+            android:text="@string/text_total"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_medium" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/text_input_layout_comment"

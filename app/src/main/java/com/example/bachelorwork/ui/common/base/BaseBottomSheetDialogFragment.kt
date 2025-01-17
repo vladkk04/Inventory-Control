@@ -1,9 +1,7 @@
 package com.example.bachelorwork.ui.common.base
 
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -15,7 +13,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.MenuRes
 import androidx.viewbinding.ViewBinding
 import com.example.bachelorwork.R
-import com.example.bachelorwork.ui.utils.dialogs.createDiscardDialog
+import com.example.bachelorwork.ui.dialogs.createDiscardDialog
 import com.example.bachelorwork.ui.utils.screen.InsetHandler
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
@@ -28,14 +26,13 @@ import com.google.android.material.bottomsheet.BottomSheetDragHandleView
 
 
 abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDialogFragment() {
-
-    protected abstract val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> VB
-
     private var _binding: VB? = null
 
     private var toolbar: MaterialToolbar? = null
 
     private var dragHandleView: BottomSheetDragHandleView? = null
+
+    protected abstract val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> VB
 
     protected val binding
         get() = requireNotNull(_binding)
@@ -72,7 +69,9 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
         savedInstanceState: Bundle?
     ): View? {
         _binding = bindingInflater.invoke(inflater, container, false)
+
         setupViews()
+
         return binding.root
     }
 

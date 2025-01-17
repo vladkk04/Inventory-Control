@@ -23,6 +23,6 @@ class ProductCategoryRepositoryImpl @Inject constructor(
 
     override suspend fun deleteAll(vararg obj: ProductCategoryEntity) = dao.deleteAll(*obj)
 
-    override fun getAll(): Flow<Array<ProductCategoryEntity>> = dao.getProductCategories()
+    override fun getAll(): Flow<Array<ProductCategoryEntity>> = dao.getAll()
 
 }

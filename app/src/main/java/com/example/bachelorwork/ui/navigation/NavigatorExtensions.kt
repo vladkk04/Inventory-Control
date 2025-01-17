@@ -18,17 +18,25 @@ fun NavigationBarView.setupWithNavController(
                 menu.findItemByTitle(dest::class.simpleName)?.isChecked = true
             }
     }
+
     setOnItemSelectedListener { item ->
         Destination.getTopLevelDestinations().find { it::class.simpleName == item.title }
-            ?.takeIf { dest ->
-                navController.currentDestination?.hasRoute(dest::class) != true
-            }?.let { destination ->
-            navController.navigate(destination) {
-                restoreState = true
-                launchSingleTop = true
+            ?.let { selectedRoute ->
+                val isSelected =
+                    navController.currentDestination?.hasRoute(selectedRoute::class) == true
+
+                if (isSelected) return@setOnItemSelectedListener true
+
+                navController.navigate(selectedRoute) {
+                    launchSingleTop = true
+                    restoreState = false
+
+                    popUpTo(selectedRoute) {
+                        inclusive = false
+                        saveState = true
+                    }
+                }
             }
-            return@setOnItemSelectedListener true
-        }
         false
     }
 }

@@ -8,12 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.FragmentProductDetailBinding
-import com.example.bachelorwork.ui.collectInLifecycle
 import com.example.bachelorwork.ui.common.adapters.ViewPagerAdapter
 import com.example.bachelorwork.ui.common.adapters.ViewPagerFragmentData
-import com.example.bachelorwork.ui.fragments.warehouse.ProductDetailAnalyticFragment
-import com.example.bachelorwork.ui.model.product.productDetail.ProductDetailUIState
-import com.example.bachelorwork.ui.utils.dialogs.createDeleteDialog
+import com.example.bachelorwork.ui.dialogs.createDeleteDialog
+import com.example.bachelorwork.ui.model.product.detail.ProductDetailUIState
+import com.example.bachelorwork.ui.utils.extensions.collectInLifecycle
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.abs
@@ -26,7 +25,7 @@ class ProductDetailFragment : Fragment() {
 
     private lateinit var viewPagerAdapter: ViewPagerAdapter
 
-    private val viewModel: ProductDetailViewModel by viewModels()
+    private val viewModel: ProductDetailOverviewViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -80,12 +79,17 @@ class ProductDetailFragment : Fragment() {
                 R.drawable.ic_description_outline
             ),
             ViewPagerFragmentData(
+                ProductDetailOrdersFragment(),
+                "Orders",
+                R.drawable.ic_list
+            ),
+            ViewPagerFragmentData(
                 ProductDetailAnalyticFragment(),
                 "Analytics",
                 R.drawable.ic_analytics_outline
             ),
             ViewPagerFragmentData(
-                ProductDetailAnalyticFragment(),
+                ProductDetailTimelineHistoryFragment(),
                 "History",
                 R.drawable.ic_history
             ),

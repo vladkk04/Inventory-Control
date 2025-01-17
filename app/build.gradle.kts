@@ -69,7 +69,7 @@ dependencies {
     implementation(libs.flexbox.layout)
 
     //Gson
-    implementation(libs.gson)
+    //implementation(libs.gson)
 
     //Analytics
     implementation(libs.vico.views)
@@ -86,6 +86,8 @@ dependencies {
 
     // Serialization
     implementation(libs.serialization.json)
+
+    implementation("androidx.hilt:hilt-navigation-fragment:1.2.0")
 
     //Simple Recycler View Adapter
     implementation(libs.element.adapter)

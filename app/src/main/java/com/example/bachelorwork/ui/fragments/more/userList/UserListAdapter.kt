@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.UserItemBinding
-import com.example.bachelorwork.ui.utils.dialogs.createDeleteDialog
+import com.example.bachelorwork.ui.dialogs.createDeleteDialog
 import com.example.bachelorwork.ui.utils.menu.createPopupMenu
 
 class UserListAdapter : RecyclerView.Adapter<UserListAdapter.ViewHolder>() {

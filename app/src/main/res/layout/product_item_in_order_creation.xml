@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin_small">
 
     <com.google.android.material.card.MaterialCardView
         style="@style/Widget.Material3.CardView.Filled"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        app:cardBackgroundColor="#4E4E4E"
+        android:layout_height="match_parent"
+        android:minHeight="70dp"
         app:contentPadding="8dp">
 
         <RelativeLayout
@@ -20,44 +21,47 @@
                 android:id="@+id/shapeable_ImageView"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/margin_extra_small"
                 android:scaleType="centerCrop"
-                app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium"
-                tools:src="@drawable/cup" />
+                android:src="@drawable/cup"
+                app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
 
             <TextView
                 android:id="@+id/textView_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/checkbox_edit"
                 android:layout_alignParentTop="true"
                 android:layout_marginHorizontal="@dimen/margin_small"
+                android:layout_toStartOf="@+id/checkbox_edit"
                 android:layout_toEndOf="@+id/shapeable_ImageView"
                 android:textSize="@dimen/text_size_large"
                 android:textStyle="bold"
-                tools:text="Wood" />
+                tools:text="Woohdfjshjkfhsdfklsdjd" />
 
             <TextView
                 android:id="@+id/textView_total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/checkbox_remove"
+                android:layout_below="@+id/textView_amount"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
-                android:gravity="center"
+                android:layout_marginHorizontal="@dimen/margin_small"
+                android:layout_marginVertical="@dimen/margin_extra_small"
+                android:gravity="end|center"
                 android:textSize="@dimen/text_size_medium"
                 android:textStyle="bold"
-                android:layout_marginHorizontal="@dimen/margin_small"
-                tools:text="13 €" />
+                tools:text="13203748274€" />
 
             <TextView
                 android:id="@+id/textView_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/textView_name"
                 android:layout_marginHorizontal="@dimen/margin_small"
                 android:layout_toEndOf="@+id/shapeable_ImageView"
+                android:gravity="start|center"
                 android:textSize="@dimen/text_size_normal"
-                tools:text="20.0 kg x 2.00 $" />
+                tools:text="20.22 kg x 2.03 $" />
 
             <CheckBox
                 android:id="@+id/checkbox_remove"
@@ -70,9 +74,9 @@
                 android:id="@+id/checkbox_edit"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:drawablePadding="0dp"
                 android:layout_toStartOf="@+id/checkbox_remove"
-                android:button="@drawable/ic_edit" />
+                android:button="@drawable/ic_edit"
+                android:drawablePadding="0dp" />
 
 
         </RelativeLayout>

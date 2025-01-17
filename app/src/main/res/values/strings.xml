@@ -14,6 +14,7 @@
     <string name="title_save">Save</string>
     <string name="title_edit">Edit</string>
     <string name="title_delete">Delete</string>
+    <string name="title_hide">Hide</string>
 
     <string name="text_empty_warehouse">No items in warehouse</string>
     <string name="text_no_result">No result</string>
@@ -28,6 +29,7 @@
     <string name="hint_date">Date purchase*</string>
     <string name="hint_min_stock_level">Minimal Stock Level*</string>
     <string name="hint_quantity">Quantity</string>
+    <string name="hint_quantity_unit">Quantity (%1$s)</string>
     <string name="hint_rate">Rate</string>
     <string name="hint_description">Description</string>
     <string name="hint_comment">Comment</string>
@@ -38,32 +40,40 @@
     <string name="hint_password">Password</string>
     <string name="hint_full_name">Full Name</string>
     <string name="hint_user_role">User Role</string>
-
+    <string name="hint_discount">Discount</string>
 
     <string name="text_product_item_barcode">Barcode: %1$s</string>
     <string name="text_product_item_price">Price per %1$s: %2$.2f € </string>
     <string name="text_product_item_text_pcs">pcs</string>
-    <string name="text_product_item_pcs">x%1$d</string>
+    <string name="text_product_item_quantity">x%1.2f</string>
+
 
     <string name="toolbar_title_order_id"># %1$s</string>
 
-
     <string name="hint_search_bar_products">Enter text to search product</string>
     <string name="content_description_text_add_product_fab_button">Add new product</string>
-
 
     <string name="helper_text_required">*required</string>
     <string name="helper_text_date">MM/DD/YYYY</string>
     <string name="helper_text_optional">(optional)</string>
     <string name="text_total_price">Total price: %1$.2f</string>
     <string name="text_price_per_unit">Price per %1$s</string>
+    <string name="text_total">Total: %1$.2f</string>
+
 
     <string name="text_hello_user">Hello, %1$s</string>">
 
     <string name="text_order_id">Order #%1$d</string>"
     <string name="text_order_date_timestamp">%1$s</string>
     <string name="text_order_total">Total $%1$.2f</string>
-    <string name="text_price">$%1$.2f</string>
+    <string name="text_order_subitem_quantity">x%1$.2f %2$s</string>
+
+    <string name="text_price">%1$.2f €</string>
+
+    <string name="text_amount_order_added_product">%1$.2f %2$s x %3$.2f</string>
+    <string name="text_subtotal">Subtotal %1$.2f</string>
+    <string name="text_discount">Discount: %1$.2f</string>
+    <string name="text_discount_percentage">Discount: %1$.2f %%</string>
 
     <string name="text_unit_price">Unit price: %1$s</string>
     <string name="text_product_id">Product ID: %1$s</string>
@@ -71,17 +81,29 @@
     <string name="text_quantity">Quantity: %1$d</string>
     <string name="text_minimum_stock_level">Minimum stock level: %1$d</string>
     <string name="text_purchase_date">Purchase Date: %1$s</string>
-    <string name="text_measurement_unit">Measurement Unit: %1$s</string>
+    <string name="text_measurement_unit">Unit: %1$s</string>
     <string name="text_tags">Tags:</string>
     <string name="text_description">Description:</string>
 
     <string name="text_delete_item">Delete %1$s</string>
     <string name="text_delete_item_confirm">Are you sure you want to delete %1$s? This action cannot be undone.</string>
     <string name="text_create_new_user">Create new user</string>
-    <string name="title_hide">Hide</string>
 
-    <string name="text_add_product">Add product</string>
+    <string name="text_button_add_product">Add product</string>
+    <string name="text_button_edit_product">Save edited product</string>
+    <string name="text_click_here_to_add_product">Click here to add product or button below</string>
     <string name="text_selected">Selected</string>
     <string name="text_manage_users">Manage Users</string>
+    <string name="text_manage_orders">Manage Orders</string>
+
+    <string name="tooltip_text_product_detail_link">Open product detail</string>
+    <string name="text_product_timeline_history_modify">%1$s ○ %2$s</string>
+
+    <string name="text_product_created">Product Created</string>
+    <string name="text_product_updated">Product Update</string>
+
+    <string name="text_detail_ordered_product">%1$s x %2$.2f %3$s</string>
+    <string name="text_no_orders">No Orders</string>
+
 
 </resources>

@@ -10,6 +10,6 @@ import kotlinx.coroutines.flow.Flow
 interface ProductCategoryDao: BaseDao<ProductCategoryEntity> {
 
     @Query("SELECT * FROM product_categories")
-    fun getProductCategories(): Flow<Array<ProductCategoryEntity>>
+    fun getAll(): Flow<Array<ProductCategoryEntity>>
 
 }

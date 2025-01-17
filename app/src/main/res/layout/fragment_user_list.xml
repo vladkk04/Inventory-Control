@@ -5,19 +5,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/textView_manage_users"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/text_manage_users"
-        android:layout_margin="@dimen/margin_medium"
-        android:textSize="@dimen/text_size_large_plus" />
+    <LinearLayout
+        android:id="@+id/layout_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="88dp"
+        android:layout_alignParentTop="true"
+        android:gravity="start|center"
+        android:paddingStart="@dimen/padding_medium">
+
+        <include
+            android:id="@+id/profile_circle_picture"
+            layout="@layout/profile_circle_picture" />
+
+        <TextView
+            android:id="@+id/textView_manage_orders"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_manage_users"
+            android:layout_margin="@dimen/margin_medium"
+            android:textSize="@dimen/text_size_large_plus" />
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_manage_users"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/textView_manage_users"
+        android:layout_below="@id/layout_toolbar"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"

@@ -1,7 +1,7 @@
 package com.example.bachelorwork.domain.model.product
 
 import android.net.Uri
-import com.example.bachelorwork.ui.model.product.productList.ProductUI
+import com.example.bachelorwork.ui.model.product.list.ProductUI
 
 data class Product(
     var id: Int = 0,
@@ -14,6 +14,7 @@ data class Product(
     val minStockLevel: Int,
     val tags: List<ProductTag> = emptyList(),
     val description: String = "",
+    val timelineHistory: List<ProductTimelineHistory>
 )
 
 fun List<Product>.toProductUI(): List<ProductUI> = map {

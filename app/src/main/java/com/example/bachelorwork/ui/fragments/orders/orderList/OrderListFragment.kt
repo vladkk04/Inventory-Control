@@ -10,11 +10,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.elveum.elementadapter.simpleAdapter
 import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.FragmentOrderListBinding
+import com.example.bachelorwork.databinding.OrderItemInnerBinding
 import com.example.bachelorwork.databinding.OrderItemOuterBinding
 import com.example.bachelorwork.domain.model.order.Order
+import com.example.bachelorwork.domain.model.order.OrderProductSubItem
+import com.example.bachelorwork.ui.constant.Constants
+import com.example.bachelorwork.ui.model.order.OrderListUiState
 import com.example.bachelorwork.ui.utils.StateListDrawableFactory
+import com.example.bachelorwork.ui.utils.extensions.collectInLifecycle
 import com.example.bachelorwork.ui.utils.screen.InsetHandler
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @AndroidEntryPoint
 class OrderListFragment : Fragment() {
@@ -30,12 +37,16 @@ class OrderListFragment : Fragment() {
                 viewModel.navigateToOrderDetail(item.id)
             }
 
-            recyclerViewSubitems.visibility = View.GONE
-
             textViewOrderId.text =
                 binding.root.context.getString(R.string.text_order_id, item.id)
             textViewOrderedDate.text =
-                binding.root.context.getString(R.string.text_order_date_timestamp, item.date)
+                binding.root.context.getString(
+                    R.string.text_order_date_timestamp,
+                    SimpleDateFormat(
+                        Constants.DateFormats.PRODUCT_TIMELINE_HISTORY_FORMAT,
+                        Locale.getDefault()
+                    ).format(item.orderedAt)
+                )
             textViewTotal.text =
                 binding.root.context.getString(R.string.text_order_total, item.total)
 
@@ -46,18 +57,24 @@ class OrderListFragment : Fragment() {
                     R.drawable.ic_keyboard_arrow_down
                 )
                 setOnCheckedChangeListener { _, isChecked ->
-                    recyclerViewSubitems.visibility =
-                        if (isChecked) View.VISIBLE else View.GONE
+                    recyclerViewSubitems.visibility = if (isChecked) View.VISIBLE else View.GONE
                 }
             }
 
-            /*recyclerViewSubitems.apply {
-                adapterOuter = OrderSubItemAdapter().apply {
-                    submitList(item.items)
+            val adapterInner = simpleAdapter<OrderProductSubItem, OrderItemInnerBinding> {
+                bind { item ->
+                    this.textViewName.text = item.name
+                    this.textViewPrice.text = getString(R.string.text_price, item.price)
+                    this.textViewQuantity.text = getString(R.string.text_order_subitem_quantity, item.quantity, item.unit.lowercase())
                 }
-                setHasFixedSize(true)
+            }
+
+            recyclerViewSubitems.apply {
+                adapter = adapterInner
                 layoutManager = LinearLayoutManager(binding.root.context)
-            }*/
+                setHasFixedSize(true)
+            }
+            adapterInner.submitList(item.items)
         }
     }
 
@@ -70,10 +87,18 @@ class OrderListFragment : Fragment() {
 
         InsetHandler.adaptToEdgeWithMargin(binding.root)
 
+        collectInLifecycle(viewModel.uiState) {
+            setupUiState(it)
+        }
+
         setupRecyclerView()
         setupFabButton()
 
         return binding.root
+    }
+
+    private fun setupUiState(uiState: OrderListUiState) {
+        adapterOuter.submitList(uiState.orders)
     }
 
     private fun setupRecyclerView() {

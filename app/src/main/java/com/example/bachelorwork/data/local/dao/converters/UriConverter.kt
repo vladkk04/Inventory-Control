@@ -5,6 +5,7 @@ import androidx.room.TypeConverter
 import com.example.bachelorwork.data.local.dao.base.converters.BaseConverter
 
 class UriConverter: BaseConverter<Uri, String> {
+
     @TypeConverter
     override fun convertTo(value: String): Uri = Uri.parse(value)
 

@@ -6,8 +6,8 @@ import com.example.bachelorwork.domain.model.product.ProductCategory
 import com.example.bachelorwork.domain.model.product.toEntity
 import com.example.bachelorwork.domain.usecase.productCategory.ProductCategoryUseCases
 import com.example.bachelorwork.ui.utils.extensions.handleResult
-import com.example.bachelorwork.ui.utils.snackbar.SnackbarController.sendSnackbarEvent
-import com.example.bachelorwork.ui.utils.snackbar.SnackbarEvent
+import com.example.bachelorwork.ui.snackbar.SnackbarController.sendSnackbarEvent
+import com.example.bachelorwork.ui.snackbar.SnackbarEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
