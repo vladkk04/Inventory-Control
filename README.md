@@ -24,16 +24,16 @@ The app features a **modern, minimalist design** with an intuitive interface, ma
 - Creating orders and products
   Create Product             |  Create Order
   :-------------------------:|:-------------------------:
-  <img src="https://github.com/vladkk04/Inventory-Control/tree/main/AppPictures/Create%20Product.jpg" width="200" height="430" />  | <img src="https://github.com/vladkk04/Inventory-Control/tree/main/AppPictures/Create%20Order%202.jpg" width="200" height="430" />  
+  <img src="https://github.com/vladkk04/Inventory-Control/blob/main/AppPictures/Create%20Product.jpg" width="200" height="430" />  | <img src="https://github.com/vladkk04/Inventory-Control/blob/main/AppPictures/Create%20Order%202.jpg" width="200" height="430" />  
   
 - |                                                         Product Statistic                                                          |
   |:----------------------------------------------------------------------------------------------------------------------------------:|
-  | <img src="https://github.com/vladkk04/Inventory-Control/tree/main/AppPictures/Product%20Statistic.jpg" width="200" height="430" /> |
+  | <img src="https://github.com/vladkk04/Inventory-Control/blob/main/AppPictures/Product%20Statistic.jpg" width="200" height="430" /> |
   
 - Managing users
    Create User             |  Manage Users
   :-------------------------:|:-------------------------:
-  <img src="https://github.com/vladkk04/Inventory-Control/tree/main/AppPictures/Create%20user.jpg" width="200" height="430" />  | <img src="https://github.com/vladkk04/Inventory-Control/tree/main/AppPictures/Manage%20users.jpg" width="200" height="430" />  
+  <img src="https://github.com/vladkk04/Inventory-Control/blob/main/AppPictures/Create%20user.jpg" width="200" height="430" />  | <img src="https://github.com/vladkk04/Inventory-Control/blob/main/AppPictures/Manage%20users.jpg" width="200" height="430" />  
 
 ---
 
