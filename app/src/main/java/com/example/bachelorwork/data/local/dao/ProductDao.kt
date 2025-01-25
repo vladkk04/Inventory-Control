@@ -14,7 +14,7 @@ interface ProductDao: BaseDao<ProductEntity> {
     @Query("SELECT * FROM products")
     fun getAll(): Flow<Array<ProductEntity>>
 
-    @Query("SELECT * FROM products WHERE products.id = :id")
+    @Query("SELECT * FROM products WHERE products.productId = :id")
     fun getById(id: Int): Flow<ProductEntity>
 
     @Transaction
@@ -22,9 +22,9 @@ interface ProductDao: BaseDao<ProductEntity> {
     fun getProductsPojo(): Flow<List<ProductPojo>>
 
     @Transaction
-    @Query("SELECT * FROM products WHERE products.id = :id")
+    @Query("SELECT * FROM products WHERE products.productId = :id")
     fun getProductPojo(id: Int): Flow<ProductPojo>
 
-    @Query("DELETE FROM products WHERE products.id = :id")
+    @Query("DELETE FROM products WHERE products.productId= :id")
     suspend fun deleteByProductId(id: Int)
 }

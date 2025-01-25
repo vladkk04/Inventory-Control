@@ -11,6 +11,10 @@ class OrderRepositoryImpl(
 
     override fun getAll(): Flow<Array<OrderEntity>> = orderDao.getAll()
 
+    override fun getById(id: Int): Flow<OrderEntity> = orderDao.getById(id)
+
+    override suspend fun deleteByOrderId(id: Int) = orderDao.deleteByOrderId(id)
+
     override suspend fun insert(obj: OrderEntity) = orderDao.insert(obj)
 
     override suspend fun insertAll(vararg obj: OrderEntity) = orderDao.insertAll(*obj)

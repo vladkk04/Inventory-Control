@@ -10,7 +10,7 @@
         android:layout_height="88dp"
         android:layout_alignParentTop="true"
         android:gravity="start|center"
-        android:paddingStart="@dimen/padding_medium">
+        android:paddingHorizontal="@dimen/padding_medium">
 
         <include
             android:id="@+id/profile_circle_picture"
@@ -20,8 +20,8 @@
             android:id="@+id/textView_manage_orders"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/text_manage_orders"
             android:layout_margin="@dimen/margin_medium"
+            android:text="@string/text_manage_orders"
             android:textSize="@dimen/text_size_large_plus" />
 
     </LinearLayout>
@@ -30,18 +30,18 @@
         android:id="@+id/recyclerView_orders"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="@dimen/margin_normal"
         android:layout_below="@id/layout_toolbar"
+        android:layout_marginHorizontal="@dimen/margin_normal"
         tools:listitem="@layout/order_item_outer" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_create_order"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/margin_medium"
-        android:src="@drawable/ic_add"
-        android:contentDescription="Create order"/>
+        android:contentDescription="Create order"
+        android:src="@drawable/ic_add" />
 
 </RelativeLayout>

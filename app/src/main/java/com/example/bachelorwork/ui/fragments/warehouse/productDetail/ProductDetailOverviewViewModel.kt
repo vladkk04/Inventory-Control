@@ -39,7 +39,6 @@ class ProductDetailOverviewViewModel @Inject constructor(
             _uiState.value = state.copy(product = product)
         }, onFailure = {
             Log.d("tag", it.message.toString())
-
         })
         state
     }.flowOn(Dispatchers.Default)

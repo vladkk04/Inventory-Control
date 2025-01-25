@@ -6,17 +6,11 @@ import com.example.bachelorwork.domain.repository.ProductCategoryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class GetProductCategoriesUseCase (
+class GetProductCategoriesUseCase(
     private val productCategoryRepository: ProductCategoryRepository
 ) {
     operator fun invoke(): Flow<Result<List<ProductCategory>>> =
         productCategoryRepository.getAll().map { categories ->
-            runCatching {
-                categories.map {
-                    it.copy(
-                        name = it.name.lowercase().replaceFirstChar(Char::titlecase)
-                    ).toProductCategory()
-                }
-            }
+            runCatching { categories.map { it.toProductCategory() } }
         }
 }

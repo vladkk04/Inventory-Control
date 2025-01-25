@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
-        app:cardBackgroundColor="#896F4D"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Material3.Corner.Bottom">
 
         <LinearLayout
@@ -46,7 +45,7 @@
                 android:layout_marginVertical="@dimen/margin_extra_small"
                 android:textSize="@dimen/text_size_medium"
                 android:textColor="#C8C8C8"
-                android:text="Admin #2342" />
+                android:text="Administrator #2342" />
 
 
         </LinearLayout>

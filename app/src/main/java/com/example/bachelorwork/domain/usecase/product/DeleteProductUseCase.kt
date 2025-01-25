@@ -4,7 +4,7 @@ import com.example.bachelorwork.data.local.entity.ProductEntity
 import com.example.bachelorwork.domain.repository.ProductRepository
 
 class DeleteProductUseCase(
-    private val productRepository: ProductRepository
+    private val productRepository: ProductRepository,
 ) {
     suspend operator fun invoke(product: ProductEntity) = runCatching {
         productRepository.delete(product)

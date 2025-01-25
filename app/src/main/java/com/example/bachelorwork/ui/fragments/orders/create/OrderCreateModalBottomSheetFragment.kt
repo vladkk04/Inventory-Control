@@ -5,6 +5,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.elveum.elementadapter.simpleAdapter
@@ -14,7 +15,6 @@ import com.example.bachelorwork.databinding.ProductItemInOrderCreationBinding
 import com.example.bachelorwork.domain.model.order.OrderAddedProduct
 import com.example.bachelorwork.ui.common.base.BaseBottomSheetDialogFragment
 import com.example.bachelorwork.ui.dialogs.createDiscardDialog
-import com.example.bachelorwork.ui.fragments.orders.create.manage.discount.OrderManageDiscountModalBottomSheetFragment
 import com.example.bachelorwork.ui.model.order.create.DiscountType
 import com.example.bachelorwork.ui.model.order.create.OrderCreateUiState
 import com.example.bachelorwork.ui.navigation.Destination
@@ -87,20 +87,19 @@ class OrderCreateModalBottomSheetFragment :
         setupAddProductToOrderLayout()
         setupDiscountSelector()
 
-        collectInLifecycle(sharedViewModel.selectedProduct) {
+        collectInLifecycle(sharedViewModel.selectedProduct, Lifecycle.State.STARTED) {
             viewModel.addProductToOrder(it)
         }
 
-        collectInLifecycle(viewModel.uiState) {
+        collectInLifecycle(viewModel.uiState, Lifecycle.State.STARTED) {
             setupUiState(it)
         }
-
         collectInLifecycle(
             findNavController().currentBackStackEntry?.savedStateHandle
-                ?.getStateFlow(OrderManageDiscountModalBottomSheetFragment.DISCOUNT_KEY, "0.00")
+                ?.getStateFlow("discount", 0.00)
                 ?: return
         ) {
-            viewModel.setDiscount(it.toDouble())
+            viewModel.setDiscount(it)
         }
 
     }
@@ -119,6 +118,7 @@ class OrderCreateModalBottomSheetFragment :
             )
             DiscountType.FIXED -> getString(R.string.text_discount, uiState.discount)
         }
+
 
         binding.textviewSubtotal.text = getString(R.string.text_subtotal, uiState.subtotal)
         binding.textviewDiscount.text = discountType

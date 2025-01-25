@@ -17,7 +17,7 @@
             style="?attr/materialCardViewFilledStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/margin_vertical_item_detail_between_items"
+            android:layout_marginVertical="@dimen/margin_small"
             app:contentPadding="@dimen/padding_small">
 
             <LinearLayout
@@ -78,7 +78,7 @@
             style="?attr/materialCardViewFilledStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/margin_vertical_item_detail_between_items"
+            android:layout_marginVertical="@dimen/margin_small"
             app:contentPadding="@dimen/padding_small">
 
             <LinearLayout
@@ -129,7 +129,7 @@
             style="?attr/materialCardViewFilledStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/margin_vertical_item_detail_between_items"
+            android:layout_marginVertical="@dimen/margin_small"
             app:contentPadding="@dimen/padding_small">
 
             <LinearLayout

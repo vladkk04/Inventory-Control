@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin_small">
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.Material3.CardView.Filled"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minHeight="70dp"
+        app:contentPadding="8dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/shapeable_ImageView"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/cup"
+                android:layout_marginTop="6dp"
+                app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
+
+            <TextView
+                android:id="@+id/textView_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginHorizontal="@dimen/margin_small"
+                android:layout_toStartOf="@+id/checkbox_edit"
+                android:layout_toEndOf="@+id/shapeable_ImageView"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold"
+                tools:text="Cup" />
+
+            <TextView
+                android:id="@+id/textView_stock_on_hand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView_name"
+                android:layout_marginHorizontal="@dimen/margin_small"
+                android:layout_toEndOf="@+id/shapeable_ImageView"
+                android:gravity="start|center"
+                android:textSize="@dimen/text_size_normal"
+                tools:text="Stock on hand: 10330 pcs" />
+
+            <TextView
+                android:id="@+id/textView_new_quantity_on_hand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView_stock_on_hand"
+                android:layout_marginHorizontal="@dimen/margin_small"
+                android:layout_toEndOf="@+id/shapeable_ImageView"
+                android:gravity="start|center"
+                android:textSize="@dimen/text_size_normal"
+                android:layout_marginBottom="@dimen/margin_extra_small"
+                tools:text="New quantity on hand: 10230 pcs" />
+
+            <TextView
+                android:id="@+id/textView_quantity_adjusted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView_new_quantity_on_hand"
+                android:layout_alignParentStart="true"
+                android:layout_marginVertical="@dimen/margin_extra_small"
+                android:gravity="end|center"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold"
+                tools:text="Quantity adjusted: " />
+
+            <TextView
+                android:id="@+id/textView_quantity_adjusted_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView_new_quantity_on_hand"
+                android:layout_alignParentEnd="true"
+                android:layout_marginHorizontal="@dimen/margin_small"
+                android:layout_marginVertical="@dimen/margin_extra_small"
+                android:layout_toEndOf="@+id/textView_quantity_adjusted"
+                android:gravity="end|center"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold"
+                tools:text="-100 pcs" />
+
+            <CheckBox
+                android:id="@+id/checkbox_remove"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+                android:button="@drawable/ic_close" />
+
+            <CheckBox
+                android:id="@+id/checkbox_edit"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_toStartOf="@+id/checkbox_remove"
+                android:button="@drawable/ic_edit"
+                android:drawablePadding="0dp" />
+
+
+        </RelativeLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+</FrameLayout>

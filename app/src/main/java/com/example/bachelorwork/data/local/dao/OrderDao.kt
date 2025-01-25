@@ -12,7 +12,11 @@ interface OrderDao: BaseDao<OrderEntity> {
     @Query("SELECT * FROM orders")
     fun getAll(): Flow<Array<OrderEntity>>
 
-    @Query("SELECT * FROM orders WHERE orders.id = :id")
+    @Query("SELECT * FROM orders WHERE orders.orderId = :id")
     fun getById(id: Int): Flow<OrderEntity>
+
+    @Query("DELETE FROM orders WHERE orders.orderId = :id")
+    suspend fun deleteByOrderId(id: Int)
+
 
 }

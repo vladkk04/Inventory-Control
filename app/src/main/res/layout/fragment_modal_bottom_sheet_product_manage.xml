@@ -79,10 +79,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.95"
-                android:hint="@string/hint_quantity"
-                app:endIconDrawable="@drawable/ic_add"
-                app:endIconMode="custom"
-                app:startIconDrawable="@drawable/ic_minus">
+                android:hint="@string/hint_quantity">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_text_quantity"

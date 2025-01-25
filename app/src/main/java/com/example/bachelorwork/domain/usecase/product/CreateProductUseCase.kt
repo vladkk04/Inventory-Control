@@ -6,6 +6,7 @@ import com.example.bachelorwork.domain.repository.ProductRepository
 class CreateProductUseCase (
     private val productRepository: ProductRepository
 ) {
+
     suspend operator fun invoke(product: ProductEntity) = runCatching {
         productRepository.insert(product)
     }

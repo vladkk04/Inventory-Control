@@ -58,6 +58,9 @@ sealed class Destination {
     @Serializable
     data class EditUser(val id: Int) : Destination()
 
+    @Serializable
+    data object UpdateProductsStock : Destination()
+
     companion object {
         inline fun <reified T : Destination> from(savedStateHandle: SavedStateHandle): T =
             savedStateHandle.toRoute<T>()

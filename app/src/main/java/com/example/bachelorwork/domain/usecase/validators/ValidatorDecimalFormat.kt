@@ -1,9 +1,9 @@
-package com.example.bachelorwork.domain.usecase.inputFieldValidators
+package com.example.bachelorwork.domain.usecase.validators
 
 import com.example.bachelorwork.domain.model.InputFieldValidator
 import com.example.bachelorwork.domain.model.ValidationResult
 
-object ValidatorDecimalFormatUseCase: InputFieldValidator {
+object ValidatorDecimalFormat: InputFieldValidator {
     override operator fun invoke(input: String): ValidationResult {
         val hasError =  input.endsWith('.')
 

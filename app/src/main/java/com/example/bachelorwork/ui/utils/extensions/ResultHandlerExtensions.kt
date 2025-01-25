@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.plus
 import kotlin.coroutines.CoroutineContext
 
+
 private fun <T> Result<T>.handleResult(
     onSuccess: ((T) -> Unit)? = null,
     onFailure: ((Throwable) -> Unit)? = null

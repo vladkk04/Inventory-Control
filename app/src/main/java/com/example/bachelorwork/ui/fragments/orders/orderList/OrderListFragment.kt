@@ -20,6 +20,7 @@ import com.example.bachelorwork.ui.utils.StateListDrawableFactory
 import com.example.bachelorwork.ui.utils.extensions.collectInLifecycle
 import com.example.bachelorwork.ui.utils.screen.InsetHandler
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -74,7 +75,8 @@ class OrderListFragment : Fragment() {
                 layoutManager = LinearLayoutManager(binding.root.context)
                 setHasFixedSize(true)
             }
-            adapterInner.submitList(item.items)
+
+            //adapterInner.submitList(item.products)
         }
     }
 
@@ -87,12 +89,13 @@ class OrderListFragment : Fragment() {
 
         InsetHandler.adaptToEdgeWithMargin(binding.root)
 
-        collectInLifecycle(viewModel.uiState) {
+        collectInLifecycle(viewModel.uiState, Dispatchers.Main.immediate) {
             setupUiState(it)
         }
 
         setupRecyclerView()
         setupFabButton()
+        setupProfileButton()
 
         return binding.root
     }
@@ -107,6 +110,12 @@ class OrderListFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             setItemViewCacheSize(10)
             setHasFixedSize(true)
+        }
+    }
+
+    private fun setupProfileButton() {
+        binding.profileCirclePicture.root.setOnClickListener {
+            viewModel.openDrawer()
         }
     }
 

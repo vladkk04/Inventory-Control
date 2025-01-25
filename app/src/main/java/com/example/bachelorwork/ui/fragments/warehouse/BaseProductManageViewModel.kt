@@ -3,8 +3,8 @@ package com.example.bachelorwork.ui.fragments.warehouse
 import androidx.lifecycle.ViewModel
 import com.example.bachelorwork.domain.model.ValidatorInputFieldFactory
 import com.example.bachelorwork.domain.usecase.barcodeScanner.BarcodeScannerUseCase
-import com.example.bachelorwork.domain.usecase.inputFieldValidators.ValidatorDecimalFormatUseCase
-import com.example.bachelorwork.domain.usecase.inputFieldValidators.ValidatorNotEmptyUseCase
+import com.example.bachelorwork.domain.usecase.validators.ValidatorDecimalFormat
+import com.example.bachelorwork.domain.usecase.validators.ValidatorNotEmpty
 import com.example.bachelorwork.ui.model.product.manage.ProductManageFormEvent
 import com.example.bachelorwork.ui.model.product.manage.ProductManageFormState
 import com.example.bachelorwork.ui.model.product.manage.ProductManageUIState
@@ -22,16 +22,9 @@ abstract class BaseProductManageViewModel (
     protected val _uiState = MutableStateFlow(ProductManageUIState())
     val uiState get() = _uiState.asStateFlow()
 
-    private val _uiFormState = MutableStateFlow(ProductManageFormState())
+    protected val _uiFormState = MutableStateFlow(ProductManageFormState())
     val uiFormState get() = _uiFormState.asStateFlow()
 
-    fun increaseQuantity() {
-        _uiFormState.update { it.increaseQuantity() }
-    }
-
-    fun decreaseQuantity() {
-        _uiFormState.update { it.decreaseQuantity() }
-    }
 
     fun startScanBarcode() {
         handleResult(barcodeScannerUseCase(), onSuccess = { barcode ->
@@ -97,8 +90,8 @@ abstract class BaseProductManageViewModel (
                 _uiFormState.value.category.name
             ),
             validators = setOf(
-                ValidatorNotEmptyUseCase,
-                ValidatorDecimalFormatUseCase
+                ValidatorNotEmpty,
+                ValidatorDecimalFormat
             )
         )
 

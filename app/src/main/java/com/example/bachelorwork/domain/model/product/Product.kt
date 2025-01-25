@@ -5,7 +5,7 @@ import com.example.bachelorwork.ui.model.product.list.ProductUI
 
 data class Product(
     var id: Int = 0,
-    val category: ProductCategory,
+    val category: ProductCategory?,
     val image: Uri = Uri.EMPTY,
     val name: String,
     val barcode: String,

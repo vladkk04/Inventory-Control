@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView_order_id"
-            android:layout_alignBottom="@id/checkBox_toggle"
+            android:layout_alignBottom="@id/checkBox_navigate_order"
             android:layout_alignParentStart="true"
             android:gravity="center"
             android:text="100g x 20"
@@ -42,7 +42,7 @@
             android:textSize="@dimen/text_size_extra_small" />
 
         <CheckBox
-            android:id="@+id/checkBox_toggle"
+            android:id="@+id/checkBox_navigate_order"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/textView_ordered_date"

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -33,10 +34,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="72dp"
-                android:background="@color/black"
                 android:clipToPadding="false"
                 android:paddingTop="24dp"
                 android:paddingBottom="8dp"
+                android:background="@color/black"
                 app:layout_collapseMode="pin"
                 app:menu="@menu/toolbar_product_detail_menu"
                 app:navigationIcon="@drawable/ic_arrow_back_ios" />

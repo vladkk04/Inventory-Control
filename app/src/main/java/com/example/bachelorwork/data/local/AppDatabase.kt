@@ -1,6 +1,7 @@
 package com.example.bachelorwork.data.local
 
 import android.content.Context
+import android.database.sqlite.SQLiteException
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -17,6 +18,7 @@ import com.example.bachelorwork.data.local.dao.converters.UriConverter
 import com.example.bachelorwork.data.local.entity.OrderEntity
 import com.example.bachelorwork.data.local.entity.ProductCategoryEntity
 import com.example.bachelorwork.data.local.entity.ProductEntity
+import com.example.bachelorwork.util.names
 
 @Database(
     entities = [
@@ -44,8 +46,10 @@ abstract class AppDatabase : RoomDatabase() {
         private const val DATABASE_NAME = "app_db"
 
         private val QUERY_INSERT_DEFAULT_PRODUCT_CATEGORIES = {
-            val entries =
-                ProductCategoryEntity.DefaultCategories.entries.joinToString { "('${it.name}')" }
+            val entries  = ProductCategoryEntity.DefaultCategories.entries.names()
+            .map { it.lowercase().replaceFirstChar { char -> char.uppercase() } }
+            .joinToString(", ") { "('$it')" }
+
             "INSERT INTO ${ProductCategoryEntity.TABLE_NAME} (name) VALUES $entries"
         }
 
@@ -55,7 +59,11 @@ abstract class AppDatabase : RoomDatabase() {
             ).addCallback(object : Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
-                    db.execSQL(QUERY_INSERT_DEFAULT_PRODUCT_CATEGORIES.invoke())
+                    try {
+                        db.execSQL(QUERY_INSERT_DEFAULT_PRODUCT_CATEGORIES.invoke())
+                    } catch (e: SQLiteException) {
+                        e.printStackTrace()
+                    }
                 }
             }).build()
         }

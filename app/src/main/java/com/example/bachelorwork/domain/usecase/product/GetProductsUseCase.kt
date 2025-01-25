@@ -35,6 +35,14 @@ class GetProductsUseCase(
                     products.sortedByDescending { it.name }
                 }
             }
+
+            SortBy.QUANTITY -> {
+                if (productSortOptions.sortDirection == SortDirection.ASCENDING) {
+                    products.sortedBy { it.quantity }
+                } else {
+                    products.sortedByDescending { it.quantity }
+                }
+            }
         }
     }
 }

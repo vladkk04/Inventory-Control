@@ -12,7 +12,7 @@ interface Navigator {
         navOptions: NavOptionsBuilder.() -> Unit = {}
     )
 
-    suspend fun navigateUp()
+    suspend fun navigateUp(args: Map<String, Any?> = emptyMap())
 
     suspend fun openNavigationDrawer()
 

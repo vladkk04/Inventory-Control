@@ -6,6 +6,8 @@ object Constants {
     const val DEFAULT_DATE_FORMAT_PATTERN = "dd/MM/yyyy"
 
     object DateFormats {
+        const val PRODUCT_CHART_FORMAT = "MMM d, yyyy"
         const val PRODUCT_TIMELINE_HISTORY_FORMAT = "MMM d, yyyy h:mm a"
+
     }
 }

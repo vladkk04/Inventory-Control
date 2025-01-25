@@ -9,8 +9,20 @@
     android:layout_marginBottom="@dimen/margin_medium"
     android:paddingHorizontal="@dimen/padding_small">
 
+    <TextView
+        android:id="@+id/textView_out_of_stock"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="2dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textSize="@dimen/text_size_large"
+        android:text="@string/text_out_of_stock"
+        android:visibility="invisible"/>
+
     <com.google.android.material.card.MaterialCardView
         style="@style/Widget.Material3.CardView.Filled"
+        android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardBackgroundColor="#B8B5B5">

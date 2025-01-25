@@ -14,12 +14,12 @@ data class ProductPojo(
         parentColumn = ProductEntity.CHILD_COLUMN_CATEGORY_ID,
         entityColumn = ProductCategoryEntity.COLUMN_ID
     )
-    val category: ProductCategoryEntity
+    val category: ProductCategoryEntity?
 )
 
 fun ProductPojo.toProduct() = Product(
     id = product.id,
-    category = category.toProductCategory(),
+    category = category?.toProductCategory(),
     image = product.image,
     name = product.name,
     barcode = product.barcode,

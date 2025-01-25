@@ -2,24 +2,97 @@
 <androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_view_price"
+            android:id="@+id/card_view_amount"
             style="?attr/materialCardViewElevatedStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_small"
             android:layout_marginVertical="@dimen/margin_vertical_item_detail_between_items"
             app:contentPadding="@dimen/padding_extra_small">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_small"
+                    android:text="Amount"
+                    android:textSize="@dimen/text_size_large" />
+
+                <com.patrykandpatrick.vico.views.cartesian.CartesianChartView
+                    android:id="@+id/chart_view_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:chartStyle="@style/ChartStyle" />
+
+                <!--<com.google.android.material.button.MaterialButtonToggleGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+
+                    app:checkedButton="@id/button_week"
+                    app:selectionRequired="true"
+                    app:singleSelection="true">
+
+                    <Button
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="0dp"
+                        android:text="Week" />
+
+                    <Button
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="0dp"
+                        android:text="Month" />
+
+                    <Button
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="0dp"
+                        android:text="Year" />
+
+                    <Button
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="0dp"
+                        android:text="All Time" />
+
+                </com.google.android.material.button.MaterialButtonToggleGroup>-->
+            </LinearLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_view_price"
+            style="?attr/materialCardViewElevatedStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/card_view_amount"
+            android:layout_marginHorizontal="@dimen/margin_small"
+            android:layout_marginVertical="@dimen/margin_vertical_item_detail_between_items"
+            app:contentPadding="@dimen/padding_extra_small">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
@@ -34,11 +107,11 @@
                     android:id="@+id/chart_view_price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:chartStyle="@style/ChartStyle" />
+                    tools:chartStyle="@style/ChartStyle" />
 
-                <com.google.android.material.button.MaterialButtonToggleGroup
+                <!--<com.google.android.material.button.MaterialButtonToggleGroup
                     android:id="@+id/toggleGroup_period"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
 
@@ -78,12 +151,12 @@
                         android:padding="0dp"
                         android:text="All Time" />
 
-                </com.google.android.material.button.MaterialButtonToggleGroup>
+                </com.google.android.material.button.MaterialButtonToggleGroup>-->
             </LinearLayout>
 
 
         </com.google.android.material.card.MaterialCardView>
 
 
-    </RelativeLayout>
+    </LinearLayout>
 </androidx.core.widget.NestedScrollView>
