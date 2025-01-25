@@ -1,4 +1,4 @@
-package com.example.bachelorwork.ui.fragments.more.userList
+package com.example.bachelorwork.ui.fragments.users
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

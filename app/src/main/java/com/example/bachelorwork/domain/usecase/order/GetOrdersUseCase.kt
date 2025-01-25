@@ -15,4 +15,10 @@ class GetOrdersUseCase(
             runCatching { toProducts }
         }
     }
+
+    operator fun invoke(id: Int): Flow<Result<Order>> {
+        return repository.getById(id).map { orderEntity ->
+            runCatching { orderEntity.toOrder() }
+        }
+    }
 }

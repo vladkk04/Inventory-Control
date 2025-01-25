@@ -1,6 +1,7 @@
 package com.example.bachelorwork.ui.fragments.warehouse.productList
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
@@ -42,6 +43,16 @@ class ProductListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ProductUI) {
             val context = binding.root.context
+            
+            if (item.quantity == 0){
+                binding.textViewOutOfStock.visibility = View.VISIBLE
+                binding.cardView.alpha =  0.2f
+                binding.root.isEnabled = false
+            } else {
+                binding.textViewOutOfStock.visibility = View.GONE
+                binding.cardView.alpha = 1f
+            }
+
 
             with(binding) {
                 Glide.with(context)
@@ -66,6 +77,17 @@ class ProductListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ProductUI) {
             val context = binding.root.context
+            
+            binding.root.isEnabled = item.quantity == 0
+
+            if (item.quantity == 0){
+                binding.textViewOutOfStock.visibility = View.VISIBLE
+                binding.cardView.alpha =  0.2f
+                binding.root.isEnabled = false
+            } else {
+                binding.textViewOutOfStock.visibility = View.GONE
+                binding.cardView.alpha = 1f
+            }
 
             with(binding) {
                 Glide.with(context)

@@ -9,7 +9,7 @@ data class ProductManageFormState(
     val nameError: String? = null,
     val barcode: String = "",
     val barcodeError: String? = null,
-    val quantity: Int = 1,
+    val quantity: Int = 0,
     val productUnit: ProductUnit = ProductUnit.PCS,
     val minStockLevel: String = "",
     val minStockLevelError: String? = null,
@@ -19,6 +19,6 @@ data class ProductManageFormState(
     val description: String = "",
 ) {
     fun increaseQuantity() = this.copy(quantity = quantity + 1)
-    fun decreaseQuantity() = this.copy(quantity = (quantity - 1).coerceAtLeast(1))
+    fun decreaseQuantity() = this.copy(quantity = (quantity - 1).coerceAtLeast(0))
 }
 

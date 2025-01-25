@@ -1,4 +1,4 @@
-package com.example.bachelorwork.ui.fragments.more.userList
+package com.example.bachelorwork.ui.fragments.users
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bachelorwork.databinding.FragmentUserListBinding
+import com.example.bachelorwork.ui.fragments.more.userList.UserListAdapter
 import com.example.bachelorwork.ui.utils.screen.InsetHandler
 import dagger.hilt.android.AndroidEntryPoint
 

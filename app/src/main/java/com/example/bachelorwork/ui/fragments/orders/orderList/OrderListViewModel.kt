@@ -44,4 +44,8 @@ class OrderListViewModel @Inject constructor(
     fun navigateToCreateOrder() = viewModelScope.launch {
         navigator.navigate(Destination.CreateOrder)
     }
+
+    fun openDrawer() = viewModelScope.launch {
+        navigator.openNavigationDrawer()
+    }
 }

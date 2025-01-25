@@ -4,6 +4,7 @@ import com.example.bachelorwork.data.local.AppDatabase
 import com.example.bachelorwork.data.local.repository.OrderRepositoryImpl
 import com.example.bachelorwork.domain.repository.OrderRepository
 import com.example.bachelorwork.domain.usecase.order.CreateOrderUseCase
+import com.example.bachelorwork.domain.usecase.order.DeleteOrderUseCase
 import com.example.bachelorwork.domain.usecase.order.GetOrdersUseCase
 import com.example.bachelorwork.domain.usecase.order.OrderUseCases
 import com.example.bachelorwork.domain.usecase.order.UpdateOrderUseCase
@@ -28,6 +29,7 @@ object OrderRepositoryModule {
         OrderUseCases(
             createOrder = CreateOrderUseCase(repository),
             updateOrder = UpdateOrderUseCase(repository),
+            deleteOrder = DeleteOrderUseCase(repository),
             getOrders = GetOrdersUseCase(repository)
         )
 }

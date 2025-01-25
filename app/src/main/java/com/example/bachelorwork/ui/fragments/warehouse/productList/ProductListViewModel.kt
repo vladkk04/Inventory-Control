@@ -76,6 +76,14 @@ class ProductListViewModel @Inject constructor(
                     )
                 )
             }
+
+            SortBy.QUANTITY -> {
+                getProducts(
+                    uiState.value.orderBy.copy(
+                        sortBy = SortBy.QUANTITY
+                    )
+                )
+            }
         }
     }
 

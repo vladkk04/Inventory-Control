@@ -10,14 +10,15 @@ import androidx.navigation.fragment.fragment
 import androidx.navigation.ui.AppBarConfiguration
 import com.example.bachelorwork.ui.fragments.home.HomeFragment
 import com.example.bachelorwork.ui.fragments.more.MoreBottomSheetFragment
-import com.example.bachelorwork.ui.fragments.more.userList.UserListFragment
 import com.example.bachelorwork.ui.fragments.orders.create.OrderCreateModalBottomSheetFragment
 import com.example.bachelorwork.ui.fragments.orders.create.manage.addProduct.OrderAddProductModalBottomSheetFragment
 import com.example.bachelorwork.ui.fragments.orders.create.manage.discount.OrderManageDiscountModalBottomSheetFragment
 import com.example.bachelorwork.ui.fragments.orders.create.manage.editAddedProduct.OrderEditAddedProductModalBottomSheetFragment
 import com.example.bachelorwork.ui.fragments.orders.detail.OrderDetailFragment
 import com.example.bachelorwork.ui.fragments.orders.orderList.OrderListFragment
+import com.example.bachelorwork.ui.fragments.updateProductStock.UpdateProductsStockModalBottomSheet
 import com.example.bachelorwork.ui.fragments.users.CreateUserModalBottomSheetFragment
+import com.example.bachelorwork.ui.fragments.users.UserListFragment
 import com.example.bachelorwork.ui.fragments.warehouse.productCreate.ProductCreateModalBottomSheetFragment
 import com.example.bachelorwork.ui.fragments.warehouse.productDetail.ProductDetailFragment
 import com.example.bachelorwork.ui.fragments.warehouse.productEdit.ProductEditModalBottomSheetFragment
@@ -76,6 +77,8 @@ class NavigationGraph(
             dialog<OrderEditAddedProductModalBottomSheetFragment, Destination.OrderEditAddedProduct>()
             dialog<OrderManageDiscountModalBottomSheetFragment, Destination.OrderManageDiscount>()
 
+            dialog<UpdateProductsStockModalBottomSheet, Destination.UpdateProductsStock>()
+
             dialog<ProductCreateModalBottomSheetFragment, Destination.CreateProduct>()
             dialog<ProductEditModalBottomSheetFragment, Destination.EditProduct>()
             dialog<CreateUserModalBottomSheetFragment, Destination.CreateNewUser>()
@@ -102,6 +105,13 @@ class NavigationGraph(
                 }
 
                 is NavigationAction.NavigateUp -> {
+                    try {
+                        action.args.forEach { (key, value) ->
+                            navController.previousBackStackEntry?.savedStateHandle?.set(key, value)
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                     navController.navigateUp()
                 }
 

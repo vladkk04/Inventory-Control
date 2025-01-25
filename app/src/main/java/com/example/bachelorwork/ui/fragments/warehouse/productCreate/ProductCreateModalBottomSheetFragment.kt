@@ -15,10 +15,8 @@ import com.example.bachelorwork.ui.model.product.manage.ProductManageFormEvent
 import com.example.bachelorwork.ui.model.product.manage.ProductManageFormState
 import com.example.bachelorwork.ui.model.product.manage.ProductManageUIState
 import com.example.bachelorwork.ui.utils.extensions.collectInLifecycle
-import com.example.bachelorwork.ui.utils.inputFilters.NoZeroInputFilter
 import com.example.bachelorwork.util.namesTyped
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Locale
 
 @AndroidEntryPoint
 class ProductCreateModalBottomSheetFragment
@@ -85,19 +83,10 @@ class ProductCreateModalBottomSheetFragment
     }
 
     private fun setupInputFieldQuantity() {
-        binding.textInputLayoutQuantity.apply {
-            /*Plus Icon*/
-            setEndIconOnClickListener { viewModel.increaseQuantity() }
-            /*Minus Icon*/
-            setStartIconOnClickListener { viewModel.decreaseQuantity() }
-        }
-
         binding.editTextQuantity.apply {
             setOnFocusChangeListener { _, hasFocus ->
                 setText(if (hasFocus) text else viewModel.uiFormState.value.quantity.toString())
             }
-
-            filters = arrayOf(NoZeroInputFilter)
         }
     }
 
@@ -134,14 +123,6 @@ class ProductCreateModalBottomSheetFragment
 
     private fun updateFormFieldUIState(uiStateForm: ProductManageFormState) {
         updateFormFieldErrors(uiStateForm)
-        updateUIElementsFromState(uiStateForm)
-    }
-
-    private fun updateUIElementsFromState(uiStateForm: ProductManageFormState) {
-        binding.editTextQuantity.apply {
-            setText(String.format(Locale.getDefault(), "%d", uiStateForm.quantity))
-            setSelection(uiStateForm.quantity.toString().length)
-        }
     }
 
     private fun updateFormFieldErrors(uiStateForm: ProductManageFormState) {

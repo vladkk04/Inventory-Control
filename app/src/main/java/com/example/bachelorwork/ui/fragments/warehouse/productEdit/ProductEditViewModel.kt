@@ -3,7 +3,6 @@ package com.example.bachelorwork.ui.fragments.warehouse.productEdit
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.bachelorwork.data.local.entity.ProductEntity
-import com.example.bachelorwork.domain.model.order.toOrderEntity
 import com.example.bachelorwork.domain.model.product.Product
 import com.example.bachelorwork.domain.model.product.ProductTimelineHistory
 import com.example.bachelorwork.domain.usecase.barcodeScanner.BarcodeScannerUseCase
@@ -75,15 +74,15 @@ class ProductEditViewModel @Inject constructor(
         val result = updateProductRoom(productEditRoute.id)
 
         handleResult(orderUseCase.getOrders(), onSuccess = { orders ->
-            val updatedOrders = orders.flatMap { it.items }
+            /*val updatedOrders = orders.flatMap { it.products }
                 .map { it.copy(unit = uiFormState.value.productUnit.name) }
 
             val orderEntity = orders.map {
-                it.copy(items = updatedOrders).toOrderEntity()
+                it.copy(products = updatedOrders).toOrderEntity()
             }
             viewModelScope.launch {
                 handleResult(orderUseCase.updateOrder(*orderEntity.toTypedArray()))
-            }
+            }*/
         })
 
         handleResult(result, onSuccess = {

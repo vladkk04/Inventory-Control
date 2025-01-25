@@ -19,6 +19,7 @@ import com.example.bachelorwork.ui.model.product.list.ProductSearchUIState
 import com.example.bachelorwork.ui.utils.StateListDrawableFactory
 import com.example.bachelorwork.ui.utils.extensions.collectInLifecycle
 import com.example.bachelorwork.ui.utils.menu.createPopupMenu
+import com.example.bachelorwork.ui.utils.recyclerview.SpeedyLinearSmoothScroller
 import com.example.bachelorwork.ui.utils.recyclerview.UpwardScrollButtonListener
 import com.example.bachelorwork.ui.utils.screen.InsetHandler
 import com.google.android.material.search.SearchView
@@ -42,16 +43,16 @@ class ProductListFragment : Fragment() {
     ): View {
         _binding = FragmentProductListBinding.inflate(inflater, container, false)
 
-        viewLifecycleOwner.collectInLifecycle(
+        collectInLifecycle(
             viewModel.searchUiState,
-            lifecycleState = Lifecycle.State.CREATED
+            lifecycleState = Lifecycle.State.STARTED
         ) { searchUiState ->
             updateSearchUIState(searchUiState)
         }
 
-        viewLifecycleOwner.collectInLifecycle(
+        collectInLifecycle(
             viewModel.uiState,
-            lifecycleState = Lifecycle.State.CREATED
+            lifecycleState = Lifecycle.State.STARTED
         ) { uiState ->
             updateUIState(uiState)
         }
@@ -102,6 +103,10 @@ class ProductListFragment : Fragment() {
                             viewModel.getProductsChangeSortBy(SortBy.NAME)
                             true
                         }
+                        R.id.sort_by_quantity -> {
+                            viewModel.getProductsChangeSortBy(SortBy.QUANTITY)
+                            true
+                        }
                         else -> false
                     }
                 }
@@ -116,6 +121,10 @@ class ProductListFragment : Fragment() {
             requireContext(),
             viewModel.uiState.value.viewType.ordinal + 1
         )
+
+        binding.fabScrollUp.setOnClickListener {
+            gridLayoutManager.startSmoothScroll(SpeedyLinearSmoothScroller(requireContext()))
+        }
 
         with(binding.recyclerViewProducts) {
             adapter = listAdapter
@@ -195,7 +204,6 @@ class ProductListFragment : Fragment() {
     private fun updateSearchUIState(uiState: ProductSearchUIState) {
         binding.textViewSearchContentProducts.visibility = if(uiState.isNoItemsFound) View.VISIBLE else View.GONE
         searchListAdapter.submitList(uiState.products)
-
     }
 
     override fun onDestroyView() {

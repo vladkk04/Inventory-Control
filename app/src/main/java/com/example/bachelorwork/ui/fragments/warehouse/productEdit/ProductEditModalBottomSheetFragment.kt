@@ -59,7 +59,6 @@ class ProductEditModalBottomSheetFragment(
     }
 
     private fun setupUIComponents() {
-        //binding.shapeableImageViewProduct.setOnClickListener { viewModel.select() }
         setupBarcodeScanner()
         setupNumberPicker()
         setupInputEditTextChangeListeners()
@@ -83,13 +82,6 @@ class ProductEditModalBottomSheetFragment(
     }
 
     private fun setupInputFieldQuantity() {
-        binding.textInputLayoutQuantity.apply {
-            /*Plus Icon*/
-            setEndIconOnClickListener { viewModel.increaseQuantity() }
-            /*Minus Icon*/
-            setStartIconOnClickListener { viewModel.decreaseQuantity() }
-        }
-
         binding.editTextQuantity.apply {
             setOnFocusChangeListener { _, hasFocus ->
                 setText(if (hasFocus) text else viewModel.uiFormState.value.quantity.toString())
@@ -106,6 +98,10 @@ class ProductEditModalBottomSheetFragment(
             setupTextChangeListener(editTextQuantity, ProductManageFormEvent::QuantityChanged)
             setupTextChangeListener(editTextMinStockLevel, ProductManageFormEvent::MinStockLevelChanged)
             setupTextChangeListener(editTextDescription, ProductManageFormEvent::DescriptionChanged)
+
+            binding.customInputLayoutCategories.setOnClickItemListener {
+                viewModel.onEvent(ProductManageFormEvent.CategoryChanged(it))
+            }
 
             binding.customInputLayoutTags.onTextChangeListener { tags ->
                 viewModel.onEvent(ProductManageFormEvent.TagsChanged(tags))
@@ -131,11 +127,10 @@ class ProductEditModalBottomSheetFragment(
             binding.editTextQuantity.setText(String.format(Locale.getDefault(), "%d", product.quantity))
             binding.numberPickerSelectUnit.value = product.unit.ordinal
             binding.customInputLayoutCategories.setValue(product.category)
-            viewModel.onEvent(ProductManageFormEvent.CategoryChanged(product.category))
 
             binding.editTextDescription.setText(product.description)
-            binding.customInputLayoutTags.addTags(*product.tags.toTypedArray())
             binding.editTextBarcode.setText(product.barcode)
+            binding.customInputLayoutTags.addTags(*product.tags.toTypedArray())
         }
 
 
@@ -143,22 +138,13 @@ class ProductEditModalBottomSheetFragment(
 
     private fun updateFormFieldUIState(uiStateForm: ProductManageFormState) {
         updateFormFieldErrors(uiStateForm)
-        updateUIElementsFromState(uiStateForm)
-    }
-
-    private fun updateUIElementsFromState(uiStateForm: ProductManageFormState) {
-        binding.editTextQuantity.apply {
-            setText(String.format(Locale.getDefault(), "%d", uiStateForm.quantity))
-            setSelection(uiStateForm.quantity.toString().length)
-        }
-        //binding.autoCompleteTextViewCategory.setText(uiStateForm.category.name, false)
     }
 
     private fun updateFormFieldErrors(uiStateForm: ProductManageFormState) {
         binding.textInputLayoutName.error = uiStateForm.nameError
         binding.textInputLayoutBarcode.error = uiStateForm.barcodeError
         binding.textInputLayoutMinStockLevel.error = uiStateForm.minStockLevelError
-        //binding.textInputLayoutCategory.error = uiStateForm.categoryError
+        binding.customInputLayoutCategories.setErrorMessage(uiStateForm.categoryError)
     }
 
 }

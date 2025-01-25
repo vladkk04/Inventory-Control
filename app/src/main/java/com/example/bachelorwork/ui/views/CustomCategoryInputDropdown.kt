@@ -56,8 +56,8 @@ class CustomCategoryInputDropdown @JvmOverloads constructor(
         listener = itemClickListener
     }
 
-    fun setValue(value: ProductCategory) {
-        binding.autoCompleteTextViewCategory.setText(value.name)
+    fun setValue(value: ProductCategory?) {
+        binding.autoCompleteTextViewCategory.setText(value?.name)
     }
 
     fun setErrorMessage(message: String?) {

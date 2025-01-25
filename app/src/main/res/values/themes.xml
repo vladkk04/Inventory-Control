@@ -6,6 +6,7 @@
 
     <style name="Theme.BachelorWork" parent="Base.Theme.BachelorWork">
         <!--<item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>-->
+
     </style>
 
     <style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
@@ -32,9 +33,10 @@
     </style>
 
     <style name="ChartStyle">
-        <item name="layers">line</item>
+        <item name="layers">column</item>
         <item name="showBottomAxis">true</item>
         <item name="showStartAxis">true</item>
+        <item name="showDataLabels">true</item>
     </style>
 
 </resources>

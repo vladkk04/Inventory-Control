@@ -13,7 +13,6 @@ fragment = "1.8.5"
 constraintlayout = "2.2.0"
 
 #Additional Libraries
-#gson = "2.11.0"
 vico = "2.0.0-beta.3"
 playServicesCodeScanner = "16.1.0"
 swiperefreshlayout = "1.1.0"
@@ -26,6 +25,9 @@ ksp = "1.9.0-1.0.12"
 serialization = "1.8.20"
 serialization-json = "1.6.0"
 element-adapter = "0.7"
+paging = "3.3.5"
+hilt-navigation = "1.2.0"
+
 
 [libraries]
 # AndroidX Core Libraries
@@ -36,8 +38,8 @@ androidx-fragment = { group = "androidx.fragment", name = "fragment-ktx", versio
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 #Layouts
-androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 flexbox-layout = { group = "com.google.android.flexbox", name = "flexbox", version.ref = "flexboxLayout"}
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
 
 #Room
@@ -48,11 +50,15 @@ androidx-room-compiler = { group = "androidx.room", name = "room-compiler", vers
 #Navigation Components
 androidx-navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
 androidx-navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigation" }
+hilt-navigation =  { group = "androidx.hilt", name = "hilt-navigation-fragment", version.ref = "hilt-navigation"}
+
+#Paging 3
+androidx-paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging"}
 
 #Barcode Scanner
 android-gms-codeScanner = { group = "com.google.android.gms", name = "play-services-code-scanner", version.ref = "playServicesCodeScanner" }
 
-#Statistic
+#Statistics
 vico-views = { group = "com.patrykandpatrick.vico", name = "views", version.ref = "vico" }
 
 #Hilt
@@ -61,9 +67,6 @@ compiler-hilt = { group = "com.google.dagger", name = "hilt-compiler" , version.
 
 #Glide
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
-
-#Gson
-#gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson"}
 
 #Serialization
 serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization-json"}
@@ -77,9 +80,9 @@ androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "j
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 
 [plugins]
-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-android-application = { id = "com.android.application", version.ref = "agp" }
-android-kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 android-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serialization"}
+android-kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+android-application = { id = "com.android.application", version.ref = "agp" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 

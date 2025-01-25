@@ -37,7 +37,7 @@ class ProductDetailOverviewFragment : Fragment() {
         uiState.product?.let {
             with(it) {
                 binding.textViewProductId.text = getString(R.string.text_product_id, it.id.toString())
-                binding.textViewCategory.text = getString(R.string.text_category, category.name)
+                binding.textViewCategory.text = getString(R.string.text_category, category?.name ?: "Unidentified")
                 binding.textViewQuantity.text = getString(R.string.text_quantity, quantity)
                 binding.textViewMinimumStockLevel.text = getString(R.string.text_minimum_stock_level, minStockLevel)
                 binding.textViewMeasurementUnit.text = getString(R.string.text_measurement_unit, unit.name)

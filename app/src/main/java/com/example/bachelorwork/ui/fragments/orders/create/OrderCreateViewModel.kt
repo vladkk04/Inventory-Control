@@ -21,14 +21,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
 class OrderCreateViewModel @Inject constructor(
-    private val navigator: Navigator,
     private val productUseCase: ProductUseCases,
     private val orderUseCase: OrderUseCases,
-    savedStateHandle: SavedStateHandle
+    private val navigator: Navigator,
+    val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(OrderCreateUiState())
@@ -36,41 +37,54 @@ class OrderCreateViewModel @Inject constructor(
 
     private var editProductId: Int? = null
 
-    private suspend fun createOrderRoom() =
-        orderUseCase.createOrder(
+    fun createOrder() = viewModelScope.launch {
+
+        if (_uiState.value.addedProduct.isEmpty()) {
+            sendSnackbarEvent(SnackbarEvent("No products added"))
+            return@launch
+        }
+
+        if (_uiState.value.total < 0) {
+            sendSnackbarEvent(SnackbarEvent("Total can not be negative"))
+            return@launch
+        }
+
+        val result = orderUseCase.createOrder(
             OrderEntity(
-                total = _uiState.value.total,
-                products = _uiState.value.addedProduct.map { it.toOrderSubItem() }.toList(),
+                id = ((100000..999999).random().toString() + System.currentTimeMillis()
+                    .toString()).take(7).toInt(),
+                orderedAt = Calendar.getInstance().time,
+                orderedBy = "chang later",
+                total = _uiState.value.total
             )
         )
-
-
-    fun createOrder() = viewModelScope.launch {
-        val result = createOrderRoom()
 
         handleResult(result, onSuccess = {
             sendSnackbarEvent(SnackbarEvent("Order created"))
         }, onFailure = {
             sendSnackbarEvent(SnackbarEvent(it.message.toString()))
         })
-
         navigator.navigateUp()
     }
 
     fun addProductToOrder(data: OrderProductSelectedData) {
-        if (_uiState.value.addedProduct.any { it.id == data.productSelectedId }) {
-            updateAddedProduct(data)
-            return
-        }
-        
+
         if (editProductId != null) {
             deleteAddedProduct(_uiState.value.addedProduct.find { it.id == editProductId }!!)
             editProductId = null
         }
 
+        if (_uiState.value.addedProduct.any { it.id == data.productSelectedId }) {
+            updateAddedProduct(data)
+            return
+        }
+
         handleResult(
             productUseCase.getProducts.getProductById(data.productSelectedId),
             onSuccess = { product ->
+                val subtotal =
+                    _uiState.value.addedProduct.sumOf { it.total } + (data.rate * data.quantity)
+
                 _uiState.update { state ->
                     state.copy(
                         addedProduct = state.addedProduct + OrderAddedProduct(
@@ -82,23 +96,28 @@ class OrderCreateViewModel @Inject constructor(
                             rate = data.rate,
                             total = (data.rate * data.quantity),
                         ),
-                        subtotal = state.subtotal + (data.rate * data.quantity),
-                        total = state.total + (data.rate * data.quantity) - state.discount
+                        subtotal = subtotal,
+                        total = calculateTotal(
+                            subtotal,
+                            _uiState.value.discount,
+                            _uiState.value.discountType
+                        )
                     )
                 }
             }
         )
     }
 
-    fun setDiscount(discount: Double) {
+    fun setDiscount(discount: Double?) {
+        if (discount == null) return
         _uiState.update { state ->
             state.copy(
                 discount = discount,
-                total = if (state.discountType == DiscountType.PERCENTAGE) {
-                    state.subtotal - (state.subtotal * (discount / 100))
-                } else {
-                    state.subtotal - discount
-                }
+                total = calculateTotal(
+                    _uiState.value.subtotal,
+                    discount,
+                    _uiState.value.discountType
+                )
             )
         }
     }
@@ -107,13 +126,24 @@ class OrderCreateViewModel @Inject constructor(
         _uiState.update { state ->
             state.copy(
                 addedProduct = state.addedProduct.filter { product != it }.toSet(),
-                subtotal = state.subtotal - product.total,
-                total = state.total - product.total + (product.rate * product.quantity) - state.discount
+                subtotal = state.addedProduct.sumOf { it.total } - product.total,
+                total = calculateTotal(
+                    state.addedProduct.sumOf { it.total } - product.total,
+                    _uiState.value.discount,
+                    _uiState.value.discountType
+                )
             )
         }
     }
 
     fun navigateToOrderSetDiscount(discountType: DiscountType) = viewModelScope.launch {
+        _uiState.update { state ->
+            state.copy(
+                discount = 0.00,
+                discountType = discountType,
+                total = calculateTotal(state.subtotal, state.discount, discountType)
+            )
+        }
         navigator.navigate(
             Destination.OrderManageDiscount(
                 discount = _uiState.value.discount,
@@ -150,8 +180,21 @@ class OrderCreateViewModel @Inject constructor(
                     } else {
                         product
                     }
-                }.toSet()
+                }.toSet(),
+                subtotal = state.addedProduct.sumOf { it.total } + (data.rate * data.quantity)
             )
+        }
+    }
+
+    private fun calculateTotal(
+        subTotal: Double,
+        discount: Double,
+        discountType: DiscountType
+    ): Double {
+        return if (discountType == DiscountType.PERCENTAGE) {
+            subTotal - (subTotal * (discount / 100))
+        } else {
+            subTotal - discount
         }
     }
 }

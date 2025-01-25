@@ -99,7 +99,7 @@
             android:layout_gravity="center"
             android:contentDescription="@string/content_description_text_add_product_fab_button"
             android:visibility="invisible"
-            app:srcCompat="@drawable/ic_add" />
+            app:srcCompat="@drawable/ic_arrow_up" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_create_item"

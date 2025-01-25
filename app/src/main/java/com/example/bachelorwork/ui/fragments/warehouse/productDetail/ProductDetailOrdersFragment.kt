@@ -42,6 +42,9 @@ class ProductDetailOrdersFragment : Fragment() {
                 item.orderProductSubItem.quantity,
                 item.orderProductSubItem.unit.lowercase()
             )
+            this.checkBoxNavigateOrder.setOnClickListener {
+                viewModel.navigateToOrder(item.orderId)
+            }
         }
     }
 

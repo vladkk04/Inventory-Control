@@ -4,37 +4,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="88dp"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center"
+        android:gravity="start|center"
+        android:paddingHorizontal="@dimen/padding_medium">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="88dp"
-            android:layout_alignParentTop="true"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingStart="@dimen/padding_medium">
+        <include
+            android:id="@+id/profile_circle_picture"
+            layout="@layout/profile_circle_picture" />
 
-            <include
-                android:id="@+id/profile_circle_picture"
-                layout="@layout/profile_circle_picture" />
-
-            <TextView
-                android:id="@+id/textView_hello_user"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginHorizontal="@dimen/margin_small"
-                android:elevation="-1dp"
-                android:gravity="start|center"
-                android:text="@string/text_hello_user"
-                android:textSize="@dimen/text_size_large" />
-
-        </LinearLayout>
+        <TextView
+            android:id="@+id/textView_hello_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_medium"
+            android:text="Hello, Vladyslav"
+            android:textSize="@dimen/text_size_large_plus" />
 
 
-    </com.google.android.material.appbar.AppBarLayout>
+    </LinearLayout>
 
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_second"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/margin_medium"
+        android:layout_toStartOf="@+id/fab_all"
+        android:src="@drawable/ic_list" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_all"

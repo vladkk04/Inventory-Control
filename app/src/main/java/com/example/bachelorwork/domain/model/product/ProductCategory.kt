@@ -12,6 +12,6 @@ data class ProductCategory (
 
 fun ProductCategory.toEntity() = ProductCategoryEntity(
     id = id,
-    name = name,
+    name = name.replaceFirstChar(Char::uppercase),
     icon = icon
 )

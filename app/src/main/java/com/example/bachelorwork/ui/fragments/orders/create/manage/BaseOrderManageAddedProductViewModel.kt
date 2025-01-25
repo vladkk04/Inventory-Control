@@ -5,9 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.bachelorwork.domain.model.ValidatorInputFieldFactory
 import com.example.bachelorwork.domain.model.order.OrderProductSelectedData
 import com.example.bachelorwork.domain.usecase.barcodeScanner.BarcodeScannerUseCase
-import com.example.bachelorwork.domain.usecase.inputFieldValidators.ValidatorDecimalFormatUseCase
-import com.example.bachelorwork.domain.usecase.inputFieldValidators.ValidatorNotEmptyUseCase
 import com.example.bachelorwork.domain.usecase.product.ProductUseCases
+import com.example.bachelorwork.domain.usecase.validators.ValidatorDecimalFormat
+import com.example.bachelorwork.domain.usecase.validators.ValidatorGreaterThenZero
+import com.example.bachelorwork.domain.usecase.validators.ValidatorNotEmpty
 import com.example.bachelorwork.ui.model.order.OrderSelectableProductListUi
 import com.example.bachelorwork.ui.model.order.create.manage.product.OrderManageProductFormEvent
 import com.example.bachelorwork.ui.model.order.create.manage.product.OrderManageProductFormUiState
@@ -150,10 +151,12 @@ abstract class BaseOrderManageAddedProductViewModel(
                 _uiFormState.value.rate
             ),
             validators = setOf(
-                ValidatorNotEmptyUseCase,
-                ValidatorDecimalFormatUseCase
+                ValidatorNotEmpty,
+                ValidatorDecimalFormat,
+                ValidatorGreaterThenZero
             )
         )
+
 
         _uiFormState.update {
             it.copy(
