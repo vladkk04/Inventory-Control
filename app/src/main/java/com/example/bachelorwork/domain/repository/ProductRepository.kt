@@ -1,15 +1,13 @@
 package com.example.bachelorwork.domain.repository
 
-import com.example.bachelorwork.data.local.entity.ProductEntity
-import com.example.bachelorwork.data.local.pojo.ProductPojo
-import com.example.bachelorwork.domain.repository.base.BaseRepository
+import androidx.paging.PagingData
+import com.example.bachelorwork.data.local.entities.product.ProductEntity
+import com.example.bachelorwork.domain.repository.base.BaseRoomRepository
 import kotlinx.coroutines.flow.Flow
 
-interface ProductRepository: BaseRepository<ProductEntity> {
+interface ProductRepository: BaseRoomRepository<ProductEntity> {
 
-    fun getProductsPojo(): Flow<List<ProductPojo>>
+    fun getAll(): Flow<PagingData<ProductEntity>>
 
-    fun getProductPojoById(id: Int): Flow<ProductPojo>
-
-    suspend fun deleteByProductId(id: Int)
+    fun getById(id: Int): Flow<ProductEntity>
 }

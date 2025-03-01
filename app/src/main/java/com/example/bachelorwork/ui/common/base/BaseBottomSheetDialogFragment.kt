@@ -11,9 +11,10 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.MenuRes
+import androidx.core.view.updatePadding
 import androidx.viewbinding.ViewBinding
 import com.example.bachelorwork.R
-import com.example.bachelorwork.ui.dialogs.createDiscardDialog
+import com.example.bachelorwork.ui.common.AppDialogs
 import com.example.bachelorwork.ui.utils.screen.InsetHandler
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
@@ -53,7 +54,7 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
     protected open val onBackPressedCallback: OnBackPressedCallback
         get() = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                createDiscardDialog { dismiss() }.show()
+                AppDialogs.createDiscardDialog(requireContext()) { dismiss() }.show()
             }
         }
 
@@ -152,7 +153,7 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
 
         dragHandleView = createBottomSheetDragHandleView().also {
             (requireView().parent as? ViewGroup)?.addView(it, 0)
-            (requireView() as? ViewGroup)?.setPadding(0, it.height, 0, 0)
+            (requireView() as? ViewGroup)?.updatePadding(top = it.height)
         }
     }
 
@@ -173,7 +174,7 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
     private fun setupToolbarMenu(toolbar: MaterialToolbar) {
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.hide_bottomSheet -> {
+                R.id.adjust -> {
                     (dialog as BottomSheetDialog).behavior.state = STATE_COLLAPSED
                     toolbar.visibility = View.GONE
                 }

@@ -1,6 +1,6 @@
 package com.example.bachelorwork.domain.model.product
 
-import com.example.bachelorwork.data.local.dao.converters.DateSerializer
+import com.example.bachelorwork.data.local.serialization.DateSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.util.Date

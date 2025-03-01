@@ -8,9 +8,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.FragmentProductDetailBinding
+import com.example.bachelorwork.ui.common.AppDialogs
 import com.example.bachelorwork.ui.common.adapters.ViewPagerAdapter
 import com.example.bachelorwork.ui.common.adapters.ViewPagerFragmentData
-import com.example.bachelorwork.ui.dialogs.createDeleteDialog
+import com.example.bachelorwork.ui.fragments.warehouse.productDetail.analytics.ProductDetailAnalyticsFragment
+import com.example.bachelorwork.ui.fragments.warehouse.productDetail.orders.ProductDetailOrdersFragment
+import com.example.bachelorwork.ui.fragments.warehouse.productDetail.overview.ProductDetailOverviewFragment
+import com.example.bachelorwork.ui.fragments.warehouse.productDetail.overview.ProductDetailOverviewViewModel
+import com.example.bachelorwork.ui.fragments.warehouse.productDetail.timeline.ProductDetailTimelineHistoryFragment
 import com.example.bachelorwork.ui.model.product.detail.ProductDetailUIState
 import com.example.bachelorwork.ui.utils.extensions.collectInLifecycle
 import com.google.android.material.tabs.TabLayoutMediator
@@ -31,6 +36,8 @@ class ProductDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+
         _binding = FragmentProductDetailBinding.inflate(inflater, container, false)
 
         setupViewPagerWithTabLayout()
@@ -45,9 +52,9 @@ class ProductDetailFragment : Fragment() {
     }
 
     private fun setupToolbarMenuOnClickListener() {
-        binding.toolbarProductDetail.apply {
+        binding.toolbar.apply {
             setNavigationOnClickListener {
-                viewModel.navigateToWarehouse()
+                viewModel.navigateBack()
             }
             setOnMenuItemClickListener { item ->
                 when (item.itemId) {
@@ -57,7 +64,7 @@ class ProductDetailFragment : Fragment() {
                     }
 
                     R.id.product_delete -> {
-                        createDeleteDialog(requireContext(), viewModel.uiState.value.product?.name ?: "") {
+                        AppDialogs.createDeleteDialog(requireContext(), viewModel.uiState.value.product?.name ?: "") {
                             viewModel.deleteProduct()
                         }.show()
                         true
@@ -81,10 +88,10 @@ class ProductDetailFragment : Fragment() {
             ViewPagerFragmentData(
                 ProductDetailOrdersFragment(),
                 "Orders",
-                R.drawable.ic_list
+                R.drawable.ic_list_outlined
             ),
             ViewPagerFragmentData(
-                ProductDetailAnalyticFragment(),
+                ProductDetailAnalyticsFragment(),
                 "Analytics",
                 R.drawable.ic_analytics_outline
             ),
@@ -95,36 +102,36 @@ class ProductDetailFragment : Fragment() {
             ),
         )
 
-        binding.viewPagerProductDetail.adapter = viewPagerAdapter
-        binding.viewPagerProductDetail.offscreenPageLimit = viewPagerAdapter.itemCount
+        binding.viewPager.adapter = viewPagerAdapter
+        binding.viewPager.offscreenPageLimit = viewPagerAdapter.itemCount
 
         TabLayoutMediator(
-            binding.tabLayoutProductDetail,
-            binding.viewPagerProductDetail
+            binding.tabLayout,
+            binding.viewPager
         ) { tab, position ->
             tab.text = viewPagerAdapter.getTitle(position)
             tab.setIcon(viewPagerAdapter.getIcon(position) ?: 0)
-            binding.viewPagerProductDetail.setCurrentItem(tab.position, true)
+            binding.viewPager.setCurrentItem(tab.position, true)
         }.attach()
     }
 
     private fun setupAppBarLayoutAnimation() {
-        binding.appbarLayoutDetailProduct.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+        binding.appBarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             val progress = abs(verticalOffset.toFloat() / appBarLayout.totalScrollRange)
 
-            binding.collapsedToolbarProductName.alpha =
+            binding.customToolbarLayoutTitle.alpha =
                 abs(verticalOffset.toFloat() / appBarLayout.totalScrollRange)
             binding.textViewProductName.alpha = 1 - progress
 
             if (progress > 0) {
-                binding.viewPagerProductDetail.translationY =
+                binding.viewPager.translationY =
                     (1 - progress) * binding.textViewProductName.height
             }
         }
     }
 
     private fun updateUI(uiState: ProductDetailUIState) {
-        binding.titleToolbarProductName.text = uiState.product?.name
+        binding.textViewToolbarProductName.text = uiState.product?.name
         binding.textViewProductName.text = uiState.product?.name
     }
 }

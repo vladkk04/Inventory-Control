@@ -10,18 +10,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.elveum.elementadapter.simpleAdapter
 import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.FragmentOrderListBinding
-import com.example.bachelorwork.databinding.OrderItemInnerBinding
-import com.example.bachelorwork.databinding.OrderItemOuterBinding
-import com.example.bachelorwork.domain.model.order.Order
+import com.example.bachelorwork.databinding.OrderInnerItemBinding
+import com.example.bachelorwork.databinding.OrderOuterItemBinding
 import com.example.bachelorwork.domain.model.order.OrderProductSubItem
 import com.example.bachelorwork.ui.constant.Constants
-import com.example.bachelorwork.ui.model.order.OrderListUiState
+import com.example.bachelorwork.ui.model.order.DiscountType
+import com.example.bachelorwork.ui.model.order.list.OrderListUiState
+import com.example.bachelorwork.ui.model.order.list.OrderUi
 import com.example.bachelorwork.ui.utils.StateListDrawableFactory
 import com.example.bachelorwork.ui.utils.extensions.collectInLifecycle
 import com.example.bachelorwork.ui.utils.screen.InsetHandler
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -32,24 +34,24 @@ class OrderListFragment : Fragment() {
 
     private val viewModel: OrderListViewModel by viewModels()
 
-    private val adapterOuter = simpleAdapter<Order, OrderItemOuterBinding> {
-        bind { item ->
+    private val adapterOuter = simpleAdapter<OrderUi, OrderOuterItemBinding> {
+        bind { order ->
             root.setOnClickListener {
-                viewModel.navigateToOrderDetail(item.id)
+                viewModel.navigateToOrderDetail(order.id)
             }
 
-            textViewOrderId.text =
-                binding.root.context.getString(R.string.text_order_id, item.id)
-            textViewOrderedDate.text =
+            textViewId.text =
+                binding.root.context.getString(R.string.text_order_id, order.id)
+            textViewDate.text =
                 binding.root.context.getString(
                     R.string.text_order_date_timestamp,
                     SimpleDateFormat(
                         Constants.DateFormats.PRODUCT_TIMELINE_HISTORY_FORMAT,
                         Locale.getDefault()
-                    ).format(item.orderedAt)
+                    ).format(order.orderedAt)
                 )
             textViewTotal.text =
-                binding.root.context.getString(R.string.text_order_total, item.total)
+                binding.root.context.getString(R.string.text_order_total, order.total)
 
             checkBoxToggle.apply {
                 buttonDrawable = StateListDrawableFactory.createCheckedDrawable(
@@ -62,11 +64,15 @@ class OrderListFragment : Fragment() {
                 }
             }
 
-            val adapterInner = simpleAdapter<OrderProductSubItem, OrderItemInnerBinding> {
+            val adapterInner = simpleAdapter<OrderProductSubItem, OrderInnerItemBinding> {
                 bind { item ->
                     this.textViewName.text = item.name
-                    this.textViewPrice.text = getString(R.string.text_price, item.price)
-                    this.textViewQuantity.text = getString(R.string.text_order_subitem_quantity, item.quantity, item.unit.lowercase())
+                    this.textViewPrice.text = getString(R.string.text_price_value, item.price)
+                    this.textViewQuantity.text = getString(
+                        R.string.text_order_subitem_quantity,
+                        item.quantity,
+                        item.unit.lowercase()
+                    )
                 }
             }
 
@@ -76,7 +82,7 @@ class OrderListFragment : Fragment() {
                 setHasFixedSize(true)
             }
 
-            //adapterInner.submitList(item.products)
+            adapterInner.submitList(order.products)
         }
     }
 
@@ -85,6 +91,7 @@ class OrderListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         _binding = FragmentOrderListBinding.inflate(inflater, container, false)
 
         InsetHandler.adaptToEdgeWithMargin(binding.root)
@@ -101,11 +108,26 @@ class OrderListFragment : Fragment() {
     }
 
     private fun setupUiState(uiState: OrderListUiState) {
-        adapterOuter.submitList(uiState.orders)
+        binding.textViewNoOrders.visibility =
+            if (uiState.orders.isEmpty()) View.VISIBLE else View.GONE
+
+        adapterOuter.submitList(
+            listOf(
+                OrderUi(
+                    20,
+                    20.00,
+                    20.00,
+                    DiscountType.FIXED,
+                    Date(),
+                    "fdsf",
+                    emptyList()
+                )
+            )
+        )
     }
 
     private fun setupRecyclerView() {
-        with(binding.recyclerViewOrders) {
+        with(binding.recyclerView) {
             adapter = this@OrderListFragment.adapterOuter
             layoutManager = LinearLayoutManager(requireContext())
             setItemViewCacheSize(10)
@@ -123,5 +145,10 @@ class OrderListFragment : Fragment() {
         binding.fabCreateOrder.setOnClickListener {
             viewModel.navigateToCreateOrder()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

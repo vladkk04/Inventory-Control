@@ -2,8 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/hide_bottomSheet"
-        android:title="@string/title_hide"
+    <item
+        android:id="@+id/adjust"
         android:icon="@drawable/ic_keyboard_arrow_down_48"
+        android:title="@string/title_hide"
         app:showAsAction="ifRoom" />
 </menu>

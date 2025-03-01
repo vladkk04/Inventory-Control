@@ -3,11 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/Widget.Material3.TextInputLayout.FilledBox"
-    android:id="@+id/textInput_layout_category"
+    android:id="@+id/text_input_category"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/margin_medium"
     android:hint="@string/hint_category_name"
+    android:padding="@dimen/margin_medium"
     app:errorEnabled="true"
     app:hintEnabled="true">
 

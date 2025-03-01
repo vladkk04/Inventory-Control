@@ -8,43 +8,55 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.bachelorwork.databinding.ActivityMainBinding
-import com.example.bachelorwork.ui.navigation.NavigationGraph
-import com.example.bachelorwork.ui.navigation.Navigator
+import com.example.bachelorwork.ui.navigation.AppNavigationGraph
+import com.example.bachelorwork.ui.navigation.AppNavigator
 import com.example.bachelorwork.ui.navigation.setupWithNavController
 import com.example.bachelorwork.ui.snackbar.SnackbarController
+import com.example.bachelorwork.ui.utils.extensions.viewBinding
+import com.example.bachelorwork.ui.utils.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private var _binding: ActivityMainBinding? = null
-    private val binding get() = _binding!!
+    private val binding by viewBinding(ActivityMainBinding::inflate)
 
     private val viewModel: MainViewModel by viewModels()
 
-    private val navHostFragment: NavHostFragment by lazy { binding.navHostFragment.getFragment() as NavHostFragment }
-    private val navController: NavController by lazy { navHostFragment.navController }
-
-    @Inject lateinit var navigator: Navigator
+    @Inject lateinit var appNavigator: AppNavigator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        _binding = ActivityMainBinding.inflate(layoutInflater).apply { setContentView(root) }
-        setupCallBackOnBackPressed()
         enableEdgeToEdge()
+        setContentView(binding.root)
 
-        NavigationGraph(this, navigator, navController, binding.drawerLayout)
-        SnackbarController.observeSnackbarEvents(this, binding.root)
+        setupAppSnackbarObserver()
+        setupAppNavigation()
+        setupAppPermissions()
 
-        binding.bottomNavigationView.setupWithNavController(navController)
-        binding.navigationView.setupWithNavController(navController)
+        setupCallBackOnBackPressed()
     }
 
+    private fun setupAppNavigation() {
+        val navHostFragment: NavHostFragment = binding.navHostFragment.getFragment() as NavHostFragment
+        val navController = navHostFragment.navController
+
+        AppNavigationGraph(this, appNavigator, navController, binding.drawerLayout)
+
+        binding.bottomNavigationView.setupWithNavController(navController)
+        binding.navigationView.setupWithNavController(navController, binding.drawerLayout)
+    }
+
+    private fun setupAppSnackbarObserver() {
+        SnackbarController.observeSnackbarEvents(this, binding.root)
+    }
+
+    private fun setupAppPermissions() {
+        viewModel.permissionController.registerForActivityResult(this)
+    }
 
     private fun setupCallBackOnBackPressed() {
         val callback = object: OnBackPressedCallback(true) {
@@ -56,6 +68,7 @@ class MainActivity : AppCompatActivity() {
         binding.drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
             override fun onDrawerOpened(drawerView: View) {
                 onBackPressedDispatcher.addCallback(this@MainActivity, callback)
+                hideKeyboard()
             }
 
             override fun onDrawerClosed(drawerView: View) {
@@ -65,18 +78,9 @@ class MainActivity : AppCompatActivity() {
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) = Unit
             override fun onDrawerStateChanged(newState: Int) = Unit
         })
-        
+
         onBackPressedDispatcher.addCallback {
-            if (viewModel.onBackPressed()) {
-                finish()
-            }
+            if (viewModel.onBackPressed()) { finish() }
         }
     }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
 }

@@ -1,184 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:minHeight="?attr/actionBarSize"
+        app:menu="@menu/toolbar_order_detail_menu"
+        app:navigationIcon="@drawable/ic_arrow_back_ios"
+        app:subtitleTextAppearance="?attr/textAppearanceBodySmall"
+        tools:subtitle="Jan 18, 2025 5:46 PM"
+        tools:title="Order #2484324" />
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
-            app:menu="@menu/toolbar_order_detail_menu"
-            app:navigationIcon="@drawable/ic_arrow_back_ios"
-            app:subtitle="Jan 18, 2025 5:46 PM"
-            app:subtitleTextAppearance="?attr/textAppearanceBodySmall"
-            app:title="Order #2484324" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView_products"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_normal"
-            android:text="@string/text_products"
-            android:textSize="@dimen/text_size_large" />
+            <TextView
+                android:id="@+id/text_view_products"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_normal"
+                android:text="@string/text_products"
+                android:textSize="@dimen/text_size_large" />
 
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardView_products"
-            style="?attr/materialCardViewFilledStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_small"
-            app:contentPadding="@dimen/padding_extra_small">
-
-            <RelativeLayout
+            <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewFilledStyle"
+                android:id="@+id/card_view_products"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_small"
+                app:contentPadding="@dimen/padding_extra_small">
 
-                <LinearLayout
-                    android:id="@+id/textview_item"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin_small"
-                    android:weightSum="1">
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/text_view_header_product_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_small"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3"
+                            android:text="@string/text_item"
+                            android:textAllCaps="true"
+                            android:textSize="@dimen/text_size_medium" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.35"
+                            android:paddingHorizontal="@dimen/padding_small"
+                            android:text="@string/text_qty"
+                            android:textAlignment="textEnd"
+                            android:textAllCaps="true"
+                            android:textSize="@dimen/text_size_medium" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.35"
+                            android:paddingEnd="@dimen/padding_medium"
+                            android:text="@string/text_price"
+                            android:textAlignment="textEnd"
+                            android:textAllCaps="true"
+                            android:textSize="@dimen/text_size_medium" />
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/text_view_header_product_description"
+                        tools:itemCount="5"
+                        tools:listitem="@layout/order_detail_product_item" />
 
                     <TextView
+                        android:id="@+id/text_view_subtotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
-                        android:text="ITEM"
-                        android:textSize="@dimen/text_size_medium" />
+                        android:layout_below="@id/recycler_view"
+                        android:layout_marginVertical="@dimen/margin_vertical_between_items"
+                        android:text="@string/text_subtotal"
+                        android:textSize="@dimen/text_size_medium"
+                        android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/textView_quantity"
-                        android:layout_width="0dp"
+                        android:id="@+id/text_view_subtotal_price"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.35"
-                        android:text="QTY"
-                        android:textAlignment="textEnd"
-                        android:textSize="@dimen/text_size_medium" />
+                        android:layout_below="@id/recycler_view"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginVertical="@dimen/margin_vertical_between_items"
+                        android:layout_toEndOf="@+id/text_view_subtotal"
+                        android:gravity="end"
+                        android:textSize="@dimen/text_size_medium"
+                        android:textStyle="bold"
+                        tools:text="234 $" />
 
                     <TextView
-                        android:id="@+id/textView_price"
-                        android:layout_width="0dp"
+                        android:id="@+id/text_view_discount"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.35"
-                        android:paddingEnd="@dimen/padding_normal"
-                        android:text="PRICE"
-                        android:textAlignment="textEnd"
-                        android:textSize="@dimen/text_size_medium" />
+                        android:layout_below="@id/text_view_subtotal"
+                        android:layout_marginVertical="@dimen/margin_vertical_between_items"
+                        android:text="@string/text_discount"
+                        android:textSize="@dimen/text_size_medium"
+                        android:textStyle="bold" />
 
-                </LinearLayout>
+                    <TextView
+                        android:id="@+id/textView_discount_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/text_view_subtotal_price"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginVertical="@dimen/margin_vertical_between_items"
+                        android:layout_toEndOf="@+id/text_view_discount"
+                        android:gravity="end"
+                        android:textSize="@dimen/text_size_medium"
+                        android:textStyle="bold"
+                        tools:text="20%" />
 
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/textview_item"
-                    tools:itemCount="5"
-                    tools:listitem="@layout/product_item_in_order_detail" />
-
-                <TextView
-                    android:id="@+id/textview_subtotal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/recyclerView"
-                    android:layout_marginVertical="@dimen/margin_vertical_between_items"
-                    android:text="Subtotal"
-                    android:textSize="@dimen/text_size_medium"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/textview_subtotal_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/recyclerView"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginVertical="@dimen/margin_vertical_between_items"
-                    android:layout_toEndOf="@+id/textview_subtotal"
-                    android:gravity="end"
-                    android:text="234 $"
-                    android:textSize="@dimen/text_size_medium"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/textview_discount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/textview_subtotal"
-                    android:layout_marginVertical="@dimen/margin_vertical_between_items"
-                    android:text="Discount"
-                    android:textSize="@dimen/text_size_medium"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/textView_discount_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/textview_subtotal"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginVertical="@dimen/margin_vertical_between_items"
-                    android:layout_toEndOf="@+id/textview_discount"
-                    android:gravity="end"
-                    android:text="234 $"
-                    android:textSize="@dimen/text_size_medium"
-                    android:textStyle="bold" />
-
-                <com.google.android.material.divider.MaterialDivider
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/textview_discount" />
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/text_view_discount" />
 
 
-                <TextView
-                    android:id="@+id/textView_total"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/textview_discount"
-                    android:layout_marginVertical="@dimen/margin_vertical_between_items"
-                    android:gravity="end"
-                    android:text="Total"
-                    android:textSize="@dimen/text_size_large_plus"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/text_view_total"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/text_view_discount"
+                        android:layout_marginVertical="@dimen/margin_vertical_between_items"
+                        android:gravity="end"
+                        android:text="@string/text_total"
+                        android:textSize="@dimen/text_size_large_plus"
+                        android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/textView_total_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/textview_discount"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginVertical="@dimen/margin_vertical_between_items"
-                    android:layout_toEndOf="@+id/textView_total"
-                    android:gravity="end"
-                    android:text="234 $"
-                    android:textSize="@dimen/text_size_large_plus"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/textView_total_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/text_view_discount"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginVertical="@dimen/margin_vertical_between_items"
+                        android:layout_toEndOf="@+id/text_view_total"
+                        android:gravity="end"
+                        android:textSize="@dimen/text_size_large_plus"
+                        android:textStyle="bold"
+                        tools:text="187.2 $" />
 
-            </RelativeLayout>
+                </RelativeLayout>
 
-        </com.google.android.material.card.MaterialCardView>
+            </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            android:id="@+id/textView_create_by"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/toolbar"
-            android:layout_margin="@dimen/margin_normal"
-            android:text="Created By"
-            android:textSize="@dimen/text_size_large" />
+            <TextView
+                android:id="@+id/text_view_create_by"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_normal"
+                android:text="@string/text_create_by"
+                android:textSize="@dimen/text_size_large" />
+
+            <include
+                android:id="@+id/user_item"
+                layout="@layout/user_item" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
 
 
-        <include layout="@layout/user_item" />
-
-
-    </LinearLayout>
-</ScrollView>

@@ -1,15 +1,13 @@
 package com.example.bachelorwork.domain.repository
 
-import com.example.bachelorwork.data.local.entity.OrderEntity
-import com.example.bachelorwork.domain.repository.base.BaseRepository
+import androidx.paging.PagingData
+import com.example.bachelorwork.data.local.entities.order.OrderEntity
+import com.example.bachelorwork.domain.repository.base.BaseRoomRepository
 import kotlinx.coroutines.flow.Flow
 
-interface OrderRepository: BaseRepository<OrderEntity> {
+interface OrderRepository: BaseRoomRepository<OrderEntity> {
 
-    fun getAll(): Flow<Array<OrderEntity>>
+    fun getAll(): Flow<PagingData<OrderEntity>>
 
     fun getById(id: Int): Flow<OrderEntity>
-
-    suspend fun deleteByOrderId(id: Int)
-
 }

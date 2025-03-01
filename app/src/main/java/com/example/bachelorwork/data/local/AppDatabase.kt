@@ -10,14 +10,15 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.bachelorwork.data.local.dao.OrderDao
 import com.example.bachelorwork.data.local.dao.ProductCategoryDao
 import com.example.bachelorwork.data.local.dao.ProductDao
-import com.example.bachelorwork.data.local.dao.converters.DateConverter
-import com.example.bachelorwork.data.local.dao.converters.JsonOrderSubItemConverter
-import com.example.bachelorwork.data.local.dao.converters.JsonProductTagConverter
-import com.example.bachelorwork.data.local.dao.converters.JsonProductTimelineHistoryConverter
-import com.example.bachelorwork.data.local.dao.converters.UriConverter
-import com.example.bachelorwork.data.local.entity.OrderEntity
-import com.example.bachelorwork.data.local.entity.ProductCategoryEntity
-import com.example.bachelorwork.data.local.entity.ProductEntity
+import com.example.bachelorwork.data.local.converters.DateConverter
+import com.example.bachelorwork.data.local.converters.JsonProductTagConverter
+import com.example.bachelorwork.data.local.converters.JsonProductTimelineHistoryConverter
+import com.example.bachelorwork.data.local.converters.UriConverter
+import com.example.bachelorwork.data.local.entities.order.OrderEntity
+import com.example.bachelorwork.data.local.entities.order.OrderProduct
+import com.example.bachelorwork.data.local.entities.productCategory.ProductCategoryEntity
+import com.example.bachelorwork.data.local.entities.product.ProductEntity
+import com.example.bachelorwork.domain.model.product.DefaultCategories
 import com.example.bachelorwork.util.names
 
 @Database(
@@ -25,6 +26,7 @@ import com.example.bachelorwork.util.names
         ProductEntity::class,
         ProductCategoryEntity::class,
         OrderEntity::class,
+        OrderProduct::class
     ],
     version = 1,
     exportSchema = false
@@ -34,7 +36,6 @@ import com.example.bachelorwork.util.names
     UriConverter::class,
     JsonProductTagConverter::class,
     JsonProductTimelineHistoryConverter::class,
-    JsonOrderSubItemConverter::class
 )
 abstract class AppDatabase : RoomDatabase() {
 
@@ -46,7 +47,7 @@ abstract class AppDatabase : RoomDatabase() {
         private const val DATABASE_NAME = "app_db"
 
         private val QUERY_INSERT_DEFAULT_PRODUCT_CATEGORIES = {
-            val entries  = ProductCategoryEntity.DefaultCategories.entries.names()
+            val entries  = DefaultCategories.entries.names()
             .map { it.lowercase().replaceFirstChar { char -> char.uppercase() } }
             .joinToString(", ") { "('$it')" }
 

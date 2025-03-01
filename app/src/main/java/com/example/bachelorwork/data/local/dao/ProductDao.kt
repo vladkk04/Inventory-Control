@@ -1,30 +1,26 @@
 package com.example.bachelorwork.data.local.dao
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Query
-import androidx.room.Transaction
-import com.example.bachelorwork.data.local.dao.base.BaseDao
-import com.example.bachelorwork.data.local.entity.ProductEntity
-import com.example.bachelorwork.data.local.pojo.ProductPojo
+import com.example.bachelorwork.data.local.dao.common.BaseDao
+import com.example.bachelorwork.data.local.entities.product.ProductEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ProductDao: BaseDao<ProductEntity> {
 
     @Query("SELECT * FROM products")
-    fun getAll(): Flow<Array<ProductEntity>>
+    fun getAll(): PagingSource<Int, ProductEntity>
 
-    @Query("SELECT * FROM products WHERE products.productId = :id")
+    @Query("SELECT * FROM products WHERE products.product_id = :id")
     fun getById(id: Int): Flow<ProductEntity>
 
-    @Transaction
+   /* @Transaction
     @Query("SELECT * FROM products")
-    fun getProductsPojo(): Flow<List<ProductPojo>>
+    fun getProductsDetails(): Flow<List<ProductDetails>>
 
     @Transaction
-    @Query("SELECT * FROM products WHERE products.productId = :id")
-    fun getProductPojo(id: Int): Flow<ProductPojo>
-
-    @Query("DELETE FROM products WHERE products.productId= :id")
-    suspend fun deleteByProductId(id: Int)
+    @Query("SELECT * FROM products WHERE products.product_id = :id")
+    fun getProductDetails(id: Int): Flow<ProductDetails>*/
 }

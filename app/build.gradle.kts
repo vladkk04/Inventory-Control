@@ -36,14 +36,14 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     buildFeatures {
         viewBinding = true
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
 }
 
@@ -78,6 +78,7 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.paging)
     annotationProcessor(libs.androidx.room.compiler)
 
     // Hilt
@@ -91,6 +92,23 @@ dependencies {
     //Simple Recycler View Adapter
     implementation(libs.element.adapter)
 
+    //Firebase
+    implementation(platform(libs.firebase.boom))
+    implementation(libs.firebase.auth)
+
+    //UCrop - Image Cropping
+    implementation(libs.ucrop)
+
+    //OkHttp
+    implementation(libs.okhttp)
+
+    //Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter)
+
+    //Datastore Preferences
+    implementation(libs.datastore.preferences)
+    
     // Tests
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

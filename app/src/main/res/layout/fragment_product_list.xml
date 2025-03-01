@@ -1,118 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/coordinator"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <TextView
-            android:id="@+id/textView_content_products"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/text_empty_warehouse" />
-
-        <TextView
-            android:id="@+id/textView_products"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/swipeRefresh_layout_products"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_gravity="center"
-            android:layout_marginStart="@dimen/margin_normal"
-            android:gravity="center"
-            android:text="@string/text_products" />
-
-        <CheckBox
-            android:id="@+id/checkbox_change_view_type_products"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:button="@null"
-            tools:button="@drawable/ic_view_grid" />
-
-        <Button
-            android:id="@+id/textView_order_by_products"
-            style="@style/Widget.Material3.Button.TextButton.Dialog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/swipeRefresh_layout_products"
-            android:layout_alignParentTop="true"
-            android:layout_toStartOf="@+id/checkbox_order_type_products"
-            android:gravity="center"
-            android:minWidth="0dp"
-            android:text="Name" />
-
-        <CheckBox
-            android:id="@+id/checkbox_order_type_products"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toStartOf="@+id/checkbox_change_view_type_products"
-            android:button="@null"
-            android:minWidth="32dp"
-            tools:button="@drawable/ic_arrow_up" />
-
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefresh_layout_products"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/checkbox_change_view_type_products"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView_products"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:layoutAnimation="@anim/recycle_view_layout"
-                android:paddingBottom="90dp"
-                android:scrollbars="vertical"
-                tools:itemCount="5"
-                tools:listitem="@layout/product_item_row" />
-
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/margin_medium"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            style="?attr/floatingActionButtonSmallStyle"
-            android:id="@+id/fab_scroll_up"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:contentDescription="@string/content_description_text_add_product_fab_button"
-            android:visibility="invisible"
-            app:srcCompat="@drawable/ic_arrow_up" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_create_item"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:contentDescription="@string/content_description_text_add_product_fab_button"
-            app:srcCompat="@drawable/ic_add" />
-
-    </LinearLayout>
-
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar_products"
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -128,25 +24,140 @@
                 layout="@layout/profile_circle_picture" />
 
             <com.google.android.material.search.SearchBar
-                android:id="@+id/searchBar_products"
+                android:id="@+id/search_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_search_bar_products"
+                app:menu="@menu/searchbar_warehouse_menu"
                 app:navigationIcon="@drawable/ic_search_product" />
 
         </LinearLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <RelativeLayout
+        android:id="@+id/relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <TextView
+            android:id="@+id/text_view_no_items"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="invisible"
+            android:text="@string/text_empty_warehouse" />
+
+        <TextView
+            android:id="@+id/text_view_products"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/swipe_refresh"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:gravity="center"
+            android:text="@string/text_products" />
+
+        <CheckBox
+            android:id="@+id/checkbox_change_display_type_products"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:button="@null"
+            tools:button="@drawable/ic_view_grid" />
+
+        <Button
+            style="@style/Widget.Material3.Button.TextButton.Dialog"
+            android:id="@+id/button_sort_by"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/swipe_refresh"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/check_box_sort_direction"
+            android:gravity="center"
+            android:minWidth="0dp"
+            android:text="@string/text_name" />
+
+        <CheckBox
+            android:id="@+id/check_box_sort_direction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/checkbox_change_display_type_products"
+            android:button="@null"
+            android:minWidth="32dp"
+            tools:button="@drawable/ic_arrow_up" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/circle_progress_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:layout_centerInParent="true"
+            android:visibility="invisible"/>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/checkbox_change_display_type_products"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:layoutAnimation="@anim/recycle_view_layout"
+                android:paddingBottom="90dp"
+                android:scrollbars="vertical"
+                tools:itemCount="5"
+                tools:listitem="@layout/product_row_item" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_margin="@dimen/margin_medium">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            style="?attr/floatingActionButtonSmallStyle"
+            android:id="@+id/fab_scroll_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/content_description_text_add_product_fab_button"
+            android:visibility="invisible"
+            android:layout_marginBottom="@dimen/margin_small"
+            app:srcCompat="@drawable/ic_arrow_up" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_create_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/content_description_text_add_product_fab_button"
+            app:srcCompat="@drawable/ic_add" />
+
+    </LinearLayout>
+
     <com.google.android.material.search.SearchView
-        android:id="@+id/searchView_products"
+        android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:hint="@string/hint_search_bar_products"
-        app:layout_anchor="@id/searchBar_products">
+        app:layout_anchor="@id/search_bar">
 
         <TextView
-            android:id="@+id/textView_search_content_products"
+            android:id="@+id/text_view_search_content_products"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -154,7 +165,7 @@
             android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView_search_products"
+            android:id="@+id/recycler_view_search_products"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"

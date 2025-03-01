@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="@dimen/margin_normal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_view_title_products"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_vertical_between_items"
+            android:text="@string/text_products"
+            android:textSize="@dimen/text_size_medium" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_view_title_products"
+            android:clipToPadding="false"
+            android:foreground="@drawable/background_corner_stroke"
+            android:foregroundTintMode="screen"
+            android:minHeight="200dp"
+            android:nestedScrollingEnabled="true"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_small" />
+
+        <LinearLayout
+            android:id="@+id/layout_add_product"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/recycler_view"
+            android:layout_alignBottom="@+id/recycler_view"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="@dimen/margin_normal"
+                android:contentDescription="@string/content_description_add_product"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_box_add" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_click_here_to_add_product" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button_add_product"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/recycler_view"
+            android:layout_marginVertical="@dimen/margin_vertical_between_items"
+            android:text="@string/text_add_product" />
+
+        <TextView
+            android:id="@+id/text_view_subtotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/button_add_product"
+            android:layout_marginVertical="@dimen/margin_vertical_between_items"
+            android:text="@string/text_subtotal"
+            android:textSize="@dimen/text_size_medium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_view_discount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_view_subtotal"
+            android:layout_marginVertical="@dimen/margin_vertical_between_items"
+            android:text="@string/text_discount"
+            android:textSize="@dimen/text_size_normal" />
+
+        <RadioGroup
+            android:id="@+id/radio_group_discount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/text_view_discount"
+            android:layout_alignBottom="@+id/text_view_discount"
+            android:layout_alignParentEnd="true"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radio_button_percentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_percentage" />
+
+            <RadioButton
+                android:id="@+id/radio_button_fixed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_fixed" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/text_view_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_view_discount"
+            android:layout_marginVertical="@dimen/margin_vertical_between_items"
+            android:text="@string/text_total"
+            android:textSize="@dimen/text_size_medium"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_view_total"
+            android:layout_marginVertical="@dimen/margin_vertical_between_items"
+            android:hint="@string/hint_comment"
+            app:endIconMode="clear_text"
+            app:helperText="@string/helper_text_optional"
+            app:helperTextEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/text_view_title_attachments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_input_comment"
+            android:layout_marginVertical="@dimen/margin_vertical_between_items"
+            android:text="@string/text_attachments"
+            android:textSize="@dimen/text_size_medium" />
+
+
+        <com.google.android.material.card.MaterialCardView
+            style="?attr/materialCardViewFilledStyle"
+            android:id="@+id/material_card_view_files"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_view_title_attachments">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="@drawable/background_corner_stroke"
+                    android:gravity="center"
+                    android:text="Upload Files"
+                    android:textSize="@dimen/text_size_medium" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_files"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:orientation="vertical"
+                    android:padding="@dimen/padding_small"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/order_create_attachment_item" />
+
+            </LinearLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </RelativeLayout>
+
+</androidx.core.widget.NestedScrollView>
+

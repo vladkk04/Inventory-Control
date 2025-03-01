@@ -16,13 +16,6 @@
     <string name="title_delete">Delete</string>
     <string name="title_hide">Hide</string>
 
-    <string name="text_empty_warehouse">No items in warehouse</string>
-    <string name="text_no_result">No result</string>
-    <string name="text_out_of_stock">Out of stock</string>
-    <string name="text_enter_or_scan">Enter text or scan barcode</string>
-    <string name="text_products">Products</string>
-    <string name="text_select_product">Select Product</string>
-
     <string name="hint_name">Name*</string>
     <string name="hint_barcode">Barcode*</string>
     <string name="hint_price">Price per unit*</string>
@@ -35,6 +28,7 @@
     <string name="hint_description">Description</string>
     <string name="hint_comment">Comment</string>
     <string name="hint_category">Category</string>
+    <string name="hint_from">From</string>
     <string name="hint_category_name">Name category</string>
     <string name="hint_tags">Tags</string>
     <string name="hint_email">Email</string>
@@ -43,24 +37,41 @@
     <string name="hint_user_role">User Role</string>
     <string name="hint_discount">Discount</string>
 
+    <string name="content_description_add_product">Add product</string>
+    <string name="content_description_product_info">Product Info</string>
+    <string name="content_description_timeline_action_about">Timeline Action About</string>
+    <string name="content_description_create_user">Create User</string>
+    <string name="content_description_order_attachments">Order Attachments</string>">
+
+    <string name="text_empty_warehouse">No items in warehouse</string>
+    <string name="text_no_result">No result</string>
+    <string name="text_out_of_stock">Out of stock</string>
+    <string name="text_enter_or_scan">Enter text or scan barcode</string>
+    <string name="text_products">Products</string>
+    <string name="text_select_product">Select Product</string>
+
     <string name="text_product_item_barcode">Barcode: %1$s</string>
+    <string name="text_product_item_category">Category: %1$s</string>
+    <string name="text_product_item_minimal_stock_level">Minimal Stock Level: %1$s</string>
     <string name="text_product_item_price">Price per %1$s: %2$.2f € </string>
     <string name="text_product_item_text_pcs">pcs</string>
     <string name="text_product_item_quantity">x%1.2f</string>
 
+    <string name="text_product_item_min_stock_value">Min Stock: %1$.2f</string>
 
     <string name="toolbar_title_order_id"># %1$s</string>
 
     <string name="hint_search_bar_products">Enter text to search product</string>
     <string name="content_description_text_add_product_fab_button">Add new product</string>
+    <string name="content_description_create_order">Create Order</string>
 
     <string name="helper_text_required">*required</string>
     <string name="helper_text_date">MM/DD/YYYY</string>
     <string name="helper_text_optional">(optional)</string>
     <string name="text_total_price">Total price: %1$.2f</string>
     <string name="text_price_per_unit">Price per %1$s</string>
-    <string name="text_total">Total: %1$.2f</string>
-
+    <string name="text_total_value">Total: %1$.2f</string>
+    <string name="text_total">Total</string>
 
     <string name="text_hello_user">Hello, %1$s</string>">
 
@@ -69,28 +80,36 @@
     <string name="text_order_total">Total $%1$.2f</string>
     <string name="text_order_subitem_quantity">x%1$.2f %2$s</string>
 
-    <string name="text_price">%1$.2f €</string>
+    <string name="text_price_value">%1$.2f €</string>
 
     <string name="text_amount_order_added_product">%1$.2f %2$s x %3$.2f</string>
-    <string name="text_subtotal">Subtotal %1$.2f</string>
-    <string name="text_discount">Discount: %1$.2f</string>
+    <string name="text_subtotal_value">Subtotal %1$.2f</string>
+    <string name="text_subtotal">Subtotal</string>
+    <string name="text_discount_value">Discount: %1$.2f</string>
+    <string name="text_discount">Discount</string>
     <string name="text_discount_percentage">Discount: %1$.2f %%</string>
 
-    <string name="text_unit_price">Unit price: %1$s</string>
-    <string name="text_product_id">Product ID: %1$s</string>
-    <string name="text_category">Category: %1$s</string>
-    <string name="text_quantity">Quantity: %1$d</string>
-    <string name="text_minimum_stock_level">Minimum stock level: %1$d</string>
-    <string name="text_purchase_date">Purchase Date: %1$s</string>
-    <string name="text_measurement_unit">Unit: %1$s</string>
-    <string name="text_tags">Tags:</string>
-    <string name="text_description">Description:</string>
+    <string name="text_unit_price_value">Unit price: %1$s</string>
+    <string name="text_product_id_value">Product ID: %1$s</string>
+    <string name="text_category_value">Category: %1$s</string>
+    <string name="text_category">Category</string>
+    <string name="text_categories">Categories</string>
+    <string name="text_quantity_value">Quantity: %1$.2f</string>
+    <string name="text_purchase_date_value">Purchase Date: %1$s</string>
+    <string name="text_measurement_unit_value">Unit: %1$s</string>
+    <string name="text_tags">Tags</string>
+    <string name="text_description">Description</string>
 
-    <string name="text_delete_item">Delete %1$s</string>
+    <string name="text_delete_item">Delete %1$s?</string>
     <string name="text_delete_item_confirm">Are you sure you want to delete %1$s? This action cannot be undone.</string>
+
+    <string name="text_delete_category_confirm">
+        "Are you sure you want to delete %1$s? Deleting this category may affect products, replacing their category with 'Unknown'. This action cannot be undone!"
+    </string>
+
     <string name="text_create_new_user">Create new user</string>
 
-    <string name="text_button_add_product">Add product</string>
+    <string name="text_add_product">Add product</string>
     <string name="text_button_update_stock">Update stock</string>">
     <string name="text_button_edit_product">Save edited product</string>
     <string name="text_click_here_to_add_product">Click here to add product or button above</string>
@@ -104,10 +123,59 @@
     <string name="text_product_created">Product Created</string>
     <string name="text_product_updated">Product Update</string>
 
+    <string name="text_quantity_unit_value">%1$.2f %2$s</string>
+
     <string name="text_detail_ordered_product">%1$s x %2$.2f %3$s</string>
     <string name="text_no_orders">No Orders</string>
     <string name="title_name">Name</string>
     <string name="title_quantity">Quantity</string>
+    <string name="text_item">Item</string>
+    <string name="text_order">Order</string>
+    <string name="text_quantity">Quantity</string>
+    <string name="text_qty">QTY</string>
+    <string name="text_user">User</string>
+    <string name="content_description_fab_menu">Fast menu</string>
+    <string name="text_price">Price</string>
+    <string name="text_create_by">Create By</string>
+    <string name="text_apply">Apply</string>
+    <string name="text_percentage">%</string>
+    <string name="text_fixed">fixed</string>
+    <string name="text_basic_information">Basic Information</string>
+    <string name="text_stock_details">Stock Details</string>
+    <string name="text_stock">Stock</string>
+    <string name="text_additional_details">Additional Details</string>
+    <string name="text_unit">Unit</string>
+    <string name="text_name">Name</string>
+
+    <string name="text_uploading_percentage">%1$s %%</string>
+    <string name="text_attachments">Attachments</string>
+    <string name="text_filter_any_type">Any type</string>
+    <string name="text_filter_price_range">Price range</string>
+    <string name="hint_to">To</string>
+    <string name="text_low_stock">Low stock</string>
+    <string name="text_overstock">Overstock</string>
+    <string name="text_date">Date</string>
+    <string name="text_custom_date_period">Custom date period</string>
+    <string name="text_last_month">Last month</string>
+    <string name="text_last_week">Last week</string>
+    <string name="text_anytime">Anytime</string>
+    <string name="text_filters">Filters</string>
+    <string name="title_apply">Apply</string>
+    <string name="title_reset">Reset</string>
+    <string name="title_clear">Clear</string>
+    <string name="text_create_organisation">Create organisation</string>
+    <string name="text_create_company">Create company</string>
+    <string name="text_login">Log in</string>
+    <string name="text_register">Register</string>
+    <string name="text_sign_up">Sign up</string>
+    <string name="text_forgot_password">Forgot password?</string>
+    <string name="title_back">Back</string>
+    <string name="text_remember_me">Remember me</string>
+    <string name="hint_repeat_password">Repeat password</string>
+    <string name="hint_company_name">Company name</string>
+    <string name="text_agree_processing_personal_data">I agree to the processing of Personal data</string>
+    <string name="hint_confirm_password">Confirm password</string>
+    <string name="text_back">Back</string>
 
 
 </resources>

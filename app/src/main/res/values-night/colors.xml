@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-
+    <color name="colorPrimary">#ECDFCC</color>
+    <color name="colorPrimaryContainer">#ECDFCC</color>
+    <color name="colorOnPrimaryContainer">#3C3D37</color>
+    <color name="colorSurface">#222831</color>
+    <color name="colorSurfaceContainer">#393E46</color>
+    <color name="colorOnSecondaryContainer">#ECDFCC</color>
+    <color name="colorSecondaryContainer">#697565</color>
+    <color name="colorOnSurfaceVariant">#FFF4EA</color>
+    <color name="colorSurfaceContainerHigh">#32363D</color>
+    <color name="colorSurfaceContainerLow">#32363D</color>
+    <color name="colorSurfaceContainerHighest">#393E46</color>
+    <color name="colorBackground">#222831</color>
 
 </resources>

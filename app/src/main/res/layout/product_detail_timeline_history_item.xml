@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -15,8 +16,8 @@
         android:background="#565353" />
 
     <com.google.android.material.circularreveal.cardview.CircularRevealCardView
-        android:id="@+id/circle"
         style="@style/Widget.Material3.CardView.Filled"
+        android:id="@+id/circle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_small"
@@ -25,16 +26,17 @@
         app:contentPadding="@dimen/padding_extra_small">
 
         <ImageView
-            android:id="@+id/imageView_timeline_about"
+            android:id="@+id/image_view_timeline_about"
             android:layout_width="18dp"
             android:layout_height="18dp"
+            android:contentDescription="@string/content_description_timeline_action_about"
             android:src="@drawable/ic_edit" />
 
     </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardView"
         style="@style/Widget.Material3.CardView.Filled"
+        android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:layout_marginHorizontal="@dimen/margin_small"
@@ -47,21 +49,21 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView_header"
+                android:id="@+id/text_view_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
-                android:text="Product Created"
                 android:textSize="@dimen/text_size_normal"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="Product Created" />
 
             <TextView
-                android:id="@+id/textView_modify"
+                android:id="@+id/text_view_modify"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
-                android:text="ysjdfklsdlkfjsdsdjfklsjkldsjflskdjfklsdjflksadjfl;ksjdflkldksjfkldsjfklsdjf"
-                android:textSize="11sp" />
+                android:textSize="11sp"
+                tools:text="Was modified at 5:00" />
 
         </LinearLayout>
 

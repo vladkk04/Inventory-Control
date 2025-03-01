@@ -1,27 +1,24 @@
 package com.example.bachelorwork.domain.usecase.product
 
-import com.example.bachelorwork.data.local.pojo.toProduct
-import com.example.bachelorwork.domain.model.SortDirection
+import androidx.paging.PagingData
+import com.example.bachelorwork.domain.model.sorting.SortDirection
 import com.example.bachelorwork.domain.model.product.Product
 import com.example.bachelorwork.domain.model.product.ProductSortOptions
 import com.example.bachelorwork.domain.model.product.SortBy
 import com.example.bachelorwork.domain.repository.ProductRepository
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.emptyFlow
 
 class GetProductsUseCase(
-    private val productRepository: ProductRepository
+    private val productRepository: ProductRepository,
 ) {
-    fun getProducts(productSortOptions: ProductSortOptions = ProductSortOptions()): Flow<Result<List<Product>>> {
-        return productRepository.getProductsPojo().map { products ->
-            val toProducts = products.map { it.toProduct() }
-            runCatching { sortProductsByOrder(toProducts, productSortOptions) }
-        }
-    }
 
-    fun getProductById(id: Int): Flow<Result<Product>> =
-        productRepository.getProductPojoById(id)
-            .map { product -> product.runCatching { product.toProduct() } }
+    @OptIn(ExperimentalCoroutinesApi::class)
+    operator fun invoke(
+        productSortOptions: ProductSortOptions = ProductSortOptions()
+    ): Flow<PagingData<Product>> = emptyFlow()
+
 
     private fun sortProductsByOrder(
         products: List<Product>,

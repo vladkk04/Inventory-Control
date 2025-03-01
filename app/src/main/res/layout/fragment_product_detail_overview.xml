@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -29,7 +28,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_extra_small"
-                    android:text="Basic Information"
+                    android:text="@string/text_basic_information"
                     android:textSize="@dimen/text_size_medium"
                     android:textStyle="bold" />
 
@@ -41,32 +40,32 @@
                     android:weightSum="1">
 
                     <TextView
-                        android:id="@+id/textView_product_id"
+                        android:id="@+id/text_view_id"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.4"
-                        android:text="@string/text_product_id"
+                        android:text="@string/text_product_id_value"
                         android:textSize="@dimen/text_size_small" />
 
                     <TextView
-                        android:id="@+id/textView_category"
+                        android:id="@+id/text_view_category"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_small"
                         android:layout_weight="0.6"
-                        android:text="@string/text_category"
                         android:gravity="center"
+                        android:text="@string/text_category"
                         android:textSize="@dimen/text_size_small" />
 
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/textView_measurement_unit"
+                    android:id="@+id/text_view_unit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/text_measurement_unit"
-                    android:textSize="@dimen/text_size_small"
-                    android:layout_marginVertical="@dimen/margin_vertical_between_items"/>
+                    android:layout_marginVertical="@dimen/margin_vertical_between_items"
+                    android:text="@string/text_measurement_unit_value"
+                    android:textSize="@dimen/text_size_small" />
 
             </LinearLayout>
 
@@ -90,7 +89,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_small"
-                    android:text="Stock Details"
+                    android:text="@string/text_stock_details"
                     android:textSize="@dimen/text_size_medium"
                     android:textStyle="bold" />
 
@@ -102,20 +101,20 @@
                     android:weightSum="1">
 
                     <TextView
-                        android:id="@+id/textView_quantity"
+                        android:id="@+id/text_view_quantity"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.4"
-                        android:text="@string/text_quantity"
+                        android:text="@string/text_quantity_value"
                         android:textSize="@dimen/text_size_small" />
 
                     <TextView
-                        android:id="@+id/textView_minimum_stock_level"
+                        android:id="@+id/text_view_minimum_stock_level"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_small"
                         android:layout_weight="0.6"
-                        android:text="@string/text_minimum_stock_level"
+                        android:text="@string/text_product_item_minimal_stock_level"
                         android:textSize="@dimen/text_size_small" />
 
                 </LinearLayout>
@@ -141,7 +140,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_small"
-                    android:text="Additional Details"
+                    android:text="@string/text_additional_details"
                     android:textSize="@dimen/text_size_medium"
                     android:textStyle="bold" />
 
@@ -153,16 +152,16 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/text_tags"
                         android:layout_weight="0.2"
+                        android:text="@string/text_tags"
                         android:textSize="@dimen/text_size_small" />
 
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/chip_group_tags"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:chipSpacingVertical="0dp"
-                        android:layout_weight="0.2" />
+                        android:layout_weight="0.2"
+                        app:chipSpacingVertical="0dp" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -171,7 +170,7 @@
                         android:textSize="@dimen/text_size_small" />
 
                     <TextView
-                        android:id="@+id/textView_description"
+                        android:id="@+id/text_view_description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/text_size_extra_small"

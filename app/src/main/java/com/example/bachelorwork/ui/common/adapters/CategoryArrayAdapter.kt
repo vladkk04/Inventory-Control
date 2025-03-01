@@ -42,22 +42,22 @@ class CategoryArrayAdapter(
         binding.textViewCategory.text = item.name
 
         if (item.name == "Create new category") {
-            binding.checkboxEdit.visibility = View.GONE
-            binding.checkboxDelete.visibility = View.GONE
+            binding.checkBoxEdit.visibility = View.GONE
+            binding.checkBoxDelete.visibility = View.GONE
             binding.textViewCategory.setOnClickListener {
                 onCreateNewCategoryClickListener?.onClick()
             }
         } else {
-            binding.checkboxEdit.visibility = View.VISIBLE
-            binding.checkboxDelete.visibility = View.VISIBLE
+            binding.checkBoxEdit.visibility = View.VISIBLE
+            binding.checkBoxDelete.visibility = View.VISIBLE
 
             binding.textViewCategory.setOnClickListener {
                 onClickItemListener?.onItemClick(item)
             }
-            binding.checkboxEdit.setOnClickListener {
+            binding.checkBoxEdit.setOnClickListener {
                 onEditClickListener?.onItemClick(item)
             }
-            binding.checkboxDelete.setOnClickListener {
+            binding.checkBoxDelete.setOnClickListener {
                 onDeleteClickListener?.onItemClick(item)
             }
         }

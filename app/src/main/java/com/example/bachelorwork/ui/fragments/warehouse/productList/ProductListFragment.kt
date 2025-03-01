@@ -1,9 +1,8 @@
 package com.example.bachelorwork.ui.fragments.warehouse.productList
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -18,18 +17,19 @@ import com.example.bachelorwork.ui.model.product.list.ProductListUIState
 import com.example.bachelorwork.ui.model.product.list.ProductSearchUIState
 import com.example.bachelorwork.ui.utils.StateListDrawableFactory
 import com.example.bachelorwork.ui.utils.extensions.collectInLifecycle
+import com.example.bachelorwork.ui.utils.extensions.viewBinding
 import com.example.bachelorwork.ui.utils.menu.createPopupMenu
 import com.example.bachelorwork.ui.utils.recyclerview.SpeedyLinearSmoothScroller
 import com.example.bachelorwork.ui.utils.recyclerview.UpwardScrollButtonListener
 import com.example.bachelorwork.ui.utils.screen.InsetHandler
 import com.google.android.material.search.SearchView
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 
 @AndroidEntryPoint
-class ProductListFragment : Fragment() {
+class ProductListFragment : Fragment(R.layout.fragment_product_list) {
 
-    private var _binding: FragmentProductListBinding? = null
-    private val binding get() = _binding!!
+    private val binding by viewBinding(FragmentProductListBinding::bind)
 
     private val viewModel: ProductListViewModel by viewModels()
 
@@ -37,11 +37,10 @@ class ProductListFragment : Fragment() {
     private lateinit var listAdapter: ProductListAdapter
     private lateinit var searchListAdapter: ProductListAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentProductListBinding.inflate(inflater, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        InsetHandler.adaptToEdgeWithMargin(binding.root)
 
         collectInLifecycle(
             viewModel.searchUiState,
@@ -49,64 +48,63 @@ class ProductListFragment : Fragment() {
         ) { searchUiState ->
             updateSearchUIState(searchUiState)
         }
-
         collectInLifecycle(
             viewModel.uiState,
             lifecycleState = Lifecycle.State.STARTED
         ) { uiState ->
-            updateUIState(uiState)
+            updateUiState(uiState)
         }
 
-        InsetHandler.adaptToEdgeWithMargin(binding.root)
         setupRecyclerView()
         setupSearchBar()
 
+        setupOnBackPressCallback()
         setupSwipeRefreshLayoutListener()
         setupProfileButtonOnClickListener()
         setupCheckboxChangeViewTypeProductsListener()
         setupCheckboxOrderByProductsListener()
 
-        return binding.root
     }
 
     private fun setupCheckboxChangeViewTypeProductsListener() {
-        binding.checkboxChangeViewTypeProducts.apply {
+        binding.checkboxChangeDisplayTypeProducts.apply {
             buttonDrawable = StateListDrawableFactory.createCheckedDrawable(
                 requireContext(),
                 R.drawable.ic_view_grid,
                 R.drawable.ic_view_row
             )
         }.setOnClickListener {
-            if (binding.recyclerViewProducts.itemAnimator?.isRunning == true) return@setOnClickListener
-            viewModel.changeViewType()
+            if (binding.recyclerView.itemAnimator?.isRunning == true) return@setOnClickListener
+            viewModel.changeProductViewDisplayType()
         }
     }
 
     private fun setupCheckboxOrderByProductsListener() {
-        binding.checkboxOrderTypeProducts.apply {
+        binding.checkBoxSortDirection.apply {
             buttonDrawable = StateListDrawableFactory.createCheckedDrawable(
                 requireContext(),
                 R.drawable.ic_arrow_up,
                 R.drawable.ic_arrow_down
             )
         }.setOnClickListener {
-            viewModel.getProductsChangeSortDirection()
-            binding.recyclerViewProducts.itemAnimator = null
+            viewModel.changeSortDirection()
+            binding.recyclerView.itemAnimator = null
         }
 
-        binding.textViewOrderByProducts.setOnClickListener {
-            createPopupMenu(requireContext(), it, R.menu.popup_sort_by_products_menu).apply {
+        binding.buttonSortBy.setOnClickListener {
+            createPopupMenu(requireContext(), it, R.menu.popup_sort_by_product_menu).apply {
                 setOnMenuItemClickListener { menuItem ->
-                    binding.textViewOrderByProducts.text = menuItem.title
                     when (menuItem.itemId) {
                         R.id.sort_by_name -> {
-                            viewModel.getProductsChangeSortBy(SortBy.NAME)
+                            viewModel.getProductsSortedBy(SortBy.NAME)
                             true
                         }
+
                         R.id.sort_by_quantity -> {
-                            viewModel.getProductsChangeSortBy(SortBy.QUANTITY)
+                            viewModel.getProductsSortedBy(SortBy.QUANTITY)
                             true
                         }
+
                         else -> false
                     }
                 }
@@ -115,21 +113,25 @@ class ProductListFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
+
         listAdapter = ProductListAdapter()
 
         gridLayoutManager = GridLayoutManager(
             requireContext(),
-            viewModel.uiState.value.viewType.ordinal + 1
+            viewModel.uiState.value.viewDisplayType.ordinal + 1
         )
 
         binding.fabScrollUp.setOnClickListener {
             gridLayoutManager.startSmoothScroll(SpeedyLinearSmoothScroller(requireContext()))
         }
 
-        with(binding.recyclerViewProducts) {
+        listAdapter.setOnItemClickListener { id ->
+            viewModel.navigateToItemDetail(id)
+        }
+
+        with(binding.recyclerView) {
             adapter = listAdapter
             layoutManager = gridLayoutManager
-            itemAnimator = null
             setHasFixedSize(true)
             setItemViewCacheSize(10)
             addOnScrollListener(
@@ -140,17 +142,10 @@ class ProductListFragment : Fragment() {
                 )
             )
         }
-
-        listAdapter.setOnItemClickListener { position ->
-            viewModel.navigateToItemDetail(position)
-        }
     }
 
     private fun setupSearchBar() {
         searchListAdapter = ProductListAdapter()
-        searchListAdapter.setOnItemClickListener { position ->
-            viewModel.navigateToItemDetail(position)
-        }
 
         with(binding.recyclerViewSearchProducts) {
             adapter = searchListAdapter
@@ -158,23 +153,54 @@ class ProductListFragment : Fragment() {
             itemAnimator = null
         }
 
-        binding.searchViewProducts.editText.doAfterTextChanged {
+        searchListAdapter.setOnItemClickListener { id ->
+            viewModel.navigateToItemDetail(id)
+        }
+
+        binding.searchView.editText.doAfterTextChanged {
             viewModel.searchProducts(it.toString())
         }
 
-        val callback = requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, false) {
-            binding.searchViewProducts.hide()
+        binding.searchBar.menu.findItem(R.id.filters).actionView?.let { view ->
+            view.setOnLongClickListener {
+                filterPopupMenu(view).show()
+                true
+            }
+
+            view.setOnClickListener {
+                viewModel.navigateToFilters()
+            }
+        }
+    }
+
+    private fun filterPopupMenu(anchorView: View) =
+        createPopupMenu(requireContext(), anchorView, R.menu.popup_filters_menu).apply {
+            setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.clear -> {
+                        viewModel.clearFilters()
+                        true
+                    }
+
+                    else -> false
+                }
+            }
         }
 
-        binding.searchViewProducts.addTransitionListener { v, _, newState ->
+    private fun setupOnBackPressCallback() {
+        val callback =
+            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, false) {
+                binding.searchView.hide()
+            }
+
+        binding.searchView.addTransitionListener { _, _, newState ->
             callback.isEnabled = newState == SearchView.TransitionState.SHOWN
         }
-
     }
 
     private fun setupSwipeRefreshLayoutListener() {
-        binding.swipeRefreshLayoutProducts.setOnRefreshListener {
-            binding.swipeRefreshLayoutProducts.isRefreshing = false
+        binding.swipeRefresh.setOnRefreshListener {
+            binding.swipeRefresh.isRefreshing = false
         }
     }
 
@@ -187,28 +213,50 @@ class ProductListFragment : Fragment() {
         }
     }
 
-    private fun updateUIState(uiState: ProductListUIState) {
-        val firstVisiblePosition = gridLayoutManager.findFirstVisibleItemPosition()
+    private fun updateUiState(uiState: ProductListUIState) {
+        if (uiState.isLoading) {
+            binding.circleProgressIndicator.visibility = View.VISIBLE
+        } else {
+            binding.circleProgressIndicator.visibility = View.INVISIBLE
+            binding.textViewNoItems.visibility = if (uiState.products.isEmpty()) View.VISIBLE else View.GONE
 
-        binding.textViewContentProducts.visibility = if (uiState.isNoProducts) View.VISIBLE else View.GONE
+            binding.buttonSortBy.text =
+                if (uiState.sortOptions.sortBy == SortBy.NAME) getString(R.string.title_name)
+                else getString(R.string.title_quantity)
 
-        gridLayoutManager.spanCount = uiState.viewType.ordinal + 1
-        listAdapter.setViewType(uiState.viewType)
-        listAdapter.submitList(uiState.products) {
-            val firstVisibleView = gridLayoutManager.findViewByPosition(firstVisiblePosition)
-            val offset = firstVisibleView?.top ?: 0
-            gridLayoutManager.scrollToPositionWithOffset(firstVisiblePosition, offset)
+            uiState.viewDisplayType.apply {
+                gridLayoutManager.spanCount = ordinal + 1
+                listAdapter.setViewType(this)
+            }
+
+            val firstVisiblePosition = gridLayoutManager.findFirstVisibleItemPosition()
+
+            listAdapter.submitList(uiState.products) {
+                val firstVisibleView = gridLayoutManager.findViewByPosition(firstVisiblePosition)
+
+                val offset = firstVisibleView?.top ?: 0
+                gridLayoutManager.scrollToPositionWithOffset(firstVisiblePosition, offset)
+            }
+        }
+
+        binding.searchBar.menu.findItem(R.id.filters).actionView?.let { view ->
+            val textViewFiltersCount = view.findViewById<TextView>(R.id.text_view_filters_count)
+
+            if (uiState.filtersCount == 0) {
+                textViewFiltersCount.visibility = View.GONE
+            } else {
+                view.findViewById<TextView>(R.id.text_view_filters_count).text = String.format(
+                    Locale.getDefault(), "%d", uiState.filtersCount
+                )
+                textViewFiltersCount.visibility = View.VISIBLE
+            }
         }
     }
 
     private fun updateSearchUIState(uiState: ProductSearchUIState) {
-        binding.textViewSearchContentProducts.visibility = if(uiState.isNoItemsFound) View.VISIBLE else View.GONE
+        binding.textViewSearchContentProducts.visibility =
+            if (uiState.products.isEmpty()) View.VISIBLE else View.GONE
+
         searchListAdapter.submitList(uiState.products)
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
 }

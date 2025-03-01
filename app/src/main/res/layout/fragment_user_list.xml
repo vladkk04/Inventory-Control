@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:id="@+id/layout_toolbar"
@@ -11,7 +11,7 @@
         android:layout_height="88dp"
         android:layout_alignParentTop="true"
         android:gravity="start|center"
-        android:paddingStart="@dimen/padding_medium">
+        android:paddingHorizontal="@dimen/padding_medium">
 
         <include
             android:id="@+id/profile_circle_picture"
@@ -21,29 +21,30 @@
             android:id="@+id/textView_manage_orders"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/text_manage_users"
             android:layout_margin="@dimen/margin_medium"
+            android:text="@string/text_manage_users"
             android:textSize="@dimen/text_size_large_plus" />
 
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView_manage_users"
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/layout_toolbar"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         tools:listitem="@layout/user_item" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_create_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/margin_medium"
+        android:contentDescription="@string/content_description_create_user"
         android:src="@drawable/ic_add" />
 
 </RelativeLayout>

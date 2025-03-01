@@ -1,8 +1,11 @@
 package com.example.bachelorwork.di
 
+import android.content.Context
 import com.example.bachelorwork.data.local.AppDatabase
-import com.example.bachelorwork.data.local.repository.ProductCategoryRepositoryImpl
-import com.example.bachelorwork.data.local.repository.ProductRepositoryImpl
+import com.example.bachelorwork.data.local.repositories.ProductCategoryRepositoryImpl
+import com.example.bachelorwork.data.local.repositories.ProductRepositoryImpl
+import com.example.bachelorwork.data.repositories.BarcodeScannerRepositoryImpl
+import com.example.bachelorwork.domain.repository.BarcodeScannerRepository
 import com.example.bachelorwork.domain.repository.ProductCategoryRepository
 import com.example.bachelorwork.domain.repository.ProductRepository
 import com.example.bachelorwork.domain.usecase.product.CreateProductUseCase
@@ -19,6 +22,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
 
 @Module
@@ -54,4 +58,6 @@ object ProductRepositoryModule {
             updateCategory = UpdateProductCategoryUseCase(repository),
             getCategories = GetProductCategoriesUseCase(repository)
         )
+
+
 }

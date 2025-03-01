@@ -1,6 +1,7 @@
 package com.example.bachelorwork.ui
 
 import androidx.lifecycle.ViewModel
+import com.example.bachelorwork.ui.permissions.PermissionController
 import com.example.bachelorwork.ui.snackbar.SnackbarController.sendSnackbarEvent
 import com.example.bachelorwork.ui.snackbar.SnackbarEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -8,7 +9,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-
+    val permissionController: PermissionController
 ): ViewModel() {
     private val timeDelay = 2000L
     private var lastBackPressed = 0L

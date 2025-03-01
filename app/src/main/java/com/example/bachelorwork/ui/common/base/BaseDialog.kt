@@ -35,7 +35,7 @@ abstract class BaseDialog(
         MaterialAlertDialogBuilder(
             context,
             config.theme
-                ?: com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog
+                ?: com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered
         )
             .setTitle(config.title)
             .setMessage(config.message)

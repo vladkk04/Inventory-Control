@@ -1,5 +1,4 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -9,15 +8,15 @@
         android:id="@+id/fab_create_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Item"
         android:layout_marginVertical="@dimen/margin_small"
+        android:text="@string/text_item"
         app:icon="@drawable/ic_package" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fab_create_order"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Order"
+        android:text="@string/text_order"
         app:icon="@drawable/ic_receipt" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -25,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/margin_small"
-        android:text="User"
+        android:text="@string/text_user"
         app:icon="@drawable/ic_manage_users" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -33,5 +32,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
+        android:contentDescription="@string/content_description_fab_menu"
         app:srcCompat="@drawable/ic_close" />
 </LinearLayout>

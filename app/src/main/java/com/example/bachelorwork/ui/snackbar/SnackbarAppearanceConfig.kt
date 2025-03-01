@@ -8,5 +8,4 @@ data class SnackbarAppearanceConfig(
     val duration: Int = Snackbar.LENGTH_SHORT,
     @GravityInt
     val gravity: Int = Gravity.CENTER,
-    val isDialog: Boolean = false
 )

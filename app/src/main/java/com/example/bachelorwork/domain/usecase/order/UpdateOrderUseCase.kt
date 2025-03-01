@@ -1,6 +1,6 @@
 package com.example.bachelorwork.domain.usecase.order
 
-import com.example.bachelorwork.data.local.entity.OrderEntity
+import com.example.bachelorwork.data.local.entities.order.OrderEntity
 import com.example.bachelorwork.domain.repository.OrderRepository
 
 class UpdateOrderUseCase(

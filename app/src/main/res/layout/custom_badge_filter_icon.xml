@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <CheckBox
+        android:id="@+id/check_box_filters"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/ic_filter"
+        android:clickable="false"
+        android:focusable="false" />
+
+    <TextView
+        android:id="@+id/text_view_filters_count"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_gravity="end"
+        android:layout_margin="@dimen/margin_small"
+        android:background="@drawable/background_circle"
+        android:backgroundTint="@color/colorSecondaryContainer"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_micro_small"
+        tools:text="22" />
+
+</FrameLayout>

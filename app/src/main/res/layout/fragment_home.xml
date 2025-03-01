@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="88dp"
+        android:layout_height="@dimen/height_toolbar"
         android:layout_alignParentTop="true"
         android:layout_gravity="center"
         android:gravity="start|center"
@@ -17,25 +19,98 @@
             layout="@layout/profile_circle_picture" />
 
         <TextView
-            android:id="@+id/textView_hello_user"
+            android:id="@+id/text_view_hello_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_medium"
-            android:text="Hello, Vladyslav"
-            android:textSize="@dimen/text_size_large_plus" />
+            android:textSize="@dimen/text_size_large_plus"
+            tools:text="Hello, Vladyslav" />
 
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@id/toolbar">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.google.android.material.card.MaterialCardView
+            style="?attr/materialCardViewElevatedStyle"
+            android:id="@+id/card_view_ordes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_small"
+            android:layout_marginVertical="@dimen/margin_vertical_item_detail_between_items"
+            app:contentPadding="@dimen/padding_extra_small">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_small"
+                    android:text="Total Orders"
+                    android:textSize="@dimen/text_size_large" />
+
+                <com.patrykandpatrick.vico.views.cartesian.CartesianChartView
+                    android:id="@+id/chart_view_orders"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:chartStyle="@style/ChartStyle2" />
+
+            </LinearLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            style="?attr/materialCardViewElevatedStyle"
+            android:id="@+id/card_view_products"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_small"
+            android:layout_marginVertical="@dimen/margin_vertical_item_detail_between_items"
+            app:contentPadding="@dimen/padding_extra_small">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_small"
+                    android:text="All Products"
+                    android:textSize="@dimen/text_size_large" />
+
+                <com.patrykandpatrick.vico.views.cartesian.CartesianChartView
+                    android:id="@+id/chart_view_products"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:chartStyle="@style/ChartStyle2" />
+
+            </LinearLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </LinearLayout>
+
+   <!-- <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_second"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/margin_medium"
         android:layout_toStartOf="@+id/fab_all"
-        android:src="@drawable/ic_list" />
+        android:contentDescription="@string/content_description_fab_menu"
+        android:src="@drawable/ic_list" />-->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_all"
@@ -44,6 +119,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/margin_medium"
+        android:contentDescription="@string/content_description_fab_menu"
         android:src="@drawable/ic_add" />
 
 </RelativeLayout>

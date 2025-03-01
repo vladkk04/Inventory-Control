@@ -10,16 +10,19 @@ import androidx.lifecycle.viewModelScope
 import com.example.bachelorwork.ui.utils.extensions.collectInLifecycle
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
 object SnackbarController {
-    private val _events = Channel<SnackbarEvent>()
+    private val _events = MutableSharedFlow<SnackbarEvent>(replay = 0)
 
-    fun observeSnackbarEvents(lifecycleOwner: LifecycleOwner, view: View, anchorView: View? = null) {
+    fun observeSnackbarEvents(
+        lifecycleOwner: LifecycleOwner,
+        view: View,
+        anchorView: View? = null
+    ) {
         lifecycleOwner.collectInLifecycle(
-            flow = _events.receiveAsFlow(),
+            flow = _events,
             lifecycleState = Lifecycle.State.STARTED,
             dispatcher = Dispatchers.Main.immediate
         ) { event ->
@@ -33,7 +36,7 @@ object SnackbarController {
     }
 
     fun ViewModel.sendSnackbarEvent(event: SnackbarEvent) = viewModelScope.launch {
-        _events.trySend(event)
+        _events.emit(event)
     }
 
     private fun showCustomSnackbar(
@@ -42,11 +45,12 @@ object SnackbarController {
         snackbarEvent: SnackbarEvent,
         snackbarAppearanceConfig: SnackbarAppearanceConfig,
     ) {
-        val snackbar = Snackbar.make(view, snackbarEvent.message, snackbarAppearanceConfig.duration).apply {
-            snackbarEvent.action?.let { action ->
-                this.setAction(action.name) { action.action() }
+        val snackbar =
+            Snackbar.make(view, snackbarEvent.message, snackbarAppearanceConfig.duration).apply {
+                snackbarEvent.action?.let { action ->
+                    this.setAction(action.name) { action.action() }
+                }
             }
-        }
 
         when (val layoutParams = snackbar.view.layoutParams) {
             is FrameLayout.LayoutParams -> {
@@ -54,14 +58,21 @@ object SnackbarController {
                 layoutParams.width = FrameLayout.LayoutParams.WRAP_CONTENT
                 snackbar.view.layoutParams = layoutParams
             }
+
             is CoordinatorLayout.LayoutParams -> {
                 layoutParams.gravity = snackbarAppearanceConfig.gravity
                 layoutParams.width = CoordinatorLayout.LayoutParams.WRAP_CONTENT
                 snackbar.view.layoutParams = layoutParams
             }
-            else -> { }
+
+            else -> {}
         }
-        snackbar.anchorView = anchorView
+
+        if (anchorView?.isAttachedToWindow == true) {
+            snackbar.anchorView = anchorView
+        } else {
+            snackbar.anchorView = null // Fallback to no anchor
+        }
 
         snackbar.show()
     }

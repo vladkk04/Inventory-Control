@@ -1,47 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/text_view_no_orders"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_no_orders"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        android:textSize="@dimen/text_size_medium" />
+
     <LinearLayout
-        android:id="@+id/layout_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="88dp"
-        android:layout_alignParentTop="true"
-        android:gravity="start|center"
-        android:paddingHorizontal="@dimen/padding_medium">
-
-        <include
-            android:id="@+id/profile_circle_picture"
-            layout="@layout/profile_circle_picture" />
-
-        <TextView
-            android:id="@+id/textView_manage_orders"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_medium"
-            android:text="@string/text_manage_orders"
-            android:textSize="@dimen/text_size_large_plus" />
-
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView_orders"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/layout_toolbar"
-        android:layout_marginHorizontal="@dimen/margin_normal"
-        tools:listitem="@layout/order_item_outer" />
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/layout_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="88dp"
+            android:gravity="start|center"
+            android:paddingHorizontal="@dimen/padding_medium">
+
+            <include
+                android:id="@+id/profile_circle_picture"
+                layout="@layout/profile_circle_picture" />
+
+            <TextView
+                android:id="@+id/text_view_toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_medium"
+                android:text="@string/text_manage_orders"
+                android:textSize="@dimen/text_size_large_plus" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/margin_normal"
+            tools:listitem="@layout/order_outer_item" />
+
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_create_order"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/margin_medium"
-        android:contentDescription="Create order"
+        android:contentDescription="@string/content_description_create_order"
         android:src="@drawable/ic_add" />
 
-</RelativeLayout>
+</FrameLayout>

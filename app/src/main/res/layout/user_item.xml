@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/margin_small">
+    android:layout_marginBottom="@dimen/margin_large">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/shapeableImageView"
+        android:id="@+id/image_view"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:scaleType="centerCrop"
         android:layout_centerVertical="true"
         android:layout_marginHorizontal="@dimen/margin_small"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle"
-        app:srcCompat="@drawable/cup" />
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle" />
 
     <TextView
-        android:id="@+id/textView_name"
+        android:id="@+id/text_view_full_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/checkbox_manage"
-        android:layout_toEndOf="@+id/shapeableImageView"
-        android:text="Vladyslav Klymiuk"
-        android:textSize="@dimen/text_size_large" />
+        android:layout_toStartOf="@+id/check_box_manage"
+        android:layout_toEndOf="@+id/image_view"
+        android:textSize="@dimen/text_size_large"
+        tools:text="Vladyslav Klymiuk" />
 
     <TextView
-        android:id="@+id/textView_email"
+        android:id="@+id/text_view_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textView_name"
-        android:layout_toStartOf="@+id/checkbox_manage"
-        android:layout_toEndOf="@+id/shapeableImageView"
-        android:text="vladyslav.klymiuk@tuke.sk"
-        android:textSize="@dimen/text_size_small" />
+        android:layout_below="@id/text_view_full_name"
+        android:layout_toStartOf="@+id/check_box_manage"
+        android:layout_toEndOf="@+id/image_view"
+        android:textSize="@dimen/text_size_small"
+        tools:text="vladyslav.klymiuk@tuke.sk" />
 
     <CheckBox
-        android:id="@+id/checkbox_manage"
+        android:id="@+id/check_box_manage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

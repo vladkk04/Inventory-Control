@@ -13,7 +13,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/textView_order_id"
+            android:id="@+id/text_view_order_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -21,31 +21,32 @@
             android:textSize="@dimen/text_size_medium" />
 
         <TextView
-            android:id="@+id/textView_ordered_product"
+            android:id="@+id/text_view_ordered_product"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView_order_id"
-            android:layout_alignBottom="@id/checkBox_navigate_order"
+            android:layout_below="@+id/text_view_order_id"
+            android:layout_alignBottom="@id/check_box_navigate_order"
             android:layout_alignParentStart="true"
             android:gravity="center"
-            android:text="100g x 20"
-            android:textSize="@dimen/text_size_small" />
+            android:textSize="@dimen/text_size_small"
+            tools:text="100g x 20" />
 
         <TextView
-            android:id="@+id/textView_ordered_date"
+            android:id="@+id/text_view_ordered_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginVertical="@dimen/margin_extra_small"
-            android:gravity="center"
+            android:layout_toEndOf="@+id/text_view_order_id"
+            android:gravity="end|center"
             android:text="@string/text_order_date_timestamp"
             android:textSize="@dimen/text_size_extra_small" />
 
         <CheckBox
-            android:id="@+id/checkBox_navigate_order"
+            android:id="@+id/check_box_navigate_order"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textView_ordered_date"
+            android:layout_below="@id/text_view_ordered_date"
             android:layout_alignParentEnd="true"
             android:button="@drawable/ic_keyboard_arrow_right" />
 

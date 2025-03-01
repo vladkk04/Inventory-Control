@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "136770775755",
+    "project_id": "inventory-control-fca8d",
+    "storage_bucket": "inventory-control-fca8d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:136770775755:android:d4f21668bc3813b8f1094e",
+        "android_client_info": {
+          "package_name": "com.example.bachelorwork"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARzzU4dsu3Y84wzyNgcjc0IYhwip9pDVw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

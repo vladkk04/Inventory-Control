@@ -1,6 +1,6 @@
 package com.example.bachelorwork.domain.usecase.product
 
-import com.example.bachelorwork.data.local.entity.ProductEntity
+import com.example.bachelorwork.data.local.entities.product.ProductEntity
 import com.example.bachelorwork.domain.repository.ProductRepository
 
 class DeleteProductUseCase(
@@ -14,8 +14,5 @@ class DeleteProductUseCase(
         productRepository.deleteAll(*product)
     }
 
-    suspend operator fun invoke(id: Int) = runCatching {
-        productRepository.deleteByProductId(id)
-    }
 
 }

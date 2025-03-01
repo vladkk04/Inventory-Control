@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources
+    xmlns:tools="http://schemas.android.com/tools">
     <!-- Default Dimens -->
     <dimen name="padding_extra_small">4dp</dimen>
     <dimen name="padding_small">8dp</dimen>
@@ -10,7 +11,6 @@
     <dimen name="padding_large_plus">28dp</dimen>
     <dimen name="padding_extra_large">32dp</dimen>
 
-
     <dimen name="margin_extra_small">4dp</dimen>
     <dimen name="margin_small">8dp</dimen>
     <dimen name="margin_normal">12dp</dimen>
@@ -20,6 +20,8 @@
     <dimen name="margin_large_plus">28dp</dimen>
     <dimen name="margin_extra_large">32dp</dimen>
 
+    <dimen name="text_size_micro_small">8sp</dimen>
+    <dimen name="text_size_ultra_small">10sp</dimen>
     <dimen name="text_size_extra_small">12sp</dimen>
     <dimen name="text_size_small">14sp</dimen>
     <dimen name="text_size_normal">16sp</dimen>
@@ -34,8 +36,8 @@
     <dimen name="text_size_header_xlarge">32sp</dimen>
 
     <!-- More Fragment -->
-    <dimen name="width_fab_more_item">108dp</dimen>
-    <dimen name="height_fab_more_item">80dp</dimen>
+    <dimen name="width_more_fab_item">108dp</dimen>
+    <dimen name="height_more_fab_item">80dp</dimen>
 
     <!-- Create New Item Fragment -->
     <dimen name="margin_vertical_between_items">@dimen/margin_small</dimen>
@@ -46,5 +48,8 @@
     <!-- Product Item Grid and Row Fragment -->
     <dimen name="width_image_item">96dp</dimen>
     <dimen name="height_image_item">96dp</dimen>
+    <dimen name="height_toolbar">88dp</dimen>
+
+
 
 </resources>

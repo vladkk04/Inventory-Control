@@ -2,17 +2,14 @@ package com.example.bachelorwork.ui.fragments.warehouse.productList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.bachelorwork.domain.model.SortDirection
-import com.example.bachelorwork.domain.model.product.ProductDisplayMode
-import com.example.bachelorwork.domain.model.product.ProductSortOptions
+import com.example.bachelorwork.domain.model.product.ProductViewDisplayMode
 import com.example.bachelorwork.domain.model.product.SortBy
-import com.example.bachelorwork.domain.model.product.toProductUI
 import com.example.bachelorwork.domain.usecase.product.ProductUseCases
 import com.example.bachelorwork.ui.model.product.list.ProductListUIState
 import com.example.bachelorwork.ui.model.product.list.ProductSearchUIState
+import com.example.bachelorwork.ui.model.product.list.sortBy
 import com.example.bachelorwork.ui.navigation.Destination
-import com.example.bachelorwork.ui.navigation.Navigator
-import com.example.bachelorwork.ui.utils.extensions.handleResult
+import com.example.bachelorwork.ui.navigation.AppNavigator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,8 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductListViewModel @Inject constructor(
-    private val productUseCases: ProductUseCases,
-    private val navigator: Navigator
+    private val productUseCases: ProductUseCases, private val navigator: AppNavigator
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ProductListUIState())
@@ -32,17 +28,12 @@ class ProductListViewModel @Inject constructor(
     private val _searchUiState = MutableStateFlow(ProductSearchUIState())
     val searchUiState get() = _searchUiState.asStateFlow()
 
-    init {
-        getProducts(_uiState.value.orderBy)
-    }
+    init { getProducts() }
 
     fun searchProducts(query: String) {
         if (query.isEmpty()) {
             _searchUiState.update { state ->
-                state.copy(
-                    products = emptyList(),
-                    isNoItemsFound = false
-                )
+                state.copy(products = emptyList())
             }
             return
         }
@@ -52,73 +43,78 @@ class ProductListViewModel @Inject constructor(
         }
 
         _searchUiState.update { state ->
-            state.copy(
-                products = filteredProducts,
-                isNoItemsFound = filteredProducts.isEmpty()
-            )
+            state.copy(products = filteredProducts)
         }
     }
 
-    fun changeViewType() {
+    fun changeProductViewDisplayType() {
         _uiState.update {
             it.copy(
-                viewType = ProductDisplayMode.entries[(it.viewType.ordinal + 1) % 2]
+                viewDisplayType = ProductViewDisplayMode.entries[(it.viewDisplayType.ordinal + 1) % 2]
             )
         }
     }
 
-    fun getProductsChangeSortBy(sortBy: SortBy) {
-        when (sortBy) {
-            SortBy.NAME -> {
-                getProducts(
-                    uiState.value.orderBy.copy(
-                        sortBy = SortBy.NAME
-                    )
-                )
-            }
+    fun changeSortDirection() {
+        _uiState.update { state ->
+            val newSortDirection = state.sortOptions.sortDirection.opposite()
+            val newSortOptions = state.sortOptions.copy(sortDirection = newSortDirection)
 
-            SortBy.QUANTITY -> {
-                getProducts(
-                    uiState.value.orderBy.copy(
-                        sortBy = SortBy.QUANTITY
-                    )
-                )
-            }
+            state.copy(
+                products = state.products.sortBy(sortOptions = newSortOptions),
+                sortOptions = newSortOptions
+            )
         }
     }
 
-    fun getProductsChangeSortDirection() {
-        getProducts(
-            uiState.value.orderBy.copy(
-                sortDirection = SortDirection.entries[(uiState.value.orderBy.sortDirection.ordinal + 1) % 2]
-            )
-        )
-    }
+    fun getProductsSortedBy(sortBy: SortBy) {
+        _uiState.update { state ->
 
-    private fun getProducts(orderBy: ProductSortOptions) {
-        val result = productUseCases.getProducts.getProducts(orderBy)
-        handleResult(result, onSuccess = {
-            _uiState.value = _uiState.value.copy(
-                products = it.toProductUI(),
-                orderBy = orderBy,
-                isNoProducts = it.isEmpty()
+            val newSortOptions = state.sortOptions.copy(sortBy = sortBy)
+
+            state.copy(
+                products = state.products.sortBy(newSortOptions),
+                sortOptions = newSortOptions
             )
-        })
+        }
     }
 
     fun navigateToCreateItem() = viewModelScope.launch {
-        navigator.navigate(Destination.CreateProduct) {
-            launchSingleTop = true
-        }
+        navigator.navigate(Destination.CreateProduct)
+    }
+
+    fun navigateToFilters() = viewModelScope.launch {
+        navigator.navigate(Destination.WarehouseFilters)
     }
 
     fun openNavigationDrawer() = viewModelScope.launch {
         navigator.openNavigationDrawer()
     }
 
-    fun navigateToItemDetail(position: Int) = viewModelScope.launch {
-        navigator.navigate(Destination.ProductDetail(position)) {
-            popUpTo<Destination.Warehouse>()
+    fun navigateToItemDetail(id: Int) = viewModelScope.launch {
+        navigator.navigate(Destination.ProductDetail(id))
+    }
+
+    private fun getProducts() {
+        _uiState.update {
+            it.copy(isLoading = true)
+        }
+        /*val result = productUseCases.getProducts.getProducts(_uiState.value.sortOptions)
+        handleResult(result, onSuccess = { products ->
+            _uiState.update { state ->
+                state.copy(
+                    products = products.map { it.toProductUi() },
+                    isLoading = false
+                )
+            }
+        }, onFailure = { e ->
+            sendSnackbarEvent(SnackbarEvent(e.message.toString()))
+        })*/
+    }
+
+    fun clearFilters() {
+        _uiState.update {
+            it.copy(filtersCount = 0)
         }
     }
 }

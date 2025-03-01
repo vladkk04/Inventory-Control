@@ -1,7 +1,7 @@
 package com.example.bachelorwork.di
 
 import com.example.bachelorwork.data.local.AppDatabase
-import com.example.bachelorwork.data.local.repository.OrderRepositoryImpl
+import com.example.bachelorwork.data.local.repositories.OrderRepositoryImpl
 import com.example.bachelorwork.domain.repository.OrderRepository
 import com.example.bachelorwork.domain.usecase.order.CreateOrderUseCase
 import com.example.bachelorwork.domain.usecase.order.DeleteOrderUseCase

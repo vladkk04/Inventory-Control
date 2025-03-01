@@ -1,6 +1,6 @@
 package com.example.bachelorwork.domain.model.product
 
-import com.example.bachelorwork.domain.model.SortDirection
+import com.example.bachelorwork.domain.model.sorting.SortDirection
 
 data class ProductSortOptions(
     val sortBy: SortBy = SortBy.NAME,

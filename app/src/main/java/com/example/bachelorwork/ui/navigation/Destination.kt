@@ -2,7 +2,7 @@ package com.example.bachelorwork.ui.navigation
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
-import com.example.bachelorwork.ui.model.order.create.DiscountType
+import com.example.bachelorwork.ui.model.order.DiscountType
 import kotlinx.serialization.Serializable
 
 sealed class Destination {
@@ -29,6 +29,9 @@ sealed class Destination {
     data class OrderDetail(val id: Int) : Destination()
 
     @Serializable
+    data object WarehouseFilters : Destination()
+
+    @Serializable
     data object CreateProduct : Destination()
 
     @Serializable
@@ -41,7 +44,11 @@ sealed class Destination {
     data object OrderAddProduct : Destination()
 
     @Serializable
-    data class OrderEditAddedProduct(val id: Int, val quantity: Double, val rate: Double) : Destination()
+    data class OrderEditAddedProduct(
+        val id: Int,
+        val quantity: Double,
+        val rate: Double
+    ) : Destination()
 
     @Serializable
     data class OrderManageDiscount(
@@ -61,11 +68,21 @@ sealed class Destination {
     @Serializable
     data object UpdateProductsStock : Destination()
 
+    @Serializable
+    data object Authentication : Destination()
+
+    @Serializable
+    data object SignUp : Destination()
+
+    @Serializable
+    data object SignIn : Destination()
+
     companion object {
         inline fun <reified T : Destination> from(savedStateHandle: SavedStateHandle): T =
             savedStateHandle.toRoute<T>()
 
         fun getTopLevelDestinations(): List<Destination> = listOf(Home, Warehouse, Orders, More)
+
     }
 }
 

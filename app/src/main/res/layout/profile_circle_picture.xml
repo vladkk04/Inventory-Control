@@ -5,5 +5,4 @@
     android:layout_width="40dp"
     android:layout_height="40dp"
     android:scaleType="centerCrop"
-    android:src="@drawable/cup"
     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle" />
