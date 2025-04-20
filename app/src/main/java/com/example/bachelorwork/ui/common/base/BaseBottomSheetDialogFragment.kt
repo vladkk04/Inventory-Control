@@ -15,6 +15,7 @@ import androidx.core.view.updatePadding
 import androidx.viewbinding.ViewBinding
 import com.example.bachelorwork.R
 import com.example.bachelorwork.ui.common.AppDialogs
+import com.example.bachelorwork.ui.snackbar.SnackbarController
 import com.example.bachelorwork.ui.utils.screen.InsetHandler
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
@@ -78,6 +79,9 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        SnackbarController.observeSnackbarEvents(viewLifecycleOwner, binding.root)
+
         setupBottomSheetDragHandleView()
         setupToolbar()
         setupFullScreen()

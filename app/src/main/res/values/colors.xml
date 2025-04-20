@@ -2,4 +2,11 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+
+    <color name="colorMinStockLevelLowLevel">#C64747</color>
+    <color name="colorMinStockLevelMediumLevel">#A48C38</color>
+    <color name="colorMinStockLevelNormalLevel">#388039</color>
+
+
 </resources>

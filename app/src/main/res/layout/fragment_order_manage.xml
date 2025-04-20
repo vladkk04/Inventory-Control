@@ -157,6 +157,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/text_view_upload_files"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:background="@drawable/background_corner_stroke"
@@ -169,10 +170,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clipToPadding="false"
-                    android:orientation="vertical"
-                    android:padding="@dimen/padding_small"
-                    tools:itemCount="3"
-                    tools:listitem="@layout/order_create_attachment_item" />
+                    android:orientation="vertical" />
 
             </LinearLayout>
 

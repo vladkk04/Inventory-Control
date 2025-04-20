@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginHorizontal="@dimen/margin_small"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="Invitations"
+        app:menu="@menu/toolbar_invitation_list_after_sign_up_menu"/>
+
+    <TextView
+        android:id="@+id/text_view_no_invitations"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/text_no_invitations"
+        android:visibility="gone" />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        android:visibility="gone"/>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_normal"
+            tools:itemCount="3"
+            tools:listitem="@layout/organisation_invitation_item" />
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/margin_normal"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_view_no_organisation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_no_organisations_inviting"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/button_create_organisation"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:layout_marginVertical="@dimen/margin_small"
+            android:text="@string/text_create_organisation" />
+
+        <Button
+            android:id="@+id/button_switch_to_organisation"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:text="@string/text_switch_to_organisation" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

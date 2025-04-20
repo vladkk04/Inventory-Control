@@ -1,17 +1,12 @@
 package com.example.bachelorwork.ui.views
 
 import android.content.Context
-import android.util.AttributeSet
-import android.util.Printer
-import android.util.Size
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.FrameLayout
 import android.widget.PopupWindow
-import androidx.appcompat.widget.PopupMenu
 import com.example.bachelorwork.databinding.CustomFloatingActionButtonMenuBinding
 
 class CustomFloatingMenu (
@@ -22,7 +17,6 @@ class CustomFloatingMenu (
         CustomFloatingActionButtonMenuBinding.inflate(LayoutInflater.from(context))
 
     private var popupWindow : PopupWindow? = null
-
 
     init {
         anchorView.setOnClickListener {
@@ -40,7 +34,7 @@ class CustomFloatingMenu (
     }
 
 
-    fun setOnCreateItemClickListener(onClick : () -> Unit)
+    fun setOnCreateProductClickListener(onClick : () -> Unit)
     {
         popupBinding.fabCreateItem.setOnClickListener {
             onClick()
@@ -56,9 +50,9 @@ class CustomFloatingMenu (
         }
     }
 
-    fun setOnCreateUserClickListener(onClick : () -> Unit)
+    fun setOnInviteUserClickListener(onClick : () -> Unit)
     {
-        popupBinding.fabCreateUser.setOnClickListener {
+        popupBinding.fabInviteUser.setOnClickListener {
             onClick()
             dismissPopup()
         }
@@ -83,22 +77,27 @@ class CustomFloatingMenu (
             }
         }
 
+
         val location = IntArray(2)
         anchorView.getLocationOnScreen(location)
+        val fabX = location[0]
+        val fabY = location[1]
 
-        val contentSize = Size(
-            popupBinding.root.measuredWidth,
-            popupBinding.root.measuredHeight
+        // Get view dimensions
+        val fabWidth = anchorView.width
+        val fabHeight = anchorView.height
+        val popupWidth = popupBinding.root.measuredWidth
+        val popupHeight = popupBinding.root.measuredHeight
+
+        val x = fabX + fabWidth - popupWidth
+        val y = fabY - popupHeight + fabHeight
+
+        popupWindow?.showAtLocation(
+            anchorView,  // Fallback to anchorView if rootView not available
+            Gravity.NO_GRAVITY,
+            x,
+            y
         )
-
-        popupWindow?.apply {
-            showAtLocation(
-                anchorView,
-                Gravity.NO_GRAVITY,
-                location[0] - (contentSize.width - anchorView.width),
-                location[1] - contentSize.height + anchorView.height
-            )
-        }
 
         addDimBehind()
     }

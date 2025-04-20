@@ -9,11 +9,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.FragmentSignInBinding
-import com.example.bachelorwork.ui.model.auth.SignInUiEvent
-import com.example.bachelorwork.ui.model.auth.SignInUiFormState
+import com.example.bachelorwork.ui.model.auth.signIn.SignInUiEvent
+import com.example.bachelorwork.ui.model.auth.signIn.SignInUiFormState
 import com.example.bachelorwork.ui.utils.extensions.collectInLifecycle
 import com.example.bachelorwork.ui.utils.extensions.viewBinding
 import com.example.bachelorwork.ui.utils.screen.InsetHandler
+import com.github.razir.progressbutton.bindProgressButton
+import com.github.razir.progressbutton.hideProgress
+import com.github.razir.progressbutton.showProgress
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,7 +31,18 @@ class SignInFragment: Fragment(R.layout.fragment_sign_in) {
 
         setupBackButton()
         setupOnInputsEditTextChange()
+        setupForgotPasswordButton()
         setupSignInButton()
+        setupSignUpButton()
+
+
+        collectInLifecycle(viewModel.uiState) {
+            if (it.isLoading) {
+                binding.buttonSignIn.showProgress()
+            } else {
+                binding.buttonSignIn.hideProgress(R.string.text_sign_in)
+            }
+        }
 
         collectInLifecycle(viewModel.uiStateForm, Lifecycle.State.STARTED) {
             setupUiFormState(it)
@@ -42,14 +56,27 @@ class SignInFragment: Fragment(R.layout.fragment_sign_in) {
     }
 
     private fun setupSignInButton() {
+        bindProgressButton(binding.buttonSignIn)
         binding.buttonSignIn.setOnClickListener {
             viewModel.onEvent(SignInUiEvent.SignIn)
+        }
+    }
+
+    private fun setupSignUpButton() {
+        binding.textSignUp.setOnClickListener {
+            viewModel.onEvent(SignInUiEvent.NavigateToSignUp)
         }
     }
 
     private fun setupBackButton() {
         binding.buttonBack.setOnClickListener {
             viewModel.onEvent(SignInUiEvent.NavigateBack)
+        }
+    }
+
+    private fun setupForgotPasswordButton() {
+        binding.textViewForgotPassword.setOnClickListener {
+            viewModel.onEvent(SignInUiEvent.ForgotPassword)
         }
     }
 

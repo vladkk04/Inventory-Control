@@ -1,17 +1,15 @@
 package com.example.bachelorwork.domain.usecase.order
 
-import com.example.bachelorwork.data.local.entities.order.OrderEntity
-import com.example.bachelorwork.domain.repository.OrderRepository
-import javax.inject.Inject
+import com.example.bachelorwork.domain.repository.local.OrderLocalDataSource
+import com.example.bachelorwork.domain.repository.remote.OrderRemoteDataSource
 
-class DeleteOrderUseCase @Inject constructor(
-    private val repository: OrderRepository
+class DeleteOrderUseCase(
+    private val remote: OrderRemoteDataSource,
+    private val repository: OrderLocalDataSource
 ) {
-    suspend operator fun invoke(orderEntity: OrderEntity) = runCatching {
-        repository.delete(orderEntity)
-    }
+    suspend operator fun invoke(orderId: String) = remote.delete(orderId)
 
-    /*suspend operator fun invoke(id: Int) = runCatching {
+    /*suspend operator fun getAll(id: Int) = runCatching {
         repository.delete(id)
     }*/
 

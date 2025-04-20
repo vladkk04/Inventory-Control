@@ -13,10 +13,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.FragmentProductListBinding
 import com.example.bachelorwork.domain.model.product.SortBy
+import com.example.bachelorwork.ui.fragments.warehouse.filters.SharedWarehouseFilterViewModel
 import com.example.bachelorwork.ui.model.product.list.ProductListUIState
 import com.example.bachelorwork.ui.model.product.list.ProductSearchUIState
+import com.example.bachelorwork.ui.navigation.Destination
 import com.example.bachelorwork.ui.utils.StateListDrawableFactory
 import com.example.bachelorwork.ui.utils.extensions.collectInLifecycle
+import com.example.bachelorwork.ui.utils.extensions.hiltViewModelNavigation
 import com.example.bachelorwork.ui.utils.extensions.viewBinding
 import com.example.bachelorwork.ui.utils.menu.createPopupMenu
 import com.example.bachelorwork.ui.utils.recyclerview.SpeedyLinearSmoothScroller
@@ -32,6 +35,8 @@ class ProductListFragment : Fragment(R.layout.fragment_product_list) {
     private val binding by viewBinding(FragmentProductListBinding::bind)
 
     private val viewModel: ProductListViewModel by viewModels()
+
+    private val sharedFilterViewModel: SharedWarehouseFilterViewModel by hiltViewModelNavigation(Destination.Warehouse)
 
     private lateinit var gridLayoutManager: GridLayoutManager
     private lateinit var listAdapter: ProductListAdapter
@@ -55,6 +60,12 @@ class ProductListFragment : Fragment(R.layout.fragment_product_list) {
             updateUiState(uiState)
         }
 
+        collectInLifecycle(
+            sharedFilterViewModel.uiState
+        ) { sharedUiState ->
+            viewModel.applyFilters(sharedUiState)
+        }
+
         setupRecyclerView()
         setupSearchBar()
 
@@ -63,7 +74,6 @@ class ProductListFragment : Fragment(R.layout.fragment_product_list) {
         setupProfileButtonOnClickListener()
         setupCheckboxChangeViewTypeProductsListener()
         setupCheckboxOrderByProductsListener()
-
     }
 
     private fun setupCheckboxChangeViewTypeProductsListener() {
@@ -200,7 +210,7 @@ class ProductListFragment : Fragment(R.layout.fragment_product_list) {
 
     private fun setupSwipeRefreshLayoutListener() {
         binding.swipeRefresh.setOnRefreshListener {
-            binding.swipeRefresh.isRefreshing = false
+            viewModel.refreshProducts()
         }
     }
 
@@ -214,7 +224,10 @@ class ProductListFragment : Fragment(R.layout.fragment_product_list) {
     }
 
     private fun updateUiState(uiState: ProductListUIState) {
-        if (uiState.isLoading) {
+
+        binding.swipeRefresh.isRefreshing = uiState.isRefreshing
+
+        if (uiState.isLoading && !uiState.isRefreshing) {
             binding.circleProgressIndicator.visibility = View.VISIBLE
         } else {
             binding.circleProgressIndicator.visibility = View.INVISIBLE

@@ -23,6 +23,7 @@
                 android:layout_height="48dp"
                 android:scaleType="centerCrop"
                 android:layout_marginTop="6dp"
+                android:src="@drawable/ic_search_product"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
 
             <TextView
@@ -31,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginHorizontal="@dimen/margin_small"
-                android:layout_toStartOf="@+id/check_box_edit"
+                android:layout_toStartOf="@+id/check_box_remove"
                 android:layout_toEndOf="@+id/image_view"
                 android:textSize="@dimen/text_size_large"
                 android:textStyle="bold"
@@ -70,7 +71,7 @@
                 android:gravity="end|center"
                 android:textSize="@dimen/text_size_medium"
                 android:textStyle="bold"
-                tools:text="Quantity adjusted: " />
+                android:text="Quantity adjusted: " />
 
             <TextView
                 android:id="@+id/text_view_quantity_adjusted_total"
@@ -92,14 +93,6 @@
                 android:layout_height="32dp"
                 android:layout_alignParentEnd="true"
                 android:button="@drawable/ic_close" />
-
-            <CheckBox
-                android:id="@+id/check_box_edit"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_toStartOf="@+id/check_box_remove"
-                android:button="@drawable/ic_edit"
-                android:drawablePadding="0dp" />
 
 
         </RelativeLayout>

@@ -2,7 +2,6 @@
 <resources>
 
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
 
     <color name="colorPrimary">#ECDFCC</color>
     <color name="colorPrimaryContainer">#ECDFCC</color>
@@ -16,5 +15,10 @@
     <color name="colorSurfaceContainerLow">#32363D</color>
     <color name="colorSurfaceContainerHighest">#393E46</color>
     <color name="colorBackground">#222831</color>
+
+
+    <color name="colorMinStockLevelLowLevel">#C64747</color>
+    <color name="colorMinStockLevelMediumLevel">#A48C38</color>
+    <color name="colorMinStockLevelNormalLevel">#388039</color>
 
 </resources>

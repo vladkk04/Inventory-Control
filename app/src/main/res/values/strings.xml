@@ -18,9 +18,10 @@
 
     <string name="hint_name">Name*</string>
     <string name="hint_barcode">Barcode*</string>
-    <string name="hint_price">Price per unit*</string>
+    <string name="hint_price_per_unit">Price per unit*</string>
+    <string name="hint_price">Price</string>
     <string name="hint_weight">Weight*</string>
-    <string name="hint_date">Date purchase*</string>
+    <string name="hint_date">Date</string>
     <string name="hint_min_stock_level">Minimal Stock Level*</string>
     <string name="hint_quantity">Quantity</string>
     <string name="hint_quantity_unit">Quantity (%1$s)</string>
@@ -75,7 +76,7 @@
 
     <string name="text_hello_user">Hello, %1$s</string>">
 
-    <string name="text_order_id">Order #%1$d</string>"
+    <string name="text_order_id">Order #%1$s</string>"
     <string name="text_order_date_timestamp">%1$s</string>
     <string name="text_order_total">Total $%1$.2f</string>
     <string name="text_order_subitem_quantity">x%1$.2f %2$s</string>
@@ -124,6 +125,14 @@
     <string name="text_product_updated">Product Update</string>
 
     <string name="text_quantity_unit_value">%1$.2f %2$s</string>
+    <string name="text_stock_value_unit">Stock: %1$.2f %2$s</string>
+    <string name="text_stock_on_hand_value_unit">Stock: %1$.2f %2$s</string>
+
+    <string name="text_new_quantity_on_hand_value">New quantity on hand: %1$.2f %2$s</string>
+    <string name="text_quantity_adjust_unit_value">%1$s %2$s</string>
+
+
+
 
     <string name="text_detail_ordered_product">%1$s x %2$.2f %3$s</string>
     <string name="text_no_orders">No Orders</string>
@@ -176,6 +185,108 @@
     <string name="text_agree_processing_personal_data">I agree to the processing of Personal data</string>
     <string name="hint_confirm_password">Confirm password</string>
     <string name="text_back">Back</string>
+    <string name="text_dont_have_an_account">Don\'t have an account?</string>
+    <string name="text_already_have_account">Already have an account?</string>
+    <string name="text_sign_in">Sign in</string>
+    <string name="text_send">Send</string>
+    <string name="text_continue">Continue</string>
+    <string name="hint_otp">Code</string>
+    <string name="text_didnt_recive_otp">Didn\'t receive OTP?</string>
+    <string name="text_resend">Resend</string>
+    <string name="text_reset_password">Reset password</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hint_organisation_name">Organisation name</string>
+    <string name="hint_base_currency">Base currency</string>
+    <string name="text_sign_out">Sign out</string>
+    <string name="hint_organisation_user_name">Organisation user name</string>
+
+    <string name="text_invite_user_to_organisation_via_email">Invite user via email</string>
+    <string name="text_invite">Invite</string>
+    <string name="text_manage_roles">Manage Roles</string>
+    <string name="text_manage_organisation_roles">Manage Roles</string>
+    <string name="hint_organisation_role_name">Role Name</string>
+    <string name="text_create_organisation_role">Create role</string>
+    <string name="text_save">Save</string>
+    <string name="text_product_permission">Product permission</string>
+    <string name="text_order_permission">Order permission</string>
+    <string name="text_user_permission">User permission</string>
+    <string name="text_create_your_own_organisation">Create your own organisation</string>
+    <string name="text_no_organisations_inviting">You don\'t have any organisations inviting, so you can create your own organisation</string>
+    <string name="text_accept">Accept</string>
+    <string name="text_reject">Reject</string>
+
+    <string name="text_organizational_role_value">Organizational role: %1$s</string>
+    <string name="text_organisation_name_value">Organisation name: %1$s</string>
+    <string name="text_organisation_short_name_value">Org name: %1$s</string>
+    <string name="text_decline">Decline</string>
+    <string name="title_invitations">Invitations</string>
+    <string name="text_logout">Logout</string>
+    <string name="text_notification">Notifications</string>
+    <string name="text_language">Language</string>
+    <string name="text_email">Email</string>
+    <string name="text_user_id">User ID</string>
+    <string name="text_manage_invitations">Manage Invitations</string>
+    <string name="text_or">or</string>
+    <string name="text_switch_to_organisation">Switch to organisation</string>
+    <string name="text_no_invitations">No invitations</string>
+    <string name="text_organisations">Organisations</string>
+    <string name="title_logout">Logout</string>
+    <string name="title_sign_out">Sign out</string>
+    <string name="text_delete_organisation">Delete organisation</string>
+    <string name="text_manage_organisation">Manage Organisation</string>
+    <string name="text_role">Role</string>
+    <string name="text_role_value">Role: %1$s</string>
+    <string name="text_product">Product</string>
+    <string name="text_no_products">No products</string>
+    <string name="text_show_all">Show all</string>
+    <string name="text_update_product">Update product</string>
+    <string name="title_search">Search</string>
+    <string name="text_change_email">Change email</string>
+    <string name="text_change_password">Change password</string>
+    <string name="title_manage_organisation">Manage organisation</string>
+    <string name="hint_new_password">New password</string>
+    <string name="hint_new_email">New email</string>
+
+    <string name="text_updated_by_with_circle">○ %1$s</string>
+
+    <string name="text_expire_in_value">Expire in: %1$s</string>
+    <string name="text_invited_by_value">Invited by: %1$s</string>
+    <string name="title_make_inactive">Make inactive</string>
+    <string name="title_cancle_invite">Cancle invite</string>
+    <string name="title_cancel_invite">Cancel invite</string>
+    <string name="title_remove">Remove</string>
+    <string name="title_make_active">Make active</string>
+    <string name="title_invite_again">Invite again</string>
+    <string name="title_assign_role">Assign role</string>
+    <string name="text_assign_role">Assign role</string>
+    <string name="text_selected_date_period_in_days_value">Last %1$s days ▼</string>
+    <string name="text_selected_date_today_value">Today ▼</string>
+    <string name="text_selected_date_last_year">Last Year ▼</string>
+    <string name="text_last_seven_days">Last 7 days</string>
+    <string name="text_last_thirty_days">Last 30 days</string>
+    <string name="text_last_ninety_days">Last 90 days</string>
+    <string name="text_last_year">Last 1 year</string>
+    <string name="title_create_organisation">Create organisation</string>
+    <string name="text_total_user_value">Total user: %1$s %%</string>
+    <string name="text_critical_stock">Critical stocks</string>
+    <string name="text_last_stock_activity">Last Stock Activity</string>
+    <string name="text_last_warehouse_stock_movements">Warehouse stock movements</string>
+    <string name="text_ordered_by">Ordered by</string>
+    <string name="text_stock_in">Stock In</string>
+    <string name="text_stock_out">Stock Out</string>
+    <string name="text_incoming_stock_hint">Incoming Stock Quantity</string>
+    <string name="text_outgoing_stock_hint">Outgoing Stock Quantity</string>
+    <string name="text_today">Today</string>
+    <string name="text_three_days">Last 3 days</string>
+    <string name="text_no_any_changes">No any changes</string>
+    <string name="text_no_changes">No changes</string>
+    <string name="text_item_left_value">%1$s is left</string>
+    <string name="title_reports">Reports</string>
+    <string name="hint_select_date">Select date</string>
+    <string name="text_download">Download</string>
+    <string name="text_no_critical_stocks">No critical stocks</string>
+    <string name="text_no_activities">No activities</string>
 
 
 </resources>

@@ -69,14 +69,6 @@
                 android:layout_alignParentEnd="true"
                 android:button="@drawable/ic_close" />
 
-            <CheckBox
-                android:id="@+id/check_box_edit"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_toStartOf="@+id/check_box_remove"
-                android:button="@drawable/ic_edit"
-                android:drawablePadding="0dp" />
-
 
         </RelativeLayout>
 

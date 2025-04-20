@@ -3,14 +3,11 @@ package com.example.bachelorwork.ui.fragments.orders.manage.discount
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.bachelorwork.domain.model.validator.ValidatorInputFieldFactory
+import com.example.bachelorwork.domain.model.validator.InputValidator
 import com.example.bachelorwork.ui.model.order.DiscountType
 import com.example.bachelorwork.ui.model.order.discount.OrderManageDiscountUiState
-import com.example.bachelorwork.ui.navigation.Destination
 import com.example.bachelorwork.ui.navigation.AppNavigator
-import com.example.bachelorwork.domain.model.validator.validators.ValidatorDecimalFormat
-import com.example.bachelorwork.domain.model.validator.validators.ValidatorNotEmpty
-import com.example.bachelorwork.domain.model.validator.validators.ValidatorPercentage
+import com.example.bachelorwork.ui.navigation.Destination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,6 +20,7 @@ class OrderManageDiscountViewModal @Inject constructor(
     private val navigator: AppNavigator,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+
     private val orderManageDiscountRouteArgs =
         Destination.from<Destination.OrderManageDiscount>(savedStateHandle)
 
@@ -41,7 +39,7 @@ class OrderManageDiscountViewModal @Inject constructor(
     }
 
     fun saveDiscountAndNavigateUp() = viewModelScope.launch {
-        if (isValidate()) return@launch
+        if (!isValidateInput()) return@launch
 
         navigator.navigateUp(mapOf("discount" to currentDiscount.toDouble()))
     }
@@ -53,27 +51,42 @@ class OrderManageDiscountViewModal @Inject constructor(
         }
     }
 
-    private fun isValidate(): Boolean {
+    private fun isValidateInput(): Boolean {
 
-        val validators =
-            if (_uiState.value.discountType == DiscountType.PERCENTAGE) setOf(
-                ValidatorNotEmpty,
-                ValidatorDecimalFormat,
-                ValidatorPercentage
-            ) else setOf(ValidatorNotEmpty, ValidatorDecimalFormat)
+        val inputValidatorPercentage = InputValidator
+            .create()
+            .withNotEmpty()
+            .withPercentage()
 
-        val factoryValidators = ValidatorInputFieldFactory(
-            inputs = arrayOf(currentDiscount),
-            validators = validators
-        )
-
-        _uiState.update {
-            it.copy(
-                discountError = factoryValidators.errorMessages[currentDiscount]
+        val inputValidatorCustom = InputValidator
+            .create()
+            .withNotEmpty()
+            .withNotGreaterThenValue(
+                orderManageDiscountRouteArgs.subtotal,
+                "The value cannot be greater then subtotal"
             )
-        }
 
-        return factoryValidators.hasError
+        return when (_uiState.value.discountType) {
+            DiscountType.PERCENTAGE -> {
+                _uiState.update {
+                    it.copy(
+                        discountError = inputValidatorPercentage.build()
+                            .invoke(currentDiscount).errorMessage
+                    )
+                }
+                !inputValidatorPercentage.build().invoke(currentDiscount).hasError
+            }
+
+            DiscountType.FIXED -> {
+                _uiState.update {
+                    it.copy(
+                        discountError = inputValidatorCustom.build()
+                            .invoke(currentDiscount).errorMessage
+                    )
+                }
+                !inputValidatorCustom.build().invoke(currentDiscount).hasError
+            }
+        }
     }
 
 }

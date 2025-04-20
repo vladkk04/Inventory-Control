@@ -2,21 +2,20 @@ package com.example.bachelorwork.ui.fragments.warehouse.productDetail
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.FragmentProductDetailBinding
+import com.example.bachelorwork.domain.model.product.Product
 import com.example.bachelorwork.ui.common.AppDialogs
 import com.example.bachelorwork.ui.common.adapters.ViewPagerAdapter
 import com.example.bachelorwork.ui.common.adapters.ViewPagerFragmentData
 import com.example.bachelorwork.ui.fragments.warehouse.productDetail.analytics.ProductDetailAnalyticsFragment
-import com.example.bachelorwork.ui.fragments.warehouse.productDetail.orders.ProductDetailOrdersFragment
 import com.example.bachelorwork.ui.fragments.warehouse.productDetail.overview.ProductDetailOverviewFragment
-import com.example.bachelorwork.ui.fragments.warehouse.productDetail.overview.ProductDetailOverviewViewModel
 import com.example.bachelorwork.ui.fragments.warehouse.productDetail.timeline.ProductDetailTimelineHistoryFragment
-import com.example.bachelorwork.ui.model.product.detail.ProductDetailUIState
 import com.example.bachelorwork.ui.utils.extensions.collectInLifecycle
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,13 +29,12 @@ class ProductDetailFragment : Fragment() {
 
     private lateinit var viewPagerAdapter: ViewPagerAdapter
 
-    private val viewModel: ProductDetailOverviewViewModel by viewModels()
+    private val viewModel: ProductDetailViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-
+    ): CoordinatorLayout {
 
         _binding = FragmentProductDetailBinding.inflate(inflater, container, false)
 
@@ -44,8 +42,10 @@ class ProductDetailFragment : Fragment() {
         setupAppBarLayoutAnimation()
         setupToolbarMenuOnClickListener()
 
-        viewLifecycleOwner.collectInLifecycle(viewModel.uiState) { uiState ->
-            updateUI(uiState)
+        viewLifecycleOwner.collectInLifecycle(viewModel.product) { product ->
+            product?.let {
+                updateUI(it)
+            }
         }
 
         return binding.root
@@ -64,7 +64,7 @@ class ProductDetailFragment : Fragment() {
                     }
 
                     R.id.product_delete -> {
-                        AppDialogs.createDeleteDialog(requireContext(), viewModel.uiState.value.product?.name ?: "") {
+                        AppDialogs.createDeleteDialog(requireContext()) {
                             viewModel.deleteProduct()
                         }.show()
                         true
@@ -86,11 +86,6 @@ class ProductDetailFragment : Fragment() {
                 R.drawable.ic_description_outline
             ),
             ViewPagerFragmentData(
-                ProductDetailOrdersFragment(),
-                "Orders",
-                R.drawable.ic_list_outlined
-            ),
-            ViewPagerFragmentData(
                 ProductDetailAnalyticsFragment(),
                 "Analytics",
                 R.drawable.ic_analytics_outline
@@ -103,7 +98,6 @@ class ProductDetailFragment : Fragment() {
         )
 
         binding.viewPager.adapter = viewPagerAdapter
-        binding.viewPager.offscreenPageLimit = viewPagerAdapter.itemCount
 
         TabLayoutMediator(
             binding.tabLayout,
@@ -130,8 +124,23 @@ class ProductDetailFragment : Fragment() {
         }
     }
 
-    private fun updateUI(uiState: ProductDetailUIState) {
-        binding.textViewToolbarProductName.text = uiState.product?.name
-        binding.textViewProductName.text = uiState.product?.name
+    private fun updateUI(product: Product) {
+        Glide.with(requireContext())
+            .load("http://192.168.68.60:8080/${product.imageUrl}")
+            .placeholder(R.drawable.ic_image)
+            .fallback(R.drawable.ic_image)
+            .error(R.drawable.ic_image)
+            .into(binding.imageViewToolbarProduct)
+
+        Glide.with(requireContext())
+            .load("http://192.168.68.60:8080/${product.imageUrl}")
+            .placeholder(R.drawable.ic_image)
+            .fallback(R.drawable.ic_image)
+            .error(R.drawable.ic_image)
+            .into(binding.imageViewProduct)
+
+
+        binding.textViewToolbarProductName.text = product.name
+        binding.textViewProductName.text = product.name
     }
 }

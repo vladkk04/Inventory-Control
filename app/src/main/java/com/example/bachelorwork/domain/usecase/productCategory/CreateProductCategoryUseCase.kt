@@ -1,17 +1,42 @@
 package com.example.bachelorwork.domain.usecase.productCategory
 
-import com.example.bachelorwork.data.local.entities.productCategory.ProductCategoryEntity
-import com.example.bachelorwork.domain.repository.ProductCategoryRepository
+import com.example.bachelorwork.common.ApiResponseResult
+import com.example.bachelorwork.common.Resource
+import com.example.bachelorwork.data.local.entities.ProductCategoryEntity
+import com.example.bachelorwork.domain.model.category.ProductCategoryRequest
+import com.example.bachelorwork.domain.repository.local.ProductCategoryLocalDataSource
+import com.example.bachelorwork.domain.repository.remote.ProductCategoryRemoteDataSource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.lastOrNull
 
-class CreateProductCategoryUseCase (
-    private val productCategoryRepository: ProductCategoryRepository
+class CreateProductCategoryUseCase(
+    private val local: ProductCategoryLocalDataSource,
+    private val remote: ProductCategoryRemoteDataSource
 ) {
-    suspend operator fun invoke(productCategory: ProductCategoryEntity) = runCatching {
-        productCategoryRepository.insert(productCategory)
-    }
+    operator fun invoke(request: ProductCategoryRequest): Flow<Resource<Unit>> = flow {
+        remote.create(request).lastOrNull()?.let { response ->
+            when (response) {
+                ApiResponseResult.Loading -> {
+                    emit(Resource.Loading)
+                }
 
-    suspend operator fun invoke(vararg productCategory: ProductCategoryEntity) = runCatching {
-        productCategoryRepository.insertAll(*productCategory)
-    }
+                is ApiResponseResult.Failure -> {
+                    emit(Resource.Error<Unit>(errorMessage = response.errorMessage))
+                }
+
+                is ApiResponseResult.Success -> {
+                    val entity = ProductCategoryEntity(
+                        id = response.data.id,
+                        name = request.name
+                    )
+                    local.insert(entity)
+                    emit(Resource.Success(Unit))
+                }
+            }
+        }
+    }.catch { e -> emit(Resource.Error(errorMessage = e.message ?: "Unknown error")) }
+
 
 }

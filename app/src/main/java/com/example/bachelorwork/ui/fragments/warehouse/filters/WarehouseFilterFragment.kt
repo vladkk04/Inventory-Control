@@ -1,7 +1,6 @@
 package com.example.bachelorwork.ui.fragments.warehouse.filters
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.CompoundButton
 import android.widget.TextView
@@ -11,14 +10,16 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.FragmentWarehouseFiltersBinding
+import com.example.bachelorwork.domain.model.product.ProductTag
 import com.example.bachelorwork.ui.model.filters.WarehouseFilterUiState
+import com.example.bachelorwork.ui.navigation.Destination
 import com.example.bachelorwork.ui.utils.extensions.collectInLifecycle
+import com.example.bachelorwork.ui.utils.extensions.hiltViewModelNavigation
 import com.example.bachelorwork.ui.utils.extensions.viewBinding
 import com.example.bachelorwork.ui.utils.screen.InsetHandler
 import com.google.android.material.chip.Chip
-import com.google.android.material.slider.RangeSlider
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Locale
+import kotlinx.coroutines.Dispatchers
 
 @AndroidEntryPoint
 class WarehouseFilterFragment : Fragment(R.layout.fragment_warehouse_filters) {
@@ -27,19 +28,29 @@ class WarehouseFilterFragment : Fragment(R.layout.fragment_warehouse_filters) {
 
     private val viewModel: WarehouseFilterViewModel by viewModels()
 
+    private val sharedFilterViewModel: SharedWarehouseFilterViewModel by hiltViewModelNavigation(
+        Destination.Warehouse)
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         InsetHandler.adaptToEdgeWithMargin(binding.root)
 
         collectInLifecycle(
             viewModel.uiState,
-            lifecycleState = Lifecycle.State.STARTED
+            lifecycleState = Lifecycle.State.STARTED,
+            Dispatchers.Main.immediate
         ) { uiState ->
             updateUiState(uiState)
         }
 
+        collectInLifecycle(
+            sharedFilterViewModel.uiState,
+            lifecycleState = Lifecycle.State.STARTED,
+            Dispatchers.Main.immediate
+        ) { filters ->
+            updateUiWithCurrentFilters(filters)
+        }
+
         setupToolbar()
-        setupPriceRangeSlider()
-        setupPriceRangeLayout()
         setupToggleButtons()
     }
 
@@ -57,6 +68,37 @@ class WarehouseFilterFragment : Fragment(R.layout.fragment_warehouse_filters) {
         }
     }
 
+    private fun updateUiWithCurrentFilters(filters: SharedWarehouseFilterUiState) {
+        binding.chipGroupCategories.children
+            .filterIsInstance<Chip>()
+            .forEach { chip ->
+                chip.isChecked = filters.categoryFilters.any { it.name == chip.text.toString() }
+            }
+
+        with(binding) {
+            checkBoxOverstock.isChecked = filters.stockFilters.contains(StockFilter.OVERSTOCK)
+            checkBoxLowStock.isChecked = filters.stockFilters.contains(StockFilter.LOW_STOCK)
+            checkBoxCriticalStock.isChecked = filters.stockFilters.contains(StockFilter.CRITICAL_STOCK)
+            checkBoxOutOfStock.isChecked = filters.stockFilters.contains(StockFilter.OUT_OF_STOCK)
+        }
+
+        binding.customInputTags.addTags(*filters.tags.map { ProductTag(it.name) }.toTypedArray())
+
+        updateToggleButtonStates(filters)
+    }
+
+    private fun updateToggleButtonStates(filters: SharedWarehouseFilterUiState) {
+        with(binding) {
+            checkBoxToggleStock.isChecked = filters.stockFilters.isNotEmpty()
+            checkBoxToggleCategory.isChecked = filters.categoryFilters.isNotEmpty()
+            checkBoxToggleTags.isChecked = filters.tags.isNotEmpty()
+
+            checkBoxToggleStock.callOnClick()
+            checkBoxToggleCategory.callOnClick()
+            checkBoxToggleTags.callOnClick()
+        }
+    }
+
     private fun setupToolbar() {
         binding.toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
@@ -64,6 +106,7 @@ class WarehouseFilterFragment : Fragment(R.layout.fragment_warehouse_filters) {
         binding.toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.apply -> {
+                    applyFilters()
                     true
                 }
 
@@ -72,10 +115,30 @@ class WarehouseFilterFragment : Fragment(R.layout.fragment_warehouse_filters) {
         }
     }
 
+    private fun applyFilters() {
+        val selectedCategories = viewModel.uiState.value.categories.filter { category ->
+            binding.chipGroupCategories.children
+                .filterIsInstance<Chip>()
+                .any { chip -> chip.text == category.name && chip.isChecked }
+        }
+
+        val selectedStockFilters = mutableListOf<StockFilter>().apply {
+            if (binding.checkBoxOverstock.isChecked) add(StockFilter.OVERSTOCK)
+            if (binding.checkBoxLowStock.isChecked) add(StockFilter.LOW_STOCK)
+            if (binding.checkBoxCriticalStock.isChecked) add(StockFilter.CRITICAL_STOCK)
+            if (binding.checkBoxOutOfStock.isChecked) add(StockFilter.OUT_OF_STOCK)
+        }
+
+        val tags = binding.customInputTags.tags.map { ProductTag(it.name) }
+
+        sharedFilterViewModel.setupFilters(selectedCategories, selectedStockFilters, tags)
+        viewModel.navigateBack()
+    }
+
     private fun setupToggleButtons() {
         with(binding) {
             handleToggleButton(checkBoxToggleStock, layoutStock, textViewStockSelection) {
-                getSelectionText(listOf(checkBoxOverstock, checkBoxLowStock, checkBoxOutOfStock))
+                getSelectionText(listOf(checkBoxOverstock, checkBoxLowStock, checkBoxOutOfStock, checkBoxCriticalStock))
             }
             handleToggleButton(
                 checkBoxToggleCategory,
@@ -87,34 +150,7 @@ class WarehouseFilterFragment : Fragment(R.layout.fragment_warehouse_filters) {
             handleToggleButton(checkBoxToggleTags, binding.customInputTags, textViewTagsSelection) {
                 binding.customInputTags.tags.joinToString(", ") { it.name }
             }
-            handleToggleButton(
-                checkBoxTogglePrice,
-                binding.layoutContentPrice,
-                textViewPriceSelection
-            ) {
-                ""
-            }
         }
-    }
-
-    private fun setupPriceRangeLayout() {
-        binding.radioButtonPriceRange.setOnCheckedChangeListener { _, b ->
-            val visibility = if (b) View.VISIBLE else View.GONE
-
-            binding.layoutInputPriceRange.visibility = visibility
-            binding.rangeSliderPrice.visibility = visibility
-        }
-    }
-
-    private fun setupPriceRangeSlider() {
-        binding.rangeSliderPrice.addOnSliderTouchListener(object : RangeSlider.OnSliderTouchListener {
-            override fun onStartTrackingTouch(slider: RangeSlider) {}
-
-            override fun onStopTrackingTouch(slider: RangeSlider) {
-                binding.editTextFrom.setText(String.format(Locale.getDefault(), "%.2f", slider.values[0]))
-                binding.editTextTo.setText(String.format(Locale.getDefault(), "%.2f", slider.values[1]))
-            }
-        })
     }
 
     private fun getSelectionText(checkBoxes: List<CompoundButton>): String = 
@@ -142,10 +178,4 @@ class WarehouseFilterFragment : Fragment(R.layout.fragment_warehouse_filters) {
 
         }
     }
-
-    override fun onDestroy() {
-        Log.d("debug", "hflsj")
-        super.onDestroy()
-    }
-
 }

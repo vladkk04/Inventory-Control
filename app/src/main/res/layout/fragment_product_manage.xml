@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,8 +23,6 @@
             android:background="@drawable/background_corner_stroke"
             android:backgroundTint="#464545"
             android:backgroundTintMode="add"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_add_image"
             app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -110,6 +109,7 @@
                     android:theme="@style/Theme.App.NumberPicker" />
 
                 <TextView
+                    android:id="@+id/text_view_unit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/text_unit"

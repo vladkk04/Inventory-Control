@@ -1,16 +1,20 @@
 package com.example.bachelorwork.ui.model.order.detail
 
-import java.util.Date
+import com.example.bachelorwork.domain.model.TimePeriod
 
 data class OrderDetailAnalyticsUiState(
-    val priceChartData: PriceChartData = PriceChartData(),
-    val amountChartData: AmountChartData = AmountChartData(),
+    val stockChangeChartData: StockChangeChartData = StockChangeChartData(),
+    val volumeStockChartData: StockVolumeChartData = StockVolumeChartData(),
+    val datePeriodChangeStock: TimePeriod = TimePeriod.TODAY,
+    val datePeriodVolumeStock: TimePeriod = TimePeriod.TODAY,
+    val isLoading: Boolean = false,
 )
 
-data class PriceChartData(
-    val data: Map<Date, Double> = emptyMap(),
+data class StockChangeChartData(
+    val data: Map<String, Double> = emptyMap(),
 )
 
-data class AmountChartData(
-    val data: Map<Date, Double> = emptyMap(),
+data class StockVolumeChartData(
+    val x: List<Long> = emptyList(),
+    val y: Map<String, List<Double>> = emptyMap(),
 )

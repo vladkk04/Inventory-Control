@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center"
     android:orientation="vertical">
 
     <com.google.android.material.bottomsheet.BottomSheetDragHandleView
@@ -23,8 +24,18 @@
             android:layout_height="@dimen/height_more_fab_item"
             android:maxLines="2"
             android:text="@string/text_manage_users"
-            android:textAlignment="gravity"
             app:icon="@drawable/ic_manage_users"
+            app:iconGravity="top"
+            app:iconPadding="0dp" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fab_manage_organisation"
+            android:layout_width="@dimen/width_more_fab_item"
+            android:layout_height="@dimen/height_more_fab_item"
+            android:maxLines="2"
+            android:text="@string/text_manage_organisation"
+            android:ellipsize="end"
+            app:icon="@drawable/ic_manage_roles"
             app:iconGravity="top"
             app:iconPadding="0dp" />
 

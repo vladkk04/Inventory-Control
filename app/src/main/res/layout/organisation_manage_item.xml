@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/image_view_organisation_logo"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@color/colorSecondaryContainer"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle" />
+
+        <TextView
+            android:id="@+id/organisation_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/padding_normal"
+            android:textSize="@dimen/text_size_medium_plus"
+            android:textStyle="bold"
+            tools:text="Organisation name" />
+
+        <ImageView
+            android:id="@+id/selected_organisation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:layout_margin="@dimen/margin_small"
+            android:src="@drawable/ic_done"
+            android:visibility="invisible" />
+
+    </LinearLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginBottom="@dimen/margin_medium"/>
+
+</LinearLayout>

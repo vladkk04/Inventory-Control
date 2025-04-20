@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="?attr/materialCardViewFilledStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="6dp"
+    app:cardBackgroundColor="#767676"
+    android:layout_marginBottom="@dimen/margin_small">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/text_view_name_product"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Wood"
+            android:textStyle="bold"
+            android:layout_margin="@dimen/margin_small"
+            android:textSize="@dimen/text_size_medium" />
+
+        <TextView
+            android:id="@+id/text_view_product_left_count"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="3 pcs"
+            android:paddingHorizontal="@dimen/padding_small"
+            android:layout_gravity="center|end"
+            android:gravity="center"
+            android:background="@drawable/background_corner_rounded"
+            android:backgroundTint="@color/colorMinStockLevelLowLevel" />
+
+    </LinearLayout>
+
+
+</com.google.android.material.card.MaterialCardView>
+

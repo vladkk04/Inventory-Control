@@ -7,13 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.elveum.elementadapter.adapter
-import com.elveum.elementadapter.addBinding
+import com.elveum.elementadapter.simpleAdapter
 import com.example.bachelorwork.R
+import com.example.bachelorwork.data.constants.AppConstants
 import com.example.bachelorwork.databinding.FragmentProductDetailTimelineHistoryBinding
 import com.example.bachelorwork.databinding.ProductDetailTimelineHistoryItemBinding
 import com.example.bachelorwork.domain.model.product.ProductTimelineHistory
-import com.example.bachelorwork.ui.constant.Constants
 import com.example.bachelorwork.ui.model.product.detail.ProductTimelineHistoryUiState
 import com.example.bachelorwork.ui.utils.extensions.collectInLifecycle
 import java.text.SimpleDateFormat
@@ -26,39 +25,39 @@ class ProductDetailTimelineHistoryFragment : Fragment() {
 
     private val viewModel: ProductDetailTimelineHistoryViewModel by viewModels(ownerProducer = { requireParentFragment() })
 
-    private val adapter = adapter {
-        val formatter = SimpleDateFormat(Constants.DateFormats.PRODUCT_TIMELINE_HISTORY_FORMAT, Locale.getDefault())
+    private val adapter = simpleAdapter<ProductTimelineHistory, ProductDetailTimelineHistoryItemBinding> {
+        val formatter = SimpleDateFormat(AppConstants.PRODUCT_TIMELINE_HISTORY_FORMAT, Locale.getDefault())
 
-        addBinding<ProductTimelineHistory.ProductTimelineCreate, ProductDetailTimelineHistoryItemBinding> {
-            bind { item ->
-                if (viewModel.uiState.value.timelineHistory.lastIndex == index()) {
-                    this.line.visibility = View.GONE
-                } else {
-                    this.line.visibility = View.VISIBLE
+        bind { item ->
+            when (item) {
+                is ProductTimelineHistory.ProductTimelineTimelineCreate -> {
+                    if (viewModel.uiState.value.updateHistory.lastIndex == index()) {
+                        this.line.visibility = View.GONE
+                    } else {
+                        this.line.visibility = View.VISIBLE
+                    }
+                    this.textViewHeader.text = getString(R.string.text_product_created)
+                    this.textViewModify.text = getString(
+                        R.string.text_product_timeline_history_modify,
+                        item.createdBy,
+                        formatter.format(item.createdAt)
+                    )
+                    this.imageViewTimelineAbout.setImageResource(R.drawable.ic_edit)
                 }
-                this.textViewHeader.text = getString(R.string.text_product_created)
-                this.textViewModify.text = getString(
-                    R.string.text_product_timeline_history_modify,
-                    item.createdBy,
-                    formatter.format(item.createdAt)
-                )
-                this.imageViewTimelineAbout.setImageResource(R.drawable.ic_edit)
-            }
-        }
-        addBinding<ProductTimelineHistory.ProductTimelineUpdate, ProductDetailTimelineHistoryItemBinding> {
-            bind { item ->
-                if (viewModel.uiState.value.timelineHistory.lastIndex == index()) {
-                    this.line.visibility = View.GONE
-                }else {
-                    this.line.visibility = View.VISIBLE
+                is ProductTimelineHistory.ProductTimelineUpdate -> {
+                    if (viewModel.uiState.value.updateHistory.lastIndex == index()) {
+                        this.line.visibility = View.GONE
+                    } else {
+                        this.line.visibility = View.VISIBLE
+                    }
+                    this.textViewHeader.text = getString(R.string.text_product_updated)
+                    this.textViewModify.text = getString(
+                        R.string.text_product_timeline_history_modify,
+                        item.updates.updatedBy,
+                        formatter.format(item.updates.updatedAt)
+                    )
+                    this.imageViewTimelineAbout.setImageResource(R.drawable.ic_update)
                 }
-                this.textViewHeader.text = getString(R.string.text_product_updated)
-                this.textViewModify.text = getString(
-                    R.string.text_product_timeline_history_modify,
-                    item.updatedBy,
-                    formatter.format(item.updatedAt)
-                )
-                this.imageViewTimelineAbout.setImageResource(R.drawable.ic_update)
             }
         }
     }
@@ -79,8 +78,7 @@ class ProductDetailTimelineHistoryFragment : Fragment() {
     }
 
     private fun updateUI(uiState: ProductTimelineHistoryUiState) {
-        if (uiState.timelineHistory.isEmpty()) return
-        adapter.submitList(uiState.timelineHistory)
+        adapter.submitList(uiState.updateHistory)
     }
 
     private fun setupRecyclerView() {

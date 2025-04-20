@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            style="@style/Widget.Material3.Button.TextButton.Icon"
+            android:id="@+id/button_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_small"
+            android:layout_marginVertical="@dimen/margin_medium"
+            android:text="@string/text_back"
+            app:icon="@drawable/ic_keyboard_arrow_left" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_otp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_otp"
+            android:layout_marginHorizontal="@dimen/margin_normal"
+            android:layout_centerInParent="true"
+            app:startIconDrawable="@drawable/ic_password_otp"
+            app:errorEnabled="true"
+            app:hintEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_otp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:inputType="number"
+                android:imeOptions="actionDone"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <LinearLayout
+            android:id="@+id/layout_resend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/text_input_otp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/margin_normal"
+                android:text="@string/text_didnt_recive_otp" />
+
+            <TextView
+                android:id="@+id/text_resend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_extra_small"
+                android:text="@string/text_resend"
+                android:textColor="#0D88F4" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button_continue"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@id/layout_resend"
+            android:layout_marginHorizontal="@dimen/margin_normal"
+            android:text="@string/text_continue" />
+
+    </RelativeLayout>
+
+</ScrollView>

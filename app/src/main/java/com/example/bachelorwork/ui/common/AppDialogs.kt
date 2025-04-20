@@ -3,7 +3,9 @@ package com.example.bachelorwork.ui.common
 import android.content.Context
 import com.example.bachelorwork.R
 import com.example.bachelorwork.ui.common.base.BaseDialog
-import com.example.bachelorwork.ui.permissions.AppPermission
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointBackward
+import com.google.android.material.datepicker.MaterialDatePicker
 
 object AppDialogs {
     fun createDeleteDialog(
@@ -49,39 +51,36 @@ object AppDialogs {
             )
     }
 
-    fun createPermissionDialog(
+    fun createCancelDialog(
         context: Context,
-        permission: AppPermission,
-        isPermanentlyDeclined: Boolean,
-        onPositiveButtonClick: () -> Unit = {},
-        onGoToAppSettingsClick: () -> Unit = {},
+        onPositiveButtonClick: () -> Unit = {}
     ) = object : BaseDialog(context) {
         override val config: DialogConfig
-            get() = super.config.copy(
-                title = getTitle,
-                message = getMessage,
-                positiveButtonText = if (isPermanentlyDeclined) "Ok" else "Settings",
-                positiveButtonAction = if (isPermanentlyDeclined) onPositiveButtonClick else onGoToAppSettingsClick,
-                negativeButtonText = if (isPermanentlyDeclined) "" else "Not Now",
+            get() = DialogConfig(
+                title = "Cancel?",
+                message = "Are you sure you want to cancel this action?",
+                positiveButtonText = "Cancel",
+                negativeButtonText = "Discard",
+                positiveButtonAction = onPositiveButtonClick
             )
-
-        val applicationName = context.applicationInfo.loadLabel(context.packageManager)
-
-        private val getMessage = when (permission) {
-            AppPermission.MEDIA_IMAGES -> {
-                "$applicationName need access to your Gallery to upload images. Please grant the permission."
-            }
-        }
-
-        private val getTitle = when (permission) {
-            AppPermission.MEDIA_IMAGES -> {
-                "Allow your Gallery"
-            }
-        }
     }
 
-    /*fun createShowDatePicker(
-        onPositiveButtonClick: (String) -> Unit,
+    fun createSignOutDialog(
+        context: Context,
+        onPositiveButtonClick: () -> Unit = {}
+    ) = object : BaseDialog(context) {
+        override val config: DialogConfig
+            get() = DialogConfig(
+                title = "Sign out?",
+                message = "Do you really want to sign out?",
+                positiveButtonText = "Sign out",
+                negativeButtonText = "Cancel",
+                positiveButtonAction = onPositiveButtonClick
+            )
+    }
+
+    fun createShowDatePicker(
+        onPositiveButtonClick: (Long) -> Unit,
     ) =
         MaterialDatePicker.Builder.datePicker()
             .setTitleText("Select data")
@@ -90,14 +89,10 @@ object AppDialogs {
                     .setValidator(DateValidatorPointBackward.now()).build()
             )
             .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-            .setTextInputFormat(SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT_PATTERN, Locale.getDefault()))
             .build()
             .apply {
-                addOnPositiveButtonClickListener {
-                    onPositiveButtonClick(
-                        SimpleDateFormat(Constants.DEFAULT_DATE_FORMAT_PATTERN, Locale.getDefault()).format(it)
-                    )
+                addOnPositiveButtonClickListener { time ->
+                    onPositiveButtonClick(time)
                 }
             }
-            .show(childFragmentManager, "${this::class.simpleName} DataPicker")*/
 }

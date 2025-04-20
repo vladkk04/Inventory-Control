@@ -95,6 +95,9 @@ class MoreFragment: BottomSheetDialogFragment() {
         binding.fabManageUsers.setOnClickListener {
             viewModel.navigateToManageUsers()
         }
+        binding.fabManageOrganisation.setOnClickListener {
+            viewModel.navigateToManageOrganisation()
+        }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

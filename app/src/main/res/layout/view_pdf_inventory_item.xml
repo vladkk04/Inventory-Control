@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:background="?android:attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/productName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:includeFontPadding="false"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/qtyOrdered"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/qtyIn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/qtyOut"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/stockOnHand"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:textColor="@color/black"/>
+
+</LinearLayout>

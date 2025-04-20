@@ -4,8 +4,9 @@ import androidx.navigation.NavOptionsBuilder
 import kotlinx.coroutines.flow.Flow
 
 interface AppNavigator {
-    val startDestination: Destination
     val navigationActions: Flow<NavigationAction>
+
+    fun startDestination(): Flow<Destination>
 
     suspend fun navigate(
         destination: Destination,

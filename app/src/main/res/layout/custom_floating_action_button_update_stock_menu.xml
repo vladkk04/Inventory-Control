@@ -1,0 +1,30 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="end">
+
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab_stock_in"
+        android:layout_width="134dp"
+        android:layout_height="wrap_content"
+        android:text="@string/text_stock_in"
+        app:icon="@drawable/ic_stock_in" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab_stock_out"
+        android:layout_width="134dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/margin_small"
+        android:text="@string/text_stock_out"
+        app:icon="@drawable/ic_manage_users" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/content_description_fab_menu"
+        app:srcCompat="@drawable/ic_close" />
+</LinearLayout>

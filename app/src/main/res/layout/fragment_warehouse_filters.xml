@@ -31,83 +31,6 @@
             android:layout_marginTop="@dimen/margin_normal"
             android:orientation="vertical">
 
-            <!--  <RelativeLayout
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content">
-
-                  <LinearLayout
-                      android:id="@+id/layout_header_date"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:layout_alignParentStart="true"
-                      android:layout_toStartOf="@+id/check_box_toggle_date"
-                      android:orientation="vertical">
-
-                      <TextView
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:gravity="start|center"
-                          android:text="@string/text_date"
-                          android:textSize="@dimen/text_size_header_small"
-                          android:textStyle="bold" />
-
-                      <TextView
-                          android:id="@+id/text_view_date_selection"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:text="@string/text_out_of_stock"
-                          android:textSize="@dimen/text_size_small"
-                          android:visibility="gone" />
-
-                  </LinearLayout>
-
-                  <CheckBox
-                      android:id="@+id/check_box_toggle_date"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:layout_alignBottom="@id/layout_header_date"
-                      android:layout_alignParentTop="true"
-                      android:layout_alignParentEnd="true"
-                      android:button="@drawable/ic_keyboard_arrow_down"
-                      android:gravity="center" />
-
-                  <RadioGroup
-                      android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:layout_below="@id/layout_header_date"
-                      android:layoutDirection="rtl"
-                      android:text="@string/text_overstock"
-                      android:textColor="#81D60A">
-
-                      <RadioButton
-                          android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:text="@string/text_anytime" />
-
-                      <RadioButton
-                          android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:text="@string/text_last_week" />
-
-                      <RadioButton
-                          android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:text="@string/text_last_month" />
-
-                      <RadioButton
-                          android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:text="@string/text_custom_date_period" />
-
-                  </RadioGroup>
-
-              </RelativeLayout>
-
-              <com.google.android.material.divider.MaterialDivider
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_marginVertical="@dimen/margin_small" />-->
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -156,7 +79,7 @@
                     android:layout_marginEnd="@dimen/margin_small"
                     android:layoutDirection="rtl"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <CheckBox
                         android:id="@+id/check_box_overstock"
@@ -173,10 +96,17 @@
                         android:textColor="#FFE909" />
 
                     <CheckBox
+                        android:id="@+id/check_box_critical_stock"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Critical stock"
+                        android:textColor="#DD3B3B" />
+
+                    <CheckBox
                         android:id="@+id/check_box_out_of_stock"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/text_out_of_stock"
+                        android:text="Out of stock"
                         android:textColor="#DD3B3B" />
 
                 </LinearLayout>
@@ -303,144 +233,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/margin_normal"
                 app:dividerInsetEnd="12dp" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:id="@+id/layout_header_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_toStartOf="@id/check_box_toggle_price"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="start|center"
-                        android:text="@string/text_price"
-                        android:textSize="@dimen/text_size_large"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/text_view_price_selection"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_size_small"
-                        android:visibility="gone" />
-
-                </LinearLayout>
-
-                <CheckBox
-                    android:id="@+id/check_box_toggle_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/layout_header_price"
-                    android:layout_alignBottom="@id/layout_header_price"
-                    android:layout_alignParentEnd="true"
-                    android:button="@drawable/ic_selector_arrow"
-                    android:gravity="center" />
-
-                <LinearLayout
-                    android:id="@+id/layout_content_price"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_below="@id/layout_header_price"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentEnd="true"
-                    android:visibility="gone">
-
-                    <RadioGroup
-                        android:id="@+id/radio_group_price"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/margin_small">
-
-                        <RadioButton
-                            android:id="@+id/radio_button_any_type"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layoutDirection="rtl"
-                            android:text="@string/text_filter_any_type" />
-
-                        <RadioButton
-                            android:id="@+id/radio_button_price_range"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layoutDirection="rtl"
-                            android:text="@string/text_filter_price_range" />
-
-                    </RadioGroup>
-
-                    <LinearLayout
-                        android:id="@+id/layout_input_price_range"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:baselineAligned="false"
-                        android:orientation="horizontal"
-                        android:weightSum="1"
-                        android:layout_marginEnd="@dimen/margin_normal"
-                        android:visibility="visible">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.5"
-                            android:layout_marginEnd="@dimen/margin_small"
-                            android:hint="@string/hint_from"
-                            app:hintEnabled="true">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/edit_text_from"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:imeOptions="actionNext"
-                                android:inputType="numberDecimal"
-                                android:maxLines="1" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.5"
-                            android:hint="@string/hint_to"
-                            app:hintEnabled="true">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/edit_text_to"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:imeOptions="actionDone"
-                                android:inputType="numberDecimal"
-                                android:maxLines="1" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                    </LinearLayout>
-
-                    <com.google.android.material.slider.RangeSlider
-                        style="@style/Widget.Material3.Slider.Legacy"
-                        android:id="@+id/range_slider_price"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="@dimen/margin_small"
-                        android:valueFrom="0.0"
-                        android:valueTo="100.0"
-                        android:visibility="gone"
-                        android:layout_marginEnd="@dimen/margin_small"
-                        app:labelBehavior="visible"
-                        app:values="@array/initial_slider_values" />
-
-
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
 
         </LinearLayout>
 

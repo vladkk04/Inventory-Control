@@ -2,10 +2,38 @@
 <menu
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item
-        android:id="@+id/inbox_item"
+        android:id="@+id/home"
+        android:icon="@drawable/ic_home_outlined"
+        android:title="@string/title_home"
+        android:checkable="true"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/invitations"
+        android:icon="@drawable/ic_outgoing_mail"
+        android:title="@string/title_invitations"
+        android:checkable="true"/>
+
+    <item
+        android:id="@+id/reports"
+        android:icon="@drawable/ic_bar_chart"
+        android:title="@string/title_reports"
+        android:checkable="true"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/settings"
         android:icon="@drawable/ic_settings_outline"
         android:title="@string/title_settings"
         android:checkable="true"
         app:showAsAction="ifRoom"/>
+
+
+    <item
+        android:id="@+id/menu_none"
+        android:title=""
+        android:checkable="true"
+        android:visible="false"/>
 </menu>

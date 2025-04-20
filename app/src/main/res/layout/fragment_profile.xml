@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:menu="@menu/toolbar_profile_menu"
+        app:title="@string/title_profile"
+        app:titleCentered="true"
+        app:navigationIcon="@drawable/ic_arrow_back_ios" />
+
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/image_view_avatar"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_below="@id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle"
+        app:srcCompat="@drawable/ic_person_active" />
+
+
+    <TextView
+        android:id="@+id/text_view_full_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/image_view_avatar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginVertical="@dimen/margin_small"
+        android:text="Vladyslav Klymiuk"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_size_header_large" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/margin_extra_large"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/button_change_email"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:drawableEnd="@drawable/ic_email"
+            android:layout_marginVertical="@dimen/margin_small"
+            android:text="@string/text_change_email" />
+
+        <Button
+            android:id="@+id/button_change_password"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:drawableEnd="@drawable/ic_password_otp"
+            android:layout_marginVertical="@dimen/margin_small"
+            android:text="@string/text_change_password" />
+
+        <Button
+            android:id="@+id/button_sign_out"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:drawableEnd="@drawable/ic_logout"
+            android:layout_marginVertical="@dimen/margin_small"
+            android:text="@string/text_sign_out" />
+
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>

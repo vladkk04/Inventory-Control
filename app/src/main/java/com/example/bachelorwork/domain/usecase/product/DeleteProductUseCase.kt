@@ -1,18 +1,16 @@
 package com.example.bachelorwork.domain.usecase.product
 
-import com.example.bachelorwork.data.local.entities.product.ProductEntity
-import com.example.bachelorwork.domain.repository.ProductRepository
+import com.example.bachelorwork.domain.repository.local.ProductLocalDataSource
+import com.example.bachelorwork.domain.repository.remote.ProductRemoteDataSource
+import com.example.bachelorwork.ui.utils.extensions.performNetworkOperation
 
 class DeleteProductUseCase(
-    private val productRepository: ProductRepository,
+    private val remote: ProductRemoteDataSource,
+    private val local: ProductLocalDataSource,
 ) {
-    suspend operator fun invoke(product: ProductEntity) = runCatching {
-        productRepository.delete(product)
-    }
 
-    suspend operator fun invoke(vararg product: ProductEntity) = runCatching {
-        productRepository.deleteAll(*product)
-    }
-
+    operator fun invoke(productId: String) =
+        performNetworkOperation(remoteCall = { remote.delete(productId) },
+            localUpdate = { local.deleteById(productId) })
 
 }

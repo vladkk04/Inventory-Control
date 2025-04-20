@@ -12,7 +12,7 @@
         android:layout_centerInParent="true"
         android:layout_marginBottom="@dimen/margin_normal"
         android:backgroundTint="@color/white"
-        android:text="@string/text_login"
+        android:text="@string/text_sign_in"
         android:textColor="@color/black" />
 
     <Button

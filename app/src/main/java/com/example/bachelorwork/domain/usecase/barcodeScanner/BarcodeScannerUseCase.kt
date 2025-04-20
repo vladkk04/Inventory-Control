@@ -1,6 +1,6 @@
 package com.example.bachelorwork.domain.usecase.barcodeScanner
 
-import com.example.bachelorwork.domain.repository.BarcodeScannerRepository
+import com.example.bachelorwork.domain.repository.local.BarcodeScannerRepository
 import com.google.mlkit.vision.barcode.common.Barcode
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

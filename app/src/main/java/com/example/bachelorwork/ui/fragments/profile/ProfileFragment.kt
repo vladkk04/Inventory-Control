@@ -1,23 +1,58 @@
 package com.example.bachelorwork.ui.fragments.profile
-
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import com.example.bachelorwork.R
+import com.example.bachelorwork.databinding.FragmentProfileBinding
+import com.example.bachelorwork.ui.common.AppDialogs
+import com.example.bachelorwork.ui.utils.extensions.collectInLifecycle
+import com.example.bachelorwork.ui.utils.extensions.viewBinding
+import com.example.bachelorwork.ui.utils.screen.InsetHandler
+import dagger.hilt.android.AndroidEntryPoint
 
-class ProfileFragment : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+@AndroidEntryPoint
+class ProfileFragment: Fragment(R.layout.fragment_profile) {
+
+    private val binding by viewBinding(FragmentProfileBinding::bind)
+
+    private val viewModel: ProfileViewModel by viewModels()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        InsetHandler.adaptToEdgeWithPadding(binding.root)
+
+        setupButtons()
+        setupToolbar()
+
+        collectInLifecycle(viewModel.uiState) { state ->
+            updateUiState(state)
+        }
+    }
+    
+    private fun updateUiState(uiState: ProfileUiState) {
+        
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-       return null
+    private fun setupToolbar() {
+        binding.toolbar.setNavigationOnClickListener {
+            viewModel.navigateUp()
+        }
     }
 
+    private fun setupButtons() {
+        binding.buttonSignOut.setOnClickListener {
+            AppDialogs.createSignOutDialog(requireContext()) {
+                viewModel.signOut()
+            }.show()
+        }
+
+        binding.buttonChangeEmail.setOnClickListener {
+            viewModel.navigateToChangeEmail()
+        }
+
+        binding.buttonChangePassword.setOnClickListener {
+            viewModel.navigateToChangePassword()
+        }
+    }
 }

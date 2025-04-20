@@ -1,19 +1,22 @@
 package com.example.bachelorwork.ui.views.inputs
 
-import android.database.sqlite.SQLiteConstraintException
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.bachelorwork.domain.model.product.ProductCategory
-import com.example.bachelorwork.domain.model.product.toEntity
+import com.example.bachelorwork.common.Resource
+import com.example.bachelorwork.domain.model.category.ProductCategory
+import com.example.bachelorwork.domain.model.category.ProductCategoryRequest
 import com.example.bachelorwork.domain.usecase.productCategory.ProductCategoryUseCases
 import com.example.bachelorwork.ui.model.category.CategoryUiState
 import com.example.bachelorwork.ui.snackbar.SnackbarController.sendSnackbarEvent
 import com.example.bachelorwork.ui.snackbar.SnackbarEvent
-import com.example.bachelorwork.ui.utils.extensions.handleResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,51 +31,80 @@ class CategoriesViewModel @Inject constructor(
 
     init { getCategories() }
 
-    private fun getCategories() {
-        val result = categoryUseCase.getCategories()
+    private fun getCategories() = viewModelScope.launch {
+        categoryUseCase.getCategories.getAll().onEach { response ->
 
-        handleResult(result, onSuccess = { categories ->
-            _uiState.update { it.copy(categories = categories ) }
-        }, onFailure = { e ->
-            _uiState.update { it.copy(errorMessage = e.message ) }
-        })
-    }
+            when (response) {
+                Resource.Loading -> {
 
-    fun createCategory(category: ProductCategory) = viewModelScope.launch {
-        val result = categoryUseCase.createCategory(category.toEntity())
-        handleResult(result, onSuccess = {
-            sendSnackbarEvent(SnackbarEvent("Category created"))
-        }, onFailure = { e ->
-            Log.d("debug", e.message.toString())
-            when (e) {
-                is SQLiteConstraintException -> {
-                    sendSnackbarEvent(SnackbarEvent("Category already exists"))
+                }
+
+                is Resource.Error -> {
+                    sendSnackbarEvent(SnackbarEvent(response.errorMessage))
+                }
+                is Resource.Success -> {
+                    _uiState.update { it.copy(categories = response.data) }
                 }
             }
-        })
+
+        }.flowOn(Dispatchers.IO).launchIn(viewModelScope)
     }
 
-    fun updateCategory(category: ProductCategory) = viewModelScope.launch {
-        val result = categoryUseCase.updateCategory(category.toEntity())
-        handleResult(result, onSuccess = {
-            _uiState.update { it.copy(currentCategory = category) }
-            sendSnackbarEvent(SnackbarEvent("Category updated"))
-        }, onFailure = { e ->
-            when (e) {
-                is SQLiteConstraintException -> {
-                    sendSnackbarEvent(SnackbarEvent("Category with this name already exists"))
+    fun createCategory(request: ProductCategoryRequest) {
+        categoryUseCase.createCategory(
+            request
+        ).onEach { response ->
+            when (response) {
+                is Resource.Loading -> {
+
+                }
+
+                is Resource.Error -> {
+                    sendSnackbarEvent(SnackbarEvent(response.errorMessage))
+                }
+
+                is Resource.Success -> {
+                    sendSnackbarEvent(SnackbarEvent("Category created"))
+                }
+
+            }
+        }.flowOn(Dispatchers.IO).launchIn(viewModelScope)
+    }
+
+    fun updateCategory(categoryId: String, request: ProductCategoryRequest) = viewModelScope.launch {
+        categoryUseCase.updateCategory.invoke(
+            categoryId,
+            request
+        ).collectLatest { response ->
+            when (response) {
+                Resource.Loading -> {
+
+                }
+                is Resource.Error -> {
+                    sendSnackbarEvent(SnackbarEvent(response.errorMessage))
+
+                }
+                is Resource.Success -> {
+                    sendSnackbarEvent(SnackbarEvent("Updated"))
                 }
             }
-        })
+        }
     }
 
-    fun deleteCategory(category: ProductCategory) = viewModelScope.launch {
-        val result = categoryUseCase.deleteCategory(category.toEntity())
-        handleResult(result, onSuccess = {
-            sendSnackbarEvent(SnackbarEvent("Category deleted"))
-        }, onFailure = { e ->
+    fun deleteCategory(categoryId: String) = viewModelScope.launch {
+        categoryUseCase.deleteCategory(categoryId).collectLatest {
+            when (it) {
+                Resource.Loading -> {
 
-        })
+                }
+                is Resource.Error -> {
+                    sendSnackbarEvent(SnackbarEvent(it.errorMessage))
+                }
+                is Resource.Success -> {
+                    sendSnackbarEvent(SnackbarEvent("Category deleted"))
+                }
+            }
+        }
     }
 
     fun selectCategory(category: ProductCategory) {

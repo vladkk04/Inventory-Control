@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-02-01T13:41:06.034346900Z">
+        <DropdownSelection timestamp="2025-04-14T14:17:59.182534500Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="PhysicalDevice" identifier="serial=R3CR80PA5DY" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Vlad\.android\avd\Pixel_9_Pro_API_34.avd" />
             </handle>
           </Target>
         </DropdownSelection>
@@ -15,12 +15,12 @@
           <targets>
             <Target type="DEFAULT_BOOT">
               <handle>
-                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Vlad\.android\avd\Medium_Phone_API_34.avd" />
+                <DeviceId pluginId="PhysicalDevice" identifier="serial=R3CR80PA5DY" />
               </handle>
             </Target>
             <Target type="DEFAULT_BOOT">
               <handle>
-                <DeviceId pluginId="PhysicalDevice" identifier="serial=R3CR80PA5DY" />
+                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Vlad\.android\avd\Medium_Phone_API_34.avd" />
               </handle>
             </Target>
           </targets>

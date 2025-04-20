@@ -2,8 +2,8 @@ package com.example.bachelorwork.ui.fragments.more
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.bachelorwork.ui.navigation.Destination
 import com.example.bachelorwork.ui.navigation.AppNavigator
+import com.example.bachelorwork.ui.navigation.Destination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -13,12 +13,15 @@ class MoreViewModel @Inject constructor(
     private val navigator: AppNavigator
 ): ViewModel() {
 
-    fun navigateToManageUsers() {
-        navigateTo(Destination.ManageUsers)
+    fun navigateToManageUsers() {        navigateTo(Destination.ManageUsers)
     }
 
-    fun navigateToFF() {
-        navigateTo(Destination.Warehouse)
+    /*fun navigateToManageOrganisationRoles() {
+        navigateTo(Destination.ManageRoles)
+    }*/
+
+    fun navigateToManageOrganisation() {
+        navigateTo(Destination.ManageOrganisation)
     }
 
     private fun navigateTo(destination: Destination) = viewModelScope.launch {

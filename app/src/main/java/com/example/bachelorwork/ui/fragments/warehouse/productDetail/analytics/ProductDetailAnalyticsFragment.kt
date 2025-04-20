@@ -1,20 +1,38 @@
 package com.example.bachelorwork.ui.fragments.warehouse.productDetail.analytics
 
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
+import androidx.navigation.fragment.findNavController
+import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.FragmentProductDetailAnalyticsBinding
+import com.example.bachelorwork.domain.model.TimePeriod
 import com.example.bachelorwork.ui.utils.extensions.collectInLifecycle
 import com.example.bachelorwork.ui.views.Charts
-import com.example.bachelorwork.ui.views.Charts.LegendLabelKey
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
 import com.patrykandpatrick.vico.core.cartesian.data.columnSeries
 import com.patrykandpatrick.vico.core.cartesian.data.lineSeries
+import com.patrykandpatrick.vico.core.common.Dimensions
+import com.patrykandpatrick.vico.core.common.Fill
+import com.patrykandpatrick.vico.core.common.HorizontalLegend
+import com.patrykandpatrick.vico.core.common.LegendItem
+import com.patrykandpatrick.vico.core.common.component.ShapeComponent
+import com.patrykandpatrick.vico.core.common.component.TextComponent
+import com.patrykandpatrick.vico.core.common.data.ExtraStore
+import com.patrykandpatrick.vico.core.common.shape.CorneredShape
+import com.patrykandpatrick.vico.views.cartesian.ScrollHandler
+import com.patrykandpatrick.vico.views.cartesian.ZoomHandler
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
 @AndroidEntryPoint
@@ -25,6 +43,13 @@ class ProductDetailAnalyticsFragment : Fragment() {
 
     private val viewModel: ProductDetailAnalyticsViewModel by viewModels({ requireParentFragment() })
 
+    private val chartStockChangeModelProducer = CartesianChartModelProducer()
+    private val chartVolumeStockModelProducer = CartesianChartModelProducer()
+
+    private val bottomStockChangeExtraStoreKey = ExtraStore.Key<List<String>>()
+    private val bottomStockVolumeStoreKey = ExtraStore.Key<List<String>>()
+    private val stockVolumeLegendKey = ExtraStore.Key<Set<String>>()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,29 +57,76 @@ class ProductDetailAnalyticsFragment : Fragment() {
     ): View {
         _binding = FragmentProductDetailAnalyticsBinding.inflate(inflater, container, false)
 
-        setupPriceChart()
-        setupAmountChart()
+        setupStockChangeChart()
+        setupStockVolumeChart()
 
-        val y =
-            mapOf(
-                "Stock" to listOf(10, 20, 100, 300, 200, 150),
-                "Restocked" to listOf(1, 20, 30, 5),
-            )
 
-        collectInLifecycle(viewModel.uiState, Lifecycle.State.STARTED) { uiState ->
-            binding.chartViewPrice.modelProducer?.let {
-                it.runTransaction {
-                    lineSeries { series(13, 8, 7, 12, 0, 1, 15, 14, 0, 11, 6, 12, 0, 11, 12, 11) }
-                }
+        collectInLifecycle(viewModel.uiState) { uiState ->
+
+            binding.progressBarStockChange.isVisible = uiState.isLoading
+            binding.progressBarStockVolume.isVisible = uiState.isLoading
+
+            binding.textViewNoChangesStockChange.isVisible = uiState.stockChangeChartData.data.isEmpty()
+            binding.textViewNoChangesStockVolume.isVisible = uiState.volumeStockChartData.x.isEmpty() || uiState.volumeStockChartData.y.isEmpty()
+
+            if (uiState.stockChangeChartData.data.isNotEmpty()) {
+                val data = uiState.stockChangeChartData.data
+                binding.chartViewPrice.visibility = View.VISIBLE
+                chartStockChangeModelProducer.createTransaction().apply {
+                    lineSeries { series(data.values) }
+                    extras { it[bottomStockChangeExtraStoreKey] = data.keys.toList() }
+                }.commit()
+            } else {
+                binding.chartViewPrice.visibility = View.INVISIBLE
             }
 
-            binding.chartViewAmount.modelProducer?.let {
-                it.runTransaction {
-                    columnSeries {
-                        y.values.forEach { data -> series(data) }
-                        extras { extraStore -> extraStore[LegendLabelKey] = y.keys }
-                    }
+            if (uiState.volumeStockChartData.x.isNotEmpty() && uiState.volumeStockChartData.y.isNotEmpty()) {
+                binding.chartViewVolume.visibility = View.VISIBLE
+                val x = uiState.volumeStockChartData.x
+                val y = uiState.volumeStockChartData.y
+                
+                chartVolumeStockModelProducer.createTransaction().apply {
+                    columnSeries { y.values.forEach { series(x, it) } }
+                    extras { it[stockVolumeLegendKey] = y.keys.toSet() }
+                }.commit()
+            } else {
+                binding.chartViewVolume.visibility = View.INVISIBLE
+            }
+        }
+
+        findNavController().currentBackStackEntry?.savedStateHandle?.getStateFlow(
+            "datePeriod",
+            TimePeriod.TODAY
+        )?.let {
+            collectInLifecycle(it) { datePeriod ->
+                val text = when (datePeriod) {
+                    TimePeriod.TODAY -> getString(R.string.text_selected_date_today_value)
+                    TimePeriod.LAST_3_DAYS -> getString(
+                        R.string.text_selected_date_period_in_days_value,
+                        "3"
+                    )
+
+                    TimePeriod.LAST_7_DAYS -> getString(
+                        R.string.text_selected_date_period_in_days_value,
+                        "7"
+                    )
+
+                    TimePeriod.LAST_MONTH -> getString(
+                        R.string.text_selected_date_period_in_days_value,
+                        "30"
+                    )
+
+                    TimePeriod.LAST_90_DAYS -> getString(
+                        R.string.text_selected_date_period_in_days_value,
+                        "90"
+                    )
+
+                    TimePeriod.LAST_YEAR -> getString(R.string.text_selected_date_last_year)
                 }
+
+                binding.textViewDateStockChanges.text = text
+                binding.textViewDateStockVolume.text = text
+                viewModel.changeStockDatePeriod(datePeriod)
             }
         }
 
@@ -62,19 +134,65 @@ class ProductDetailAnalyticsFragment : Fragment() {
         return binding.root
     }
 
-    private fun setupAmountChart() {
-        binding.chartViewAmount.apply {
-            chart = Charts.createColumnChart()
-            modelProducer = CartesianChartModelProducer()
+    private fun setupStockVolumeChart() {
+        binding.chartViewVolume.apply {
+
+            val color = listOf(Color.GREEN, Color.RED)
+
+            chart = Charts().createColumnChart(
+                legend = HorizontalLegend(
+                    items = { extraStore ->
+                        extraStore[stockVolumeLegendKey].forEachIndexed { index, label ->
+                            add(
+                                LegendItem(
+                                    icon = ShapeComponent(
+                                        fill = Fill(color[index]),
+                                        shape = CorneredShape.Pill
+                                    ),
+                                    TextComponent(
+                                        color = Color.WHITE,
+                                    ),
+                                    label,
+                                )
+                            )
+                        }
+                    },
+                    padding = Dimensions(8f, 4f),
+                ),
+            )
+            zoomHandler = ZoomHandler(false)
+            scrollHandler = ScrollHandler(true)
+            modelProducer = chartVolumeStockModelProducer
+        }
+
+        binding.textViewDateStockVolume.setOnClickListener {
+            viewModel.openSelectorPeriodDate()
         }
     }
 
-    private fun setupPriceChart() {
+
+    private fun setupStockChangeChart() {
         binding.chartViewPrice.apply {
-            chart = Charts.createLineChart()
-            modelProducer = CartesianChartModelProducer()
+            chart = Charts().createLineChart(
+                bottomCartesianValueFormatter = { context, value, _ ->
+                    val value2 = context.model.extraStore[bottomStockChangeExtraStoreKey][value.toInt()]
+                    val gg = when(viewModel.uiState.value.datePeriodChangeStock) {
+                        TimePeriod.TODAY -> {
+                            SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+                        }
+                        else -> { SimpleDateFormat("MM.dd 'at' HH:mm:ss", Locale.getDefault()) }
+                    }
+                    gg.format(Date(value2.toLong()))
+                }
+            )
+            zoomHandler = ZoomHandler(true)
+            scrollHandler = ScrollHandler(true)
+            modelProducer = chartStockChangeModelProducer
+        }
+
+        binding.textViewDateStockChanges.setOnClickListener {
+            viewModel.openSelectorPeriodDate()
         }
     }
-
 
 }

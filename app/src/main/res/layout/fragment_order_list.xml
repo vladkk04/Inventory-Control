@@ -39,12 +39,23 @@
 
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="@dimen/margin_normal"
-            tools:listitem="@layout/order_outer_item" />
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/margin_normal"
+                android:paddingHorizontal="@dimen/padding_normal"
+                android:clipToPadding="false"
+                tools:listitem="@layout/order_item" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
 
     </LinearLayout>
 

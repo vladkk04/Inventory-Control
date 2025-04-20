@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="?materialCardViewFilledStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_small"
+    android:orientation="vertical"
+    app:cardBackgroundColor="#202329"
+    app:contentPadding="@dimen/padding_extra_small">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/image_view_attachment"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginHorizontal="@dimen/margin_small"
+            android:layout_marginVertical="@dimen/margin_extra_small"
+            android:background="@drawable/background_corner_rounded"
+            android:backgroundTint="@color/colorOnSecondaryContainer"
+            android:contentDescription="@string/content_description_order_attachments"
+            android:padding="@dimen/padding_extra_small"
+            android:src="@drawable/ic_file_image" />
+
+        <TextView
+            android:id="@+id/text_view_attachment_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_extra_small"
+            android:layout_toStartOf="@id/check_box_manage"
+            android:layout_toEndOf="@id/image_view_attachment"
+            android:ellipsize="middle"
+            android:maxLines="1"
+            android:textSize="@dimen/text_size_normal"
+            android:textStyle="bold"
+            tools:text="Order#324.pdf" />
+
+        <TextView
+            android:id="@+id/text_view_attachment_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_view_attachment_name"
+            android:layout_toEndOf="@id/image_view_attachment"
+            android:textSize="@dimen/text_size_extra_small"
+            tools:text="10 MB" />
+
+        <FrameLayout
+            android:id="@+id/check_box_manage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/image_view_attachment"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true">
+
+            <CheckBox
+                android:id="@+id/check_box_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/ic_close"
+                android:visibility="gone"/>
+
+            <CheckBox
+                android:id="@+id/check_box_download"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/ic_file_download"
+                android:visibility="gone"/>
+
+        </FrameLayout>
+
+
+
+    </RelativeLayout>
+
+
+</com.google.android.material.card.MaterialCardView>

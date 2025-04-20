@@ -1,29 +1,27 @@
 package com.example.bachelorwork.di
 
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import com.example.bachelorwork.data.remote.auth.AuthApi
-import com.example.bachelorwork.data.remote.repositories.AuthRepositoryImpl
-import com.example.bachelorwork.domain.repository.AuthRepository
+import com.example.bachelorwork.data.remote.services.AuthApiService
+import com.example.bachelorwork.data.remote.services.RefreshApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.scopes.ViewModelScoped
+import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
+import javax.inject.Singleton
+
 
 @Module
-@InstallIn(ViewModelComponent::class)
+@InstallIn(SingletonComponent::class)
 object AuthModule {
 
     @Provides
-    @ViewModelScoped
-    fun provideAuthApi(retrofit: Retrofit): AuthApi = retrofit.create(AuthApi::class.java)
+    @Singleton
+    fun provideAuthApiService(@AuthenticatedRetrofit retrofit: Retrofit): AuthApiService =
+        retrofit.create(AuthApiService::class.java)
 
     @Provides
-    @ViewModelScoped
-    fun provideAuthRepository(api: AuthApi, preferences: DataStore<Preferences>): AuthRepository =
-        AuthRepositoryImpl(api, preferences)
-
+    @Singleton
+    fun provideRefreshTokenApiService(@TokenRefreshRetrofit retrofit: Retrofit): RefreshApiService =
+        retrofit.create(RefreshApiService::class.java)
 
 }

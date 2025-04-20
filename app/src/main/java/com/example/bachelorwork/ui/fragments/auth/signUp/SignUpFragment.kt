@@ -8,9 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.FragmentSignUpBinding
-import com.example.bachelorwork.ui.model.auth.SignUpUiEvent
+import com.example.bachelorwork.ui.model.auth.signUp.SignUpUiEvent
+import com.example.bachelorwork.ui.model.auth.signUp.SignUpUiFormState
+import com.example.bachelorwork.ui.model.auth.signUp.SignUpUiState
+import com.example.bachelorwork.ui.utils.extensions.collectInLifecycle
 import com.example.bachelorwork.ui.utils.extensions.viewBinding
 import com.example.bachelorwork.ui.utils.screen.InsetHandler
+import com.github.razir.progressbutton.bindProgressButton
+import com.github.razir.progressbutton.hideProgress
+import com.github.razir.progressbutton.showProgress
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,11 +28,28 @@ class SignUpFragment: Fragment(R.layout.fragment_sign_up) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         InsetHandler.adaptToEdgeWithPadding(binding.root)
+
         setupBackButton()
         setupSignUpButton()
+        setupSignInButton()
         setupOnInputsEditTextChange()
+
+        collectInLifecycle(viewModel.uiState) {
+            updateUiState(it)
+        }
+
+        collectInLifecycle(viewModel.uiFormState) {
+            updateFormStateUI(it)
+        }
+    }
+
+    private fun updateUiState(uiState: SignUpUiState) {
+        if(uiState.isLoading) {
+            binding.buttonSignUp.showProgress()
+        } else {
+            binding.buttonSignUp.hideProgress(R.string.text_sign_up)
+        }
     }
 
     private fun setupBackButton() {
@@ -41,12 +64,25 @@ class SignUpFragment: Fragment(R.layout.fragment_sign_up) {
         }
     }
 
+    private fun setupSignInButton() {
+        bindProgressButton(binding.buttonSignUp)
+        binding.textSignIn.setOnClickListener {
+            viewModel.onEvent(SignUpUiEvent.NavigateToSignIn)
+        }
+    }
+
     private fun setupOnInputsEditTextChange() {
-        setupTextChangeListener(binding.editTextCompanyName, SignUpUiEvent::CompanyNameChanged)
         setupTextChangeListener(binding.editTextFullName, SignUpUiEvent::FullNameChanged)
         setupTextChangeListener(binding.editTextEmail, SignUpUiEvent::EmailChanged)
         setupTextChangeListener(binding.editTextPassword, SignUpUiEvent::PasswordChanged)
         setupTextChangeListener(binding.editTextConfirmPassword, SignUpUiEvent::PasswordConfirmChanged)
+    }
+
+    private fun updateFormStateUI(uiFormState: SignUpUiFormState) {
+        binding.textInputFullName.error = uiFormState.fullNameError
+        binding.textInputEmail.error = uiFormState.emailError
+        binding.textInputPassword.error = uiFormState.passwordError
+        binding.textInputConfirmPassword.error = uiFormState.confirmPasswordError
     }
 
 

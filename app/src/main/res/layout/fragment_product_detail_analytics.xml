@@ -13,7 +13,7 @@
 
         <com.google.android.material.card.MaterialCardView
             style="?attr/materialCardViewElevatedStyle"
-            android:id="@+id/card_view_amount"
+            android:id="@+id/card_view_volume"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_small"
@@ -25,18 +25,66 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin_small"
-                    android:text="Amount"
-                    android:textSize="@dimen/text_size_large" />
-
-                <com.patrykandpatrick.vico.views.cartesian.CartesianChartView
-                    android:id="@+id/chart_view_amount"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:chartStyle="@style/ChartStyle" />
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_small"
+                        android:text="Stock Volume"
+                        android:textSize="@dimen/text_size_normal"
+                        android:layout_weight="0.5"/>
+
+                    <TextView
+                        android:id="@+id/text_view_date_stock_volume"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_small"
+                        android:layout_weight="0.5"
+                        android:textAlignment="textEnd"
+                        android:text="@string/text_selected_date_period_in_days_value"
+                        android:textSize="@dimen/text_size_normal" />
+
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.patrykandpatrick.vico.views.cartesian.CartesianChartView
+                        android:id="@+id/chart_view_volume"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="invisible"
+                        app:chartStyle="@style/ChartStyle" />
+
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:id="@+id/progress_bar_stock_volume"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:indeterminate="true"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:id="@+id/text_view_no_changes_stock_volume"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/text_no_changes"
+                        android:visibility="invisible" />
+
+
+                </FrameLayout>
+
+
+
 
             </LinearLayout>
 
@@ -57,62 +105,65 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin_small"
-                    android:text="Price"
-                    android:textSize="@dimen/text_size_large" />
-
-                <com.patrykandpatrick.vico.views.cartesian.CartesianChartView
-                    android:id="@+id/chart_view_price"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:chartStyle="@style/ChartStyle" />
-
-                <!--<com.google.android.material.button.MaterialButtonToggleGroup
-                    android:id="@+id/toggleGroup_period"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                     android:gravity="center"
+                    android:weightSum="1">
 
-                    app:checkedButton="@id/button_week"
-                    app:selectionRequired="true"
-                    app:singleSelection="true">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_small"
+                        android:text="Stock Changes"
+                        android:textSize="@dimen/text_size_normal"
+                        android:layout_weight="0.5"/>
 
-                    <Button
-                        android:id="@+id/button_week"
-                        style="?attr/materialButtonOutlinedStyle"
+                    <TextView
+                        android:id="@+id/text_view_date_stock_changes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_small"
+                        android:layout_weight="0.5"
+                        android:textAlignment="textEnd"
+                        android:text="@string/text_selected_date_period_in_days_value"
+                        android:textSize="@dimen/text_size_normal" />
+
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.patrykandpatrick.vico.views.cartesian.CartesianChartView
+                        android:id="@+id/chart_view_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="invisible"
+                        app:chartStyle="@style/ChartStyle" />
+
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:id="@+id/progress_bar_stock_change"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="0dp"
-                        android:text="Week" />
+                        android:layout_gravity="center"
+                        android:indeterminate="true"
+                        android:visibility="gone"/>
 
-                    <Button
-                        android:id="@+id/button_month"
-                        style="?attr/materialButtonOutlinedStyle"
+                    <TextView
+                        android:id="@+id/text_view_no_changes_stock_change"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="0dp"
-                        android:text="Month" />
+                        android:layout_gravity="center"
+                        android:text="@string/text_no_changes"
+                        android:visibility="invisible" />
 
-                    <Button
-                        android:id="@+id/button_year"
-                        style="?attr/materialButtonOutlinedStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="0dp"
-                        android:text="Year" />
+                </FrameLayout>
 
-                    <Button
-                        android:id="@+id/button_all_time"
-                        style="?attr/materialButtonOutlinedStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="0dp"
-                        android:text="All Time" />
 
-                </com.google.android.material.button.MaterialButtonToggleGroup>-->
+
             </LinearLayout>
 
 

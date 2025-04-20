@@ -1,6 +1,6 @@
 package com.example.bachelorwork.ui.model.category
 
-import com.example.bachelorwork.domain.model.product.ProductCategory
+import com.example.bachelorwork.domain.model.category.ProductCategory
 
 data class CategoryUiState(
     val categories: List<ProductCategory> = emptyList(),

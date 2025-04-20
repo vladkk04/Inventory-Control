@@ -1,125 +1,282 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
-    <LinearLayout
-        android:id="@+id/toolbar"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_toolbar"
-        android:layout_alignParentTop="true"
-        android:layout_gravity="center"
-        android:gravity="start|center"
-        android:paddingHorizontal="@dimen/padding_medium">
+        android:layout_height="wrap_content">
 
-        <include
-            android:id="@+id/profile_circle_picture"
-            layout="@layout/profile_circle_picture" />
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/text_view_hello_user"
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="Hello Vladyslav" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_small">
+
+                <androidx.core.widget.ContentLoadingProgressBar
+                    android:id="@+id/content_loading_progress_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/materialCardView2" />
+
+                <LinearLayout
+                    android:id="@+id/layout_total"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <com.google.android.material.card.MaterialCardView
+                        style="?attr/materialCardViewFilledStyle"
+                        android:id="@+id/layout_total_users"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_normal"
+                        android:layout_weight="0.5"
+                        app:contentPadding="@dimen/padding_normal">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.imageview.ShapeableImageView
+                                android:id="@+id/image_view_total_user"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:background="@color/colorSecondaryContainer"
+                                android:scaleType="centerInside"
+                                android:src="@drawable/ic_manage_users"
+                                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle" />
+
+                            <TextView
+                                android:id="@+id/text_view_total_user_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/image_view_total_user"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentEnd="true"
+                                android:layout_toEndOf="@id/image_view_total_user"
+                                android:gravity="center"
+                                android:text="200"
+                                android:textSize="@dimen/text_size_large"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/total_users"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/image_view_total_user"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginVertical="@dimen/margin_extra_small"
+                                android:gravity="center"
+                                android:text="Total users" />
+
+                        </RelativeLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        style="?attr/materialCardViewFilledStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_normal"
+                        android:layout_weight="0.5"
+                        app:contentPadding="@dimen/padding_normal">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.imageview.ShapeableImageView
+                                android:id="@+id/image_view_total_product"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:background="@color/colorSecondaryContainer"
+                                android:scaleType="centerInside"
+                                android:src="@drawable/ic_inventory"
+                                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle" />
+
+                            <TextView
+                                android:id="@+id/text_view_total_product_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/image_view_total_product"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentEnd="true"
+                                android:layout_toEndOf="@id/image_view_total_product"
+                                android:gravity="center"
+                                android:text="20000"
+                                android:textSize="@dimen/text_size_large"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/total_products"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/image_view_total_product"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginVertical="@dimen/margin_extra_small"
+                                android:gravity="center"
+                                android:text="Total products" />
+
+                        </RelativeLayout>
+
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_view_critical_stock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layout_total"
+                    android:layout_marginHorizontal="@dimen/margin_normal"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:layout_marginBottom="@dimen/margin_normal"
+                    android:text="@string/text_critical_stock"
+                    android:textSize="@dimen/text_size_medium_plus" />
+
+                <TextView
+                    android:id="@+id/text_view_critical_stock_show_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/text_view_critical_stock"
+                    android:layout_alignEnd="@+id/materialCardView2"
+                    android:layout_alignBottom="@+id/text_view_critical_stock"
+                    android:layout_marginHorizontal="@dimen/margin_small"
+                    android:gravity="center"
+                    android:text="@string/text_show_all"
+                    android:textSize="@dimen/text_size_small" />
+
+                <com.google.android.material.card.MaterialCardView
+                    style="?attr/materialCardViewFilledStyle"
+                    android:id="@+id/materialCardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_below="@+id/text_view_critical_stock"
+                    android:layout_marginHorizontal="@dimen/margin_normal"
+                    app:cardCornerRadius="6dp"
+                    app:contentPadding="@dimen/padding_small">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_view_critical_stock"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:itemCount="4"
+                        tools:listitem="@layout/critical_stock_item" />
+
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:id="@+id/text_view_no_critical_stocks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/materialCardView"
+                    android:layout_alignTop="@+id/materialCardView"
+                    android:layout_alignEnd="@+id/materialCardView"
+                    android:layout_alignBottom="@+id/materialCardView"
+                    android:gravity="center"
+                    android:text="@string/text_no_critical_stocks"
+                    android:textSize="@dimen/text_size_medium"
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:id="@+id/text_view_last_stock_activity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/materialCardView"
+                    android:layout_alignStart="@+id/text_view_critical_stock"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:layout_marginBottom="@dimen/margin_normal"
+                    android:text="@string/text_last_stock_activity"
+                    android:textSize="@dimen/text_size_medium_plus" />
+
+                <TextView
+                    android:id="@+id/text_view_last_stock_activity_show_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/materialCardView"
+                    android:layout_alignEnd="@+id/materialCardView2"
+                    android:layout_alignBottom="@+id/text_view_last_stock_activity"
+                    android:layout_marginHorizontal="@dimen/margin_small"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:gravity="center"
+                    android:text="@string/text_show_all"
+                    android:textSize="@dimen/text_size_small" />
+
+                <com.google.android.material.card.MaterialCardView
+                    style="?attr/materialCardViewFilledStyle"
+                    android:id="@+id/materialCardView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_below="@+id/text_view_last_stock_activity"
+                    android:layout_marginHorizontal="@dimen/margin_normal">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_view_last_stock_activity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clipToPadding="false"
+                        android:padding="@dimen/padding_small"
+                        tools:itemCount="4"
+                        tools:listitem="@layout/critical_stock_item" />
+
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:id="@+id/text_view_no_activities"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/materialCardView2"
+                    android:layout_alignTop="@+id/materialCardView2"
+                    android:layout_alignEnd="@+id/materialCardView2"
+                    android:layout_alignBottom="@+id/materialCardView2"
+                    android:gravity="center"
+                    android:text="@string/text_no_activities"
+                    android:textSize="@dimen/text_size_medium"
+                    android:visibility="invisible" />
+
+
+            </RelativeLayout>
+
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/margin_medium"
-            android:textSize="@dimen/text_size_large_plus"
-            tools:text="Hello, Vladyslav" />
+            android:contentDescription="@string/content_description_fab_menu"
+            android:src="@drawable/ic_add" />
 
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_below="@id/toolbar">
-
-        <com.google.android.material.card.MaterialCardView
-            style="?attr/materialCardViewElevatedStyle"
-            android:id="@+id/card_view_ordes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_small"
-            android:layout_marginVertical="@dimen/margin_vertical_item_detail_between_items"
-            app:contentPadding="@dimen/padding_extra_small">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin_small"
-                    android:text="Total Orders"
-                    android:textSize="@dimen/text_size_large" />
-
-                <com.patrykandpatrick.vico.views.cartesian.CartesianChartView
-                    android:id="@+id/chart_view_orders"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:chartStyle="@style/ChartStyle2" />
-
-            </LinearLayout>
-
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            style="?attr/materialCardViewElevatedStyle"
-            android:id="@+id/card_view_products"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_small"
-            android:layout_marginVertical="@dimen/margin_vertical_item_detail_between_items"
-            app:contentPadding="@dimen/padding_extra_small">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin_small"
-                    android:text="All Products"
-                    android:textSize="@dimen/text_size_large" />
-
-                <com.patrykandpatrick.vico.views.cartesian.CartesianChartView
-                    android:id="@+id/chart_view_products"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:chartStyle="@style/ChartStyle2" />
-
-            </LinearLayout>
-
-
-        </com.google.android.material.card.MaterialCardView>
-
-
-    </LinearLayout>
-
-   <!-- <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_second"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/margin_medium"
-        android:layout_toStartOf="@+id/fab_all"
-        android:contentDescription="@string/content_description_fab_menu"
-        android:src="@drawable/ic_list" />-->
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_all"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/margin_medium"
-        android:contentDescription="@string/content_description_fab_menu"
-        android:src="@drawable/ic_add" />
-
-</RelativeLayout>
+</ScrollView>

@@ -4,8 +4,6 @@ import android.content.ContentResolver
 import android.database.Cursor
 import android.net.Uri
 import android.provider.OpenableColumns
-import com.example.bachelorwork.domain.model.FileData
-import com.example.bachelorwork.domain.model.FileMimeType
 
 class FilePicker {
     fun dumpImageMetaData(uri: Uri, contentResolver: ContentResolver): FileData {
@@ -31,7 +29,7 @@ class FilePicker {
 
                 val mimeType = contentResolver.getType(uri)
 
-                FileData(displayName, mimeTypes[mimeType], size)
+                FileData(uri, displayName, mimeTypes[mimeType], size)
 
             } else { FileData() }
         } ?: FileData()

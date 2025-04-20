@@ -3,14 +3,14 @@ package com.example.bachelorwork.ui.navigation
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import androidx.core.view.updatePadding
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavOptions
+import com.example.bachelorwork.R
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
 
@@ -19,9 +19,17 @@ fun NavigationBarView.setupWithNavController(
     drawerLayout: DrawerLayout? = null,
 ) {
     navController.addOnDestinationChangedListener { _, destination, _ ->
-        this.visibility = if (!Destination.getTopLevelDestinations()
-                .any { destination.hasRoute(it::class) }
-        ) View.GONE else View.VISIBLE
+        if (!Destination.getTopLevelDestinations().any { destination.hasRoute(it::class) }) {
+            animate().translationY(height.toFloat())
+                .setDuration(80)
+                .setInterpolator(AccelerateInterpolator())
+                .withEndAction { visibility = View.GONE }
+        } else {
+            visibility = View.VISIBLE
+            animate().translationY(0f)
+                .setDuration(80)
+                .setInterpolator(DecelerateInterpolator())
+        }
 
         Destination.getTopLevelDestinations().find { destination.hasRoute(it::class) }
             ?.let { dest -> findItemByTitle(menu, dest::class.simpleName)?.isChecked = true }
@@ -55,7 +63,7 @@ fun NavigationBarView.setupWithNavController(
 
                         setRestoreState(true)
                         setPopUpTo(
-                            navController.graph.findStartDestination().id,
+                            Destination.Home,
                             inclusive = false,
                             saveState = true
                         )
@@ -68,14 +76,41 @@ fun NavigationBarView.setupWithNavController(
     }
 }
 
+
 fun NavigationView.setupWithNavController(
     navController: NavController,
     drawerLayout: DrawerLayout,
 ) {
     navController.addOnDestinationChangedListener { _, destination, _ ->
+
+        if (destination.hasRoute(Destination.Home::class)) {
+            this.setCheckedItem(R.id.home)
+        }
+
         drawerLayout.setDrawerLockMode(shouldLockDrawer(destination))
     }
-    this.setNavigationItemSelectedListener {
+
+
+    this.setNavigationItemSelectedListener { item ->
+        Destination.getDrawerDestinations().find { it::class.simpleName == item.title }
+            ?.let { destination ->
+
+                if (navController.currentDestination?.hasRoute(destination::class) == true) {
+                    drawerLayout.close()
+                    return@setNavigationItemSelectedListener true
+                }
+
+                navController.navigate(destination) {
+                    launchSingleTop = true
+                    popUpTo<Destination.Home> {
+                        inclusive = false
+                        saveState = false
+                    }
+                }
+
+                drawerLayout.close()
+            }
+
         true
     }
 }
@@ -83,9 +118,13 @@ fun NavigationView.setupWithNavController(
 private fun shouldLockDrawer(
     destination: NavDestination,
 ): Int {
-    return if (!Destination.getTopLevelDestinations()
-            .any { destination.hasRoute(it::class) }
-    ) DrawerLayout.LOCK_MODE_LOCKED_CLOSED else DrawerLayout.LOCK_MODE_UNLOCKED
+    return if (Destination.getDrawerDestinations().any { destination.hasRoute(it::class) }) {
+        DrawerLayout.LOCK_MODE_UNLOCKED
+    } else if (Destination.getTopLevelDestinations().any { destination.hasRoute(it::class) }) {
+        DrawerLayout.LOCK_MODE_UNLOCKED
+    } else {
+        DrawerLayout.LOCK_MODE_LOCKED_CLOSED
+    }
 }
 
 
@@ -97,31 +136,4 @@ private fun findItemByTitle(menu: Menu, title: String?): MenuItem? {
         }
     }
     return null
-}
-
-
-private fun hideNavigationBarWithAnimation(
-    navBar: NavigationBarView,
-    fragmentContainer: FragmentContainerView
-) {
-    fragmentContainer.updatePadding(bottom = 0)
-
-    navBar.animate()
-        .translationY(navBar.height.toFloat())
-        .alpha(0f)
-        .setDuration(200)
-        .start()
-}
-
-private fun showNavigationBarWithAnimation(
-    navBar: NavigationBarView,
-    fragmentContainer: FragmentContainerView
-) {
-    fragmentContainer.updatePadding(bottom = 240)
-
-    navBar.animate()
-        .translationY(0f)
-        .alpha(1f)
-        .setDuration(200)
-        .start()
 }

@@ -8,7 +8,7 @@ object ValidatorPercentage: InputFieldValidator {
         val hasError = input.toDouble() > 100
 
         return ValidationResult(
-            success = hasError,
+            hasError = hasError,
             errorMessage = if (hasError) "The percentage cannot be greater than 100%" else null
         )
     }

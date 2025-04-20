@@ -14,7 +14,8 @@ import androidx.lifecycle.lifecycleScope
 import com.example.bachelorwork.R
 import com.example.bachelorwork.databinding.CustomInputDropdownCategoryBinding
 import com.example.bachelorwork.databinding.DialogViewManageCategoryBinding
-import com.example.bachelorwork.domain.model.product.ProductCategory
+import com.example.bachelorwork.domain.model.category.ProductCategory
+import com.example.bachelorwork.domain.model.category.ProductCategoryRequest
 import com.example.bachelorwork.ui.common.AppDialogs
 import com.example.bachelorwork.ui.common.adapters.CategoryArrayAdapter
 import com.example.bachelorwork.ui.common.base.BaseDialog
@@ -64,10 +65,6 @@ class CustomCategoryInputDropdown @JvmOverloads constructor(
         listener = itemClickListener
     }
 
-    fun setDefaultCategory(value: ProductCategory?) {
-        binding.autoCompleteTextViewCategory.setText(value?.name)
-    }
-
     fun setErrorMessage(message: String?) {
         binding.textInputLayoutCategory.error = message
     }
@@ -89,7 +86,7 @@ class CustomCategoryInputDropdown @JvmOverloads constructor(
                     message = context.getString(R.string.text_delete_category_confirm, item.name),
                     deleteItemTitle = item.name
                 ) {
-                    viewModel?.deleteCategory(item)
+                    viewModel?.deleteCategory(item.id)
                 }.show()
 
             }
@@ -107,7 +104,7 @@ class CustomCategoryInputDropdown @JvmOverloads constructor(
             view = binding.root,
             theme = com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered,
             positiveButtonAction = {
-                viewModel?.createCategory(ProductCategory(name = binding.editTextCategory.text.toString()))
+                viewModel?.createCategory(ProductCategoryRequest(name = binding.editTextCategory.text.toString()))
             },
             title = "Create category",
             iconRes = R.drawable.ic_category_add,
@@ -136,7 +133,8 @@ class CustomCategoryInputDropdown @JvmOverloads constructor(
             override val config: DialogConfig = DialogConfig(
                 view = binding.root,
                 theme = com.google.android.material.R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered,
-                positiveButtonAction = { viewModel?.updateCategory(category.copy(name = binding.editTextCategory.text.toString())) },
+                positiveButtonAction = {
+                    viewModel?.updateCategory(categoryId = category.id, ProductCategoryRequest(binding.editTextCategory.text.toString())) },
                 title = "Edit category",
                 iconRes = R.drawable.ic_edit,
                 positiveButtonText = "Save"
@@ -159,5 +157,9 @@ class CustomCategoryInputDropdown @JvmOverloads constructor(
                 }
             }
         }
+    }
+
+    fun setDefaultCategory(categoryId: String) {
+
     }
 }

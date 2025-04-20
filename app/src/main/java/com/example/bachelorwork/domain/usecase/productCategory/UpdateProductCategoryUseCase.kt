@@ -1,16 +1,25 @@
 package com.example.bachelorwork.domain.usecase.productCategory
 
-import com.example.bachelorwork.data.local.entities.productCategory.ProductCategoryEntity
-import com.example.bachelorwork.domain.repository.ProductCategoryRepository
+import com.example.bachelorwork.common.Resource
+import com.example.bachelorwork.data.local.entities.ProductCategoryEntity
+import com.example.bachelorwork.domain.model.category.ProductCategoryRequest
+import com.example.bachelorwork.domain.repository.local.ProductCategoryLocalDataSource
+import com.example.bachelorwork.domain.repository.remote.ProductCategoryRemoteDataSource
+import com.example.bachelorwork.ui.utils.extensions.performNetworkOperation
+import kotlinx.coroutines.flow.Flow
 
 class UpdateProductCategoryUseCase(
-    private val categoryRepository: ProductCategoryRepository
+    private val remote: ProductCategoryRemoteDataSource,
+    private val local: ProductCategoryLocalDataSource
 ) {
-    suspend operator fun invoke(category: ProductCategoryEntity) = runCatching {
-        categoryRepository.update(category)
-    }
-
-    suspend operator fun invoke(vararg category: ProductCategoryEntity) = runCatching {
-        categoryRepository.updateAll(*category)
-    }
+    operator fun invoke(categoryId: String, request: ProductCategoryRequest): Flow<Resource<Unit>> = performNetworkOperation(
+        remoteCall = { remote.update(categoryId, request) },
+        localUpdate = {
+            val entity = ProductCategoryEntity(
+                id = categoryId,
+                name = request.name
+            )
+            local.update(entity)
+        }
+    )
 }

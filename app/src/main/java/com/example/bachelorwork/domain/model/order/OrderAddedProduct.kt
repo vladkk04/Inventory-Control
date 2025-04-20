@@ -1,22 +1,14 @@
 package com.example.bachelorwork.domain.model.order
 
-import android.net.Uri
 import com.example.bachelorwork.domain.model.product.ProductUnit
 
 data class OrderAddedProduct(
-    val id: Int,
+    val id: String,
     val name: String,
-    val image: Uri? = null,
+    val image: String? = null,
+    val previousStock: Double,
     val unit: ProductUnit,
-    val rate: Double,
+    val price: Double,
     val quantity: Double,
     val total: Double
-)
-
-fun OrderAddedProduct.toOrderSubItem() = OrderProductSubItem(
-    id = id,
-    name = name,
-    price = rate,
-    quantity = quantity,
-    unit = unit.name
 )

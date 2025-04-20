@@ -15,7 +15,6 @@ import com.example.bachelorwork.ui.common.AppDialogs
 import com.example.bachelorwork.ui.common.base.BaseBottomSheetDialogFragment
 import com.example.bachelorwork.ui.model.product.manage.ProductManageFormEvent
 import com.example.bachelorwork.ui.model.product.manage.ProductManageFormState
-import com.example.bachelorwork.ui.model.product.manage.ProductManageUIState
 import com.example.bachelorwork.ui.utils.activityResultContracts.VisualMediaPicker
 import com.example.bachelorwork.ui.utils.extensions.collectInLifecycle
 import com.example.bachelorwork.util.namesTyped
@@ -44,7 +43,7 @@ abstract class BaseProductManageFragment :
 
         visualMediaPicker.setupUCropOptions(UCrop.Options().apply {
             withAspectRatio(2f, 1f)
-            withMaxResultSize(2000, 1000)
+            withMaxResultSize(768, 768)
             setCompressionFormat(Bitmap.CompressFormat.JPEG)
             setCompressionQuality(80)
         })
@@ -53,15 +52,29 @@ abstract class BaseProductManageFragment :
     override fun setupViews() {
         setupUIComponents()
 
+
         viewLifecycleOwner.collectInLifecycle(viewModel.uiState) { uiState ->
-            updateUIState(uiState)
+            if (uiState.isManaged) {
+                dismiss()
+            }
         }
 
         viewLifecycleOwner.collectInLifecycle(viewModel.uiFormState) { uiState ->
             updateFormFieldUIState(uiState)
         }
 
+        collectInLifecycle(viewModel.image) {
+
+        }
+
+        collectInLifecycle(viewModel.barcode) {
+            binding.editTextBarcode.setText(it)
+        }
+
         visualMediaPicker.addCallbackResult { uri ->
+
+            viewModel.setupImage(uri)
+
             uri?.let {
                 Glide.with(this)
                     .load(it)
@@ -103,14 +116,11 @@ abstract class BaseProductManageFragment :
             setupTextChangeListener(editTextName, ProductManageFormEvent::NameChanged)
             setupTextChangeListener(editTextBarcode, ProductManageFormEvent::BarcodeChanged)
             setupTextChangeListener(editTextQuantity, ProductManageFormEvent::QuantityChanged)
-            setupTextChangeListener(
-                editTextMinStockLevel,
-                ProductManageFormEvent::MinStockLevelChanged
-            )
+            setupTextChangeListener(editTextMinStockLevel, ProductManageFormEvent::MinStockLevelChanged)
             setupTextChangeListener(editTextDescription, ProductManageFormEvent::DescriptionChanged)
 
             binding.customInputCategories.setOnClickItemListener {
-                viewModel.onEvent(ProductManageFormEvent.CategoryChanged(it))
+                viewModel.onEvent(ProductManageFormEvent.CategoryChanged(it.id))
             }
 
             binding.customInputTags.setOnTextChangeListener { tags ->
@@ -128,9 +138,6 @@ abstract class BaseProductManageFragment :
         }
     }
 
-    private fun updateUIState(uiState: ProductManageUIState) {
-        binding.editTextBarcode.setText(uiState.barcode)
-    }
 
     private fun updateFormFieldUIState(uiStateForm: ProductManageFormState) {
         updateFormFieldErrors(uiStateForm)

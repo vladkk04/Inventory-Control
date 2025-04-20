@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin_large"
+    android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.Material3.CardView.Filled"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:contentPadding="@dimen/padding_small"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Material3.Corner.Top">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text_view_organisation_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:text="Org name: sdlkfjd;"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/text_view_organisation_role"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_view_organisation_name"
+                android:layout_marginVertical="@dimen/margin_extra_small"
+                android:text="@string/text_organizational_role_value"
+                android:textSize="@dimen/text_size_normal" />
+
+
+            <TextView
+                android:id="@+id/text_view_invited_by"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_view_organisation_role"
+                android:layout_gravity="bottom"
+                android:layout_marginVertical="@dimen/margin_extra_small"
+                tools:text="fds" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_view_invited_by"
+                android:layout_marginVertical="@dimen/margin_small"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <Button
+                    android:id="@+id/button_decline"
+                    android:layout_width="144dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_small"
+                    android:layout_weight="0.5"
+                    android:backgroundTint="#DB5B5B"
+                    android:text="@string/text_decline" />
+
+                <Button
+                    android:id="@+id/button_accept"
+                    android:layout_width="144dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_small"
+                    android:layout_weight="0.5"
+                    android:backgroundTint="#73BF62"
+                    android:text="@string/text_accept" />
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/text_view_expire_in"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_bottom_corner_rounded"
+        android:backgroundTint="#C88331"
+        android:text="@string/text_expire_in_value"
+        android:textAlignment="center" />
+
+</LinearLayout>

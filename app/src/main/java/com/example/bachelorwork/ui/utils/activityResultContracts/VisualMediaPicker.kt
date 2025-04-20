@@ -37,7 +37,6 @@ class VisualMediaPicker(
         visualMediaResultContract = fragment.registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             uri?.let { cropActivityResult.launch(it) }
         }
-
     }
 
     override fun onDestroy(owner: LifecycleOwner) {
@@ -62,8 +61,15 @@ class VisualMediaPicker(
 
     private val cropResultContract = object : ActivityResultContract<Uri, Uri?>() {
         override fun createIntent(context: Context, input: Uri): Intent {
-            val tempOutputFile = File(context.externalCacheDir, "cropped_image.jpg")
-            return UCrop.of(input, tempOutputFile.toUri()).withOptions(uCropOptions).getIntent(context)
+            val extension = context.contentResolver.getType(input)
+                ?.substringAfterLast("/") ?: "jpg"
+            val tempOutputFile = File(
+                context.externalCacheDir,
+                "cropped_${System.currentTimeMillis()}.$extension"
+            )
+            return UCrop.of(input, tempOutputFile.toUri())
+                .withOptions(uCropOptions)
+                .getIntent(context)
         }
 
         override fun parseResult(resultCode: Int, intent: Intent?): Uri? {

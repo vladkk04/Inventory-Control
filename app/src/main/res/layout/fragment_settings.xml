@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_medium">
+
+
+    <TextView
+        android:id="@+id/text_view_notifications"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.9"
+        android:text="@string/text_notification"
+        android:textSize="@dimen/text_size_large"
+        android:layout_marginHorizontal="@dimen/margin_small"
+        android:layout_marginVertical="@dimen/margin_small"/>
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_view_notifications">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Every day"/>
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Specific days of the weeks"/>
+
+    </RadioGroup>
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        style="@style/Widget.App.Button.OutlinedButton"
+        android:id="@+id/toggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/radio_group"
+        android:visibility="gone">
+
+        <Button
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:paddingHorizontal="10dp"
+            android:text="SUN" />
+
+        <Button
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:paddingHorizontal="10dp"
+            android:text="MON" />
+
+        <Button
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:paddingHorizontal="10dp"
+            android:text="TUE" />
+
+        <Button
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:paddingHorizontal="10dp"
+            android:text="WED" />
+
+        <Button
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:paddingHorizontal="10dp"
+            android:text="THU" />
+
+        <Button
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:paddingHorizontal="10dp"
+            android:text="FRI" />
+
+        <Button
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:paddingHorizontal="10dp"
+            android:text="SAT" />
+
+
+
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+</RelativeLayout>

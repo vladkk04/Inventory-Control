@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.example.bachelorwork.databinding.CustomCategoryDropdownItemBinding
-import com.example.bachelorwork.domain.model.product.ProductCategory
+import com.example.bachelorwork.domain.model.category.ProductCategory
 
 class CategoryArrayAdapter(
     context: Context,
@@ -19,7 +19,7 @@ class CategoryArrayAdapter(
     private var onClickItemListener: OnItemClickListener? = null
 
     init {
-        insert(ProductCategory(name = "Create new category"), 0)
+        insert(ProductCategory("", name = "Create new category"), 0)
     }
 
     fun setOnCreateNewCategory(listener: OnCreateNewCategoryClickListener) {

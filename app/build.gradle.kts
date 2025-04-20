@@ -85,7 +85,7 @@ dependencies {
     ksp(libs.compiler.hilt)
     implementation(libs.android.hilt)
     implementation(libs.hilt.navigation)
-
+    implementation(libs.worker.hilt)
     // Serialization
     implementation(libs.serialization.json)
     
@@ -101,6 +101,7 @@ dependencies {
 
     //OkHttp
     implementation(libs.okhttp)
+    implementation(libs.okhttp.logger)
 
     //Retrofit
     implementation(libs.retrofit)
@@ -108,6 +109,21 @@ dependencies {
 
     //Datastore Preferences
     implementation(libs.datastore.preferences)
+
+    //Progress Button
+    implementation(libs.progress.button)
+
+    // Permission
+    implementation(libs.permissionsx)
+
+    //Work manager
+    implementation(libs.work.manager)
+
+    //Theme
+    implementation(libs.theme.manager)
+
+    //JwtDecode
+    implementation(libs.jwt.decode)
     
     // Tests
     testImplementation(libs.junit)

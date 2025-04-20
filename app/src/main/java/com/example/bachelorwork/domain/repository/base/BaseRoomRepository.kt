@@ -10,7 +10,12 @@ interface BaseRoomRepository<T> {
 
     suspend fun updateAll(vararg obj: T)
 
+    suspend fun upsert(obj: T)
+
+    suspend fun upsertAll(vararg obj: T)
+
     suspend fun delete(obj: T)
 
     suspend fun deleteAll(vararg obj: T)
+
 }

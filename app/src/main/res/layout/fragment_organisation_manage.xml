@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:menu="@menu/toolbar_profile_menu"
+        app:navigationIcon="@drawable/ic_arrow_back_ios"
+        app:title="@string/title_manage_organisation" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/image_view_avatar"
+        android:layout_width="108dp"
+        android:layout_height="108dp"
+        android:layout_below="@id/toolbar"
+        android:layout_margin="@dimen/margin_normal"
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle"
+        app:srcCompat="@drawable/a" />
+
+    <TextView
+        android:id="@+id/text_view_organisation_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/image_view_avatar"
+        android:layout_alignStart="@+id/image_view_avatar"
+        android:layout_marginVertical="@dimen/margin_extra_small"
+        android:text="About Organisation"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_large" />
+
+    <TextView
+        android:id="@+id/text_view_organisation_description_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button_delete_organisation"
+        android:layout_below="@+id/text_view_organisation_description"
+        android:layout_alignStart="@+id/image_view_avatar"
+        android:layout_alignParentEnd="true"
+        android:layout_marginVertical="@dimen/margin_extra_small"
+        android:textSize="@dimen/text_size_normal" />
+
+    <TextView
+        android:id="@+id/text_view_no_about"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_view_organisation_description"
+        android:layout_alignBottom="@id/text_view_organisation_description_value"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="center"
+        android:text="Nothing about organisation"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/text_view_organisation_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/image_view_avatar"
+        android:layout_toEndOf="@+id/image_view_avatar"
+        android:text="Organisation Name"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_large"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/text_view_organisation_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_view_organisation_name"
+        android:layout_marginVertical="@dimen/margin_extra_small"
+        android:layout_toEndOf="@+id/image_view_avatar"
+        android:text="ID: 248093287490238"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_normal" />
+
+    <TextView
+        android:id="@+id/text_view_organisation_owner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_view_organisation_id"
+        android:layout_marginBottom="@dimen/margin_extra_small"
+        android:layout_toEndOf="@+id/image_view_avatar"
+        android:text="Owner: Vladyslav Klymiuk"
+        android:textAlignment="center" />
+
+    <!-- <TextView
+         android:id="@+id/text_view_organisation_created_at"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_below="@id/text_view_organisation_owner"
+         android:layout_toEndOf="@+id/image_view_avatar"
+         android:text="Created: 17 Jun, 2025"
+         android:textAlignment="center" />-->
+
+
+    <Button
+        android:id="@+id/button_delete_organisation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/margin_extra_large"
+        android:drawableEnd="@drawable/ic_building"
+        android:text="@string/text_delete_organisation" />
+
+</RelativeLayout>

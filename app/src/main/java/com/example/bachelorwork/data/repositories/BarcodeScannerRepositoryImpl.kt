@@ -1,7 +1,7 @@
 package com.example.bachelorwork.data.repositories
 
 import android.content.Context
-import com.example.bachelorwork.domain.repository.BarcodeScannerRepository
+import com.example.bachelorwork.domain.repository.local.BarcodeScannerRepository
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning

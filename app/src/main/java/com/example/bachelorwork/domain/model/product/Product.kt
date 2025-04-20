@@ -1,29 +1,18 @@
 package com.example.bachelorwork.domain.model.product
 
-import android.net.Uri
-import com.example.bachelorwork.ui.model.product.list.ProductUi
-
 data class Product(
-    var id: Int = 0,
-    val category: ProductCategory?,
-    val image: Uri = Uri.EMPTY,
+    val id: String,
+    val imageUrl: String? = null,
     val name: String,
     val barcode: String,
     val quantity: Double,
     val unit: ProductUnit,
+    val categoryName: String? = null,
     val minStockLevel: Double,
+    val description: String? = null,
+    val organisationId: String,
+    val createdBy: String,
+    val createdAt: Int,
     val tags: List<ProductTag> = emptyList(),
-    val description: String = "",
-    val timelineHistory: List<ProductTimelineHistory>
-)
-
-fun Product.toProductUi() = ProductUi(
-    id = id,
-    image = image,
-    name = name,
-    barcode = barcode,
-    unit = unit,
-    category = category?.name,
-    minStockLevel = minStockLevel,
-    quantity = quantity
+    val updates: List<ProductUpdateHistory> = emptyList()
 )

@@ -44,6 +44,10 @@ class OrderManageDiscountFragment : BaseBottomSheetDialogFragment<FragmentOrderD
             requireContext(),
             discountIcon
         )
+        binding.textInputDiscount.errorIconDrawable = ContextCompat.getDrawable(
+            requireContext(),
+            discountIcon
+        )
         binding.textInputDiscount.error = uiState.discountError
     }
 
