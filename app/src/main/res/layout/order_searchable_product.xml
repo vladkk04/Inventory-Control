@@ -25,6 +25,7 @@
             android:layout_height="@dimen/height_image_item"
             android:layout_centerHorizontal="true"
             android:scaleType="centerCrop"
+            android:src="@drawable/ic_image"
             app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
 
         <TextView

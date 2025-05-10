@@ -21,5 +21,5 @@ dependencyResolutionManagement {
 }
 
 
-rootProject.name = "BachelorWork"
+rootProject.name = "Inventory Control"
 include(":app")

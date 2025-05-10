@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/test_background">
+    android:background="@drawable/df">
 
     <Button
         style="@style/Widget.Material3.Button.TextButton.Icon"
@@ -32,6 +32,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center">
+
+            <TextView
+                android:id="@+id/welcomeBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Get Started"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:layout_marginBottom="@dimen/margin_large"
+                android:textSize="@dimen/text_size_header_xlarge"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/text_input_full_name"

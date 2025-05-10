@@ -20,6 +20,7 @@
     <string name="hint_barcode">Barcode*</string>
     <string name="hint_price_per_unit">Price per unit*</string>
     <string name="hint_price">Price</string>
+    <string name="hint_price_value">Price (%1$s)</string>
     <string name="hint_weight">Weight*</string>
     <string name="hint_date">Date</string>
     <string name="hint_min_stock_level">Minimal Stock Level*</string>
@@ -71,20 +72,20 @@
     <string name="helper_text_optional">(optional)</string>
     <string name="text_total_price">Total price: %1$.2f</string>
     <string name="text_price_per_unit">Price per %1$s</string>
-    <string name="text_total_value">Total: %1$.2f</string>
+    <string name="text_total_value">Total: %1$.2f %2$s</string>
     <string name="text_total">Total</string>
 
     <string name="text_hello_user">Hello, %1$s</string>">
 
     <string name="text_order_id">Order #%1$s</string>"
     <string name="text_order_date_timestamp">%1$s</string>
-    <string name="text_order_total">Total $%1$.2f</string>
+    <string name="text_order_total">Total: %1$.2f %2$s </string>
     <string name="text_order_subitem_quantity">x%1$.2f %2$s</string>
 
     <string name="text_price_value">%1$.2f €</string>
 
-    <string name="text_amount_order_added_product">%1$.2f %2$s x %3$.2f</string>
-    <string name="text_subtotal_value">Subtotal %1$.2f</string>
+    <string name="text_amount_order_added_product">%1$.2f %2$s x %3$.2f %4$s</string>
+    <string name="text_subtotal_value">Subtotal %1$.2f %2$s</string>
     <string name="text_subtotal">Subtotal</string>
     <string name="text_discount_value">Discount: %1$.2f</string>
     <string name="text_discount">Discount</string>
@@ -119,7 +120,7 @@
     <string name="text_manage_orders">Manage Orders</string>
 
     <string name="tooltip_text_product_detail_link">Open product detail</string>
-    <string name="text_product_timeline_history_modify">%1$s ○ %2$s</string>
+    <string name="text_product_timeline_history_modify">%1$s</string>
 
     <string name="text_product_created">Product Created</string>
     <string name="text_product_updated">Product Update</string>
@@ -239,7 +240,8 @@
     <string name="text_role_value">Role: %1$s</string>
     <string name="text_product">Product</string>
     <string name="text_no_products">No products</string>
-    <string name="text_show_all">Show all</string>
+    <string name="text_show_period_expand">%1$s ▲</string>
+    <string name="text_show_period_hide">%1$s ▼</string>
     <string name="text_update_product">Update product</string>
     <string name="title_search">Search</string>
     <string name="text_change_email">Change email</string>
@@ -287,6 +289,22 @@
     <string name="text_download">Download</string>
     <string name="text_no_critical_stocks">No critical stocks</string>
     <string name="text_no_activities">No activities</string>
+    <string name="text_organisation_settings">Settings Organisation </string>
+    <string name="text_threshold">Threshold</string>
+    <string name="text_medium_threshold">Medium threshold</string>
+    <string name="text_normal_threshold">Normal threshold</string>
+    <string name="text_critical_threshold">Critical threshold</string>
+    <string name="text_at_time_value">at %1$s</string>
+    <string name="text_review">Review</string>
+    <string name="text_total_products">Total products</string>
+    <string name="update_stock">Update Stock</string>
+    <string name="title_edit_organisation">Edit organisation</string>
+    <string name="title_manage_users">Manage Users</string>
+    <string name="title_edit_profile">Edit Profile</string>
+    <string name="text_update_stock">Update Stock</string>
+    <string name="text_no_organisations">No organisations</string>
+    <string name="text_comments">Comments</string>
+    <string name="text_your_id">Id:%1$s</string>
 
 
 </resources>

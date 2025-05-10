@@ -24,6 +24,8 @@
             android:layout_height="@dimen/height_more_fab_item"
             android:maxLines="2"
             android:text="@string/text_manage_users"
+            android:layout_row="0"
+            android:layout_column="0"
             app:icon="@drawable/ic_manage_users"
             app:iconGravity="top"
             app:iconPadding="0dp" />
@@ -35,10 +37,26 @@
             android:maxLines="2"
             android:text="@string/text_manage_organisation"
             android:ellipsize="end"
-            app:icon="@drawable/ic_manage_roles"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:layout_gravity="center"
+            app:icon="@drawable/ic_building"
             app:iconGravity="top"
             app:iconPadding="0dp" />
 
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fab_organisation_settings"
+            android:layout_width="@dimen/width_more_fab_item"
+            android:layout_height="@dimen/height_more_fab_item"
+            android:maxLines="2"
+            android:text="@string/text_organisation_settings"
+            android:ellipsize="end"
+            android:maxLength="25"
+            android:layout_row="0"
+            android:layout_column="2"
+            app:icon="@drawable/ic_settings"
+            app:iconGravity="top"
+            app:iconPadding="0dp" />
 
     </GridLayout>
 

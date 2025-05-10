@@ -17,6 +17,7 @@
         tools:subtitle="Jan 18, 2025 5:46 PM"
         tools:title="Order #2484324" />
 
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,6 +27,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progress_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="invisible"/>
 
             <TextView
                 android:id="@+id/text_view_products"
@@ -57,7 +65,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.3"
+                            android:layout_weight="0.15"
                             android:text="@string/text_item"
                             android:textAllCaps="true"
                             android:textSize="@dimen/text_size_medium" />
@@ -65,18 +73,16 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.35"
-                            android:paddingHorizontal="@dimen/padding_small"
+                            android:layout_weight="0.45"
                             android:text="@string/text_qty"
-                            android:textAlignment="textEnd"
+                            android:textAlignment="center"
                             android:textAllCaps="true"
                             android:textSize="@dimen/text_size_medium" />
 
                         <TextView
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.35"
-                            android:paddingEnd="@dimen/padding_medium"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.4"
                             android:text="@string/text_price"
                             android:textAlignment="textEnd"
                             android:textAllCaps="true"
@@ -92,11 +98,19 @@
                         tools:itemCount="3"
                         tools:listitem="@layout/order_detail_product_item" />
 
+                    <com.google.android.material.divider.MaterialDivider
+                        android:id="@+id/divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/recycler_view" />
+
                     <TextView
                         android:id="@+id/text_view_subtotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/recycler_view"
+                        android:layout_above="@+id/textView_discount_price"
+                        android:layout_below="@id/divider"
+                        android:layout_alignStart="@+id/text_view_header_product_description"
                         android:layout_marginVertical="@dimen/margin_vertical_between_items"
                         android:text="@string/text_subtotal"
                         android:textSize="@dimen/text_size_medium"
@@ -106,20 +120,22 @@
                         android:id="@+id/text_view_subtotal_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/recycler_view"
-                        android:layout_alignParentEnd="true"
+                        android:layout_below="@id/divider"
+                        android:layout_alignEnd="@+id/text_view_header_product_description"
                         android:layout_marginVertical="@dimen/margin_vertical_between_items"
                         android:layout_toEndOf="@+id/text_view_subtotal"
+                        android:layout_marginStart="@dimen/margin_normal"
                         android:gravity="end"
                         android:textSize="@dimen/text_size_medium"
                         android:textStyle="bold"
-                        tools:text="234 $" />
+                        tools:text="23430984908904847338029343432443224809$" />
 
                     <TextView
                         android:id="@+id/text_view_discount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/text_view_subtotal"
+                        android:layout_alignStart="@+id/text_view_subtotal"
                         android:layout_marginVertical="@dimen/margin_vertical_between_items"
                         android:text="@string/text_discount"
                         android:textSize="@dimen/text_size_medium"
@@ -130,25 +146,28 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/text_view_subtotal_price"
-                        android:layout_alignParentEnd="true"
+                        android:layout_alignEnd="@+id/text_view_subtotal_price"
                         android:layout_marginVertical="@dimen/margin_vertical_between_items"
                         android:layout_toEndOf="@+id/text_view_discount"
                         android:gravity="end"
                         android:textSize="@dimen/text_size_medium"
                         android:textStyle="bold"
-                        tools:text="20%" />
+                        android:layout_marginStart="@dimen/margin_normal"
+                        tools:text="204390288792 (fixed)" />
 
                     <com.google.android.material.divider.MaterialDivider
+                        android:id="@+id/subtotal_divider"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/text_view_discount" />
+                        android:layout_below="@id/textView_discount_price" />
 
 
                     <TextView
                         android:id="@+id/text_view_total"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/text_view_discount"
+                        android:layout_below="@id/subtotal_divider"
+                        android:layout_alignStart="@+id/text_view_discount"
                         android:layout_marginVertical="@dimen/margin_vertical_between_items"
                         android:gravity="end"
                         android:text="@string/text_total"
@@ -159,18 +178,44 @@
                         android:id="@+id/textView_total_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/text_view_discount"
-                        android:layout_alignParentEnd="true"
+                        android:layout_below="@id/subtotal_divider"
+                        android:layout_alignEnd="@+id/textView_discount_price"
                         android:layout_marginVertical="@dimen/margin_vertical_between_items"
                         android:layout_toEndOf="@+id/text_view_total"
-                        android:gravity="end"
+                        android:textAlignment="textEnd"
                         android:textSize="@dimen/text_size_large_plus"
                         android:textStyle="bold"
-                        tools:text="187.2 $" />
+                        android:layout_marginStart="@dimen/margin_normal"
+                        tools:text="187438043089843989320840294.2$" />
 
                 </RelativeLayout>
 
             </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/text_view_comments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_normal"
+                android:text="@string/text_comments"
+                android:textSize="@dimen/text_size_large"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/text_view_comments_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_normal"
+                android:visibility="gone"
+                android:layout_marginBottom="@dimen/margin_small"
+                tools:text="HELLLOIDJHSKLFGJDSFLKJSDFKL;;JDSDFSKJLLKJ"/>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/divider_comments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_normal"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/text_view_attachments"
@@ -178,14 +223,16 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_normal"
                 android:text="@string/text_attachments"
-                android:textSize="@dimen/text_size_large" />
+                android:textSize="@dimen/text_size_large"
+                android:visibility="gone"/>
 
             <com.google.android.material.card.MaterialCardView
                 style="?attr/materialCardViewFilledStyle"
                 android:id="@+id/material_card_view_files"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_normal"
+                android:layout_marginHorizontal="@dimen/margin_normal"
+                android:visibility="gone"
                 android:background="@drawable/background_corner_stroke">
 
                 <androidx.recyclerview.widget.RecyclerView

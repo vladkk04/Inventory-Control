@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:navigationIcon="@drawable/ic_arrow_back_ios"
+            app:title="Organisation Settings" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_medium">
+
+            <TextView
+                android:id="@+id/text_view_notifications"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:text="@string/text_notification"
+                android:textSize="@dimen/text_size_large" />
+
+            <RadioButton
+                android:id="@+id/radio_button_every_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_view_notifications"
+                android:text="Every day" />
+
+            <RadioButton
+                android:id="@+id/radio_button_specific_days"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/radio_button_every_day"
+                android:text="Specific days of the weeks" />
+
+            <TextView
+                android:id="@+id/text_view_at_every_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/radio_button_every_day"
+                android:layout_alignBottom="@+id/radio_button_every_day"
+                android:layout_alignParentEnd="true"
+                android:gravity="center"
+                android:visibility="gone"
+                tools:text="@string/text_at_time_value" />
+
+            <TextView
+                android:id="@+id/text_view_at_specific_days"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/radio_button_specific_days"
+                android:layout_alignBottom="@+id/radio_button_specific_days"
+                android:layout_alignParentEnd="true"
+                android:gravity="center"
+                android:visibility="gone"
+                tools:text="at 23:33 PM" />
+
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                style="@style/Widget.App.Button.OutlinedButton"
+                android:id="@+id/toggleButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/radio_button_specific_days"
+                android:layout_alignStart="@+id/radio_button_specific_days"
+                android:layout_alignParentEnd="true"
+                android:visibility="gone">
+
+                <Button
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:paddingHorizontal="10dp"
+                    android:text="SUN" />
+
+                <Button
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:paddingHorizontal="10dp"
+                    android:text="MON" />
+
+                <Button
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:paddingHorizontal="10dp"
+                    android:text="TUE" />
+
+                <Button
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:paddingHorizontal="10dp"
+                    android:text="WED" />
+
+                <Button
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:paddingHorizontal="10dp"
+                    android:text="THU" />
+
+                <Button
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:paddingHorizontal="10dp"
+                    android:text="FRI" />
+
+                <Button
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:paddingHorizontal="10dp"
+                    android:text="SAT" />
+
+
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+            <TextView
+                android:id="@+id/text_view_notify_by"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/toggleButton"
+                android:paddingVertical="@dimen/padding_normal"
+                android:text="Notify only" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_group_organisation_role"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_view_notify_by"
+                app:selectionRequired="true"/>
+
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/materialDivider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/chip_group_organisation_role" />
+
+            <TextView
+                android:id="@+id/text_view_threshold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/materialDivider"
+                android:layout_marginVertical="@dimen/margin_small"
+                android:text="@string/text_threshold"
+                android:textSize="@dimen/text_size_large" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/edit_text_normal_threshold"
+                android:layout_alignTop="@+id/text_view_threshold"
+                android:layout_alignBottom="@+id/text_view_threshold"
+                android:layout_alignParentEnd="true"
+                android:padding="@dimen/padding_extra_small"
+                android:src="@drawable/ic_percent" />
+
+            <TextView
+                android:id="@+id/text_view_normal_threshold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_view_threshold"
+                android:paddingVertical="@dimen/margin_medium"
+                android:text="@string/text_normal_threshold"
+                android:textSize="@dimen/text_size_medium" />
+
+            <TextView
+                android:id="@+id/text_view_medium_threshold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_view_normal_threshold"
+                android:paddingVertical="@dimen/margin_medium"
+                android:text="@string/text_medium_threshold"
+                android:textSize="@dimen/text_size_medium" />
+
+            <TextView
+                android:id="@+id/text_view_critical_threshold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_view_medium_threshold"
+                android:paddingVertical="@dimen/margin_medium"
+                android:text="@string/text_critical_threshold"
+                android:textSize="@dimen/text_size_medium" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_normal_threshold"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_view_threshold"
+                android:layout_alignBottom="@+id/text_view_normal_threshold"
+                android:layout_alignParentEnd="true"
+                android:inputType="numberDecimal"
+                android:textAlignment="center"
+                tools:text="99" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_medium_threshold"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_view_normal_threshold"
+                android:layout_alignBottom="@+id/text_view_medium_threshold"
+                android:layout_alignParentEnd="true"
+                android:inputType="numberDecimal"
+                android:textAlignment="center"
+                tools:text="75" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_critical_threshold"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/text_view_critical_threshold"
+                android:layout_alignBottom="@+id/text_view_critical_threshold"
+                android:layout_alignParentEnd="true"
+                android:inputType="numberDecimal"
+                android:textAlignment="center"
+                tools:text="20" />
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_view_critical_threshold"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true">
+
+                <Button
+                    android:id="@+id/button_save"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center"
+                    android:text="@string/text_save"
+                    android:visibility="visible" />
+
+
+            </FrameLayout>
+
+
+        </RelativeLayout>
+
+
+
+
+    </ScrollView>
+
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

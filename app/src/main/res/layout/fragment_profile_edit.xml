@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/title_edit_profile"
+            app:navigationIcon="@drawable/ic_arrow_back_ios"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="top|center">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image_view_profile_logo"
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:layout_marginVertical="@dimen/margin_vertical_between_items"
+                android:background="@drawable/background_corner_circle_stroke"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_full_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_normal"
+                android:hint="@string/hint_full_name"
+                app:counterEnabled="true"
+                app:errorEnabled="true"
+                app:helperTextEnabled="true"
+                app:helperText="@string/helper_text_required"
+                app:counterMaxLength="50">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_full_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:imeOptions="actionDone"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/button_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_save"
+        android:layout_margin="@dimen/margin_normal"
+        android:layout_gravity="bottom"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

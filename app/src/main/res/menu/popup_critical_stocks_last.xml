@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/show_last_ten"
+        android:title="Show last 10"/>
+
+    <item android:id="@+id/show_last_fifty"
+        android:title="Show last 50"/>
+
+    <item android:id="@+id/show_last_hundred"
+        android:title="Show last 100"/>
+
+    <item android:id="@+id/show_all"
+        android:title="Show all"/>
+
+</menu>

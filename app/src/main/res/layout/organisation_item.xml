@@ -12,9 +12,9 @@
         android:id="@+id/organisation_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_medium_plus"
+        android:textSize="@dimen/text_size_normal"
         android:layout_weight="1"
-        android:padding="@dimen/padding_normal"
+        android:padding="@dimen/padding_small"
         android:textStyle="bold"
         tools:text="Organisation name"/>
 

@@ -79,7 +79,7 @@
                     android:layout_marginEnd="@dimen/margin_small"
                     android:layoutDirection="rtl"
                     android:orientation="vertical"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <CheckBox
                         android:id="@+id/check_box_overstock"
@@ -217,7 +217,7 @@
                     android:button="@drawable/ic_selector_arrow"
                     android:gravity="center" />
 
-                <com.example.bachelorwork.ui.views.inputs.CustomTextInputLayoutTags
+                <com.example.inventorycotrol.ui.views.inputs.CustomTextInputLayoutTags
                     android:id="@+id/custom_input_tags"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

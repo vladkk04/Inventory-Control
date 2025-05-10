@@ -23,6 +23,7 @@
                 android:layout_height="48dp"
                 android:layout_marginTop="@dimen/margin_extra_small"
                 android:scaleType="centerCrop"
+                android:src="@drawable/ic_image"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
 
             <TextView
@@ -31,7 +32,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginHorizontal="@dimen/margin_small"
-                android:layout_toStartOf="@+id/check_box_edit"
                 android:layout_toEndOf="@+id/image_view"
                 android:textSize="@dimen/text_size_large"
                 android:textStyle="bold"

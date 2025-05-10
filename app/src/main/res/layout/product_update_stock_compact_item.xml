@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="?attr/materialCardViewFilledStyle"
     android:layout_width="match_parent"
-    android:layout_height="86dp"
+    android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/margin_small"
     app:cardBackgroundColor="@color/colorSecondaryContainer"
     app:contentPadding="@dimen/padding_small">
@@ -14,35 +14,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/image_view"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/a"
-            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle" />
-
         <TextView
             android:id="@+id/update_at"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/operation_type"
+            android:layout_alignBottom="@+id/total_update"
+            android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
             android:gravity="center"
             android:textSize="@dimen/text_size_extra_small"
             tools:text="Tue, 15 Apr 2025 17:42" />
-
-        <TextView
-            android:id="@+id/update_by"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/total_update"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_toStartOf="@+id/update_at"
-            android:gravity="start|center"
-            tools:text="Vladyslav Klymiuk" />
 
         <TextView
             android:id="@+id/total_update"
@@ -51,25 +32,11 @@
             android:layout_alignTop="@id/image_view"
             android:layout_alignBottom="@+id/image_view"
             android:layout_marginHorizontal="@dimen/margin_small"
-            android:layout_toStartOf="@+id/operation_type"
             android:layout_toEndOf="@+id/image_view"
             android:gravity="start|center"
             android:textSize="@dimen/text_size_normal"
             android:textStyle="bold"
             tools:text="3 items updated" />
-
-        <TextView
-            android:id="@+id/operation_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/total_update"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:drawablePadding="@dimen/padding_extra_small"
-            android:gravity="center"
-            android:textSize="@dimen/text_size_small"
-            app:drawableEndCompat="@drawable/ic_arrow_upward_stock"
-            tools:text="Stock In" />
 
 
     </RelativeLayout>

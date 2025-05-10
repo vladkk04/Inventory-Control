@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/padding_medium"
-            android:text="@string/text_show_all"
+            android:text="Show all"
             android:layout_weight="0.2"
             android:textAlignment="textEnd"
             android:textColor="#4897E1"

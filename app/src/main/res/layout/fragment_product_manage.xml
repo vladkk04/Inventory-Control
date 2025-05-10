@@ -23,6 +23,8 @@
             android:background="@drawable/background_corner_stroke"
             android:backgroundTint="#464545"
             android:backgroundTintMode="add"
+            android:src="@drawable/ic_add_image"
+            android:scaleType="centerInside"
             app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -138,13 +140,13 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.example.bachelorwork.ui.views.inputs.CustomCategoryInputDropdown
+        <com.example.inventorycotrol.ui.views.inputs.CustomCategoryInputDropdown
             android:id="@+id/custom_input_categories"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/margin_vertical_between_items" />
 
-        <com.example.bachelorwork.ui.views.inputs.CustomTextInputLayoutTags
+        <com.example.inventorycotrol.ui.views.inputs.CustomTextInputLayoutTags
             android:id="@+id/custom_input_tags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

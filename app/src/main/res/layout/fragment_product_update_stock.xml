@@ -16,7 +16,6 @@
             android:orientation="vertical">
 
 
-
             <FrameLayout
                 android:id="@+id/layout_recycler_view"
                 android:layout_width="match_parent"
@@ -34,9 +33,9 @@
                     android:id="@+id/progress_bar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:indeterminate="true"
                     android:layout_gravity="center"
-                    android:visibility="gone"/>
+                    android:indeterminate="true"
+                    android:visibility="gone" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_products"
@@ -47,53 +46,34 @@
                     android:minHeight="140dp"
                     android:orientation="horizontal"
                     android:paddingHorizontal="@dimen/padding_medium"
+                    android:paddingBottom="90dp"
                     android:visibility="visible"
-                    tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    tools:listitem="@layout/product_update_stock_item" />
 
             </FrameLayout>
 
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_input_quantity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/layout_recycler_view"
-                android:layout_marginHorizontal="@dimen/margin_medium"
-                android:layout_marginVertical="@dimen/margin_vertical_between_items"
-                android:hint="@string/hint_quantity"
-                app:endIconMode="custom">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_text_quantity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:maxLines="1" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view_added_products"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/text_input_quantity"
-                android:layout_marginVertical="@dimen/margin_vertical_between_items"
-                android:clipToPadding="false"
-                android:minHeight="140dp"
-                android:orientation="horizontal"
-                android:paddingHorizontal="@dimen/padding_medium"
-                tools:itemCount="10"
-                tools:listitem="@layout/product_update_stock_item" />
         </RelativeLayout>
 
     </androidx.core.widget.NestedScrollView>
 
-    <Button
-        android:id="@+id/button_add_product"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_margin="@dimen/margin_small"
-        android:text="Add product" />
+        android:layout_margin="@dimen/margin_medium"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+
+        <Button
+            android:id="@+id/button_update_stock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="Update Stock" />
+
+
+    </LinearLayout>
+
 
 </FrameLayout>

@@ -4,33 +4,57 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.card.MaterialCardView
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@android:color/transparent"
-        app:strokeColor="?attr/colorOutline">
+        android:orientation="vertical">
 
-        <com.google.android.flexbox.FlexboxLayout
-            android:id="@+id/flexbox_layout"
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            app:alignContent="space_around"
-            app:alignItems="center"
-            app:flexWrap="wrap">
+            app:cardBackgroundColor="@android:color/transparent"
+            app:strokeColor="?attr/colorOutline">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_text_tags"
-                android:layout_width="wrap_content"
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/flexbox_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/transparent"
-                android:hint="@string/hint_tags"
-                android:imeOptions="actionNext"
-                android:inputType="text"
-                app:layout_flexGrow="1" />
+                android:layout_gravity="center_vertical"
+                app:alignContent="space_around"
+                app:alignItems="center"
+                app:flexWrap="wrap">
 
-        </com.google.android.flexbox.FlexboxLayout>
-    </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_tags"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@android:color/transparent"
+                    android:hint="@string/hint_tags"
+                    android:textColorHint="@color/colorOnSurfaceVariant"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    app:layout_flexGrow="1" />
+
+            </com.google.android.flexbox.FlexboxLayout>
+
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/custom_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(optional)"
+            android:textSize="12sp"
+            android:visibility="gone"
+            android:textColor="@color/colorOnSurfaceVariant"
+            android:layout_marginTop="@dimen/margin_extra_small"
+            android:layout_marginStart="13dp"/>
+
+    </LinearLayout>
+
+
 
 </FrameLayout>

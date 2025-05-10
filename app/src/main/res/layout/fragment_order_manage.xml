@@ -149,7 +149,8 @@
             android:id="@+id/material_card_view_files"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/text_view_title_attachments">
+            android:layout_below="@id/text_view_title_attachments"
+            android:layout_marginBottom="@dimen/margin_small">
 
             <LinearLayout
                 android:layout_width="match_parent"

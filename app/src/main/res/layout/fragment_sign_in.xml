@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/test_background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/df">
 
     <Button
         style="@style/Widget.Material3.Button.TextButton.Icon"
@@ -31,11 +31,22 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <TextView
+                android:id="@+id/welcomeBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Welcome back"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:layout_marginBottom="@dimen/margin_large"
+                android:textSize="@dimen/text_size_header_xlarge"/>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/text_input_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_email"
+                android:layout_below="@id/welcomeBack"
                 app:errorEnabled="true"
                 app:hintEnabled="true">
 
@@ -71,21 +82,12 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <CheckBox
-                android:id="@+id/check_box_remember_me"
-                android:layout_width="wrap_content"
-                android:layout_height="24dp"
-                android:layout_below="@+id/text_input_password"
-                android:layout_alignParentStart="true"
-                android:layout_marginHorizontal="@dimen/margin_small"
-                android:text="@string/text_remember_me" />
 
             <TextView
                 android:id="@+id/text_view_forgot_password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/text_input_password"
-                android:layout_alignBottom="@+id/check_box_remember_me"
                 android:layout_alignParentEnd="true"
                 android:gravity="center"
                 android:text="@string/text_forgot_password" />

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="top|center">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:navigationIcon="@drawable/ic_arrow_back_ios"
+                app:title="@string/title_edit_organisation"/>
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image_view_organisation_logo"
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:layout_marginVertical="@dimen/margin_vertical_between_items"
+                android:background="@drawable/background_corner_circle_stroke"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_organisation_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_normal"
+                android:hint="@string/hint_organisation_name"
+                app:counterEnabled="true"
+                app:errorEnabled="true"
+                app:helperTextEnabled="true"
+                app:helperText="@string/helper_text_required"
+                app:counterMaxLength="40">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_organisation_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:maxLines="1"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_normal"
+                android:hint="@string/hint_description"
+                app:counterEnabled="true"
+                app:errorEnabled="true"
+                app:helperTextEnabled="true"
+                app:helperText="@string/helper_text_optional"
+                app:counterMaxLength="250">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:id="@+id/text_input_currency"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_normal"
+                app:errorEnabled="true"
+                app:hintEnabled="true">
+
+                <AutoCompleteTextView
+                    android:id="@+id/auto_complete_currency"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:hint="@string/hint_base_currency"
+                    android:labelFor="@id/text_input_currency"/>
+
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/text_save"
+            android:layout_margin="@dimen/margin_normal"
+            android:layout_gravity="bottom"/>
+
+    </FrameLayout>
+</ScrollView>
+

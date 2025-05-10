@@ -2,8 +2,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/test_background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/df">
+
+    <TextView
+        android:id="@+id/welcomeBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome Back!"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:textSize="@dimen/text_size_header_xlarge"/>
+
+    <TextView
+        android:id="@+id/d"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter personal details to you employee account"
+        android:padding="@dimen/padding_medium"
+        android:textAlignment="center"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/welcomeBack"
+        android:textSize="@dimen/text_size_normal"/>
 
     <Button
         android:id="@+id/button_log_in"

@@ -8,10 +8,20 @@
         android:id="@+id/text_view_no_orders"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/text_no_orders"
         android:layout_gravity="center"
-        android:visibility="invisible"
-        android:textSize="@dimen/text_size_medium" />
+        android:text="@string/text_no_orders"
+        android:textSize="@dimen/text_size_medium"
+        android:visibility="gone" />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:elevation="1dp"
+        android:indeterminate="true"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -49,12 +59,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="@dimen/margin_normal"
-                android:paddingHorizontal="@dimen/padding_normal"
                 android:clipToPadding="false"
+                android:paddingHorizontal="@dimen/padding_normal"
+                android:paddingBottom="64dp"
                 tools:listitem="@layout/order_item" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
 
 
     </LinearLayout>

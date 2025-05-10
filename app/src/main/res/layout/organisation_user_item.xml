@@ -52,7 +52,7 @@
         android:layout_height="48dp"
         android:layout_marginHorizontal="@dimen/margin_small"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_percent"
+        android:src="@drawable/ic_identity"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle" />
 
     <TextView

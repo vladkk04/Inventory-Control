@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:menu="@menu/toolbar_profile_menu"
+        app:navigationIcon="@drawable/ic_arrow_back_ios"
         app:title="@string/title_profile"
-        app:titleCentered="true"
-        app:navigationIcon="@drawable/ic_arrow_back_ios" />
+        app:titleCentered="true" />
 
 
     <com.google.android.material.imageview.ShapeableImageView
@@ -23,9 +24,10 @@
         android:layout_below="@id/toolbar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/margin_medium"
+        android:background="@color/colorSurfaceContainerLow"
         android:scaleType="centerCrop"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle"
-        app:srcCompat="@drawable/ic_person_active" />
+        app:srcCompat="@drawable/ic_identity" />
 
 
     <TextView
@@ -35,10 +37,32 @@
         android:layout_below="@id/image_view_avatar"
         android:layout_centerHorizontal="true"
         android:layout_marginVertical="@dimen/margin_small"
-        android:text="Vladyslav Klymiuk"
         android:textAlignment="center"
+        android:textSize="@dimen/text_size_header_large"
         android:textStyle="bold"
-        android:textSize="@dimen/text_size_header_large" />
+        tools:text="Vladyslav Klymiuk" />
+
+    <TextView
+        android:id="@+id/text_view_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_view_full_name"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_medium_plus"
+        tools:text="Your id: 23904" />
+
+    <TextView
+        android:id="@+id/text_view_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_view_id"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"
+        android:layout_marginVertical="@dimen/margin_small"
+        android:textSize="@dimen/text_size_normal"
+        tools:text="vladuslaw512@gmail.com" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -52,29 +76,27 @@
             android:id="@+id/button_change_email"
             android:layout_width="match_parent"
             android:layout_height="54dp"
-            android:drawableEnd="@drawable/ic_email"
             android:layout_marginVertical="@dimen/margin_small"
+            android:drawableEnd="@drawable/ic_email"
             android:text="@string/text_change_email" />
 
         <Button
             android:id="@+id/button_change_password"
             android:layout_width="match_parent"
             android:layout_height="54dp"
-            android:drawableEnd="@drawable/ic_password_otp"
             android:layout_marginVertical="@dimen/margin_small"
+            android:drawableEnd="@drawable/ic_password_otp"
             android:text="@string/text_change_password" />
 
         <Button
             android:id="@+id/button_sign_out"
             android:layout_width="match_parent"
             android:layout_height="54dp"
-            android:drawableEnd="@drawable/ic_logout"
             android:layout_marginVertical="@dimen/margin_small"
+            android:drawableEnd="@drawable/ic_logout"
             android:text="@string/text_sign_out" />
 
     </LinearLayout>
-
-
 
 
 </RelativeLayout>

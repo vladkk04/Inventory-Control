@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
+        app:cardCornerRadius="0dp"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Material3.Corner.Bottom">
 
 
@@ -41,7 +42,7 @@
                 android:layout_marginVertical="@dimen/margin_extra_small"
                 android:layout_toStartOf="@+id/check_box_show_organisations"
                 android:textColor="#ffffff"
-                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginStart="@dimen/margin_small"
                 android:textSize="@dimen/text_size_medium_plus"
                 android:textStyle="bold"
                 tools:text="Vladyslav Klymiukfs" />
@@ -53,7 +54,7 @@
                 android:layout_below="@+id/text_view_full_name"
                 android:layout_alignParentStart="true"
                 android:layout_toStartOf="@+id/check_box_show_organisations"
-                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginStart="@dimen/margin_small"
                 android:textColor="#C8C8C8"
                 android:textSize="@dimen/text_size_normal"
                 tools:text="Administrf #2342" />
@@ -70,12 +71,31 @@
         </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
 
+    <TextView
+        android:id="@+id/create_organisation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_normal"
+        android:padding="@dimen/padding_normal"
+        android:layout_marginHorizontal="@dimen/margin_medium"
+        android:textStyle="bold"
+        android:textColor="#2694CF"
+        android:visibility="gone"
+        android:text="@string/text_create_organisation"/>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider_create_organisation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none"
         android:visibility="gone"
+        android:paddingHorizontal="@dimen/padding_normal"
         tools:itemCount="3"
         tools:listitem="@layout/organisation_item" />
 

@@ -20,7 +20,7 @@
         android:title="@string/title_assign_role"
         app:showAsAction="ifRoom|always" />
 
-    <item
+    <!--<item
         android:id="@+id/make_inactive"
         android:icon="@drawable/ic_person_off"
         android:title="@string/title_make_inactive"
@@ -32,6 +32,6 @@
         android:icon="@drawable/ic_person_active"
         android:title="@string/title_make_active"
         app:showAsAction="ifRoom|always"
-        android:visible="false"/>
+        android:visible="false"/>-->
 
 </menu>

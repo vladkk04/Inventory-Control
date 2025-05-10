@@ -8,16 +8,33 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.Toolbar
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:title="Hello Vladyslav" />
+                android:layout_height="88dp"
+                android:gravity="start|center"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/padding_medium">
+
+                <include
+                    android:id="@+id/profile_circle_picture"
+                    layout="@layout/profile_circle_picture" />
+
+                <TextView
+                    android:id="@+id/text_view_toolbar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_medium"
+                    android:textSize="@dimen/text_size_medium"
+                    tools:text="@string/text_hello_user" />
+
+            </LinearLayout>
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -52,8 +69,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/margin_normal"
-                        android:layout_weight="0.5"
-                        app:contentPadding="@dimen/padding_normal">
+                        android:layout_weight="0.5">
 
                         <RelativeLayout
                             android:layout_width="wrap_content"
@@ -63,6 +79,7 @@
                                 android:id="@+id/image_view_total_user"
                                 android:layout_width="36dp"
                                 android:layout_height="36dp"
+                                android:layout_margin="@dimen/margin_normal"
                                 android:background="@color/colorSecondaryContainer"
                                 android:scaleType="centerInside"
                                 android:src="@drawable/ic_manage_users"
@@ -72,8 +89,8 @@
                                 android:id="@+id/text_view_total_user_count"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_alignTop="@+id/image_view_total_user"
                                 android:layout_alignBottom="@+id/image_view_total_user"
-                                android:layout_alignParentTop="true"
                                 android:layout_alignParentEnd="true"
                                 android:layout_toEndOf="@id/image_view_total_user"
                                 android:gravity="center"
@@ -88,8 +105,10 @@
                                 android:layout_below="@id/image_view_total_user"
                                 android:layout_alignParentStart="true"
                                 android:layout_alignParentEnd="true"
-                                android:layout_marginVertical="@dimen/margin_extra_small"
+                                android:background="@drawable/background_bottom_corner_rounded"
+                                android:backgroundTint="@color/colorOnPrimaryContainer"
                                 android:gravity="center"
+                                android:padding="@dimen/padding_extra_small"
                                 android:text="Total users" />
 
                         </RelativeLayout>
@@ -98,35 +117,36 @@
 
                     <com.google.android.material.card.MaterialCardView
                         style="?attr/materialCardViewFilledStyle"
+                        android:id="@+id/layout_total_products"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/margin_normal"
-                        android:layout_weight="0.5"
-                        app:contentPadding="@dimen/padding_normal">
+                        android:layout_weight="0.5">
 
                         <RelativeLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
 
                             <com.google.android.material.imageview.ShapeableImageView
-                                android:id="@+id/image_view_total_product"
+                                android:id="@+id/image_view_total_products"
                                 android:layout_width="36dp"
                                 android:layout_height="36dp"
+                                android:layout_margin="@dimen/margin_normal"
                                 android:background="@color/colorSecondaryContainer"
                                 android:scaleType="centerInside"
-                                android:src="@drawable/ic_inventory"
+                                android:src="@drawable/ic_package"
                                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle" />
 
                             <TextView
-                                android:id="@+id/text_view_total_product_count"
+                                android:id="@+id/text_view_total_products_count"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignBottom="@+id/image_view_total_product"
-                                android:layout_alignParentTop="true"
+                                android:layout_alignTop="@+id/image_view_total_products"
+                                android:layout_alignBottom="@+id/image_view_total_products"
                                 android:layout_alignParentEnd="true"
-                                android:layout_toEndOf="@id/image_view_total_product"
+                                android:layout_toEndOf="@id/image_view_total_products"
                                 android:gravity="center"
-                                android:text="20000"
+                                android:text="200"
                                 android:textSize="@dimen/text_size_large"
                                 android:textStyle="bold" />
 
@@ -134,17 +154,19 @@
                                 android:id="@+id/total_products"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@id/image_view_total_product"
+                                android:layout_below="@id/image_view_total_products"
                                 android:layout_alignParentStart="true"
                                 android:layout_alignParentEnd="true"
-                                android:layout_marginVertical="@dimen/margin_extra_small"
+                                android:background="@drawable/background_bottom_corner_rounded"
+                                android:backgroundTint="@color/colorOnPrimaryContainer"
                                 android:gravity="center"
-                                android:text="Total products" />
+                                android:padding="@dimen/padding_extra_small"
+                                android:text="@string/text_total_products" />
 
                         </RelativeLayout>
 
-
                     </com.google.android.material.card.MaterialCardView>
+
 
                 </LinearLayout>
 
@@ -160,7 +182,7 @@
                     android:textSize="@dimen/text_size_medium_plus" />
 
                 <TextView
-                    android:id="@+id/text_view_critical_stock_show_all"
+                    android:id="@+id/text_view_critical_stock_show_last"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/text_view_critical_stock"
@@ -168,8 +190,8 @@
                     android:layout_alignBottom="@+id/text_view_critical_stock"
                     android:layout_marginHorizontal="@dimen/margin_small"
                     android:gravity="center"
-                    android:text="@string/text_show_all"
-                    android:textSize="@dimen/text_size_small" />
+                    android:textSize="@dimen/text_size_small"
+                    tools:text="@string/text_show_period_expand" />
 
                 <com.google.android.material.card.MaterialCardView
                     style="?attr/materialCardViewFilledStyle"
@@ -188,6 +210,13 @@
                         tools:itemCount="4"
                         tools:listitem="@layout/critical_stock_item" />
 
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:id="@+id/progress_bar_last_critical_stock"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:indeterminate="true"
+                        android:visibility="gone" />
 
                 </com.google.android.material.card.MaterialCardView>
 
@@ -215,18 +244,6 @@
                     android:text="@string/text_last_stock_activity"
                     android:textSize="@dimen/text_size_medium_plus" />
 
-                <TextView
-                    android:id="@+id/text_view_last_stock_activity_show_all"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/materialCardView"
-                    android:layout_alignEnd="@+id/materialCardView2"
-                    android:layout_alignBottom="@+id/text_view_last_stock_activity"
-                    android:layout_marginHorizontal="@dimen/margin_small"
-                    android:layout_marginTop="@dimen/margin_large"
-                    android:gravity="center"
-                    android:text="@string/text_show_all"
-                    android:textSize="@dimen/text_size_small" />
 
                 <com.google.android.material.card.MaterialCardView
                     style="?attr/materialCardViewFilledStyle"
@@ -241,9 +258,19 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:clipToPadding="false"
-                        android:padding="@dimen/padding_small"
+                        android:paddingHorizontal="@dimen/padding_small"
+                        android:paddingTop="@dimen/padding_small"
+                        android:paddingBottom="48dp"
                         tools:itemCount="4"
                         tools:listitem="@layout/critical_stock_item" />
+
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:id="@+id/progress_bar_last_stock_activity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:indeterminate="true"
+                        android:visibility="gone" />
 
 
                 </com.google.android.material.card.MaterialCardView>

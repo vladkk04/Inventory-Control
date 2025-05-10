@@ -20,6 +20,10 @@
             android:layout_alignParentStart="true"
             android:layout_toStartOf="@+id/check_box_navigate"
             android:text="@string/text_order_id"
+            tools:text = "Order# 930284222342423424343298"
+            android:ellipsize="end"
+            android:maxLength="30"
+            android:maxLines="1"
             android:textSize="@dimen/text_size_large_plus" />
 
         <TextView
@@ -43,11 +47,24 @@
             android:id="@+id/textView_total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/check_box_navigate"
+            android:layout_marginVertical="@dimen/margin_small"
+            android:text="@string/text_total"
+            android:textSize="@dimen/text_size_medium_plus" />
+
+        <TextView
+            android:id="@+id/textView_total_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@id/check_box_navigate"
             android:layout_alignParentEnd="true"
             android:layout_marginVertical="@dimen/margin_small"
+            android:layout_toEndOf="@+id/textView_total"
+            android:textAlignment="textEnd"
+            android:layout_marginHorizontal="@dimen/margin_medium"
             android:text="@string/text_order_total"
-            android:textSize="@dimen/text_size_medium_plus" />
+            android:textSize="@dimen/text_size_medium_plus"
+            tools:text="93028422234723424343298$" />
 
 
     </RelativeLayout>

@@ -13,34 +13,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="1"
         android:gravity="start|center">
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/image_view"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:scaleType="centerCrop"
-            app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
 
         <TextView
             android:id="@+id/text_view_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_small"
             android:textSize="@dimen/text_size_medium"
             android:textStyle="bold"
             android:layout_weight="0.4"
-            tools:text="Woohdsjfksjfdsfsdfssfsdfsdjd" />
-
-        <TextView
-            android:id="@+id/text_view_price"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="@dimen/text_size_medium"
-            android:layout_weight="0.3"
-            tools:text="20" />
+            android:maxLines="2"
+            android:ellipsize="end"
+            tools:text="Woohdsjfksjfdsfsdffffffffs" />
 
         <TextView
             android:id="@+id/text_view_quantity"
@@ -48,8 +32,19 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textSize="@dimen/text_size_medium"
-            android:layout_weight="0.3"
-            tools:text="22.49" />
+            android:layout_weight="0.4"
+            tools:text="2000002220 pcs"
+            android:layout_marginStart="@dimen/margin_small"/>
+
+        <TextView
+            android:id="@+id/text_view_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center|end"
+            android:textSize="@dimen/text_size_medium"
+            android:layout_weight="0.4"
+            android:layout_marginStart="@dimen/margin_small"
+            tools:text="2000000000.00s" />
 
 
 

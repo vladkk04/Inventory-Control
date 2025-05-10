@@ -18,9 +18,9 @@
         android:layout_height="108dp"
         android:layout_below="@id/toolbar"
         android:layout_margin="@dimen/margin_normal"
-        android:scaleType="centerCrop"
+        android:background="@color/colorOnPrimaryContainer"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle"
-        app:srcCompat="@drawable/a" />
+        app:srcCompat="@drawable/ic_organisation_building" />
 
     <TextView
         android:id="@+id/text_view_organisation_description"
@@ -29,7 +29,7 @@
         android:layout_below="@+id/image_view_avatar"
         android:layout_alignStart="@+id/image_view_avatar"
         android:layout_marginVertical="@dimen/margin_extra_small"
-        android:text="About Organisation"
+        android:text="About organisation:"
         android:textAlignment="center"
         android:textSize="@dimen/text_size_large" />
 
@@ -54,7 +54,7 @@
         android:layout_alignParentEnd="true"
         android:gravity="center"
         android:text="Nothing about organisation"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/text_view_organisation_name"
@@ -62,8 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/image_view_avatar"
         android:layout_toEndOf="@+id/image_view_avatar"
-        android:text="Organisation Name"
-        android:textAlignment="center"
+        android:text="OrganisationNamed"
         android:textSize="@dimen/text_size_large"
         android:textStyle="bold" />
 
@@ -73,12 +72,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/text_view_organisation_name"
         android:layout_marginVertical="@dimen/margin_extra_small"
+        android:layout_marginEnd="@dimen/margin_small"
         android:layout_toEndOf="@+id/image_view_avatar"
-        android:text="ID: 248093287490238"
-        android:textAlignment="center"
+        android:text="ID:24809328749023243432343"
+        android:textAlignment="textStart"
         android:textSize="@dimen/text_size_normal" />
 
-    <TextView
+    <!--<TextView
         android:id="@+id/text_view_organisation_owner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
         android:layout_marginBottom="@dimen/margin_extra_small"
         android:layout_toEndOf="@+id/image_view_avatar"
         android:text="Owner: Vladyslav Klymiuk"
-        android:textAlignment="center" />
+        android:textAlignment="center" />-->
 
     <!-- <TextView
          android:id="@+id/text_view_organisation_created_at"

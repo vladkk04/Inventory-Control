@@ -59,5 +59,10 @@
         <item name="android:minWidth">48dp</item>
         <item name="android:minHeight">48dp</item>
     </style>
+    
+    <style name="Custom.EditTextLayout.OrganisationSettings" parent="ThemeOverlay.Material3.TextInputEditText">
+        
+        <item name="android:paddingBottom">0dp</item>
+    </style>
 
 </resources>

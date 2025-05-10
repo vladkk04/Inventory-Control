@@ -23,13 +23,6 @@
         android:checkable="true"
         app:showAsAction="ifRoom"/>
 
-    <item
-        android:id="@+id/settings"
-        android:icon="@drawable/ic_settings_outline"
-        android:title="@string/title_settings"
-        android:checkable="true"
-        app:showAsAction="ifRoom"/>
-
 
     <item
         android:id="@+id/menu_none"

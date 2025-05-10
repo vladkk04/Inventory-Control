@@ -32,7 +32,7 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/image_view"
-                android:layout_width="@dimen/width_image_item"
+                android:layout_width="0dp"
                 android:layout_height="@dimen/height_image_item"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
@@ -40,7 +40,6 @@
                 android:background="#969393"
                 android:padding="@dimen/padding_extra_small"
                 android:src="@drawable/ic_image"
-                android:scaleType="fitXY"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
 
             <TextView

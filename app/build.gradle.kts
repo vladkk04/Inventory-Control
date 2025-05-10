@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.bachelorwork"
+    namespace = "com.example.inventorycotrol"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.bachelorwork"
+        applicationId = "com.example.inventorycotrol"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
@@ -27,12 +27,14 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
 
         create("profile") {
             initWith(getByName("debug"))
             isDebuggable = false
             isProfileable = true
+
         }
     }
     compileOptions {

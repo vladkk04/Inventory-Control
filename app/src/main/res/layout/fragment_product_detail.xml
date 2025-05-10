@@ -18,12 +18,14 @@
             app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
             app:titleEnabled="false">
 
+
+
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/image_view_product"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_gravity="center"
-                android:scaleType="centerCrop"
+                android:src="@drawable/ic_image"
                 app:layout_collapseMode="pin"
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Corner.Rounded.Bottom" />
 
@@ -39,6 +41,16 @@
                 app:layout_collapseMode="pin"
                 app:menu="@menu/toolbar_product_detail_menu"
                 app:navigationIcon="@drawable/ic_arrow_back_ios" />
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progress_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="invisible"
+                app:layout_collapseMode="pin"
+                android:layout_marginTop="84dp"/>
+
 
             <LinearLayout
                 android:id="@+id/custom_toolbar_layout_title"
@@ -56,16 +68,19 @@
                     android:layout_height="24dp"
                     android:layout_marginHorizontal="12dp"
                     android:contentDescription="@string/content_description_product_info"
+                    android:src="@drawable/ic_image"
                     android:scaleType="centerCrop" />
 
                 <TextView
                     android:id="@+id/text_view_toolbar_product_name"
-                    android:layout_width="220dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
+                    android:maxWidth="124dp"
                     android:maxLines="1"
+                    android:minWidth="100dp"
                     android:textSize="@dimen/text_size_large"
-                    tools:text="Cup" />
+                    tools:text="fdkjlsfjklfjklfdfdjfdfdssffsd" />
             </LinearLayout>
 
             <com.google.android.material.tabs.TabLayout
@@ -78,7 +93,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -90,17 +105,16 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/padding_large"
             android:paddingVertical="@dimen/padding_small"
-            android:textSize="@dimen/text_size_header_xlarge"
+            android:textSize="@dimen/text_size_header_large"
             android:textStyle="bold"
             tools:text="Cup" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:translationY="58dp" />
+            android:layout_height="match_parent" />
 
-    </FrameLayout>
+    </LinearLayout>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
