@@ -7,7 +7,6 @@ import com.example.inventorycotrol.common.Resource
 import com.example.inventorycotrol.data.constants.AppConstants
 import com.example.inventorycotrol.domain.manager.DataStoreManager
 import com.example.inventorycotrol.domain.usecase.order.OrderUseCases
-import com.example.inventorycotrol.domain.usecase.product.ProductUseCases
 import com.example.inventorycotrol.domain.usecase.user.UserUseCases
 import com.example.inventorycotrol.ui.model.order.list.OrderListUiState
 import com.example.inventorycotrol.ui.navigation.AppNavigator
@@ -15,10 +14,9 @@ import com.example.inventorycotrol.ui.navigation.Destination
 import com.example.inventorycotrol.ui.snackbar.SnackbarController.sendSnackbarEvent
 import com.example.inventorycotrol.ui.snackbar.SnackbarEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -28,7 +26,6 @@ import javax.inject.Inject
 @HiltViewModel
 class OrderListViewModel @Inject constructor(
     private val orderUseCase: OrderUseCases,
-    private val productUseCase: ProductUseCases,
     private val userUseCases: UserUseCases,
     private val navigator: AppNavigator,
     private val dataStoreManager: DataStoreManager
@@ -41,24 +38,24 @@ class OrderListViewModel @Inject constructor(
         getOrders()
         getUser()
         viewModelScope.launch {
-            dataStoreManager.getPreference(AppConstants.ORGANISATION_CURRENCY).collect { currency ->
+            dataStoreManager.getPreference(AppConstants.ORGANISATION_CURRENCY).distinctUntilChanged().collect { currency ->
                 _uiState.update { it.copy(currency = AppConstants.CURRENCY_SYMBOLS[currency] ?: "€") }
             }
         }
     }
 
     private fun getOrders() = viewModelScope.launch {
-        orderUseCase.getOrders().onEach { response ->
+        orderUseCase.getOrders().distinctUntilChanged().onEach { response ->
             when (response) {
                 Resource.Loading -> {
                     _uiState.update { it.copy(isLoading = true) }
                 }
                 is Resource.Error -> {
-                    _uiState.update { it.copy(isLoading = false) }
+                    Log.d("debug", response.data.toString())
+                    _uiState.update { it.copy(orders = response.data ?: emptyList(), isLoading = false, isRefreshing = false) }
                     sendSnackbarEvent(SnackbarEvent(response.errorMessage))
                 }
                 is Resource.Success -> {
-                    Log.d("debug", response.data.toString())
                     _uiState.update {
                         it.copy(
                             orders = response.data,
@@ -72,7 +69,7 @@ class OrderListViewModel @Inject constructor(
     }
 
     private fun getUser() = viewModelScope.launch {
-        userUseCases.getUserUseCase.get().onEach { response ->
+        userUseCases.getUserUseCase.get().distinctUntilChanged().onEach { response ->
             when (response) {
                 Resource.Loading -> {
 
@@ -86,7 +83,7 @@ class OrderListViewModel @Inject constructor(
                     }
                 }
             }
-        }.flowOn(Dispatchers.IO).launchIn(viewModelScope)
+        }.launchIn(viewModelScope)
     }
 
     fun navigateToOrderDetail(id: String) = viewModelScope.launch {
@@ -106,7 +103,7 @@ class OrderListViewModel @Inject constructor(
         getOrders()
         getUser()
         viewModelScope.launch {
-            dataStoreManager.getPreference(AppConstants.ORGANISATION_CURRENCY).collect { currency ->
+            dataStoreManager.getPreference(AppConstants.ORGANISATION_CURRENCY).distinctUntilChanged().collect { currency ->
                 _uiState.update { it.copy(currency = AppConstants.CURRENCY_SYMBOLS[currency] ?: "€") }
             }
         }

@@ -2,7 +2,7 @@ package com.example.inventorycotrol.ui.model.order.manage
 
 import com.example.inventorycotrol.domain.model.order.OrderAddedProduct
 import com.example.inventorycotrol.ui.model.order.DiscountType
-import com.example.inventorycotrol.ui.utils.FileData
+import com.example.inventorycotrol.domain.model.file.FileData
 
 data class OrderManageUiState(
     val addedProduct: Set<OrderAddedProduct> = emptySet(),

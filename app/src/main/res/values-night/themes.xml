@@ -3,15 +3,7 @@
 
     <style name="Base.Theme.BachelorWork" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowLightStatusBar">false</item>
-        <!-- <item name="colorOnPrimary">@color/white</item>
-                <item name="colorTertiary">@color/white</item>
-                <item name="colorOnTertiary">@color/white</item>
-                <item name="colorTertiaryContainer">@color/white</item>
-                <item name="colorOnTertiaryContainer">@color/white</item>
-                <item name="colorError">@color/white</item>
-                <item name="colorOnError">@color/white</item>
-                <item name="colorErrorContainer">@color/white</item>
-                <item name="colorOnErrorContainer">@color/white</item> -->
+
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryContainer">@color/colorPrimaryContainer</item>
         <item name="colorOnSecondaryContainer">@color/colorOnSecondaryContainer</item>
@@ -54,20 +46,10 @@
                 <item name="colorSurfaceContainerLowest">@color/white</item>
 
                 -->
+
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
     </style>
 
-
-    <style name="ChartStyle">
-        <item name="layers">line</item>
-        <item name="showBottomAxis">true</item>
-        <item name="showStartAxis">true</item>
-    </style>
-
-    <style name="ChartStyle2">
-        <item name="layers">column</item>
-        <item name="showBottomAxis">true</item>
-        <item name="showStartAxis">true</item>
-    </style>
 
     <style name="Theme.App.NumberPicker" parent="Theme.BachelorWork">
         <item name="colorControlNormal">@android:color/transparent</item>

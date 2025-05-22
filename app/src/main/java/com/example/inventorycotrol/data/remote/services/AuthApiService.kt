@@ -1,12 +1,12 @@
 package com.example.inventorycotrol.data.remote.services
 
-import com.example.inventorycotrol.domain.model.auth.AuthenticateResponse
-import com.example.inventorycotrol.domain.model.auth.ForgotPasswordRequest
-import com.example.inventorycotrol.domain.model.auth.ResetPasswordRequest
-import com.example.inventorycotrol.domain.model.auth.SignInRequest
-import com.example.inventorycotrol.domain.model.auth.SignInResponse
-import com.example.inventorycotrol.domain.model.auth.SignUpRequest
-import com.example.inventorycotrol.domain.model.auth.TokenResponse
+import com.example.inventorycotrol.domain.model.auth.responses.AuthenticateResponse
+import com.example.inventorycotrol.domain.model.auth.requests.ForgotPasswordRequest
+import com.example.inventorycotrol.domain.model.auth.requests.ResetPasswordRequest
+import com.example.inventorycotrol.domain.model.auth.requests.SignInRequest
+import com.example.inventorycotrol.domain.model.auth.responses.SignInResponse
+import com.example.inventorycotrol.domain.model.auth.requests.SignUpRequest
+import com.example.inventorycotrol.domain.model.auth.responses.TokenResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

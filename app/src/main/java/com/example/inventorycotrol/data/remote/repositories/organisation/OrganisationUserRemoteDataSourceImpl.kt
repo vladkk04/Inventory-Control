@@ -12,7 +12,7 @@ import com.example.inventorycotrol.domain.model.organisation.user.OrganisationUs
 import com.example.inventorycotrol.domain.model.organisation.user.OrganisationUserUpdateRequest
 import com.example.inventorycotrol.domain.repository.remote.OrganisationUserRemoteDataSource
 import com.example.inventorycotrol.ui.utils.extensions.safeApiCallFlow
-import com.example.inventorycotrol.ui.utils.extensions.safeResponseApiCallFlow
+import com.example.inventorycotrol.ui.utils.extensions.safeSuspendResponseApiCallFlow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 
@@ -44,11 +44,11 @@ class OrganisationUserRemoteDataSourceImpl(
     }
 
     override suspend fun getAll(): Flow<ApiResponseResult<List<OrganisationUserDto>>> {
-        return safeResponseApiCallFlow { api.getAll(organisationId()) }
+        return safeSuspendResponseApiCallFlow { api.getAll(organisationId()) }
     }
 
     override suspend fun getByUserId(): Flow<ApiResponseResult<OrganisationUserDto>> {
-        return safeResponseApiCallFlow { api.getByUserId(organisationId(), userId()) }
+        return safeSuspendResponseApiCallFlow { api.getByUserId(organisationId(), userId()) }
     }
 
     override suspend fun delete(organisationUserId: String): Flow<ApiResponseResult<Unit>> {
@@ -72,13 +72,13 @@ class OrganisationUserRemoteDataSourceImpl(
     }
 
     override suspend fun inviteUserByUserId(request: OrganisationInvitationUserIdRequest): Flow<ApiResponseResult<OrganisationUserDto>> {
-        return safeResponseApiCallFlow {
+        return safeSuspendResponseApiCallFlow {
             api.inviteUserByUserId(organisationId(), request)
         }
     }
 
     override suspend fun inviteUserByEmail(request: OrganisationInvitationEmailRequest): Flow<ApiResponseResult<OrganisationUserDto>> {
-        return safeResponseApiCallFlow {
+        return safeSuspendResponseApiCallFlow {
             api.inviteUserByEmail(organisationId(), request)
         }
     }

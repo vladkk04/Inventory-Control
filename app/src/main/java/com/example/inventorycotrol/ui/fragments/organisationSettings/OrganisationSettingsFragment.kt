@@ -1,34 +1,59 @@
 package com.example.inventorycotrol.ui.fragments.organisationSettings
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.core.view.children
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.example.inventorycotrol.R
+import com.example.inventorycotrol.data.remote.dto.NotificationSettings
+import com.example.inventorycotrol.data.remote.dto.ThresholdSettings
 import com.example.inventorycotrol.databinding.FragmentOrganisationSettingsBinding
 import com.example.inventorycotrol.domain.model.organisation.OrganisationRole
+import com.example.inventorycotrol.ui.MainViewModel
 import com.example.inventorycotrol.ui.common.AppDialogs
-import com.example.inventorycotrol.ui.utils.extensions.collectInLifecycle
-import com.example.inventorycotrol.ui.utils.extensions.viewBinding
 import com.example.inventorycotrol.ui.views.createOrganisationRoleChip
+import com.example.inventorycotrol.ui.worker.StockCheckWorker
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 
 @AndroidEntryPoint
-class OrganisationSettingsFragment : Fragment(R.layout.fragment_organisation_settings) {
+class OrganisationSettingsFragment : Fragment() {
 
-    private val binding by viewBinding(FragmentOrganisationSettingsBinding::bind)
+    private var _binding:FragmentOrganisationSettingsBinding? = null
+    private val binding get() = _binding!!
 
     private val viewModel: OrganisationSettingsViewModel by viewModels()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    private val mainViewModel: MainViewModel by activityViewModels()
 
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentOrganisationSettingsBinding.inflate(inflater, container, false)
         setupToolbar()
         setupTimePicker()
         setupChipGroup()
@@ -37,14 +62,81 @@ class OrganisationSettingsFragment : Fragment(R.layout.fragment_organisation_set
 
         setupEditText()
 
+
         binding.buttonSave.setOnClickListener {
-            viewModel.saveSettings()
+            viewModel.saveSettings {
+                if (it) {
+                    scheduleStockCheckWorker(viewModel.notificationSettings.value, viewModel.thresholdSettings.value)
+                }
+            }
         }
 
-        collectInLifecycle(viewModel.uiState) { state ->
-            updateUiState(state)
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main.immediate) {
+            mainViewModel.isConnected.collectLatest {
+                binding.buttonSave.isEnabled = it
+                binding.toggleButton.children.forEach { button -> button.isEnabled = it }
+                binding.chipGroupOrganisationRole.children.forEach { chip -> chip.isEnabled = it }
+            }
         }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.uiState.collectLatest { state ->
+                updateUiState(state)
+            }
+        }
+
+        return binding.root
     }
+    private fun scheduleStockCheckWorker(
+        settings: NotificationSettings,
+        thresholdSettings: ThresholdSettings
+    ) {
+        val workManager = WorkManager.getInstance(requireContext())
+
+        if (!settings.notifiableRoles.contains(mainViewModel.organisationRole.value)) {
+            workManager.cancelUniqueWork("stockCheck")
+            return
+        }
+
+        workManager.cancelUniqueWork("stockCheck")
+
+        val notificationTimeParts = settings.notificationTime.split(":")
+        val hour = notificationTimeParts[0].toInt()
+        val minute = notificationTimeParts.getOrElse(1) { "0" }.toInt()
+
+        val calendar = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, hour)
+            set(Calendar.MINUTE, minute)
+            set(Calendar.SECOND, 0)
+        }
+
+        if (calendar.timeInMillis <= System.currentTimeMillis()) {
+            calendar.add(Calendar.DAY_OF_YEAR, 1)
+        }
+
+        val initialDelay = calendar.timeInMillis - System.currentTimeMillis()
+
+        val inputData = workDataOf(
+            "critical_threshold_percentage" to thresholdSettings.criticalThresholdPercentage,
+            "notification_days" to settings.notificationDays.toIntArray()
+        )
+
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        val request = PeriodicWorkRequestBuilder<StockCheckWorker>(24, TimeUnit.HOURS)
+            .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
+            .setConstraints(constraints)
+            .setInputData(inputData)
+            .build()
+
+        workManager.enqueueUniquePeriodicWork(
+            "stockCheck",
+            ExistingPeriodicWorkPolicy.UPDATE, request
+        )
+    }
+
 
     private fun updateUiState(uiState: OrganisationSettingsUiState) {
         binding.editTextNormalThreshold.setText(
@@ -124,7 +216,7 @@ class OrganisationSettingsFragment : Fragment(R.layout.fragment_organisation_set
     }
 
     private fun setupToggleButton() {
-        binding.toggleButton.addOnButtonCheckedListener { group, checkedId, isChecked ->
+        binding.toggleButton.addOnButtonCheckedListener { group, _, _ ->
             val selectedDays = mutableSetOf<Int>()
 
             for (i in 0 until group.childCount) {
@@ -139,7 +231,7 @@ class OrganisationSettingsFragment : Fragment(R.layout.fragment_organisation_set
     }
 
     private fun setupChipGroup() {
-        binding.radioButtonEveryDay.setOnCheckedChangeListener { compoundButton, b ->
+        binding.radioButtonEveryDay.setOnCheckedChangeListener { _, b ->
             binding.radioButtonSpecificDays.isChecked = !b
             binding.toggleButton.isGone = b
             binding.textViewAtEveryDay.isVisible = b
@@ -158,7 +250,7 @@ class OrganisationSettingsFragment : Fragment(R.layout.fragment_organisation_set
             }
         }
 
-        binding.radioButtonSpecificDays.setOnCheckedChangeListener { compoundButton, b ->
+        binding.radioButtonSpecificDays.setOnCheckedChangeListener { _, b ->
             binding.radioButtonEveryDay.isChecked = !b
             binding.toggleButton.isVisible = b
             binding.textViewAtSpecificDays.isVisible = b
@@ -171,8 +263,14 @@ class OrganisationSettingsFragment : Fragment(R.layout.fragment_organisation_set
     }
 
     private fun setupTimePicker() {
+
         binding.textViewAtEveryDay.setOnClickListener {
-            val picker = AppDialogs.createTimePicker()
+            val time = binding.textViewAtEveryDay.text.toString().removePrefix("at ").split(":").map { it.toInt() }
+
+
+            val picker = AppDialogs.createTimePicker(
+                time.component1() to time.component2()
+            )
 
             picker.addOnPositiveButtonClickListener {
                 binding.textViewAtEveryDay.text =
@@ -183,10 +281,15 @@ class OrganisationSettingsFragment : Fragment(R.layout.fragment_organisation_set
                 )
             }
 
-            picker.show(parentFragmentManager, "timePicker")
+            picker.show(parentFragmentManager, "timePicker1")
         }
         binding.textViewAtSpecificDays.setOnClickListener {
-            val picker = AppDialogs.createTimePicker()
+            val time = binding.textViewAtSpecificDays.text.toString().removePrefix("at ").split(":").map { it.toInt() }
+
+            val picker = AppDialogs.createTimePicker(
+                time.component1() to time.component2()
+            )
+
 
             picker.addOnPositiveButtonClickListener {
                 binding.textViewAtSpecificDays.text =
@@ -197,7 +300,7 @@ class OrganisationSettingsFragment : Fragment(R.layout.fragment_organisation_set
                 )
             }
 
-            picker.show(parentFragmentManager, "timePicker")
+            picker.show(parentFragmentManager, "timePicker2")
         }
     }
 

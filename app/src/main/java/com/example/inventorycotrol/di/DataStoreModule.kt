@@ -16,14 +16,15 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-private const val USER_PREFERENCES = "user_preferences"
 
 @Module
 @InstallIn(SingletonComponent::class)
 object DataStoreModule {
 
-    @Singleton
+    private const val USER_PREFERENCES = "user_preferences"
+
     @Provides
+    @Singleton
     fun provideDataStore(@ApplicationContext appContext: Context): DataStore<Preferences> {
         return PreferenceDataStoreFactory.create(
             corruptionHandler = ReplaceFileCorruptionHandler(
@@ -33,8 +34,8 @@ object DataStoreModule {
         )
     }
 
-    @Singleton
     @Provides
+    @Singleton
     fun provideDataStoreManager(dataStore: DataStore<Preferences>): DataStoreManager = DataStoreManagerImpl(dataStore)
 
 }

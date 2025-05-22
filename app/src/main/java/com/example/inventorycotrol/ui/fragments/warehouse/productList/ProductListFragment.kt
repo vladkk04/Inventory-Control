@@ -14,7 +14,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.inventorycotrol.R
 import com.example.inventorycotrol.data.constants.AppConstants
 import com.example.inventorycotrol.databinding.FragmentProductListBinding
@@ -31,7 +30,6 @@ import com.example.inventorycotrol.ui.utils.recyclerview.UpwardScrollButtonListe
 import com.example.inventorycotrol.ui.utils.screen.InsetHandler
 import com.google.android.material.search.SearchView
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.Locale
@@ -62,6 +60,12 @@ class ProductListFragment : Fragment() {
         }
         InsetHandler.adaptToEdgeWithMargin(binding.root)
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            mainViewModel.isConnected.collectLatest {
+                binding.fabCreateItem.isEnabled = it
+            }
+        }
+
         when (mainViewModel.organisationRole.value) {
             OrganisationRole.ADMIN -> {
                 binding.fabCreateItem.visibility = View.VISIBLE
@@ -81,17 +85,19 @@ class ProductListFragment : Fragment() {
         setupCheckboxChangeViewTypeProductsListener()
         setupCheckboxOrderByProductsListener()
 
-
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collectLatest { uiState ->
                 updateUiState(uiState)
             }
         }
 
-        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main.immediate) {
-            viewModel.thresholdSettings.collectLatest { settings ->
-                settings.let {
-                    listAdapter.setupThresholdSettings(it)
+        viewLifecycleOwner.lifecycleScope.launch {
+            launch {
+                viewModel.thresholdSettings.collectLatest { settings ->
+                    settings.let {
+                        listAdapter.setupThresholdSettings(it)
+                        searchListAdapter.setupThresholdSettings(it)
+                    }
                 }
             }
         }
@@ -264,14 +270,16 @@ class ProductListFragment : Fragment() {
 
         uiState.imageUrl?.let {
             Glide.with(requireActivity())
-                .load("${AppConstants.BASE_URL_CLOUD_FRONT}/${it}")
+                .load("${AppConstants.BASE_URL_CLOUD_FRONT}${it}")
                 .error(R.drawable.ic_identity)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(binding.profileCirclePicture.root)
         }
 
+        //binding.fabCreateItem.isEnabled = uiState.isEnableCreateButton
+
         if (uiState.isLoading && !uiState.isRefreshing) {
             binding.circleProgressIndicator.visibility = View.VISIBLE
+            binding.textViewNoItems.visibility = View.GONE
         } else {
             binding.circleProgressIndicator.visibility = View.INVISIBLE
             binding.textViewNoItems.visibility = if (uiState.products.isEmpty() && !uiState.isLoading) View.VISIBLE else View.GONE

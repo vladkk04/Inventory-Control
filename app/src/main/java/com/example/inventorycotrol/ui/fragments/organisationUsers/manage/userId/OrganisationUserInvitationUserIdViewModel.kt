@@ -20,6 +20,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -69,10 +70,10 @@ class OrganisationUserInvitationUserIdViewModel @Inject constructor(
             }
 
             is OrganisationUserInvitationUserIdFormEvent.UserIdChanged -> {
-                userIdQueryFlow.value = event.userId
+                userIdQueryFlow.value = event.userId.lowercase().trim()
                 _canInvite.value = false
                 _uiStateForm.update { state ->
-                    state.copy(userId = event.userId, userIdError = null)
+                    state.copy(userId = event.userId.lowercase().trim(), userIdError = null)
                 }
             }
 
@@ -96,7 +97,7 @@ class OrganisationUserInvitationUserIdViewModel @Inject constructor(
                 userId = uiStateForm.value.userId,
                 organisationRole = OrganisationRole.valueOf(uiStateForm.value.roleId)
             )
-        ).onEach { response ->
+        ).distinctUntilChanged().onEach { response ->
             when (response) {
                 Resource.Loading -> {
                     _uiState.update { it.copy(isLoading = true) }
@@ -117,7 +118,7 @@ class OrganisationUserInvitationUserIdViewModel @Inject constructor(
     }
 
     private fun findUserByUserId(userId: String) = viewModelScope.launch {
-        userUseCase.getUserUseCase.getById(userId).collect { result ->
+        userUseCase.getUserUseCase.getById(userId).distinctUntilChanged().collect { result ->
             when (result) {
                 ApiResponseResult.Loading -> {}
 

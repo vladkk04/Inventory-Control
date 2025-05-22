@@ -22,7 +22,7 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/image_view"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/height_image_item"
+            android:layout_height="96dp"
             android:layout_centerHorizontal="true"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_image"

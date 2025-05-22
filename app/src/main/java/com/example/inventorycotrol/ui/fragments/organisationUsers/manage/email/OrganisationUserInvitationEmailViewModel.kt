@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -69,10 +70,10 @@ class OrganisationUserInvitationEmailViewModel @Inject constructor(
             }
 
             is OrganisationUserInvitationEmailFormEvent.EmailChanged -> {
-                emailQueryFlow.value = event.email
+                emailQueryFlow.value = event.email.lowercase().trim()
                 _canInvite.value = false
                 _uiStateForm.update { state ->
-                    state.copy(email = event.email, emailError = null)
+                    state.copy(email = event.email.lowercase().trim(), emailError = null)
                 }
             }
 
@@ -97,7 +98,7 @@ class OrganisationUserInvitationEmailViewModel @Inject constructor(
                 email = uiStateForm.value.email,
                 organisationRole = OrganisationRole.valueOf(uiStateForm.value.roleName)
             )
-        ).onEach { response ->
+        ).distinctUntilChanged().onEach { response ->
             when (response) {
                 Resource.Loading -> {
                     _uiState.update { it.copy(isLoading = true) }
@@ -118,7 +119,7 @@ class OrganisationUserInvitationEmailViewModel @Inject constructor(
     }
 
     private fun findUserByEmail(email: String) = viewModelScope.launch {
-        userUseCase.getUserUseCase.getByEmail(email).collectLatest { result ->
+        userUseCase.getUserUseCase.getByEmail(email).distinctUntilChanged().collectLatest { result ->
             when (result) {
                 ApiResponseResult.Loading -> {}
 

@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_small"
-            android:layout_marginVertical="@dimen/margin_vertical_item_detail_between_items"
+            android:layout_marginVertical="@dimen/margin_normal"
             app:contentPadding="@dimen/padding_extra_small">
 
             <LinearLayout
@@ -61,8 +61,7 @@
                         android:id="@+id/chart_view_volume"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="invisible"
-                        app:chartStyle="@style/ChartStyle" />
+                        android:visibility="invisible" />
 
                     <com.google.android.material.progressindicator.CircularProgressIndicator
                         android:id="@+id/progress_bar_stock_volume"
@@ -97,7 +96,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_small"
-            android:layout_marginVertical="@dimen/margin_vertical_item_detail_between_items"
+            android:layout_marginVertical="@dimen/margin_normal"
             app:contentPadding="@dimen/padding_extra_small">
 
             <LinearLayout
@@ -141,8 +140,7 @@
                         android:id="@+id/chart_view_price"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="invisible"
-                        app:chartStyle="@style/ChartStyle" />
+                        android:visibility="invisible" />
 
                     <com.google.android.material.progressindicator.CircularProgressIndicator
                         android:id="@+id/progress_bar_stock_change"

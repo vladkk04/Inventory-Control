@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources
-    xmlns:tools="http://schemas.android.com/tools">
-    <!-- Default Dimens -->
+<resources>
     <dimen name="padding_extra_small">4dp</dimen>
     <dimen name="padding_small">8dp</dimen>
     <dimen name="padding_normal">12dp</dimen>
@@ -29,27 +27,11 @@
     <dimen name="text_size_medium_plus">20sp</dimen>
     <dimen name="text_size_large">22sp</dimen>
     <dimen name="text_size_large_plus">24sp</dimen>
-
     <dimen name="text_size_header_small">26sp</dimen>
     <dimen name="text_size_header_medium">28sp</dimen>
     <dimen name="text_size_header_large">30sp</dimen>
     <dimen name="text_size_header_xlarge">32sp</dimen>
 
-    <!-- More Fragment -->
     <dimen name="width_more_fab_item">108dp</dimen>
     <dimen name="height_more_fab_item">80dp</dimen>
-
-    <!-- Create New Item Fragment -->
-    <dimen name="margin_vertical_between_items">@dimen/margin_small</dimen>
-
-    <!-- Product Detail Item Fragment -->
-    <dimen name="margin_vertical_item_detail_between_items">12dp</dimen>
-
-    <!-- Product Item Grid and Row Fragment -->
-    <dimen name="width_image_item">96dp</dimen>
-    <dimen name="height_image_item">96dp</dimen>
-    <dimen name="height_toolbar">88dp</dimen>
-
-
-
 </resources>

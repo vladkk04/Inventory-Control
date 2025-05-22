@@ -2,6 +2,7 @@ package com.example.inventorycotrol.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -17,20 +18,19 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.elveum.elementadapter.simpleAdapter
 import com.example.inventorycotrol.R
 import com.example.inventorycotrol.data.constants.AppConstants
 import com.example.inventorycotrol.databinding.ActivityMainBinding
 import com.example.inventorycotrol.databinding.HeaderNavigationDrawerBinding
 import com.example.inventorycotrol.databinding.OrganisationItemBinding
-import com.example.inventorycotrol.domain.model.organisation.OrganisationItem
 import com.example.inventorycotrol.domain.model.organisation.OrganisationRole
+import com.example.inventorycotrol.ui.model.organisation.OrganisationItem
 import com.example.inventorycotrol.ui.navigation.AppNavigationGraph
 import com.example.inventorycotrol.ui.navigation.AppNavigator
 import com.example.inventorycotrol.ui.navigation.setupWithNavController
 import com.example.inventorycotrol.ui.snackbar.SnackbarController
-import com.example.inventorycotrol.ui.utils.hideKeyboard
+import com.example.inventorycotrol.ui.utils.screen.InsetHandler
 import com.google.android.material.internal.NavigationMenuView
 import com.google.android.material.navigation.NavigationView
 import com.permissionx.guolindev.PermissionX
@@ -49,6 +49,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bindingNavigationHeader: HeaderNavigationDrawerBinding
 
     private val viewModel: MainViewModel by viewModels()
+
+    private var isAppLaunchedAtFirst = false
 
     @Inject
     lateinit var appNavigator: AppNavigator
@@ -73,19 +75,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater).also { setContentView(it.root) }
 
+        setupApp()
+
         lifecycleScope.launch {
             viewModel.organisationRole.collectLatest {
-                when(it) {
+                when (it) {
                     OrganisationRole.ADMIN -> {
                         binding.bottomNavigationView.menu.findItem(R.id.orders).isVisible = true
                         binding.bottomNavigationView.menu.findItem(R.id.more).isVisible = true
                         binding.navigationView.menu.findItem(R.id.reports).isVisible = true
                     }
+
                     OrganisationRole.EMPLOYEE -> {
+                        binding.bottomNavigationView.menu.findItem(R.id.more).isVisible = true
                         binding.bottomNavigationView.menu.findItem(R.id.orders).isVisible = false
-                        binding.bottomNavigationView.menu.findItem(R.id.more).isVisible = false
                         binding.navigationView.menu.findItem(R.id.reports).isVisible = false
                     }
+
                     null -> {}
                 }
             }
@@ -96,10 +102,7 @@ class MainActivity : AppCompatActivity() {
                 uiState.profile?.let {
                     with(bindingNavigationHeader) {
                         Glide.with(this@MainActivity)
-                            .load("${AppConstants.BASE_URL_CLOUD_FRONT}/${it.imageUrl}")
-                            .diskCacheStrategy(DiskCacheStrategy.ALL)
-                            .placeholder(R.drawable.ic_profile_outline)
-                            .fallback(R.drawable.ic_profile_outline)
+                            .load("${AppConstants.BASE_URL_CLOUD_FRONT}${it.imageUrl}")
                             .error(R.drawable.ic_profile_outline)
                             .centerCrop()
                             .into(imageViewUserLogo)
@@ -113,7 +116,55 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        setupApp()
+        lifecycleScope.launch {
+            viewModel.isConnected.collectLatest { isConnected ->
+                bindingNavigationHeader.checkBoxShowOrganisations.isEnabled = isConnected
+                bindingNavigationHeader.checkBoxShowOrganisations.isChecked = isConnected
+                bindingNavigationHeader.recyclerView.isGone = !isConnected
+                bindingNavigationHeader.divider.isGone = !isConnected
+                bindingNavigationHeader.createOrganisation.isGone = !isConnected
+                bindingNavigationHeader.dividerCreateOrganisation.isGone = !isConnected
+                if (!isAppLaunchedAtFirst) {
+                    isAppLaunchedAtFirst = true
+                    return@collectLatest
+                }
+                when (isConnected) {
+                    true -> {
+                        if (binding.textViewInternetConnection.isGone) {
+                            return@collectLatest
+                        }
+                        binding.textViewInternetConnection.apply {
+                            isGone = false
+                            text = getString(R.string.internet_connection)
+                            backgroundTintList =
+                                ColorStateList.valueOf(getColor(R.color.colorMinStockLevelNormalLevel))
+                        }
+                        binding.textViewInternetConnection.animate()
+                            .setStartDelay(1000)
+                            .setDuration(400)
+                            .alpha(0f)
+                            .withEndAction {
+                                binding.textViewInternetConnection.isGone = true
+                                binding.textViewInternetConnection.alpha = 1f
+                            }
+                            .start()
+                    }
+
+                    false -> {
+                        binding.textViewInternetConnection.apply {
+                            isGone = false
+                            text = getString(R.string.no_internet_connection)
+                            backgroundTintList =
+                                ColorStateList.valueOf(getColor(R.color.colorMinStockLevelLowLevel))
+                        }
+                    }
+                }
+
+            }
+
+
+
+        }
     }
 
     private fun setupApp() {
@@ -151,7 +202,6 @@ class MainActivity : AppCompatActivity() {
         binding.drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
             override fun onDrawerOpened(drawerView: View) {
                 onBackPressedDispatcher.addCallback(this@MainActivity, callback)
-                hideKeyboard()
             }
 
             override fun onDrawerClosed(drawerView: View) {
@@ -188,22 +238,14 @@ class MainActivity : AppCompatActivity() {
                 "Allow",
                 "Deny"
             )
-        }.request { allGranted, grantedList, deniedList ->
-           /* if (allGranted) {
-                Toast.makeText(this, "All permissions are granted", Toast.LENGTH_LONG).show()
-            } else {
-                Toast.makeText(
-                    this,
-                    "These permissions are denied: $deniedList",
-                    Toast.LENGTH_LONG
-                ).show()
-            }*/
-        }
+        }.request { _, _, _-> }
     }
 
     private fun setupNavigationDrawerView() {
         bindingNavigationHeader =
             HeaderNavigationDrawerBinding.bind(binding.navigationView.getHeaderView(0))
+
+        InsetHandler.adaptToEdgeWithMargin(bindingNavigationHeader.root)
 
         disableNavigationViewScrollbars(binding.navigationView)
 

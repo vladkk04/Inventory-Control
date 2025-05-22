@@ -16,7 +16,7 @@ interface ProductApiService {
     suspend fun create(@Path("id") organisationId: String, @Body request: ProductRequest): Response<ProductDto>
 
     @PUT("/organisations/{id}/products/{productId}")
-    suspend fun update(@Path("id") organisationId: String, @Path("productId") productId: String, @Body request: ProductRequest)
+    suspend fun update(@Path("id") organisationId: String, @Path("productId") productId: String, @Body request: ProductRequest): Response<ProductDto>
 
     @DELETE("/organisations/{id}/products/{productId}")
     suspend fun delete(@Path("id") organisationId: String, @Path("productId") productId: String)

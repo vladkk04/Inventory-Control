@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isGone
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -18,6 +20,7 @@ import com.example.inventorycotrol.ui.model.product.manage.ProductManageFormEven
 import com.example.inventorycotrol.ui.model.product.manage.ProductManageFormState
 import com.example.inventorycotrol.ui.utils.activityResultContracts.VisualMediaPicker
 import com.example.inventorycotrol.ui.utils.extensions.collectInLifecycle
+import com.example.inventorycotrol.ui.utils.extensions.requestImagePermissions
 import com.example.inventorycotrol.util.namesTyped
 import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.flow.collectLatest
@@ -75,6 +78,8 @@ abstract class BaseProductManageFragment :
         visualMediaPicker.addCallbackResult { uri ->
             viewModel.setupImage(uri)
 
+            binding.layoutManageImage.isGone = true
+
             uri?.let {
                 Glide.with(this)
                     .load(it)
@@ -88,7 +93,21 @@ abstract class BaseProductManageFragment :
 
     private fun setupUIComponents() {
         binding.imageView.setOnClickListener {
+            requestImagePermissions {
+                if (viewModel.image.value != null) {
+                    binding.layoutManageImage.isGone = false
+                } else {
+                    visualMediaPicker.launchVisualMediaPicker()
+                }
+            }
+        }
+        binding.textViewEdit.setOnClickListener {
             visualMediaPicker.launchVisualMediaPicker()
+        }
+        binding.textViewRemove.setOnClickListener {
+            binding.imageView.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_add_image, null))
+            binding.layoutManageImage.isGone = true
+            viewModel.setupImage(null)
         }
         setupBarcodeScanner()
         setupNumberPicker()

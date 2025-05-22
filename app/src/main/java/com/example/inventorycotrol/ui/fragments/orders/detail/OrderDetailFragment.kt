@@ -1,11 +1,15 @@
 package com.example.inventorycotrol.ui.fragments.orders.detail
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.elveum.elementadapter.simpleAdapter
 import com.example.inventorycotrol.R
@@ -15,14 +19,16 @@ import com.example.inventorycotrol.databinding.OrderAttachmentItemBinding
 import com.example.inventorycotrol.databinding.OrderDetailProductItemBinding
 import com.example.inventorycotrol.domain.model.order.Attachment
 import com.example.inventorycotrol.domain.model.order.OrderProductSubItem
-import com.example.inventorycotrol.downloader.AppDownloader
+import com.example.inventorycotrol.data.download.AppDownloader
+import com.example.inventorycotrol.ui.MainViewModel
 import com.example.inventorycotrol.ui.common.AppDialogs
 import com.example.inventorycotrol.ui.model.order.DiscountType
-import com.example.inventorycotrol.ui.utils.FileMimeType
+import com.example.inventorycotrol.domain.model.file.FileMimeType
 import com.example.inventorycotrol.ui.utils.extensions.collectInLifecycle
-import com.example.inventorycotrol.ui.utils.extensions.viewBinding
 import com.example.inventorycotrol.ui.utils.screen.InsetHandler
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -30,9 +36,12 @@ import java.util.Locale
 
 @AndroidEntryPoint
 class OrderDetailFragment : Fragment(R.layout.fragment_order_detail) {
-    private val binding by viewBinding(FragmentOrderDetailBinding::bind)
+    private var _binding: FragmentOrderDetailBinding? = null
+    private val binding get() = _binding!!
 
     private val viewModel: OrderDetailViewModel by viewModels()
+
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     private lateinit var downloader: AppDownloader
 
@@ -111,19 +120,34 @@ class OrderDetailFragment : Fragment(R.layout.fragment_order_detail) {
         listeners {
             this.checkBoxDownload.onClick { item ->
                 downloader.downloadFile(
-                    "${AppConstants.BASE_URL_CLOUD_FRONT}/${item.url}",
+                    "${AppConstants.BASE_URL_CLOUD_FRONT}${item.url}",
                     item.url.split('/').last().split('.').component1()
                 )
             }
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentOrderDetailBinding.inflate(inflater, container, false)
+
         InsetHandler.adaptToEdgeWithMargin(binding.root)
 
         setupAttachmentRecyclerView()
 
         downloader = AppDownloader(requireContext())
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            mainViewModel.isConnected.collectLatest {
+                binding.toolbar.menu.findItem(R.id.delete).apply {
+                    isEnabled = it
+                    icon?.mutate()?.alpha = if (it) 255 else 100
+                }
+            }
+        }
 
         collectInLifecycle(viewModel.uiState) {
             binding.toolbar.title = "Order #${it.order?.id}"
@@ -186,6 +210,8 @@ class OrderDetailFragment : Fragment(R.layout.fragment_order_detail) {
 
         setupToolbarMenu()
         setupRecyclerView()
+
+        return binding.root
     }
 
 

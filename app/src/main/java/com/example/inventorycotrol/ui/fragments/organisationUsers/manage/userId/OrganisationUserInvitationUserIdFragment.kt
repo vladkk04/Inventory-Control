@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.inventorycotrol.R
 import com.example.inventorycotrol.databinding.FragmentOrganisationUserInvitationUserIdBinding
 import com.example.inventorycotrol.domain.model.organisation.OrganisationRole
-import com.example.inventorycotrol.ui.fragments.organisationUsers.manage.OrganisationUserManageViewModel
-import com.example.inventorycotrol.ui.model.organisationUser.OrganisationUserManageUiState
+import com.example.inventorycotrol.ui.MainViewModel
 import com.example.inventorycotrol.ui.model.organisationUser.invitationUserId.OrganisationUserInvitationUserIdFormEvent
 import com.example.inventorycotrol.ui.model.organisationUser.invitationUserId.OrganisationUserInvitationUserIdFormState
 import com.example.inventorycotrol.ui.model.organisationUser.invitationUserId.OrganisationUserInvitationUserIdUiState
@@ -22,29 +23,33 @@ import com.github.razir.progressbutton.hideProgress
 import com.github.razir.progressbutton.showProgress
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class OrganisationUserInvitationUserIdFragment :
-    Fragment(R.layout.fragment_organisation_user_invitation_user_id) {
+class OrganisationUserInvitationUserIdFragment: Fragment(R.layout.fragment_organisation_user_invitation_user_id) {
 
     private val binding by viewBinding(FragmentOrganisationUserInvitationUserIdBinding::bind)
 
     private val viewModel: OrganisationUserInvitationUserIdViewModel by viewModels()
 
-    private val sharedViewModel: OrganisationUserManageViewModel by viewModels({ requireParentFragment() })
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         InsetHandler.adaptToEdgeWithPadding(binding.root)
-
         SnackbarController.observeSnackbarEvents(viewLifecycleOwner, binding.root)
 
         setupEditTextChanges()
         setupInviteButton()
+        setupAutoCompleteTextViewUserRole()
 
-        collectInLifecycle(sharedViewModel.uiState) { uiState ->
-            updateSharedUiState(uiState)
+        viewLifecycleOwner.lifecycleScope.launch {
+            mainViewModel.isConnected.collectLatest {
+                binding.buttonInvite.isEnabled = it
+            }
         }
+
 
         collectInLifecycle(viewModel.uiState) { uiState ->
             updateUiState(uiState)
@@ -59,7 +64,15 @@ class OrganisationUserInvitationUserIdFragment :
         }
 
         collectInLifecycle(viewModel.canInvite) {
-            binding.buttonInvite.isEnabled = it
+            binding.buttonInvite.isEnabled = it && mainViewModel.isConnected.value
+        }
+    }
+
+    private fun setupAutoCompleteTextViewUserRole() {
+        (binding.autoCompleteRole as MaterialAutoCompleteTextView).apply {
+            setSimpleItems(OrganisationRole.entries.map { it.name }.toTypedArray())
+        }.setOnItemClickListener { _, _, i, _ ->
+            viewModel.onEvent(OrganisationUserInvitationUserIdFormEvent.RoleChanged(OrganisationRole.entries[i].name))
         }
     }
 
@@ -90,14 +103,6 @@ class OrganisationUserInvitationUserIdFragment :
         }
         binding.editTextUserId.doAfterTextChanged {
             viewModel.onEvent(OrganisationUserInvitationUserIdFormEvent.UserIdChanged(it.toString()))
-        }
-    }
-
-    private fun updateSharedUiState(uiState: OrganisationUserManageUiState) {
-        (binding.autoCompleteRole as MaterialAutoCompleteTextView).apply {
-            setSimpleItems(OrganisationRole.entries.map { it.name }.toTypedArray())
-        }.setOnItemClickListener { _, _, i, _ ->
-            viewModel.onEvent(OrganisationUserInvitationUserIdFormEvent.RoleChanged(OrganisationRole.entries[i].name))
         }
     }
 }

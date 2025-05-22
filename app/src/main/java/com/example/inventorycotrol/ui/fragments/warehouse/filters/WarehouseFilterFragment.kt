@@ -47,6 +47,8 @@ class WarehouseFilterFragment : Fragment(R.layout.fragment_warehouse_filters) {
     }
 
     private fun updateUiState(uiState: WarehouseFilterUiState) {
+        binding.chipGroupCategories.removeAllViews()
+
         uiState.categories.forEach { category ->
             val categoryChip = layoutInflater.inflate(
                 R.layout.chip_select_category,
@@ -55,6 +57,7 @@ class WarehouseFilterFragment : Fragment(R.layout.fragment_warehouse_filters) {
             ) as Chip
 
             categoryChip.text = category.name
+            categoryChip.isChecked = sharedFilterViewModel.uiState.value.categoryFilters.any { it.name == category.name }
 
             binding.chipGroupCategories.addView(categoryChip)
         }
@@ -85,12 +88,20 @@ class WarehouseFilterFragment : Fragment(R.layout.fragment_warehouse_filters) {
             checkBoxToggleCategory.isChecked = filters.categoryFilters.isNotEmpty()
             checkBoxToggleTags.isChecked = filters.tags.isNotEmpty()
 
-            checkBoxToggleStock.callOnClick()
-            checkBoxToggleCategory.callOnClick()
-            checkBoxToggleTags.callOnClick()
+            layoutStock.visibility = if (checkBoxToggleStock.isChecked) View.VISIBLE else View.GONE
+            chipGroupCategories.visibility = if (checkBoxToggleCategory.isChecked) View.VISIBLE else View.GONE
+            customInputTags.visibility = if (checkBoxToggleTags.isChecked) View.VISIBLE else View.GONE
+
+            textViewStockSelection.text = getSelectionText(listOf(checkBoxOverstock, checkBoxLowStock, checkBoxOutOfStock, checkBoxCriticalStock))
+            textViewStockSelection.visibility = if (!checkBoxToggleStock.isChecked && textViewStockSelection.text.isNotEmpty()) View.VISIBLE else View.GONE
+
+            textViewCategorySelection.text = getSelectionText(chipGroupCategories.children.filterIsInstance<Chip>().toList())
+            textViewCategorySelection.visibility = if (!checkBoxToggleCategory.isChecked && textViewCategorySelection.text.isNotEmpty()) View.VISIBLE else View.GONE
+
+            textViewTagsSelection.text = customInputTags.tags.joinToString(", ") { it.name }
+            textViewTagsSelection.visibility = if (!checkBoxToggleTags.isChecked && textViewTagsSelection.text.isNotEmpty()) View.VISIBLE else View.GONE
         }
     }
-
     private fun setupToolbar() {
         binding.toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()

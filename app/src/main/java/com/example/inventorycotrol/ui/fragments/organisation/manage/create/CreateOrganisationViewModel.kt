@@ -17,10 +17,11 @@ import com.example.inventorycotrol.ui.navigation.AppNavigator
 import com.example.inventorycotrol.ui.navigation.Destination
 import com.example.inventorycotrol.ui.snackbar.SnackbarController.sendSnackbarEvent
 import com.example.inventorycotrol.ui.snackbar.SnackbarEvent
-import com.example.inventorycotrol.ui.utils.FileMimeType
+import com.example.inventorycotrol.domain.model.file.FileMimeType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -91,7 +92,12 @@ class CreateOrganisationViewModel @Inject constructor(
 
     private fun createOrganisation() = viewModelScope.launch {
 
-        if(!isValidInputs()) return@launch
+        if(!isValidInputs()) {
+            return@launch
+        }
+
+
+        _uiState.update { it.copy(isLoading = true) }
 
         val urlLogo = logo.value?.let {
             fileUseCases.uploadFileUseCase.invoke(
@@ -107,7 +113,7 @@ class CreateOrganisationViewModel @Inject constructor(
                 currency = _uiStateForm.value.currency,
                 logoUrl = urlLogo
             )
-        ).onEach { response ->
+        ).distinctUntilChanged().onEach { response ->
             when (response) {
                 Resource.Loading -> {
                     _uiState.update { it.copy(isLoading = true) }
@@ -121,7 +127,7 @@ class CreateOrganisationViewModel @Inject constructor(
                 is Resource.Success -> {
                     _uiState.update { it.copy(isLoading = false) }
                     navigator.navigate(Destination.Home) {
-                        if (destArg.isFromHome) {
+                        if (destArg.isNavigatedFromSidePanel) {
                             popUpTo(Destination.Home) {
                                 inclusive = true
                                 saveState = false
@@ -160,6 +166,6 @@ class CreateOrganisationViewModel @Inject constructor(
             )
         }
 
-        return (!organisationName.hasError || currency.hasError)
+        return !(organisationName.hasError || currency.hasError)
     }
 }

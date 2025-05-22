@@ -8,8 +8,8 @@ import com.example.inventorycotrol.common.ApiResponseResult
 import com.example.inventorycotrol.data.remote.services.FileApiService
 import com.example.inventorycotrol.domain.model.file.FileResponse
 import com.example.inventorycotrol.domain.repository.remote.FileRepository
-import com.example.inventorycotrol.ui.utils.FileMimeType
-import com.example.inventorycotrol.ui.utils.extensions.safeResponseApiCallFlow
+import com.example.inventorycotrol.domain.model.file.FileMimeType
+import com.example.inventorycotrol.ui.utils.extensions.safeSuspendResponseApiCallFlow
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -32,7 +32,7 @@ class FileRepositoryImpl(
     override suspend fun uploadFile(
         uri: Uri,
         mimeType: FileMimeType?
-    ): Flow<ApiResponseResult<FileResponse>> = safeResponseApiCallFlow {
+    ): Flow<ApiResponseResult<FileResponse>> = safeSuspendResponseApiCallFlow {
         val contentResolver = context.contentResolver
         val fileName = getFileName(contentResolver, uri)
         val mediaType = determineMediaType(uri, mimeType, contentResolver)

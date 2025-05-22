@@ -2,8 +2,8 @@ package com.example.inventorycotrol.data.remote.services
 
 import com.example.inventorycotrol.data.remote.dto.OrganisationInvitationDto
 import com.example.inventorycotrol.data.remote.dto.UserDto
-import com.example.inventorycotrol.domain.model.auth.ChangeEmailRequest
-import com.example.inventorycotrol.domain.model.auth.ChangePasswordRequest
+import com.example.inventorycotrol.domain.model.auth.requests.ChangeEmailRequest
+import com.example.inventorycotrol.domain.model.auth.requests.ChangePasswordRequest
 import com.example.inventorycotrol.domain.model.profile.ChangeInfoUserRequest
 import retrofit2.Response
 import retrofit2.http.Body

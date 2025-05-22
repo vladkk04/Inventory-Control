@@ -119,8 +119,10 @@ object AppDialogs {
                 }
             }
 
-    fun createTimePicker() = MaterialTimePicker.Builder()
+    fun createTimePicker(defaultTime: kotlin.Pair<Int, Int>? = null) = MaterialTimePicker.Builder()
         .setTimeFormat(TimeFormat.CLOCK_24H)
         .setTitleText("Select time")
+        .setHour(defaultTime?.first ?: 0)
+        .setMinute(defaultTime?.second ?: 0)
         .build()
 }

@@ -183,6 +183,17 @@
                 android:text="@string/text_threshold"
                 android:textSize="@dimen/text_size_large" />
 
+<!--
+
+            <CheckBox
+                android:id="@+id/check_box_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/materialDivider"
+                android:layout_toEndOf="@+id/text_view_threshold"
+                android:button="@drawable/ic_info_outline" />
+-->
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -253,10 +264,25 @@
                 android:textAlignment="center"
                 tools:text="20" />
 
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/materialDivider2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/edit_text_critical_threshold" />
+
+            <TextView
+                android:id="@+id/info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/materialDivider2"
+                android:text="Stock level thresholds determine color indicators:\n\n• Green for normal threshold \n• Yellow for medium threshold \n• Red for critical threshold \n\nExample (1) : If min stock = 100 and Normal threshold value = 50% then Green color appears at ≥ 50 items.\n\nExample (2) : If min stock = 100 and Medium threshold value = 50%, and current stock is 50 then Yellow color appears at ≤ 50 items but ≥ Critical threhold %."
+                android:textSize="14sp"
+                android:paddingVertical="@dimen/padding_medium"/>
+
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/text_view_critical_threshold"
+                android:layout_below="@id/info"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true">

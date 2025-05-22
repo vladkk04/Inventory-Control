@@ -11,7 +11,7 @@ interface ProductLocalDataSource: BaseRoomRepository<ProductEntity> {
 
     fun getById(id: String): Flow<ProductEntity>
 
-    fun getByIdWithCategory(id: String): Flow<ProductDetail>
+    fun getByIdWithCategory(id: String): Flow<ProductDetail?>
 
     fun getAllWithCategory(): Flow<List<ProductDetail>>
 

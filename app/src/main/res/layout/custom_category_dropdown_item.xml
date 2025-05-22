@@ -15,7 +15,9 @@
         android:layout_weight="1"
         android:gravity="start|center"
         android:textSize="@dimen/text_size_medium_plus"
-        tools:text="Hello!" />
+        android:maxLines="1"
+        android:ellipsize="end"
+        tools:text="ksdsfjkdlkfjksfdjdfjksjkflsdjkl;dfsjfksdl" />
 
     <CheckBox
         android:id="@+id/check_box_edit"

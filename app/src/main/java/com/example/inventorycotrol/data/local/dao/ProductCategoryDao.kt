@@ -25,7 +25,7 @@ interface ProductCategoryDao: BaseDao<ProductCategoryEntity> {
     @Transaction
     suspend fun refresh(categories: List<ProductCategoryEntity>) {
         deleteExcept(categories.map { it.id })
-        upsertAll(*categories.toTypedArray())
+        insertAll(*categories.toTypedArray())
     }
 
     @Query("DELETE FROM product_categories")

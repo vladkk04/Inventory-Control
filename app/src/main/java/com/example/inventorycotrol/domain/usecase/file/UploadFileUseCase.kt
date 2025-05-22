@@ -3,7 +3,7 @@ package com.example.inventorycotrol.domain.usecase.file
 import android.net.Uri
 import com.example.inventorycotrol.common.ApiResponseResult
 import com.example.inventorycotrol.domain.repository.remote.FileRepository
-import com.example.inventorycotrol.ui.utils.FileMimeType
+import com.example.inventorycotrol.domain.model.file.FileMimeType
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.last
 

@@ -1,6 +1,5 @@
 package com.example.inventorycotrol.ui.utils
 
-import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -19,15 +18,13 @@ data class ProductPdf(
     val stockOnHand: Double
 )
 
-class PdfReportGenerator(private val context: Context) {
-
+class PdfReportGenerator {
     companion object {
         private const val PDF_PAGE_WIDTH = 595
         private const val PDF_PAGE_HEIGHT = 842
     }
 
     fun generateStockReport(
-        organizationName: String,
         creationDate: String,
         periodReports: TimePeriodReports,
         dataRange: String,
@@ -41,17 +38,11 @@ class PdfReportGenerator(private val context: Context) {
         }
 
         val pageInfo = PdfDocument.PageInfo.Builder(PDF_PAGE_WIDTH, PDF_PAGE_HEIGHT, 1).create()
-        val page = doc.startPage(pageInfo)
-        val canvas = page.canvas
+        var page = doc.startPage(pageInfo)
+        var canvas = page.canvas
 
         var currentY = 50f
 
-        // Organization name
-        paint.textSize = 16f
-        canvas.drawText(organizationName, 50f, currentY, paint)
-        currentY += 30f
-
-        // Date and Period
         paint.textSize = 12f
         canvas.drawText("Date of creation: $creationDate", 50f, currentY, paint)
         currentY += 20f
@@ -64,12 +55,9 @@ class PdfReportGenerator(private val context: Context) {
             50f, currentY, paint
         )
 
-
-
         currentY += 40f
 
         if (products.isEmpty()) {
-            // Show "No data available" message
             paint.textSize = 14f
             paint.typeface = Typeface.create(Typeface.DEFAULT, Typeface.ITALIC)
             canvas.drawText(
@@ -78,40 +66,45 @@ class PdfReportGenerator(private val context: Context) {
             )
             currentY += 30f
         } else {
-            // Draw table header (now with 4 columns)
             drawTableHeader(canvas, currentY)
             currentY += 30f
 
-            // Draw product rows
+
             products.forEach { product ->
                 drawProductRow(canvas, product, currentY)
                 currentY += 30f
 
-                if (currentY > PDF_PAGE_HEIGHT - 50) {
+                if (currentY > PDF_PAGE_HEIGHT - 100) {
+                    paint.textSize = 10f
+                    canvas.drawText(
+                        "Page ${doc.pages.size + 1} of ${doc.pages.size + 1}",
+                        PDF_PAGE_WIDTH - 100f,
+                        PDF_PAGE_HEIGHT - 30f,
+                        paint
+                    )
                     doc.finishPage(page)
-                    val newPageInfo = PdfDocument.PageInfo.Builder(
+                    page = doc.startPage(PdfDocument.PageInfo.Builder(
                         PDF_PAGE_WIDTH,
                         PDF_PAGE_HEIGHT,
                         doc.pages.size + 1
-                    ).create()
-                    val newPage = doc.startPage(newPageInfo)
+                    ).create())
+
+                    canvas = page.canvas
                     currentY = 50f
-                    drawTableHeader(newPage.canvas, currentY)
+
+                    drawTableHeader(canvas, currentY)
                     currentY += 30f
                 }
             }
         }
 
-        // Page number (only if we have data)
-        if (products.isNotEmpty()) {
-            paint.textSize = 10f
-            canvas.drawText(
-                "Page 1 of 1",
-                PDF_PAGE_WIDTH - 100f,
-                PDF_PAGE_HEIGHT - 30f,
-                paint
-            )
-        }
+        paint.textSize = 10f
+        canvas.drawText(
+            "Page ${doc.pages.size + 1}",
+            PDF_PAGE_WIDTH - 60f,
+            PDF_PAGE_HEIGHT - 30f,
+            paint
+        )
 
         doc.finishPage(page)
         savePdfDocument(doc, "stock_report_${System.currentTimeMillis()}.pdf", callback)
@@ -125,22 +118,19 @@ class PdfReportGenerator(private val context: Context) {
             isAntiAlias = true
         }
 
-        // Now 4 columns instead of 5
         val colWidth = (PDF_PAGE_WIDTH - 100) / 4f
         val xPositions = listOf(
-            50f,              // Product
-            50f + colWidth,   // Stock In
-            50f + 2 * colWidth, // Stock Out
-            50f + 3 * colWidth  // Stock on Hand
+            50f,
+            50f + colWidth,
+            50f + 2 * colWidth,
+            50f + 3 * colWidth
         )
 
-        // Headers (without Ordered column)
         canvas.drawText("Product", xPositions[0], yPos, paint)
         canvas.drawText("Stock In", xPositions[1], yPos, paint)
         canvas.drawText("Stock Out", xPositions[2], yPos, paint)
         canvas.drawText("Stock on Hand", xPositions[3], yPos, paint)
 
-        // Line under headers
         paint.strokeWidth = 1f
         canvas.drawLine(50f, yPos + 10, PDF_PAGE_WIDTH - 50f, yPos + 10, paint)
     }
@@ -152,13 +142,12 @@ class PdfReportGenerator(private val context: Context) {
             isAntiAlias = true
         }
 
-        // Now 4 columns instead of 5
         val colWidth = (PDF_PAGE_WIDTH - 100) / 4f
         val xPositions = listOf(
-            50f,              // Product
-            50f + colWidth,   // Stock In
-            50f + 2 * colWidth, // Stock Out
-            50f + 3 * colWidth  // Stock on Hand
+            50f,
+            50f + colWidth,
+            50f + 2 * colWidth,
+            50f + 3 * colWidth
         )
 
         val productName = if (product.name.length > 20) {
@@ -172,7 +161,6 @@ class PdfReportGenerator(private val context: Context) {
         canvas.drawText(product.qtyOut.toString(), xPositions[2], yPos, paint)
         canvas.drawText(product.stockOnHand.toString(), xPositions[3], yPos, paint)
 
-        // Line between rows
         paint.strokeWidth = 0.5f
         canvas.drawLine(50f, yPos + 15, PDF_PAGE_WIDTH - 50f, yPos + 15, paint)
     }

@@ -2,7 +2,6 @@ package com.example.inventorycotrol.ui.utils.extensions
 
 import android.view.LayoutInflater
 import android.view.View
-import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.createViewModelLazy
@@ -12,7 +11,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelLazy
 import androidx.lifecycle.ViewModelStore
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
@@ -81,34 +79,5 @@ inline fun <reified VM : ViewModel> Fragment.hiltViewModelNavigation(destination
         extrasProducer = { backStackEntry.defaultViewModelCreationExtras }
     )
 }
-
-inline fun <reified VM : ViewModel> Fragment.hiltActivityViewModels(): Lazy<VM> {
-    return createViewModelLazy(
-        VM::class,
-        { requireActivity().viewModelStore },
-        factoryProducer = {
-            HiltViewModelFactory(
-                requireActivity(),
-                requireActivity().defaultViewModelProviderFactory
-            )
-        },
-        extrasProducer = { requireActivity().defaultViewModelCreationExtras }
-    )
-}
-inline fun <reified VM : ViewModel> ComponentActivity.hiltViewModels(): Lazy<VM> {
-
-    return ViewModelLazy(
-        viewModelClass = VM::class,
-        storeProducer = { viewModelStore },
-        factoryProducer = {
-            HiltViewModelFactory(
-                this,
-                defaultViewModelProviderFactory
-            )
-        },
-        extrasProducer = { defaultViewModelCreationExtras }
-    )
-}
-
 
 

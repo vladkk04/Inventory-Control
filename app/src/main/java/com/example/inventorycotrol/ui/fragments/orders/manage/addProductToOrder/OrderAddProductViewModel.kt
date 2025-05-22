@@ -23,7 +23,6 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -39,7 +38,7 @@ class OrderAddProductViewModel @Inject constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val destArg = Destination.from<Destination.OrderAddProduct>(savedStateHandle)
+    private val destArg = Destination.from<Destination.OrderProductSelector>(savedStateHandle)
 
     private val _uiState = MutableStateFlow(OrderAddProductUiState(currency = destArg.currency))
     val uiState = _uiState.asStateFlow()
@@ -47,15 +46,44 @@ class OrderAddProductViewModel @Inject constructor(
     private val _uiFormState = MutableStateFlow(OrderAddProductFormUiState())
     val uiFormState = _uiFormState.asStateFlow()
 
+
     @OptIn(FlowPreview::class)
     private val searchQueryFlow = MutableStateFlow("").apply {
-        debounce(2000).onEach { if(it.isNotBlank()) getProducts(it) }
-            .launchIn(viewModelScope)
+        debounce(1000).onEach { query ->
+            if (query.isNotEmpty()) {
+                searchProducts(query)
+            } else {
+                getProducts()
+            }
+        }.launchIn(viewModelScope)
     }
 
-    init { getProducts() }
+    init { _uiState.update { it.copy(isLoading = true) } }
 
-    private fun getProducts(filter: String? = null) = viewModelScope.launch {
+    private fun searchProducts(query: String) = viewModelScope.launch(dispatcher) {
+        productUseCase.getProducts.getAll().onEach { response ->
+            when (response) {
+                Resource.Loading -> _uiState.update { it.copy(isLoading = true) }
+                is Resource.Error -> {
+                    _uiState.update { it.copy(isLoading = false) }
+                    sendSnackbarEvent(SnackbarEvent(response.errorMessage))
+                }
+                is Resource.Success -> {
+                    val filteredProducts = response.data.filter { it.name.contains(query, ignoreCase = true) }.map { it.mapToSelection() }
+
+                    _uiState.update { state ->
+                        state.copy(
+                            products = filteredProducts,
+                            pinnedProduct = null,
+                            isLoading = false
+                        )
+                    }
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    private fun getProducts() = viewModelScope.launch {
         productUseCase.getProducts.getAll().onEach { response ->
             when (response) {
                 Resource.Loading -> _uiState.update { it.copy(isLoading = true) }
@@ -66,16 +94,15 @@ class OrderAddProductViewModel @Inject constructor(
                 is Resource.Success -> {
                     _uiState.update { state ->
                         state.copy(
-                            products = response.data.map { it.mapToSelection() }.filter { product ->
-                                filter.isNullOrBlank() || product.name.contains(filter, ignoreCase = true)
-                            },
+                            products = response.data.map { it.mapToSelection() },
                             pinnedProduct = null,
-                            isLoading = false
+                            isLoading = false,
+                            isBarcode = false
                         )
                     }
                 }
             }
-        }.flowOn(dispatcher).launchIn(viewModelScope)
+        }.launchIn(viewModelScope)
     }
 
     fun scanBarcodeScanner() = viewModelScope.launch {
@@ -92,7 +119,8 @@ class OrderAddProductViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         pinnedProduct = foundProduct,
-                        products = listOf(foundProduct)
+                        products = listOf(foundProduct),
+                        isBarcode = true
                     )
                 }
 
@@ -142,7 +170,6 @@ class OrderAddProductViewModel @Inject constructor(
     }
 
     fun selectItem(productId: String) {
-
         val foundProduct = _uiState.value.products.find { it.id == productId}
 
         _uiState.update { state ->

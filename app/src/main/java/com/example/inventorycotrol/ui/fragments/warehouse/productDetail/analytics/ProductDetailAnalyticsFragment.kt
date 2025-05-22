@@ -8,11 +8,11 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.inventorycotrol.R
 import com.example.inventorycotrol.databinding.FragmentProductDetailAnalyticsBinding
 import com.example.inventorycotrol.domain.model.TimePeriod
-import com.example.inventorycotrol.ui.utils.extensions.collectInLifecycle
 import com.example.inventorycotrol.ui.views.Charts
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
 import com.patrykandpatrick.vico.core.cartesian.data.columnSeries
@@ -28,6 +28,8 @@ import com.patrykandpatrick.vico.core.common.shape.CorneredShape
 import com.patrykandpatrick.vico.views.cartesian.ScrollHandler
 import com.patrykandpatrick.vico.views.cartesian.ZoomHandler
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.util.Date
@@ -59,40 +61,40 @@ class ProductDetailAnalyticsFragment : Fragment() {
         setupStockChangeChart()
         setupStockVolumeChart()
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.uiState.collect { uiState ->
+                binding.progressBarStockChange.isVisible = uiState.isLoading
+                binding.progressBarStockVolume.isVisible = uiState.isLoading
 
-        collectInLifecycle(viewModel.uiState) { uiState ->
+                binding.textViewNoChangesStockChange.isVisible =
+                    uiState.stockChangeChartData.data.isEmpty()
+                binding.textViewNoChangesStockVolume.isVisible =
+                    uiState.volumeStockChartData.x.isEmpty() || uiState.volumeStockChartData.y.isEmpty()
 
-            binding.progressBarStockChange.isVisible = uiState.isLoading
-            binding.progressBarStockVolume.isVisible = uiState.isLoading
+                if (uiState.stockChangeChartData.data.isNotEmpty()) {
+                    val data = uiState.stockChangeChartData.data
+                    binding.chartViewPrice.visibility = View.VISIBLE
+                    chartStockChangeModelProducer.createTransaction().apply {
+                        lineSeries { series(data.values) }
+                        extras { it[bottomStockChangeExtraStoreKey] = data.keys.toList() }
+                    }.commit()
+                } else {
+                    binding.chartViewPrice.visibility = View.INVISIBLE
+                }
 
-            binding.textViewNoChangesStockChange.isVisible =
-                uiState.stockChangeChartData.data.isEmpty()
-            binding.textViewNoChangesStockVolume.isVisible =
-                uiState.volumeStockChartData.x.isEmpty() || uiState.volumeStockChartData.y.isEmpty()
+                if (uiState.volumeStockChartData.x.isNotEmpty() && uiState.volumeStockChartData.y.isNotEmpty()) {
+                    binding.chartViewVolume.visibility = View.VISIBLE
+                    val x = uiState.volumeStockChartData.x
+                    val y = uiState.volumeStockChartData.y
 
-            if (uiState.stockChangeChartData.data.isNotEmpty()) {
-                val data = uiState.stockChangeChartData.data
-                binding.chartViewPrice.visibility = View.VISIBLE
-                chartStockChangeModelProducer.createTransaction().apply {
-                    lineSeries { series(data.values) }
-                    extras { it[bottomStockChangeExtraStoreKey] = data.keys.toList() }
-                }.commit()
-            } else {
-                binding.chartViewPrice.visibility = View.INVISIBLE
-            }
-
-            if (uiState.volumeStockChartData.x.isNotEmpty() && uiState.volumeStockChartData.y.isNotEmpty()) {
-                binding.chartViewVolume.visibility = View.VISIBLE
-                val x = uiState.volumeStockChartData.x
-                val y = uiState.volumeStockChartData.y
-
-                chartVolumeStockModelProducer.createTransaction().apply {
-                    columnSeries { y.values.forEach { series(x, it) } }
-                    extras { it[stockVolumeLegendKey] = y.keys.toSet() }
-                    extras { it[bottomStockVolumeStoreKey] = x.map { it.toString() } }
-                }.commit()
-            } else {
-                binding.chartViewVolume.visibility = View.INVISIBLE
+                    chartVolumeStockModelProducer.createTransaction().apply {
+                        columnSeries { y.values.forEach { series(x, it) } }
+                        extras { it[stockVolumeLegendKey] = y.keys.toSet() }
+                        extras { it[bottomStockVolumeStoreKey] = x.map { hell -> hell.toString() } }
+                    }.commit()
+                } else {
+                    binding.chartViewVolume.visibility = View.INVISIBLE
+                }
             }
         }
 
@@ -100,35 +102,37 @@ class ProductDetailAnalyticsFragment : Fragment() {
             "datePeriod",
             TimePeriod.TODAY
         )?.let {
-            collectInLifecycle(it) { datePeriod ->
-                val text = when (datePeriod) {
-                    TimePeriod.TODAY -> getString(R.string.text_selected_date_today_value)
-                    TimePeriod.LAST_3_DAYS -> getString(
-                        R.string.text_selected_date_period_in_days_value,
-                        "3"
-                    )
+            viewLifecycleOwner.lifecycleScope.launch {
+                it.collectLatest { datePeriod ->
+                    val text = when (datePeriod) {
+                        TimePeriod.TODAY -> getString(R.string.text_selected_date_today_value)
+                        TimePeriod.LAST_3_DAYS -> getString(
+                            R.string.text_selected_date_period_in_days_value,
+                            "3"
+                        )
 
-                    TimePeriod.LAST_7_DAYS -> getString(
-                        R.string.text_selected_date_period_in_days_value,
-                        "7"
-                    )
+                        TimePeriod.LAST_7_DAYS -> getString(
+                            R.string.text_selected_date_period_in_days_value,
+                            "7"
+                        )
 
-                    TimePeriod.LAST_MONTH -> getString(
-                        R.string.text_selected_date_period_in_days_value,
-                        "30"
-                    )
+                        TimePeriod.LAST_MONTH -> getString(
+                            R.string.text_selected_date_period_in_days_value,
+                            "30"
+                        )
 
-                    TimePeriod.LAST_90_DAYS -> getString(
-                        R.string.text_selected_date_period_in_days_value,
-                        "90"
-                    )
+                        TimePeriod.LAST_90_DAYS -> getString(
+                            R.string.text_selected_date_period_in_days_value,
+                            "90"
+                        )
 
-                    TimePeriod.LAST_YEAR -> getString(R.string.text_selected_date_last_year)
+                        TimePeriod.LAST_YEAR -> getString(R.string.text_selected_date_last_year)
+                    }
+
+                    binding.textViewDateStockChanges.text = text
+                    binding.textViewDateStockVolume.text = text
+                    viewModel.changeStockDatePeriod(datePeriod)
                 }
-
-                binding.textViewDateStockChanges.text = text
-                binding.textViewDateStockVolume.text = text
-                viewModel.changeStockDatePeriod(datePeriod)
             }
         }
 
@@ -160,11 +164,12 @@ class ProductDetailAnalyticsFragment : Fragment() {
                     },
                     padding = Dimensions(8f, 4f),
                 ),
-                bottomCartesianValueFormatter = { context, value, _ ->
+                bottomCartesianValueFormatter = { context, _, _ ->
                     val data = context.model.extraStore[bottomStockVolumeStoreKey]
                     val result = data.let {
                         if (it.size >= 2) {
-                            val startDate = Date(Instant.ofEpochMilli(it[0].toLong()).toEpochMilli())
+                            val startDate =
+                                Date(Instant.ofEpochMilli(it[0].toLong()).toEpochMilli())
                             val endDate = Date(Instant.ofEpochMilli(it[1].toLong()).toEpochMilli())
 
                             val startFormat = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault())

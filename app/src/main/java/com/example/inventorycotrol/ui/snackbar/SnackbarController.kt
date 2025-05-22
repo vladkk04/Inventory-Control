@@ -2,10 +2,12 @@ package com.example.inventorycotrol.ui.snackbar
 
 import android.view.View
 import android.widget.FrameLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.example.inventorycotrol.ui.utils.extensions.collectInLifecycle
 import com.google.android.material.snackbar.Snackbar
@@ -36,6 +38,10 @@ object SnackbarController {
     }
 
     fun ViewModel.sendSnackbarEvent(event: SnackbarEvent) = viewModelScope.launch {
+        _events.emit(event)
+    }
+
+    fun AppCompatActivity.sendSnackbarEvent(event: SnackbarEvent) = lifecycleScope.launch {
         _events.emit(event)
     }
 

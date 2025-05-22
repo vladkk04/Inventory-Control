@@ -10,10 +10,11 @@ import com.example.inventorycotrol.domain.usecase.organisation.OrganisationUseCa
 import com.example.inventorycotrol.ui.navigation.AppNavigator
 import com.example.inventorycotrol.ui.snackbar.SnackbarController.sendSnackbarEvent
 import com.example.inventorycotrol.ui.snackbar.SnackbarEvent
-import com.example.inventorycotrol.ui.utils.FileMimeType
+import com.example.inventorycotrol.domain.model.file.FileMimeType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -79,7 +80,7 @@ class OrganisationEditViewModel @Inject constructor(
     }
 
     private suspend fun getOrganisation() {
-        organisationUseCase.get.getOrganisation().onEach { result ->
+        organisationUseCase.get.getOrganisation().distinctUntilChanged().onEach { result ->
             when (result) {
                 Resource.Loading -> _uiState.update { it.copy(isLoading = true) }
                 is Resource.Error -> {
@@ -108,12 +109,12 @@ class OrganisationEditViewModel @Inject constructor(
         }?.firstOrNull()
 
         organisation.value?.copy(
-            logoUrl = urlLogo ?: organisation.value?.logoUrl,
+            logoUrl = urlLogo,
             name = _uiFormState.value.organisationName,
             description = _uiFormState.value.description,
             currency = _uiFormState.value.currency
         )?.let { organisation ->
-            organisationUseCase.update(organisation).onEach { result ->
+            organisationUseCase.update(organisation).distinctUntilChanged().onEach { result ->
                 when (result) {
                     Resource.Loading -> {
                         _uiState.update { it.copy(isLoading = true) }

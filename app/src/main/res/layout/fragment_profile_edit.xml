@@ -32,14 +32,45 @@
             android:orientation="vertical"
             android:gravity="top|center">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/image_view_profile_logo"
+            <FrameLayout
                 android:layout_width="128dp"
                 android:layout_height="128dp"
-                android:layout_marginVertical="@dimen/margin_vertical_between_items"
-                android:background="@drawable/background_corner_circle_stroke"
-                android:scaleType="centerCrop"
-                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle" />
+                android:layout_marginVertical="@dimen/margin_normal">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/image_view_profile_logo"
+                    android:layout_width="128dp"
+                    android:layout_height="128dp"
+                    android:background="@drawable/background_corner_circle_stroke"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_add_image"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle" />
+
+                <LinearLayout
+                    android:id="@+id/layout_manage_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:visibility="gone">
+
+                    <Button
+                        style="?attr/materialIconButtonStyle"
+                        android:id="@+id/button_delete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:icon="@drawable/ic_delete"/>
+
+                    <Button
+                        style="?attr/materialIconButtonStyle"
+                        android:id="@+id/button_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:icon="@drawable/ic_edit"/>
+
+                </LinearLayout>
+
+            </FrameLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/text_input_full_name"

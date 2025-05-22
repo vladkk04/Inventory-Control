@@ -43,12 +43,11 @@ class ProductUpdateStockFragment :
             areItemsSame = { old, new -> old.id == new.id }
             areContentsSame = { old, new -> old == new }
 
-
             bind { item ->
                 when (item.unit) {
                     ProductUnit.PCS, ProductUnit.BOX -> {
                         editTextQuantity.inputType =
-                            InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_NORMAL or InputType.TYPE_NUMBER_FLAG_SIGNED
+                            InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_NORMAL
 
                         this.editTextQuantity.setText(
                             String.format(
@@ -80,18 +79,11 @@ class ProductUpdateStockFragment :
                 )
 
                 editTextQuantity.doAfterTextChanged {
-                    it.toString().apply {
-                        if (item.stockOnHand + (this.toDoubleOrNull()
-                                ?: 0.00) < item.stockOnHand && item.stockOnHand + this.toDouble() < 0
-                        ) {
-                            editTextQuantity.error = "Incorrect quantity"
-                        } else {
-                            editTextQuantity.error = null
-                        }
-                    }
+                    editTextQuantity.setSelection(editTextQuantity.text?.length ?: 0)
+                    buttonMinus.isEnabled = it.toString().toDoubleOrNull() != 0.00
+                    buttonMinus.alpha = if (buttonMinus.isEnabled) 1f else 0.5f
 
                     viewModel.updateInputValue(item.id, editTextQuantity.text.toString().toDoubleOrNull())
-                    editTextQuantity.setSelection(editTextQuantity.text?.length ?: 0)
                 }
             }
 
@@ -149,10 +141,10 @@ class ProductUpdateStockFragment :
 
     private fun updateUiState(uiState: ProductUpdateStockUiState) {
         productAdapter.submitList(uiState.products)
+        showProgress(uiState.isLoading)
 
         binding.textViewNoProducts.isGone = uiState.isLoading || uiState.products.isNotEmpty()
         binding.progressBar.isGone = !uiState.isLoading
-
     }
 
     private fun setupProductAdapter() {

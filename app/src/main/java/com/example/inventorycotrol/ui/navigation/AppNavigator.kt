@@ -10,7 +10,7 @@ interface AppNavigator {
 
     suspend fun navigate(
         destination: Destination,
-        navOptions: NavOptionsBuilder.() -> Unit = {}
+        navOptions: NavOptionsBuilder.() -> Unit = { }
     )
 
     suspend fun navigateUp(args: Map<String, Any?> = emptyMap())

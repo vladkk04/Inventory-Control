@@ -1,6 +1,6 @@
 package com.example.inventorycotrol.data.remote.repositories.organisation
 
-import OrganisationSettingsRequest
+import com.example.inventorycotrol.domain.model.organisation.settings.OrganisationSettingsRequest
 import com.example.inventorycotrol.common.ApiResponseResult
 import com.example.inventorycotrol.data.constants.AppConstants
 import com.example.inventorycotrol.data.remote.dto.OrganisationSettingsDto
@@ -8,7 +8,7 @@ import com.example.inventorycotrol.data.remote.services.OrganisationSettingsApiS
 import com.example.inventorycotrol.domain.manager.DataStoreManager
 import com.example.inventorycotrol.domain.repository.remote.OrganisationSettingsRemoteDataSource
 import com.example.inventorycotrol.ui.utils.extensions.safeApiCallFlow
-import com.example.inventorycotrol.ui.utils.extensions.safeResponseApiCallFlow
+import com.example.inventorycotrol.ui.utils.extensions.safeSuspendResponseApiCallFlow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
@@ -23,7 +23,7 @@ class OrganisationSettingsRemoteDataSourceImpl(
             ?: throw Exception("No organisation selected")
 
     override suspend fun get(): Flow<ApiResponseResult<OrganisationSettingsDto>> {
-        return safeResponseApiCallFlow { api.get(organisationId()) }.also {
+        return safeSuspendResponseApiCallFlow { api.get(organisationId()) }.also {
             when (val response = it.first()) {
                 ApiResponseResult.Loading -> {}
                 is ApiResponseResult.Failure -> {}
@@ -33,6 +33,10 @@ class OrganisationSettingsRemoteDataSourceImpl(
                     val notificationDays =
                         data.notificationSettings.notificationDays.map { value -> value.toString() }
                             .toSet()
+
+                    dataStore.updatePreference(AppConstants.NOTIFY_ONLY to data.notificationSettings.notifiableRoles.map { g -> g.name }
+                        .toSet())
+                        .exceptionOrNull()
 
                     dataStore.updatePreference(AppConstants.NOTIFICATION_TIME to data.notificationSettings.notificationTime)
                         .exceptionOrNull()

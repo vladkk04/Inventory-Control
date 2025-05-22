@@ -10,7 +10,7 @@ import com.example.inventorycotrol.domain.model.category.CreateProductCategoryRe
 import com.example.inventorycotrol.domain.model.category.ProductCategoryRequest
 import com.example.inventorycotrol.domain.repository.remote.ProductCategoryRemoteDataSource
 import com.example.inventorycotrol.ui.utils.extensions.safeApiCallFlow
-import com.example.inventorycotrol.ui.utils.extensions.safeResponseApiCallFlow
+import com.example.inventorycotrol.ui.utils.extensions.safeSuspendResponseApiCallFlow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 
@@ -24,7 +24,7 @@ class ProductCategoryRemoteDataSourceImpl(
             ?: throw NotFoundException("Organisation ID not found")
 
     override suspend fun create(request: ProductCategoryRequest): Flow<ApiResponseResult<CreateProductCategoryResponse>> =
-        safeResponseApiCallFlow { api.create(organisationId(), request) }
+        safeSuspendResponseApiCallFlow { api.create(organisationId(), request) }
 
     override suspend fun update(
         categoryId: String,
@@ -36,10 +36,10 @@ class ProductCategoryRemoteDataSourceImpl(
         safeApiCallFlow { api.delete(organisationId(), categoryId) }
 
     override suspend fun get(categoryId: String): Flow<ApiResponseResult<ProductCategoryDto>> =
-        safeResponseApiCallFlow { api.get(organisationId(), categoryId) }
+        safeSuspendResponseApiCallFlow { api.get(organisationId(), categoryId) }
 
     override fun getAll(): Flow<ApiResponseResult<List<ProductCategoryDto>>> =
-        safeResponseApiCallFlow { api.getAll(organisationId()) }
+        safeSuspendResponseApiCallFlow { api.getAll(organisationId()) }
 
     /* override suspend fun create(
          request: ProductCategoryRequest

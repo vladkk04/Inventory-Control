@@ -54,7 +54,6 @@ class ProductEditFragment : BaseProductManageFragment() {
                     .error(R.drawable.ic_image)
                     .into(binding.imageView)
             }
-
             binding.editTextName.setText(product.name)
             binding.editTextBarcode.setText(product.barcode)
             binding.editTextMinStockLevel.setText(String.format(Locale.getDefault(), "%.2f", product.minStockLevel))

@@ -14,7 +14,6 @@ import com.example.inventorycotrol.domain.model.profile.OrganisationInvitation
 import com.example.inventorycotrol.ui.model.organisationInvitations.InvitationListUiState
 import com.example.inventorycotrol.ui.utils.extensions.collectInLifecycle
 import com.example.inventorycotrol.ui.utils.extensions.viewBinding
-import com.example.inventorycotrol.ui.utils.screen.InsetHandler
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.Duration
 import java.time.Instant
@@ -60,7 +59,6 @@ class InvitationListFragment : Fragment(R.layout.fragment_invitation_list) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        InsetHandler.adaptToEdgeWithPadding(binding.root)
 
         setupToolbar()
         setupRecyclerView()

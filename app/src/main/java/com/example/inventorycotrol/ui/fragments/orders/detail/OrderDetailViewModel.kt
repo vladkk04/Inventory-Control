@@ -16,7 +16,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -42,7 +42,7 @@ class OrderDetailViewModel @Inject constructor(
     }
 
     private fun getOrder() = viewModelScope.launch {
-        orderUseCase.getOrders.invoke(orderNavigationArgs.id).onEach { response ->
+        orderUseCase.getOrders.invoke(orderNavigationArgs.id).distinctUntilChanged().onEach { response ->
             when (response) {
                 Resource.Loading -> {
                     _uiState.update { it.copy(isLoading = true) }
@@ -50,7 +50,7 @@ class OrderDetailViewModel @Inject constructor(
 
                 is Resource.Error -> {
                     sendSnackbarEvent(SnackbarEvent(response.errorMessage))
-                    _uiState.update { it.copy(isLoading = false) }
+                    _uiState.update { it.copy(order = response.data, isLoading = false) }
                 }
 
                 is Resource.Success -> {
@@ -62,7 +62,7 @@ class OrderDetailViewModel @Inject constructor(
                     }
                 }
             }
-        }.flowOn(ioDispatcher).launchIn(viewModelScope)
+        }.launchIn(viewModelScope)
     }
 
     fun navigateToOrderEdit() = viewModelScope.launch {
@@ -70,7 +70,7 @@ class OrderDetailViewModel @Inject constructor(
     }
 
     fun deleteOrder() = viewModelScope.launch {
-        orderUseCase.deleteOrder(orderNavigationArgs.id).onEach { response ->
+        orderUseCase.deleteOrder(orderNavigationArgs.id).distinctUntilChanged().onEach { response ->
             when (response) {
                 Resource.Loading -> {
                     _uiState.update { it.copy(isLoading = true) }
@@ -85,7 +85,7 @@ class OrderDetailViewModel @Inject constructor(
                     navigator.navigateUp()
                 }
             }
-        }.flowOn(ioDispatcher).launchIn(viewModelScope)
+        }.launchIn(viewModelScope)
     }
 
     fun navigateUp() = viewModelScope.launch {

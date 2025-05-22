@@ -1,4 +1,4 @@
-
+package com.example.inventorycotrol.domain.model.organisation.settings
 import com.example.inventorycotrol.data.remote.dto.NotificationSettings
 import com.example.inventorycotrol.data.remote.dto.ThresholdSettings
 import kotlinx.serialization.SerialName

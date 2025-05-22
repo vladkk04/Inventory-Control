@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <color name="black">#FF000000</color>
-
     <color name="colorPrimary">#ECDFCC</color>
     <color name="colorPrimaryContainer">#ECDFCC</color>
     <color name="colorOnPrimaryContainer">#3C3D37</color>

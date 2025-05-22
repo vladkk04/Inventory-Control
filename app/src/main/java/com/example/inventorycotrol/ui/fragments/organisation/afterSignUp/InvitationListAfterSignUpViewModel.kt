@@ -15,6 +15,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -36,14 +37,14 @@ class InvitationListAfterSignUpViewModel @Inject constructor(
     init { getOrganisationsInviting() }
 
     private fun getOrganisationsInviting() = viewModelScope.launch {
-        profileUseCases.getOrganisationsInviting().collectLatest { response ->
+        profileUseCases.getOrganisationsInviting().distinctUntilChanged().collectLatest { response ->
             when (response) {
                 ApiResponseResult.Loading -> {
                     _uiState.update { it.copy(isLoading = true) }
                 }
 
                 is ApiResponseResult.Failure -> {
-                    _uiState.update { it.copy(isLoading = true) }
+                    _uiState.update { it.copy(isLoading = false, isRefreshing = false) }
                 }
 
                 is ApiResponseResult.Success -> {
@@ -68,7 +69,7 @@ class InvitationListAfterSignUpViewModel @Inject constructor(
     }
 
     fun signOut() = viewModelScope.launch {
-        authRepository.signOut().collectLatest { response ->
+        authRepository.signOut().distinctUntilChanged().collectLatest { response ->
 
             when (response) {
                 ApiResponseResult.Loading -> {
@@ -91,7 +92,7 @@ class InvitationListAfterSignUpViewModel @Inject constructor(
     }
 
     fun acceptInvitation(id: String) = viewModelScope.launch {
-        profileUseCases.acceptOrganisationInvitation(id).onEach { response ->
+        profileUseCases.acceptOrganisationInvitation(id).distinctUntilChanged().onEach { response ->
             when (response) {
                 ApiResponseResult.Loading -> {
                     _uiState.update { it.copy(isLoading = true) }
@@ -115,7 +116,7 @@ class InvitationListAfterSignUpViewModel @Inject constructor(
     }
 
     fun declineInvitation(id: String) = viewModelScope.launch {
-        profileUseCases.declineOrganisationInvitation(id).onEach { response ->
+        profileUseCases.declineOrganisationInvitation(id).distinctUntilChanged().onEach { response ->
             when (response) {
                 ApiResponseResult.Loading -> {
                     _uiState.update { it.copy(isLoading = true) }

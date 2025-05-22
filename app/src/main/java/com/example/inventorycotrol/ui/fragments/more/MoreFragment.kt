@@ -14,20 +14,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.GridLayout
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.example.inventorycotrol.databinding.FragmentMoreBinding
+import com.example.inventorycotrol.domain.model.organisation.OrganisationRole
+import com.example.inventorycotrol.ui.MainViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
+
 @AndroidEntryPoint
-class MoreFragment: BottomSheetDialogFragment() {
+class MoreFragment : BottomSheetDialogFragment() {
 
     private var _binding: FragmentMoreBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: MoreViewModel by viewModels()
+
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,6 +42,26 @@ class MoreFragment: BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMoreBinding.inflate(inflater, container, false)
+        when (mainViewModel.organisationRole.value) {
+            OrganisationRole.ADMIN -> {
+                binding.fabManageUsers.visibility = View.VISIBLE
+                binding.fabManageOrganisation.visibility = View.VISIBLE
+                binding.fabOrganisationSettings.visibility = View.VISIBLE
+            }
+
+            OrganisationRole.EMPLOYEE -> {
+                binding.fabManageOrganisation.visibility = View.VISIBLE
+                (binding.fabManageOrganisation.layoutParams as GridLayout.LayoutParams).setGravity(Gravity.START)
+                binding.fabOrganisationSettings.visibility = View.GONE
+                binding.fabManageUsers.visibility = View.GONE
+            }
+
+            null -> {
+                binding.fabManageUsers.visibility = View.VISIBLE
+                binding.fabManageOrganisation.visibility = View.VISIBLE
+                binding.fabOrganisationSettings.visibility = View.VISIBLE
+            }
+        }
         setupFabButtons()
         return binding.root
     }
@@ -44,8 +71,14 @@ class MoreFragment: BottomSheetDialogFragment() {
 
         dialog?.window?.apply {
             setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL)
-            setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+            setFlags(
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+            )
+            setFlags(
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+            )
             setWindowAnimations(0)
             setDimAmount(0f)
 
@@ -81,7 +114,19 @@ class MoreFragment: BottomSheetDialogFragment() {
             TypedValue.COMPLEX_UNIT_DIP, 80f, requireContext().resources.displayMetrics
         ).toInt()
 
-        return getFullScreenHeight(requireContext()) - statusBarHeight
+        return getFullScreenHeight(requireContext()) - statusBarHeight - getNavigationBarHeight()
+    }
+
+    private fun getNavigationBarHeight(): Int {
+        val resourceId =
+            requireContext().resources.getIdentifier("navigation_bar_height", "dimen", "android")
+        return if (resourceId > 0) {
+            resources.getDimensionPixelSize(resourceId)
+        } else {
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 48f, resources.displayMetrics
+            ).toInt()
+        }
     }
 
     private fun View.animateBackgroundColor() {
@@ -112,9 +157,5 @@ class MoreFragment: BottomSheetDialogFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 }

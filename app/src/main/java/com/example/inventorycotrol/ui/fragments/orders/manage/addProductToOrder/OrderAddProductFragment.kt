@@ -102,14 +102,14 @@ class OrderAddProductFragment : BaseBottomSheetDialogFragment<FragmentOrderProdu
             binding.buttonAddProduct.isGone = true
         }
 
-        if (uiState.pinnedProduct != null && uiState.products.size == 1) {
+        if (uiState.pinnedProduct != null && uiState.products.size == 1 && uiState.isBarcode) {
             binding.textViewShowAll.isVisible = true
         } else {
             binding.textViewShowAll.isVisible = false
         }
 
         binding.buttonAddProduct.isEnabled = uiState.canAddProduct
-        binding.textViewNoProducts.isVisible = uiState.products.isEmpty()
+        binding.textViewNoProducts.isVisible = uiState.products.isEmpty() && !uiState.isLoading
 
         adapter.submitList(uiState.products) {
             binding.recyclerView.visibility = if (uiState.isLoading) View.INVISIBLE else View.VISIBLE

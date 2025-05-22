@@ -10,6 +10,7 @@ import com.example.inventorycotrol.domain.repository.local.UserLocalDataSource
 import com.example.inventorycotrol.domain.repository.remote.UserRemoteDataSource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 
@@ -32,7 +33,7 @@ class GetUserUseCase(
                 flowOf(Resource.Success(userDto.data.mapToEntity().mapToDomain()))
             }
         }
-    }
+    }.catch { emit(Resource.Error(errorMessage = it.message.toString())) }
 
     suspend fun getById(id: String): Flow<ApiResponseResult<UserDto>> = remote.getUserById(id)
 

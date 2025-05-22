@@ -25,14 +25,13 @@ interface ProductDao: BaseDao<ProductEntity> {
 
     @Transaction
     suspend fun refresh(remoteProducts: List<ProductEntity>) {
-        val remoteIds = remoteProducts.map { it.id }
-        deleteExcept(remoteIds)
-        upsertAll(*remoteProducts.toTypedArray())
+        deleteExcept(remoteProducts.map { it.id })
+        insertAll(*remoteProducts.toTypedArray())
     }
 
     @Transaction
     @Query("SELECT * FROM products WHERE products.id = :id")
-    fun getByIdWithCategory(id: String): Flow<ProductDetail>
+    fun getByIdWithCategory(id: String): Flow<ProductDetail?>
 
     @Transaction
     @Query("SELECT * FROM products")

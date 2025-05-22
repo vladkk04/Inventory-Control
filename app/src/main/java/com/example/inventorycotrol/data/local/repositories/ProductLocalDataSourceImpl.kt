@@ -14,7 +14,7 @@ class ProductLocalDataSourceImpl(
 
     override fun getById(id: String): Flow<ProductEntity> = dao.getById(id)
 
-    override fun getByIdWithCategory(id: String): Flow<ProductDetail> = dao.getByIdWithCategory(id)
+    override fun getByIdWithCategory(id: String): Flow<ProductDetail?> = dao.getByIdWithCategory(id)
 
     override fun getAllWithCategory(): Flow<List<ProductDetail>> = dao.getProductsWithCategory()
 

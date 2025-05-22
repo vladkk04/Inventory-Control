@@ -61,6 +61,8 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
 
     protected open val isCancellableOutside: Boolean = true
 
+    override fun getTheme(): Int = R.style.ThemeOverlay_App_BottomSheetDialog
+
     protected open val onBackPressedCallback: OnBackPressedCallback
         get() = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -81,8 +83,6 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
     ): View? {
         _binding = bindingInflater.invoke(inflater, container, false)
 
-        SnackbarController.observeSnackbarEvents(viewLifecycleOwner, binding.root)
-
         setupViews()
 
         return binding.root
@@ -90,10 +90,13 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        SnackbarController.observeSnackbarEvents(this, binding.root.rootView)
 
         setupToolbar()
         setupBottomSheetDragHandleView()
         setupFullScreen()
+
+
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

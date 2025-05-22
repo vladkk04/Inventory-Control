@@ -12,10 +12,11 @@ import com.example.inventorycotrol.ui.navigation.AppNavigator
 import com.example.inventorycotrol.ui.navigation.Destination
 import com.example.inventorycotrol.ui.snackbar.SnackbarController.sendSnackbarEvent
 import com.example.inventorycotrol.ui.snackbar.SnackbarEvent
-import com.example.inventorycotrol.ui.utils.FileMimeType
+import com.example.inventorycotrol.domain.model.file.FileMimeType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -32,7 +33,7 @@ class ProfileEditViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    private val destinationArg = Destination.from<Destination.ProfileEdit>(savedStateHandle)
+    private val destinationArg = Destination.from<Destination.EditProfile>(savedStateHandle)
 
     private val _uiState = MutableStateFlow(ProfileEditUiState())
     val uiState = _uiState.asStateFlow()
@@ -84,10 +85,10 @@ class ProfileEditViewModel @Inject constructor(
 
         val info = ChangeInfoUserRequest(
             fullName = _uiFormState.value.fullName.ifBlank { uiState.value.fullName },
-            logoUrl = url ?: uiState.value.logoUrl
+            logoUrl = url
         )
 
-        profileUseCases.changeUserInfo.invoke(info).onEach { result ->
+        profileUseCases.changeUserInfo.invoke(info).distinctUntilChanged().onEach { result ->
             when (result) {
                 Resource.Loading -> {
                     _uiState.update { it.copy(isLoading = true) }

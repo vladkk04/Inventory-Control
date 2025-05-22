@@ -71,7 +71,4 @@ object ApiModule {
     @Singleton
     fun provideFileApiService(@AuthenticatedRetrofit retrofit: Retrofit): FileApiService =
         retrofit.create(FileApiService::class.java)
-
-
-
 }

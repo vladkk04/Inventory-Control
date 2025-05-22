@@ -8,5 +8,6 @@ data class OrganisationUser(
     val organisationRole: OrganisationRole,
     val organisationUserStatus: OrganisationUserStatus,
     val userId: String?,
-    val email: String?
+    val email: String?,
+    val isCanEdit: Boolean = true,
 )

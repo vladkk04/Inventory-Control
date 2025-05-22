@@ -4,6 +4,8 @@ import android.content.ContentResolver
 import android.database.Cursor
 import android.net.Uri
 import android.provider.OpenableColumns
+import com.example.inventorycotrol.domain.model.file.FileData
+import com.example.inventorycotrol.domain.model.file.FileMimeType
 
 class FilePicker {
     fun dumpImageMetaData(uri: Uri, contentResolver: ContentResolver): FileData {

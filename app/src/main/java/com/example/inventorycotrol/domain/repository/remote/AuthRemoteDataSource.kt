@@ -1,13 +1,13 @@
 package com.example.inventorycotrol.domain.repository.remote
 
 import com.example.inventorycotrol.common.ApiResponseResult
-import com.example.inventorycotrol.domain.model.auth.AuthenticateResponse
-import com.example.inventorycotrol.domain.model.auth.ForgotPasswordRequest
-import com.example.inventorycotrol.domain.model.auth.OtpRequest
-import com.example.inventorycotrol.domain.model.auth.SignInRequest
-import com.example.inventorycotrol.domain.model.auth.SignInResponse
-import com.example.inventorycotrol.domain.model.auth.SignUpRequest
-import com.example.inventorycotrol.domain.model.auth.TokenResponse
+import com.example.inventorycotrol.domain.model.auth.responses.AuthenticateResponse
+import com.example.inventorycotrol.domain.model.auth.requests.ForgotPasswordRequest
+import com.example.inventorycotrol.domain.model.auth.requests.OtpRequest
+import com.example.inventorycotrol.domain.model.auth.requests.SignInRequest
+import com.example.inventorycotrol.domain.model.auth.responses.SignInResponse
+import com.example.inventorycotrol.domain.model.auth.requests.SignUpRequest
+import com.example.inventorycotrol.domain.model.auth.responses.TokenResponse
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRemoteDataSource {

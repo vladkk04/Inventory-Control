@@ -3,6 +3,7 @@ package com.example.inventorycotrol.ui.fragments.organisationInvitations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.inventorycotrol.common.ApiResponseResult
+import com.example.inventorycotrol.data.remote.dto.StatusInvitation
 import com.example.inventorycotrol.domain.usecase.profile.ProfileUseCases
 import com.example.inventorycotrol.ui.model.organisationInvitations.InvitationListUiState
 import com.example.inventorycotrol.ui.navigation.AppNavigator
@@ -12,6 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,7 +34,7 @@ class InvitationListViewModel @Inject constructor(
     }
 
     private fun getInvitations() = viewModelScope.launch {
-        profileUseCases.getOrganisationsInviting().collectLatest { response ->
+        profileUseCases.getOrganisationsInviting().distinctUntilChanged().collectLatest { response ->
             when (response) {
                 ApiResponseResult.Loading -> {
                     _uiState.update { it.copy(isLoading = true) }
@@ -45,7 +47,7 @@ class InvitationListViewModel @Inject constructor(
                 is ApiResponseResult.Success -> {
                     _uiState.update { state ->
                         state.copy(
-                            invitations = response.data,
+                            invitations = response.data.filter { it.status == StatusInvitation.PENDING },
                             isLoading = false,
                             isRefreshing = false
                         )
@@ -60,7 +62,7 @@ class InvitationListViewModel @Inject constructor(
     }
 
     fun acceptInvitation(id: String) = viewModelScope.launch {
-        profileUseCases.acceptOrganisationInvitation.invoke(id).collectLatest { response ->
+        profileUseCases.acceptOrganisationInvitation.invoke(id).distinctUntilChanged().collectLatest { response ->
             when (response) {
                 ApiResponseResult.Loading -> {
                     _uiState.update { it.copy(isLoading = true) }
@@ -85,7 +87,7 @@ class InvitationListViewModel @Inject constructor(
     }
 
     fun declineInvitation(id: String) = viewModelScope.launch {
-        profileUseCases.declineOrganisationInvitation.invoke(id).collectLatest { response ->
+        profileUseCases.declineOrganisationInvitation.invoke(id).distinctUntilChanged().collectLatest { response ->
             when (response) {
                 ApiResponseResult.Loading -> {
                     _uiState.update { it.copy(isLoading = true) }

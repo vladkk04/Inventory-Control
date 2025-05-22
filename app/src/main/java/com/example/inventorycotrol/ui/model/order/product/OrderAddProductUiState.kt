@@ -8,4 +8,5 @@ data class OrderAddProductUiState(
     val isLoading: Boolean = false,
     val currency: String = "",
     val canAddProduct: Boolean = false,
+    val isBarcode: Boolean = false
 )

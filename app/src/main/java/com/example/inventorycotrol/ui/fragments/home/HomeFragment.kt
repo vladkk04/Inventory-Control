@@ -12,7 +12,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
@@ -21,7 +20,6 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.elveum.elementadapter.simpleAdapter
 import com.example.inventorycotrol.R
 import com.example.inventorycotrol.data.constants.AppConstants
@@ -41,6 +39,7 @@ import com.example.inventorycotrol.ui.views.CustomFloatingMenu
 import com.example.inventorycotrol.ui.views.CustomFloatingUpdateStockMenu
 import com.example.inventorycotrol.ui.worker.StockCheckWorker
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -59,9 +58,9 @@ class HomeFragment : Fragment() {
 
     private val mainViewModel: MainViewModel by activityViewModels()
 
+
     private val adapterCriticalProduct = simpleAdapter<Product, CriticalStockItemBinding> {
-        areItemsSame = { oldItem, newItem -> oldItem.id == newItem.id }
-        areContentsSame = { oldItem, newItem -> oldItem == newItem }
+       
 
         bind { item ->
             this.textViewNameProduct.text = item.name
@@ -99,7 +98,13 @@ class HomeFragment : Fragment() {
             _binding = FragmentHomeBinding.inflate(inflater, container, false)
         }
 
-        viewModel.viewModelScope.launch() {
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main.immediate) {
+            mainViewModel.isConnected.collectLatest {
+                binding.fabAll.isEnabled = it
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 mainViewModel.organisationRole.collectLatest {
                     when (it) {
@@ -138,9 +143,8 @@ class HomeFragment : Fragment() {
 
                 uiState.profile?.imageUrl?.let {
                     Glide.with(requireContext())
-                        .load("${AppConstants.BASE_URL_CLOUD_FRONT}/${it}")
+                        .load("${AppConstants.BASE_URL_CLOUD_FRONT}${it}")
                         .error(R.drawable.ic_identity)
-                        .diskCacheStrategy(DiskCacheStrategy.DATA)
                         .into(binding.profileCirclePicture.root)
                 }
             }
@@ -254,8 +258,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun updateUiState(uiState: HomeUiState) {
-        binding.progressBarLastCriticalStock.isGone = !uiState.isLoading
-        binding.progressBarLastStockActivity.isGone = !uiState.isLoading
+        binding.progressBarLastCriticalStock.isGone = !uiState.isLoadingCriticalStock
+        binding.progressBarLastStockActivity.isGone = !uiState.isLoadingLastStock
 
         binding.textViewCriticalStockShowLast.text = getString(
             R.string.text_show_period_hide,
@@ -264,9 +268,9 @@ class HomeFragment : Fragment() {
         )
 
         binding.textViewNoActivities.isVisible =
-            uiState.productUpdateStockItems.isEmpty() && !uiState.isLoading
+            uiState.productUpdateStockItems.isEmpty() && !uiState.isLoadingLastStock
         binding.textViewNoCriticalStocks.isVisible =
-            uiState.criticalStockItems.isEmpty() && !uiState.isLoading
+            uiState.criticalStockItems.isEmpty() && !uiState.isLoadingCriticalStock
         binding.swipeRefresh.isRefreshing = uiState.isRefreshing && !uiState.isLoading
         binding.textViewTotalUserCount.text =
             String.format(Locale.getDefault(), "%d", uiState.totalUsersCount)

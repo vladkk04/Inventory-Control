@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.inventorycotrol.R
 import com.example.inventorycotrol.data.constants.AppConstants
 import com.example.inventorycotrol.data.remote.dto.ThresholdSettings
@@ -63,8 +64,7 @@ class ProductListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 item.imageUrl?.let {
                     Glide.with(context)
                         .load("${AppConstants.BASE_URL_CLOUD_FRONT}${it}")
-                        .placeholder(R.drawable.ic_image)
-                        .fallback(R.drawable.ic_image)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .error(R.drawable.ic_image)
                         .centerCrop()
                         .into(imageView)
@@ -75,6 +75,10 @@ class ProductListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                 val color = when {
                     item.quantity >= (item.minStockLevel * thresholdSettings!!.normalThresholdPercentage) / 100 ->
+                        R.color.colorMinStockLevelNormalLevel
+
+                    item.quantity <= (item.minStockLevel * thresholdSettings!!.normalThresholdPercentage) / 100 &&
+                            item.quantity >= (item.minStockLevel * thresholdSettings!!.mediumThresholdPercentage) / 100 ->
                         R.color.colorMinStockLevelNormalLevel
 
                     item.quantity >= (item.minStockLevel * thresholdSettings!!.mediumThresholdPercentage) / 100
@@ -91,7 +95,7 @@ class ProductListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 textViewBarcode.text =
                     context.getString(R.string.text_product_item_barcode, item.barcode)
                 textViewCategory.text =
-                    context.getString(R.string.text_product_item_category, item.categoryName)
+                    context.getString(R.string.text_product_item_category, item.categoryName ?: "Unidentified")
                 textViewMinimumStockLevel.text = context.getString(
                     R.string.text_product_item_min_stock_value,
                     item.minStockLevel
@@ -118,8 +122,7 @@ class ProductListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 item.imageUrl?.let {
                     Glide.with(context)
                         .load("${AppConstants.BASE_URL_CLOUD_FRONT}${it}")
-                        .placeholder(R.drawable.ic_image)
-                        .fallback(R.drawable.ic_image)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .error(R.drawable.ic_image)
                         .centerCrop()
                         .into(imageView)
@@ -140,7 +143,7 @@ class ProductListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 textViewBarcode.text =
                     context.getString(R.string.text_product_item_barcode, item.barcode)
                 textViewCategory.text =
-                    context.getString(R.string.text_product_item_category, item.categoryName)
+                    context.getString(R.string.text_product_item_category, item.categoryName ?: "Unidentified")
                 textViewMinimumStockLevel.text = context.getString(
                     R.string.text_product_item_min_stock_value,
                     item.minStockLevel

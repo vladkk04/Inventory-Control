@@ -1,6 +1,9 @@
 package com.example.inventorycotrol.di
 
 import android.content.Context
+import com.example.inventorycotrol.data.observers.ApplicationConnectivityObserver
+import com.example.inventorycotrol.domain.repository.ConnectivityObserver
+import com.example.inventorycotrol.data.constants.AppConstants
 import com.example.inventorycotrol.data.local.AppDatabase
 import com.example.inventorycotrol.data.remote.authenticator.AuthAuthenticator
 import com.example.inventorycotrol.data.remote.interceptors.TokenInterceptor
@@ -30,37 +33,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.util.concurrent.TimeUnit
-import javax.inject.Qualifier
 import javax.inject.Singleton
 
-
-@Retention(AnnotationRetention.BINARY)
-@Qualifier
-annotation class IoDispatcher
-
-@Retention(AnnotationRetention.BINARY)
-@Qualifier
-annotation class DefaultDispatcher
-
-@Retention
-@Qualifier
-annotation class MainDispatcher
-
-@Qualifier
-@Retention(AnnotationRetention.RUNTIME)
-annotation class AuthenticatedClient
-
-@Qualifier
-@Retention(AnnotationRetention.RUNTIME)
-annotation class TokenRefreshClient
-
-@Qualifier
-@Retention(AnnotationRetention.RUNTIME)
-annotation class AuthenticatedRetrofit
-
-@Qualifier
-@Retention(AnnotationRetention.RUNTIME)
-annotation class TokenRefreshRetrofit
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -68,41 +42,52 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideProductDatabase(
+    fun provideAppDatabase(
         @ApplicationContext applicationContext: Context
     ): AppDatabase = AppDatabase.getInstance(applicationContext)
 
     @Provides
     @Singleton
-    fun provideAuthDataStore(
-        api: AuthApiService,
+    fun provideAppNavigator(
         dataStoreManager: DataStoreManager,
-        refreshApiService: RefreshApiService
-    ): AuthRemoteDataSource =
-        AuthRemoteDataSourceImpl(api, refreshApiService, dataStoreManager)
+        authDataSource: AuthRemoteDataSource
+    ): AppNavigator = AppNavigatorImpl(dataStoreManager, authDataSource)
 
     @Provides
     @Singleton
-    fun provideProductStockNotificationService(@ApplicationContext context: Context): ProductStockNotificationService =
-        ProductStockNotificationService(context)
+    fun provideRemoteAuthDataSource(
+        authApiService: AuthApiService,
+        dataStoreManager: DataStoreManager,
+        refreshApiService: RefreshApiService
+    ): AuthRemoteDataSource = AuthRemoteDataSourceImpl(authApiService, refreshApiService, dataStoreManager)
 
     @Provides
     @Singleton
     fun provideProductRemoteDataSource(
-        api: ProductApiService,
+        productApiService: ProductApiService,
         dataStoreManager: DataStoreManager
-    ): ProductRemoteDataSource = ProductRemoteDataImpl(api, dataStoreManager)
+    ): ProductRemoteDataSource = ProductRemoteDataImpl(productApiService, dataStoreManager)
 
     @Provides
     @Singleton
-    fun provideAppNavigator(dataStoreManager: DataStoreManager, authDataSource: AuthRemoteDataSource): AppNavigator =
-        AppNavigatorImpl(dataStoreManager, authDataSource)
+    fun provideConnectivityObserver(
+        @ApplicationContext applicationContext: Context
+    ): ConnectivityObserver = ApplicationConnectivityObserver(applicationContext)
+
+    @Provides
+    @Singleton
+    fun provideProductStockNotificationService(
+        @ApplicationContext applicationContext: Context
+    ): ProductStockNotificationService = ProductStockNotificationService(applicationContext)
 
 
     @Provides
     @Singleton
     @AuthenticatedClient
-    fun provideAccessOkHttpClient(authTokenManager: DataStoreManager, refreshApiService: RefreshApiService): OkHttpClient {
+    fun provideAccessOkHttpClient(
+        authTokenManager: DataStoreManager,
+        refreshApiService: RefreshApiService
+    ): OkHttpClient {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         return OkHttpClient.Builder()
@@ -146,32 +131,30 @@ object AppModule {
     @Provides
     @Singleton
     @AuthenticatedRetrofit
-    fun provideAuthenticatedRetrofit(@AuthenticatedClient okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
-        .baseUrl("http://192.168.68.60:5000/"/*AppConstants.BASE_URL*/)
-        .client(okHttpClient)
-        .addConverterFactory(Json.asConverterFactory("application/json; charset=UTF8".toMediaType()))
-        .build()
+    fun provideAuthenticatedRetrofit(@AuthenticatedClient okHttpClient: OkHttpClient): Retrofit =
+        Retrofit.Builder()
+            .baseUrl(AppConstants.BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(Json.asConverterFactory("application/json; charset=UTF8".toMediaType()))
+            .build()
 
     @Provides
     @Singleton
     @TokenRefreshRetrofit
-    fun provideTokenRefreshRetrofit(@TokenRefreshClient okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
-        .baseUrl("http://192.168.68.60:5000/") //AppConstants.BASE_URL)
-        .client(okHttpClient)
-        .addConverterFactory(Json.asConverterFactory("application/json; charset=UTF8".toMediaType()))
-        .build()
+    fun provideTokenRefreshRetrofit(@TokenRefreshClient okHttpClient: OkHttpClient): Retrofit =
+        Retrofit.Builder()
+            .baseUrl(AppConstants.BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(Json.asConverterFactory("application/json; charset=UTF8".toMediaType()))
+            .build()
 
     @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
-        .baseUrl("http://192.168.68.60:5000/")/*AppConstants.BASE_URL)*/
+        .baseUrl(AppConstants.BASE_URL)
         .client(okHttpClient)
         .addConverterFactory(Json.asConverterFactory("application/json; charset=UTF8".toMediaType()))
         .build()
-
-    @Provides
-    @IoDispatcher
-    fun provideIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
 
     @Provides
     @DefaultDispatcher
@@ -180,5 +163,9 @@ object AppModule {
     @Provides
     @MainDispatcher
     fun provideMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
+
+    @Provides
+    @IoDispatcher
+    fun provideIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
 
 }

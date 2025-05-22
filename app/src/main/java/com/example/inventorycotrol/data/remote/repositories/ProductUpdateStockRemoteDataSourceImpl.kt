@@ -10,7 +10,7 @@ import com.example.inventorycotrol.data.remote.services.ProductUpdateStockApiSer
 import com.example.inventorycotrol.domain.manager.DataStoreManager
 import com.example.inventorycotrol.domain.model.updateStock.ProductUpdateStockRequest
 import com.example.inventorycotrol.domain.repository.remote.ProductUpdateStockRemoteDataSource
-import com.example.inventorycotrol.ui.utils.extensions.safeResponseApiCallFlow
+import com.example.inventorycotrol.ui.utils.extensions.safeSuspendResponseApiCallFlow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 
@@ -26,16 +26,16 @@ class ProductUpdateStockRemoteDataSourceImpl(
     override suspend fun updateStock(
         request: ProductUpdateStockRequest
     ): Flow<ApiResponseResult<ProductUpdateStockDto>> =
-        safeResponseApiCallFlow { api.create(organisationId(), request) }
+        safeSuspendResponseApiCallFlow { api.create(organisationId(), request) }
 
     override suspend fun getAllByProductId(productId: String): Flow<ApiResponseResult<List<ChangeStockProductDto>>> =
-        safeResponseApiCallFlow { api.getAllByProductId(organisationId(), productId) }
+        safeSuspendResponseApiCallFlow { api.getAllByProductId(organisationId(), productId) }
 
     override suspend fun getAllByOrganisation(): Flow<ApiResponseResult<List<ProductUpdateStockDto>>> =
-        safeResponseApiCallFlow { api.getAllByOrganisation(organisationId()) }
+        safeSuspendResponseApiCallFlow { api.getAllByOrganisation(organisationId()) }
 
     override suspend fun getAllByOrganisationView(): Flow<ApiResponseResult<List<ProductUpdateStockViewDto>>> =
-        safeResponseApiCallFlow { api.getAllByOrganisationView(organisationId()) }
+        safeSuspendResponseApiCallFlow { api.getAllByOrganisationView(organisationId()) }
 
 
 }

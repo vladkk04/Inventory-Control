@@ -13,7 +13,6 @@ import com.example.inventorycotrol.ui.model.auth.signUp.SignUpUiFormState
 import com.example.inventorycotrol.ui.model.auth.signUp.SignUpUiState
 import com.example.inventorycotrol.ui.utils.extensions.collectInLifecycle
 import com.example.inventorycotrol.ui.utils.extensions.viewBinding
-import com.example.inventorycotrol.ui.utils.screen.InsetHandler
 import com.github.razir.progressbutton.bindProgressButton
 import com.github.razir.progressbutton.hideProgress
 import com.github.razir.progressbutton.showProgress
@@ -28,7 +27,6 @@ class SignUpFragment: Fragment(R.layout.fragment_sign_up) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        InsetHandler.adaptToEdgeWithPadding(binding.root)
 
         setupBackButton()
         setupSignUpButton()

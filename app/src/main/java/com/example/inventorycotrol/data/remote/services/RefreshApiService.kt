@@ -1,6 +1,6 @@
 package com.example.inventorycotrol.data.remote.services
 
-import com.example.inventorycotrol.domain.model.auth.TokenResponse
+import com.example.inventorycotrol.domain.model.auth.responses.TokenResponse
 import retrofit2.Response
 import retrofit2.http.Header
 import retrofit2.http.POST

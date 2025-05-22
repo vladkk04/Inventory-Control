@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.inventorycotrol"
-        minSdk = 26
+        minSdk = 30
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -70,9 +70,6 @@ dependencies {
     // Layout
     implementation(libs.flexbox.layout)
 
-    //Paging
-    implementation(libs.androidx.paging)
-
     //Analytics
     implementation(libs.vico.views)
 
@@ -93,10 +90,6 @@ dependencies {
     
     //Simple Recycler View Adapter
     implementation(libs.element.adapter)
-
-    //Firebase
-    implementation(platform(libs.firebase.boom))
-    implementation(libs.firebase.auth)
 
     //UCrop - Image Cropping
     implementation(libs.ucrop)
@@ -120,9 +113,6 @@ dependencies {
 
     //Work manager
     implementation(libs.work.manager)
-
-    //Theme
-    implementation(libs.theme.manager)
 
     //JwtDecode
     implementation(libs.jwt.decode)

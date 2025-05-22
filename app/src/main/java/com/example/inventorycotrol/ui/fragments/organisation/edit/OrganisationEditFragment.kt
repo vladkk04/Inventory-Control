@@ -4,6 +4,8 @@ import android.graphics.Bitmap
 import android.icu.util.Currency
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isGone
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -16,7 +18,6 @@ import com.example.inventorycotrol.ui.utils.activityResultContracts.VisualMediaP
 import com.example.inventorycotrol.ui.utils.extensions.collectInLifecycle
 import com.example.inventorycotrol.ui.utils.extensions.requestImagePermissions
 import com.example.inventorycotrol.ui.utils.extensions.viewBinding
-import com.example.inventorycotrol.ui.utils.screen.InsetHandler
 import com.github.razir.progressbutton.bindProgressButton
 import com.github.razir.progressbutton.hideProgress
 import com.github.razir.progressbutton.showProgress
@@ -36,7 +37,6 @@ class OrganisationEditFragment : Fragment(R.layout.fragment_organisation_edit) {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        InsetHandler.adaptToEdgeWithPadding(binding.root)
 
         setupToolbar()
         setupSaveButton()
@@ -57,11 +57,14 @@ class OrganisationEditFragment : Fragment(R.layout.fragment_organisation_edit) {
         }
 
         collectInLifecycle(viewModel.organisation) { organisation ->
-            Glide.with(requireContext())
-                .load("${AppConstants.BASE_URL_CLOUD_FRONT}/${organisation?.logoUrl}")
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .into(binding.imageViewOrganisationLogo)
+            organisation?.logoUrl?.let {
+                binding.layoutManageImage.isGone = true
+                Glide.with(requireContext())
+                    .load("${AppConstants.BASE_URL_CLOUD_FRONT}${it}")
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .into(binding.imageViewOrganisationLogo)
+            }
 
             binding.editTextOrganisationName.setText(organisation?.name)
             binding.editTextDescription.setText(organisation?.description)
@@ -126,9 +129,23 @@ class OrganisationEditFragment : Fragment(R.layout.fragment_organisation_edit) {
 
     private fun setupImagePicker() {
         binding.imageViewOrganisationLogo.setOnClickListener {
+            if (viewModel.organisation.value?.logoUrl.isNullOrEmpty() && viewModel.uiFormState.value.logo == null) {
+                requestImagePermissions {
+                    visualMediaPicker.launchVisualMediaPicker()
+                }
+            } else {
+                binding.layoutManageImage.isGone = false
+            }
+        }
+        binding.buttonEdit.setOnClickListener {
             requestImagePermissions {
                 visualMediaPicker.launchVisualMediaPicker()
             }
+        }
+        binding.buttonDelete.setOnClickListener {
+            binding.layoutManageImage.isGone = true
+            binding.imageViewOrganisationLogo.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_add_image,null))
+            viewModel.onEvent(OrganisationEditUiEvent.LogoChanged(null))
         }
     }
 

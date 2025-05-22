@@ -5,9 +5,12 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.inventorycotrol.R
 import com.example.inventorycotrol.databinding.FragmentResetPasswordBinding
+import com.example.inventorycotrol.ui.MainViewModel
 import com.example.inventorycotrol.ui.common.AppDialogs
 import com.example.inventorycotrol.ui.model.auth.resetPassword.ResetPasswordUiEvent
 import com.example.inventorycotrol.ui.utils.extensions.collectInLifecycle
@@ -17,6 +20,8 @@ import com.github.razir.progressbutton.bindProgressButton
 import com.github.razir.progressbutton.hideProgress
 import com.github.razir.progressbutton.showProgress
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ResetPasswordFragment : Fragment(R.layout.fragment_reset_password) {
@@ -25,8 +30,16 @@ class ResetPasswordFragment : Fragment(R.layout.fragment_reset_password) {
 
     private val viewModel by viewModels<ResetPasswordViewModel>()
 
+    private val mainViewModel: MainViewModel by activityViewModels()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         InsetHandler.adaptToEdgeWithMargin(binding.root)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            mainViewModel.isConnected.collectLatest {
+                binding.buttonResetPassword.isEnabled = it
+            }
+        }
 
         bindProgressButton(binding.buttonResetPassword)
 

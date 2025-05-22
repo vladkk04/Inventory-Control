@@ -7,6 +7,7 @@ import com.example.inventorycotrol.data.remote.mappers.mapToEntity
 import com.example.inventorycotrol.domain.model.organisation.Organisation
 import com.example.inventorycotrol.domain.repository.local.OrganisationLocalDataSource
 import com.example.inventorycotrol.domain.repository.remote.OrganisationRemoteDataSource
+import com.example.inventorycotrol.ui.utils.extensions.flattingRemoteToLocal
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -22,20 +23,16 @@ class GetOrganisationsUseCase(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun getOrganisation(): Flow<Resource<Organisation>> {
-        return remote.get().flatMapLatest { response ->
-            when (response) {
-                ApiResponseResult.Loading -> flowOf(Resource.Loading)
-                is ApiResponseResult.Failure -> {
-                    flowOf(Resource.Error(errorMessage = response.errorMessage))
-                }
-
-                is ApiResponseResult.Success -> {
-                    local.upsert(response.data.mapToEntity())
-                    local.getById(response.data.id).map { Resource.Success(it.mapToDomain()) }
-                }
-            }.onStart { emit(Resource.Loading) }
-                .catch { e -> emit(Resource.Error(errorMessage = e.message ?: "Unknown error")) }
-        }
+        return remote.get().flattingRemoteToLocal(
+            onFailureBlock = { e->
+                val id = remote.selectedOrganisationId() ?: ""
+                local.getById(id).map { Resource.Error(data = it.mapToDomain(), errorMessage = e) }
+            },
+            onSuccessBlock = { response ->
+                local.upsert(response.mapToEntity())
+                local.getById(response.id).map { Resource.Success(it.mapToDomain()) }
+            }
+        )
     }
 
 

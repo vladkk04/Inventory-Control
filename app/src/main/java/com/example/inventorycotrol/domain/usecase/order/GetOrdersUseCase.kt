@@ -1,6 +1,5 @@
 package com.example.inventorycotrol.domain.usecase.order
 
-import com.example.inventorycotrol.common.ApiResponseResult
 import com.example.inventorycotrol.common.Resource
 import com.example.inventorycotrol.data.local.entities.OrderProductJoin
 import com.example.inventorycotrol.data.local.mappers.mapToDomain
@@ -9,19 +8,16 @@ import com.example.inventorycotrol.domain.model.order.Order
 import com.example.inventorycotrol.domain.repository.local.OrderLocalDataSource
 import com.example.inventorycotrol.domain.repository.remote.OrderRemoteDataSource
 import com.example.inventorycotrol.ui.model.order.OrderProductUi
+import com.example.inventorycotrol.ui.utils.extensions.flattingRemoteToLocal
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
 
 class GetOrdersUseCase(
     private val remote: OrderRemoteDataSource,
     private val local: OrderLocalDataSource,
 ) {
-    @OptIn(ExperimentalCoroutinesApi::class)
     suspend operator fun invoke(id: String): Flow<Resource<Order>> {
         val rawData = local.getById(id)
         val firstItem = rawData.firstOrNull()
@@ -48,52 +44,44 @@ class GetOrdersUseCase(
             )
         }
 
-        return remote.get(id).flatMapLatest { response ->
-            when (response) {
-                ApiResponseResult.Loading -> flowOf(Resource.Loading)
-                is ApiResponseResult.Failure -> {
-                    flowOf(Resource.Error(errorMessage = response.errorMessage))
-                }
-
-                is ApiResponseResult.Success -> {
-                    order?.let { flowOf(Resource.Success(it)) } ?: flowOf(
-                        Resource.Error(
-                            errorMessage = "Unknown error"
-                        )
-                    )
-                }
-            }.onStart { emit(Resource.Loading) }
-                .catch { e -> emit(Resource.Error(errorMessage = e.message ?: "Unknown error")) }
+        if (order == null) {
+            return flowOf(Resource.Error(errorMessage = "Unknown error"))
         }
+
+        return remote.get(id).flattingRemoteToLocal(
+            onFailureBlock = { errorMessage ->
+                flowOf(Resource.Error(order, errorMessage = errorMessage))
+            },
+            onSuccessBlock = { _ ->
+                flowOf(Resource.Success(order))
+            }
+        )
     }
 
 
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend operator fun invoke(): Flow<Resource<List<Order>>> {
-        return remote.getAll()
-            .flatMapLatest { response ->
-                when (response) {
-                    ApiResponseResult.Loading -> flowOf(Resource.Loading)
-                    is ApiResponseResult.Failure -> flowOf(Resource.Error(errorMessage = response.errorMessage))
-                    is ApiResponseResult.Success -> {
-                        local.refresh(orderRemote = response.data)
-                        val result = response.data.flatMapIndexed { index: Int, orderDto: OrderDto ->
-                            orderDto.products.map { product ->
-                                OrderProductJoin(
-                                    orderId = orderDto.id,
-                                    productId = product.productId,
-                                    quantity = product.quantity,
-                                    price = product.price
-                                )
-                            }
+        return remote.getAll().flattingRemoteToLocal(
+            onFailureBlock = { errorMessage ->
+                local.getAll().map { it.mapToDomain() }.map { Resource.Error(it, errorMessage) }
+            },
+            onSuccessBlock = { response ->
+                local.refresh(orderRemote = response)
+                val result =
+                    response.flatMapIndexed { _: Int, orderDto: OrderDto ->
+                        orderDto.products.map { product ->
+                            OrderProductJoin(
+                                orderId = orderDto.id,
+                                productId = product.productId,
+                                quantity = product.quantity,
+                                price = product.price
+                            )
                         }
-                        local.upsertOrderJoin(*result.toTypedArray())
-                        local.getAll().map { it.mapToDomain() }.map { Resource.Success(it) }
                     }
-                }
+                local.upsertOrderJoin(*result.toTypedArray())
+                local.getAll().map { it.mapToDomain() }.map { Resource.Success(it) }
             }
-            .onStart { emit(Resource.Loading) }
-            .catch { e -> emit(Resource.Error(errorMessage = e.message ?: "Unknown error")) }
+        )
     }
 
 

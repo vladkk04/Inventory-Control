@@ -15,7 +15,7 @@
             android:id="@+id/text_view_title_products"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/margin_vertical_between_items"
+            android:layout_marginVertical="@dimen/margin_normal"
             android:text="@string/text_products"
             android:textSize="@dimen/text_size_medium" />
 
@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/recycler_view"
-            android:layout_marginVertical="@dimen/margin_vertical_between_items"
+            android:layout_marginVertical="@dimen/margin_normal"
             android:text="@string/text_add_product" />
 
         <TextView
@@ -68,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/button_add_product"
-            android:layout_marginVertical="@dimen/margin_vertical_between_items"
+            android:layout_marginVertical="@dimen/margin_normal"
             android:text="@string/text_subtotal"
             android:textSize="@dimen/text_size_medium"
             android:textStyle="bold" />
@@ -78,7 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/text_view_subtotal"
-            android:layout_marginVertical="@dimen/margin_vertical_between_items"
+            android:layout_marginVertical="@dimen/margin_normal"
             android:text="@string/text_discount"
             android:textSize="@dimen/text_size_normal" />
 
@@ -110,7 +110,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/text_view_discount"
-            android:layout_marginVertical="@dimen/margin_vertical_between_items"
+            android:layout_marginVertical="@dimen/margin_normal"
             android:text="@string/text_total"
             android:textSize="@dimen/text_size_medium"
             android:textStyle="bold" />
@@ -120,7 +120,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/text_view_total"
-            android:layout_marginVertical="@dimen/margin_vertical_between_items"
+            android:layout_marginVertical="@dimen/margin_normal"
             android:hint="@string/hint_comment"
             app:endIconMode="clear_text"
             app:helperText="@string/helper_text_optional"
@@ -139,7 +139,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/text_input_comment"
-            android:layout_marginVertical="@dimen/margin_vertical_between_items"
+            android:layout_marginVertical="@dimen/margin_normal"
             android:text="@string/text_attachments"
             android:textSize="@dimen/text_size_medium" />
 

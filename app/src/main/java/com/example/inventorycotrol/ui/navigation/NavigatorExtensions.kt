@@ -17,7 +17,7 @@ import com.google.android.material.navigation.NavigationView
 fun NavigationBarView.setupWithNavController(
     navController: NavController,
 ) {
-    navController.addOnDestinationChangedListener { _, destination, bundle ->
+    navController.addOnDestinationChangedListener { _, destination, _ ->
         if (!Destination.getTopLevelDestinations().any { destination.hasRoute(it::class) }) {
             animate().translationY(height.toFloat())
                 .setDuration(80)

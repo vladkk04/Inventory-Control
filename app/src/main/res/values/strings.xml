@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BachelorWork</string>
+    <string name="app_name">Inventory Control</string>
 
     <!-- Navigation -->
     <string name="title_home">Home</string>
@@ -59,7 +59,8 @@
     <string name="text_product_item_text_pcs">pcs</string>
     <string name="text_product_item_quantity">x%1.2f</string>
 
-    <string name="text_product_item_min_stock_value">Min Stock: %1$.2f</string>
+    <string name="text_product_item_min_stock_value">Min stock level: %1$.2f</string>
+    <string name="text_product_item_min_stock_detail_value">Min stock level: %1$.2f %2$s</string>
 
     <string name="toolbar_title_order_id"># %1$s</string>
 
@@ -97,6 +98,7 @@
     <string name="text_category">Category</string>
     <string name="text_categories">Categories</string>
     <string name="text_quantity_value">Quantity: %1$.2f</string>
+    <string name="text_quantity_current_value">Current stock: %1$.2f %2$s</string>
     <string name="text_purchase_date_value">Purchase Date: %1$s</string>
     <string name="text_measurement_unit_value">Unit: %1$s</string>
     <string name="text_tags">Tags</string>
@@ -305,6 +307,8 @@
     <string name="text_no_organisations">No organisations</string>
     <string name="text_comments">Comments</string>
     <string name="text_your_id">Id:%1$s</string>
+    <string name="no_internet_connection">You are in offline mode!</string>
+    <string name="internet_connection">You are back to online mode!</string>
 
 
 </resources>

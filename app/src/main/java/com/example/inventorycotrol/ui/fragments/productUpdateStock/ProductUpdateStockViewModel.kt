@@ -20,7 +20,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -40,14 +40,13 @@ class ProductUpdateStockViewModel @Inject constructor(
 
     private val _allProducts = MutableStateFlow<List<ProductUpdateStockItem>>(emptyList())
 
-
     init {
         loadProducts()
     }
 
     private fun loadProducts() {
         viewModelScope.launch(dispatcher) {
-            productUseCases.getProducts.getAll().collect { result ->
+            productUseCases.getProducts.getAll().distinctUntilChanged().collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         _allProducts.value = result.data.map { it.mapToUpdateStock() }
@@ -58,10 +57,12 @@ class ProductUpdateStockViewModel @Inject constructor(
                             )
                         }
                     }
+
                     is Resource.Error -> {
                         _uiState.update { it.copy(isLoading = false) }
                         sendSnackbarEvent(SnackbarEvent(result.errorMessage))
                     }
+
                     Resource.Loading -> {
                         _uiState.update { it.copy(isLoading = true) }
                     }
@@ -71,41 +72,35 @@ class ProductUpdateStockViewModel @Inject constructor(
     }
 
     fun updateInputValue(productId: String, newValue: Double?) {
-        _uiState.update { state ->
-            state.copy(
-                products = state.products.map {
-                    if (it.id == productId)
-                        it.copy(
-                            currentInputValue = newValue ?: 0.00,
-                            adjustmentAmount = newValue ?: 0.00
-                        )
-                    else it
-                }
-            )
+        _allProducts.update { state ->
+            state.map {
+                if (it.id == productId)
+                    it.copy(currentInputValue = newValue ?: 0.00)
+                else it
+            }
         }
     }
 
     fun adjustStock(productId: String, isAddition: Boolean) {
-        _uiState.update { state ->
-            state.copy(
-                products = state.products.map { item ->
-                    if (item.id == productId) {
-                        val newAdjustment = if (isAddition) 1.00 else -1.00
-                        item.copy(
-                            currentInputValue = item.currentInputValue + newAdjustment,
-                            adjustmentAmount = item.adjustmentAmount + newAdjustment
-                        )
-                    } else {
-                        item
-                    }
+        _allProducts.update { state ->
+            state.map { item ->
+                if (item.id == productId) {
+                    val change = if (isAddition) 1.00 else -1.00
+                    val newValue = item.currentInputValue + change
+                    item.copy(currentInputValue = newValue)
+                } else {
+                    item
                 }
-            )
+            }
+        }
+        _uiState.update { state ->
+            state.copy(products = _allProducts.value)
         }
     }
 
     fun updateStock() = viewModelScope.launch {
         val request = ProductUpdateStockRequest(
-            productsUpdates = _uiState.value.products.filter { it.adjustmentAmount != 0.00 }.map {
+            productsUpdates = _allProducts.value.filter { it.adjustmentAmount != 0.00 }.map {
                 ProductStockUpdate(
                     productId = it.id,
                     previousStock = it.stockOnHand,
@@ -122,24 +117,32 @@ class ProductUpdateStockViewModel @Inject constructor(
         productUpdateStockUseCases.updateStock(request).onEach { response ->
             when (response) {
                 ApiResponseResult.Loading -> {
-
+                    _uiState.update { it.copy(isLoading = true) }
                 }
-                is ApiResponseResult.Failure -> {
 
+                is ApiResponseResult.Failure -> {
+                    _uiState.update { it.copy(isLoading = false) }
+                    sendSnackbarEvent(SnackbarEvent(response.errorMessage))
                 }
 
                 is ApiResponseResult.Success -> {
+                    _uiState.update { it.copy(isLoading = false) }
                     navigator.navigateUp()
                 }
             }
-        }.flowOn(dispatcher).launchIn(viewModelScope)
+        }.launchIn(viewModelScope)
 
     }
 
     fun searchQuery(query: String?) {
         _uiState.update { state ->
             state.copy(
-                products = _allProducts.value.filter { it.name.contains(query ?: "", ignoreCase = true) }
+                products = _allProducts.value.filter {
+                    it.name.contains(
+                        query ?: "",
+                        ignoreCase = true
+                    )
+                }
             )
         }
     }

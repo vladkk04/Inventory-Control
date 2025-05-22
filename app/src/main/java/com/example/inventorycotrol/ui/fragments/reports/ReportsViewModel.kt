@@ -13,6 +13,7 @@ import com.example.inventorycotrol.ui.utils.ProductPdf
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -22,6 +23,7 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import javax.inject.Inject
+import kotlin.math.abs
 
 
 @HiltViewModel
@@ -49,7 +51,7 @@ class ReportsViewModel @Inject constructor(
     }
 
     private fun getAllStocks() = viewModelScope.launch {
-        updateStockUseCases.getStock.getAllByOrganisationView().onEach { response ->
+        updateStockUseCases.getStock.getAllByOrganisationView().distinctUntilChanged().onEach { response ->
             when (response) {
                 ApiResponseResult.Loading -> {
 
@@ -82,20 +84,16 @@ class ReportsViewModel @Inject constructor(
 
     private fun generateReport(filteredData: List<ProductUpdateStockViewDto>): List<ProductPdf> {
         return filteredData
-            .flatMap { stockUpdate ->
-                stockUpdate.products.map { product ->
-                    Triple(
-                        product.name,
-                        product.previousStock,
-                        product.adjustmentValue to product.adjustmentValue
-                    )
-                }
-            }
-            .groupBy { it.first }
-            .map { (name, entries) ->
-                val initialStock = entries.first().second
-                val (totalIn, totalOut) = entries.fold(0.0 to 0.0) { (accIn, accOut), (_, _, adjustments) ->
-                    accIn + adjustments.first to accOut + adjustments.second
+            .flatMap { it.products }
+            .groupBy { it.name }
+            .map { (name, products) ->
+                val initialStock = products.first().previousStock
+                val (totalIn, totalOut) = products.fold(0.0 to 0.0) { (inSum, outSum), product ->
+                    if (product.adjustmentValue > 0) {
+                        (inSum + product.adjustmentValue) to outSum
+                    } else {
+                        inSum to (outSum + abs(product.adjustmentValue))
+                    }
                 }
 
                 ProductPdf(

@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
@@ -37,10 +38,10 @@
         android:id="@+id/text_view_organisation_description_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button_delete_organisation"
         android:layout_below="@+id/text_view_organisation_description"
         android:layout_alignStart="@+id/image_view_avatar"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginVertical="@dimen/margin_extra_small"
         android:textSize="@dimen/text_size_normal" />
 
@@ -98,7 +99,7 @@
          android:textAlignment="center" />-->
 
 
-    <Button
+ <!--   <Button
         android:id="@+id/button_delete_organisation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -107,5 +108,5 @@
         android:layout_margin="@dimen/margin_extra_large"
         android:drawableEnd="@drawable/ic_building"
         android:text="@string/text_delete_organisation" />
-
+-->
 </RelativeLayout>

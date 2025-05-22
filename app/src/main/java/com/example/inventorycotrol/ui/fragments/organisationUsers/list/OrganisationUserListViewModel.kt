@@ -37,19 +37,31 @@ class OrganisationUserListViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     init {
-        getOrganisationUsers()
+        //getOrganisationUsers()
     }
 
-    private fun getOrganisationUsers() = viewModelScope.launch {
+    fun getOrganisationUsers() = viewModelScope.launch {
         organisationUserUseCases.getOrganisationUsersUseCase().onEach { response ->
             when (response) {
                 Resource.Loading -> {
                     _uiState.update { it.copy(isLoading = true) }
                 }
+
                 is Resource.Error -> {
+                    val ownId = dataStoreManager.getPreference(AppConstants.USER_ID_KEY).first()
+                    _uiState.update {
+                        it.copy(
+                            organisationUsers = response.data?.map { user -> user.copy(isCanEdit = false) }
+                                ?.sortedByDescending { user -> user.userId == ownId }
+                                ?: emptyList(),
+                            isLoading = false,
+                            isRefreshing = false,
+                            ownId = ownId
+                        )
+                    }
                     sendSnackbarEvent(SnackbarEvent(response.errorMessage))
-                    _uiState.update { it.copy(isLoading = true, isRefreshing = false) }
                 }
+
                 is Resource.Success -> {
                     val ownId = dataStoreManager.getPreference(AppConstants.USER_ID_KEY).first()
                     _uiState.update {
@@ -66,7 +78,7 @@ class OrganisationUserListViewModel @Inject constructor(
     }
 
     fun navigateToManageUser() = viewModelScope.launch {
-        navigator.navigate(Destination.OrganisationManageUser)
+        navigator.navigate(Destination.OrganisationInvitationManager)
     }
 
     fun navigateToEditUser(organisationUser: OrganisationUser) = viewModelScope.launch {
@@ -95,56 +107,18 @@ class OrganisationUserListViewModel @Inject constructor(
                     Resource.Loading -> {
                         _uiState.update { it.copy(isLoading = true) }
                     }
+
                     is Resource.Error -> {
                         sendSnackbarEvent(SnackbarEvent(response.errorMessage))
                         _uiState.update { it.copy(isLoading = false) }
                     }
+
                     is Resource.Success -> {
                         _uiState.update { it.copy(isLoading = false) }
                     }
                 }
             }
     }
-
-/*    fun makeUserInactive(organisationUserId: String) = viewModelScope.launch {
-        organisationUserUseCases.chaneStatusOrganisationUserUseCase.makeUserInactive(
-            organisationUserId
-        ).collectLatest { response ->
-            when (response) {
-                ApiResponseResult.Loading -> {
-
-                }
-
-                is ApiResponseResult.Failure -> {
-
-                }
-
-                is ApiResponseResult.Success -> {
-
-                }
-            }
-        }
-    }
-
-    fun makeUserActive(organisationUserId: String) = viewModelScope.launch {
-        organisationUserUseCases.chaneStatusOrganisationUserUseCase.makeUserActive(
-            organisationUserId
-        ).collectLatest { response ->
-            when (response) {
-                ApiResponseResult.Loading -> {
-
-                }
-
-                is ApiResponseResult.Failure -> {
-
-                }
-
-                is ApiResponseResult.Success -> {
-
-                }
-            }
-        }
-    }*/
 
     fun cancelInviteByUserId(userId: String) = viewModelScope.launch {
         organisationUserUseCases.invitationUserUseCase.cancelInviteByUserId(userId).onEach {
@@ -155,19 +129,11 @@ class OrganisationUserListViewModel @Inject constructor(
     fun cancelInviteByUserEmail(email: String) = viewModelScope.launch {
         organisationUserUseCases.invitationUserUseCase.cancelInviteByUserEmail(email)
             .onEach { response ->
-                /*when (response) {
-                    ApiResponseResult.Loading -> {
-
-                    }
-
-                    is ApiResponseResult.Failure -> {
-
-                    }
-
-                    is ApiResponseResult.Success -> {
-
-                    }
-                }*/
+                when (response) {
+                    Resource.Loading -> {}
+                    is Resource.Error -> {}
+                    is Resource.Success -> {}
+                }
             }.launchIn(viewModelScope)
     }
 

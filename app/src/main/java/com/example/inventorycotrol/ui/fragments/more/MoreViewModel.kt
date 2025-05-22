@@ -14,7 +14,7 @@ class MoreViewModel @Inject constructor(
 ): ViewModel() {
 
     fun navigateToManageUsers() {
-        navigateTo(Destination.ManageUsers)
+        navigateTo(Destination.ManageOrganisationUsers)
     }
 
     fun navigateToManageOrganisation() {
@@ -22,7 +22,7 @@ class MoreViewModel @Inject constructor(
     }
 
     fun navigateToOrganisationSettings() {
-        navigateTo(Destination.OrganisationSettings)
+        navigateTo(Destination.ManageOrganisationSettings)
     }
 
     private fun navigateTo(destination: Destination) = viewModelScope.launch {

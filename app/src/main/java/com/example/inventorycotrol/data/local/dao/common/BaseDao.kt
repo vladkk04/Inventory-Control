@@ -2,6 +2,7 @@ package com.example.inventorycotrol.data.local.dao.common
 
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Update
 import androidx.room.Upsert
 
@@ -10,7 +11,7 @@ interface BaseDao<T> {
     @Insert
     suspend fun insert(obj: T)
 
-    @Insert()
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(vararg obj: T)
 
     @Update()

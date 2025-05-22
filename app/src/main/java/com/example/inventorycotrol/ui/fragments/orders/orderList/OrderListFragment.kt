@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +18,7 @@ import com.example.inventorycotrol.data.constants.AppConstants
 import com.example.inventorycotrol.databinding.FragmentOrderListBinding
 import com.example.inventorycotrol.databinding.OrderItemBinding
 import com.example.inventorycotrol.domain.model.order.Order
+import com.example.inventorycotrol.ui.MainViewModel
 import com.example.inventorycotrol.ui.model.order.list.OrderListUiState
 import com.example.inventorycotrol.ui.utils.screen.InsetHandler
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,6 +37,8 @@ class OrderListFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: OrderListViewModel by viewModels()
+
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     private val adapter = simpleAdapter<Order, OrderItemBinding> {
         areItemsSame = { oldItem, newItem -> oldItem.id == newItem.id }
@@ -77,6 +81,12 @@ class OrderListFragment : Fragment() {
         InsetHandler.adaptToEdgeWithMargin(binding.root)
 
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main.immediate) {
+            mainViewModel.isConnected.collectLatest {
+                binding.fabCreateOrder.isEnabled = it
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collectLatest {
                 setupUiState(it)
             }
@@ -103,9 +113,8 @@ class OrderListFragment : Fragment() {
 
         uiState.imageUrl?.let {
             Glide.with(requireActivity())
-                .load("${AppConstants.BASE_URL_CLOUD_FRONT}/${it}")
+                .load("${AppConstants.BASE_URL_CLOUD_FRONT}${it}")
                 .error(R.drawable.ic_identity)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(binding.profileCirclePicture.root)
         }
 

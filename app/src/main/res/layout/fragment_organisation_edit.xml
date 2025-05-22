@@ -1,37 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:fitsSystemWindows="true">
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:orientation="vertical"
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="top|center">
+            android:layout_height="wrap_content"
+            android:gravity="top|center"
+            android:orientation="vertical">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:navigationIcon="@drawable/ic_arrow_back_ios"
-                app:title="@string/title_edit_organisation"/>
+                app:title="@string/title_edit_organisation" />
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/image_view_organisation_logo"
+            <FrameLayout
                 android:layout_width="128dp"
                 android:layout_height="128dp"
-                android:layout_marginVertical="@dimen/margin_vertical_between_items"
-                android:background="@drawable/background_corner_circle_stroke"
-                android:scaleType="centerCrop"
-                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle" />
+                android:layout_marginVertical="@dimen/margin_normal">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/image_view_organisation_logo"
+                    android:layout_width="128dp"
+                    android:layout_height="128dp"
+                    android:background="@drawable/background_corner_circle_stroke"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_add_image"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.ImageView.Circle" />
+
+                <LinearLayout
+                    android:id="@+id/layout_manage_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:visibility="gone">
+
+                    <Button
+                        style="?attr/materialIconButtonStyle"
+                        android:id="@+id/button_delete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:icon="@drawable/ic_delete"/>
+
+                    <Button
+                        style="?attr/materialIconButtonStyle"
+                        android:id="@+id/button_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:icon="@drawable/ic_edit"/>
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/text_input_organisation_name"
@@ -40,17 +74,17 @@
                 android:layout_margin="@dimen/margin_normal"
                 android:hint="@string/hint_organisation_name"
                 app:counterEnabled="true"
+                app:counterMaxLength="40"
                 app:errorEnabled="true"
-                app:helperTextEnabled="true"
                 app:helperText="@string/helper_text_required"
-                app:counterMaxLength="40">
+                app:helperTextEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_text_organisation_name"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:maxLines="1"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:maxLines="1" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -61,18 +95,17 @@
                 android:layout_margin="@dimen/margin_normal"
                 android:hint="@string/hint_description"
                 app:counterEnabled="true"
+                app:counterMaxLength="250"
                 app:errorEnabled="true"
-                app:helperTextEnabled="true"
                 app:helperText="@string/helper_text_optional"
-                app:counterMaxLength="250">
+                app:helperTextEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_text_description"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -88,23 +121,34 @@
                     android:id="@+id/auto_complete_currency"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="none"
                     android:hint="@string/hint_base_currency"
-                    android:labelFor="@id/text_input_currency"/>
+                    android:inputType="none"
+                    android:labelFor="@id/text_input_currency" />
 
 
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/button_save"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/text_save"
-            android:layout_margin="@dimen/margin_normal"
-            android:layout_gravity="bottom"/>
+            android:layout_below="@+id/linearLayout"
+            android:layout_alignParentBottom="true">
 
-    </FrameLayout>
+            <Button
+                android:id="@+id/button_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_margin="@dimen/margin_normal"
+                android:text="@string/text_save" />
+
+
+        </FrameLayout>
+
+
+
+    </RelativeLayout>
 </ScrollView>
 

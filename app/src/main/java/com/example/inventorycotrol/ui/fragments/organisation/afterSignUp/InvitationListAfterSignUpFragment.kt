@@ -4,18 +4,22 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.elveum.elementadapter.simpleAdapter
 import com.example.inventorycotrol.R
 import com.example.inventorycotrol.databinding.FragmentInvitationListAfterSignUpBinding
 import com.example.inventorycotrol.databinding.OrganisationInvitationItemBinding
 import com.example.inventorycotrol.domain.model.profile.OrganisationInvitation
+import com.example.inventorycotrol.ui.MainViewModel
 import com.example.inventorycotrol.ui.common.AppDialogs
 import com.example.inventorycotrol.ui.utils.extensions.collectInLifecycle
 import com.example.inventorycotrol.ui.utils.extensions.viewBinding
-import com.example.inventorycotrol.ui.utils.screen.InsetHandler
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.time.Duration
 import java.time.Instant
 import java.time.LocalDateTime
@@ -32,6 +36,8 @@ class InvitationListAfterSignUpFragment :
     private val binding by viewBinding(FragmentInvitationListAfterSignUpBinding::bind)
 
     private val viewModel: InvitationListAfterSignUpViewModel by viewModels()
+
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     private val adapter = simpleAdapter<OrganisationInvitation, OrganisationInvitationItemBinding> {
         areItemsSame = { oldItem, newItem -> oldItem.id == newItem.id }
@@ -70,12 +76,18 @@ class InvitationListAfterSignUpFragment :
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        InsetHandler.adaptToEdgeWithPadding(binding.root)
 
         setupRecyclerView()
         setupRefreshLayout()
         setupButtons()
         setupToolbar()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            mainViewModel.isConnected.collectLatest {
+                binding.buttonSwitchToOrganisation.isEnabled = it
+                binding.buttonCreateOrganisation.isEnabled = it
+            }
+        }
 
         collectInLifecycle(viewModel.uiState) { state ->
             updateUiState(state)

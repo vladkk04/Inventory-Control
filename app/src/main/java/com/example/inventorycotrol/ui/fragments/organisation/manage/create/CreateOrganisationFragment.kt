@@ -8,11 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.inventorycotrol.R
 import com.example.inventorycotrol.databinding.FragmentCreateOrganisationBinding
+import com.example.inventorycotrol.ui.MainViewModel
 import com.example.inventorycotrol.ui.model.organisation.CreateOrganisationUiEvent
 import com.example.inventorycotrol.ui.utils.activityResultContracts.VisualMediaPicker
 import com.example.inventorycotrol.ui.utils.extensions.collectInLifecycle
@@ -23,6 +26,8 @@ import com.github.razir.progressbutton.showProgress
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.yalantis.ucrop.UCrop
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CreateOrganisationFragment : Fragment() {
@@ -31,6 +36,8 @@ class CreateOrganisationFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: CreateOrganisationViewModel by viewModels()
+
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     private val visualMediaPicker = VisualMediaPicker(this)
 
@@ -49,15 +56,21 @@ class CreateOrganisationFragment : Fragment() {
             viewModel.navigateBack()
         }
 
-        bindProgressButton(binding.buttonCreateOrganisation)
-
-        collectInLifecycle(viewModel.uiState) { state ->
-            if (state.isLoading) {
-                binding.buttonCreateOrganisation.showProgress()
-            } else {
-                binding.buttonCreateOrganisation.hideProgress(R.string.text_create_organisation)
+        viewLifecycleOwner.lifecycleScope.launch {
+            mainViewModel.isConnected.collectLatest {
+                binding.buttonCreateOrganisation.isEnabled = it
             }
-            setupAutoCompleteCurrency(state.currencies)
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.uiState.collectLatest {
+                if (it.isLoading) {
+                    binding.buttonCreateOrganisation.showProgress()
+                } else {
+                    binding.buttonCreateOrganisation.hideProgress(R.string.text_create_organisation)
+                }
+                setupAutoCompleteCurrency(it.currencies)
+            }
         }
 
         collectInLifecycle(viewModel.uiStateFrom) { state ->
@@ -69,6 +82,11 @@ class CreateOrganisationFragment : Fragment() {
 
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        bindProgressButton(binding.buttonCreateOrganisation)
+
     }
 
     private fun setupVisualMediaPicker() {

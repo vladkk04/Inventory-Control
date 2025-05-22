@@ -222,7 +222,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/layout_header_tags"
-                    android:layout_marginVertical="@dimen/margin_vertical_between_items"
+                    android:layout_marginVertical="@dimen/margin_normal"
                     android:layout_marginEnd="@dimen/margin_normal"
                     android:visibility="gone" />
 

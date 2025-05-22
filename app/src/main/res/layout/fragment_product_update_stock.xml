@@ -41,7 +41,7 @@
                     android:id="@+id/recycler_view_products"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/margin_vertical_between_items"
+                    android:layout_marginVertical="@dimen/margin_normal"
                     android:clipToPadding="false"
                     android:minHeight="140dp"
                     android:orientation="horizontal"

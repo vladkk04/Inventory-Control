@@ -3,7 +3,7 @@ package com.example.inventorycotrol.ui.fragments.auth.forgotPassword
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.inventorycotrol.common.ApiResponseResult
-import com.example.inventorycotrol.domain.model.auth.ForgotPasswordRequest
+import com.example.inventorycotrol.domain.model.auth.requests.ForgotPasswordRequest
 import com.example.inventorycotrol.domain.model.validator.InputValidator
 import com.example.inventorycotrol.domain.repository.remote.AuthRemoteDataSource
 import com.example.inventorycotrol.ui.model.auth.forgotPassword.ForgotPasswordUiEvent

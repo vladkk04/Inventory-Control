@@ -18,7 +18,7 @@ fun OrderEntity.mapToDomain() = Order(
 
 fun List<RawOrderData>.mapToDomain(): List<Order> {
     return this.groupBy { it.order.id }
-        .map { (orderId, rawOrderDataList) ->
+        .map { (_, rawOrderDataList) ->
             val firstRaw = rawOrderDataList.first()
 
             Order(

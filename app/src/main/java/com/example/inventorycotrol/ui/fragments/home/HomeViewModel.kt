@@ -1,19 +1,18 @@
 package com.example.inventorycotrol.ui.fragments.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.inventorycotrol.common.ApiResponseResult
 import com.example.inventorycotrol.common.Resource
 import com.example.inventorycotrol.data.constants.AppConstants
 import com.example.inventorycotrol.domain.manager.DataStoreManager
+import com.example.inventorycotrol.domain.usecase.order.OrderUseCases
 import com.example.inventorycotrol.domain.usecase.organisation.OrganisationUseCases
 import com.example.inventorycotrol.domain.usecase.organisationUser.OrganisationUserUseCases
 import com.example.inventorycotrol.domain.usecase.organisatonSettings.OrganisationSettingsUseCases
 import com.example.inventorycotrol.domain.usecase.product.ProductUseCases
 import com.example.inventorycotrol.domain.usecase.productCategory.ProductCategoryUseCases
 import com.example.inventorycotrol.domain.usecase.productUpdateStock.ProductUpdateStockUseCases
-import com.example.inventorycotrol.domain.usecase.user.UserUseCases
 import com.example.inventorycotrol.ui.model.home.FilterCriticalItems
 import com.example.inventorycotrol.ui.model.home.HomeUiState
 import com.example.inventorycotrol.ui.model.productUpdateStock.ProductUpdateStockCompact
@@ -24,6 +23,7 @@ import com.example.inventorycotrol.ui.snackbar.SnackbarEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -36,7 +36,7 @@ import kotlin.math.ceil
 class HomeViewModel @Inject constructor(
     private val navigator: AppNavigator,
     private val productUseCases: ProductUseCases,
-    private val userUseCases: UserUseCases,
+    private val orderUseCase: OrderUseCases,
     private val productCategoriesUseCase: ProductCategoryUseCases,
     private val stockUpdateStockUseCases: ProductUpdateStockUseCases,
     private val organisationUserUseCases: OrganisationUserUseCases,
@@ -60,21 +60,43 @@ class HomeViewModel @Inject constructor(
     private fun loadData() = viewModelScope.launch {
         getOrganisation()
         getCategories()
+        getOrders()
         getOrganisationUsers()
         getOrganisationSettings()
         getCriticalStockItems(_uiState.value.filterCriticalItems)
         getLastStockTransaction()
     }
 
+    private fun getOrders() = viewModelScope.launch {
+        orderUseCase.getOrders().distinctUntilChanged().onEach { response ->
+            when (response) {
+                Resource.Loading -> {
+                    //_uiState.update { it.copy(isLoading = true) }
+                }
+                is Resource.Error -> {
+                    sendSnackbarEvent(SnackbarEvent(response.errorMessage))
+                }
+                is Resource.Success -> {
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            isRefreshing = false
+                        )
+                    }
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
     private fun getOrganisation() = viewModelScope.launch {
-        organisationUseCases.get.getOrganisation().onEach { result ->
+        organisationUseCases.get.getOrganisation().distinctUntilChanged().onEach { result ->
             when (result) {
                 Resource.Loading -> {
 
                 }
 
                 is Resource.Error -> {
-
+                    sendSnackbarEvent(SnackbarEvent(result.errorMessage))
                 }
 
                 is Resource.Success -> {
@@ -85,7 +107,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getOrganisationSettings() {
-        organisationSettingsUseCases.get().onEach { result ->
+        organisationSettingsUseCases.get().distinctUntilChanged().onEach { result ->
             when (result) {
                 Resource.Loading -> {
                     _uiState.update { it.copy(isLoading = true) }
@@ -114,7 +136,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private suspend fun getOrganisationUsers() {
-        organisationUserUseCases.getOrganisationUsersUseCase().onEach { response ->
+        organisationUserUseCases.getOrganisationUsersUseCase().distinctUntilChanged().onEach { response ->
             when (response) {
                 Resource.Loading -> {
                     if (!_uiState.value.isRefreshing) {
@@ -125,11 +147,11 @@ class HomeViewModel @Inject constructor(
                 is Resource.Error -> {
                     _uiState.update {
                         it.copy(
+                            totalUsersCount = response.data?.size ?: 0,
                             isLoading = false,
                             isRefreshing = false
                         )
                     }
-                    Log.d("debug", "FOUND ORG USERS")
 
                     sendSnackbarEvent(SnackbarEvent(response.errorMessage))
                 }
@@ -148,22 +170,21 @@ class HomeViewModel @Inject constructor(
     }
 
     private suspend fun getLastStockTransaction() {
-        stockUpdateStockUseCases.getStock.getAllByOrganisationView().onEach { response ->
+        stockUpdateStockUseCases.getStock.getAllByOrganisationView().distinctUntilChanged().onEach { response ->
             when (response) {
                 ApiResponseResult.Loading -> {
                     if (!_uiState.value.isRefreshing) {
-                        _uiState.update { it.copy(isLoading = true) }
+                        _uiState.update { it.copy(isLoadingLastStock = true) }
                     }
                 }
 
                 is ApiResponseResult.Failure -> {
                     _uiState.update {
                         it.copy(
-                            isLoading = false,
+                            isLoadingLastStock = false,
                             isRefreshing = false
                         )
                     }
-                    Log.d("debug", "FOUND ORG LAST STOCK")
 
                     sendSnackbarEvent(SnackbarEvent(response.errorMessage))
                 }
@@ -181,7 +202,7 @@ class HomeViewModel @Inject constructor(
                     _uiState.update {
                         it.copy(
                             productUpdateStockItems = compactItems,
-                            isLoading = false,
+                            isLoadingLastStock = false,
                             isRefreshing = false
                         )
                     }
@@ -190,19 +211,39 @@ class HomeViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private suspend fun getCriticalStockItems(filter: FilterCriticalItems) {
-        productUseCases.getProducts.getAll().onEach { result ->
+    private fun getCriticalStockItems(filter: FilterCriticalItems) = viewModelScope.launch {
+        productUseCases.getProducts.getAll().distinctUntilChanged().onEach { result ->
             when (result) {
                 Resource.Loading -> {
                     if (!_uiState.value.isRefreshing) {
-                        _uiState.update { it.copy(isLoading = true) }
+                        _uiState.update { it.copy(isLoadingCriticalStock = true) }
                     }
                 }
 
                 is Resource.Error -> {
+                    val criticalThreshold =
+                        dataStoreManager.getPreference(AppConstants.CRITICAL_THRESHOLD_PERCENTAGE)
+                            .firstOrNull()
+                            ?: 25.00
+
+
+                    val criticalProducts =
+                        result.data?.filter { product ->
+                            product.quantity <= ceil(product.minStockLevel * (criticalThreshold / 100))
+                        } ?: emptyList()
+
+                    val filterList = when (filter) {
+                        FilterCriticalItems.SHOW_ALL -> criticalProducts
+                        FilterCriticalItems.LAST_100 -> criticalProducts.takeLast(100)
+                        FilterCriticalItems.LAST_10 -> criticalProducts.takeLast(10)
+                        FilterCriticalItems.LAST_50 -> criticalProducts.takeLast(50)
+                    }
+
                     _uiState.update {
                         it.copy(
-                            isLoading = false,
+                            totalProductsCount = result.data?.size ?: 0,
+                            criticalStockItems = filterList,
+                            isLoadingCriticalStock = false,
                             isRefreshing = false
                         )
                     }
@@ -222,6 +263,7 @@ class HomeViewModel @Inject constructor(
                             product.quantity <= ceil(product.minStockLevel * (criticalThreshold / 100))
                         }
 
+
                     val filterList = when (filter) {
                         FilterCriticalItems.SHOW_ALL -> criticalProducts
                         FilterCriticalItems.LAST_100 -> criticalProducts.takeLast(100)
@@ -232,8 +274,8 @@ class HomeViewModel @Inject constructor(
                     _uiState.update {
                         it.copy(
                             totalProductsCount = result.data.size,
-                            criticalStockItems = filterList,
-                            isLoading = false,
+                            criticalStockItems = filterList.sortedBy { it.name },
+                            isLoadingCriticalStock = false,
                             isRefreshing = false
                         )
                     }
@@ -243,7 +285,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getCategories() {
-        productCategoriesUseCase.getCategories.getAll().onEach { result ->
+        productCategoriesUseCase.getCategories.getAll().distinctUntilChanged().onEach { result ->
             when (result) {
                 Resource.Loading -> {
                     if (!_uiState.value.isRefreshing) {
@@ -282,11 +324,11 @@ class HomeViewModel @Inject constructor(
     }
 
     fun navigateToInviteUser() = viewModelScope.launch {
-        navigator.navigate(Destination.OrganisationManageUser)
+        navigator.navigate(Destination.OrganisationInvitationManager)
     }
 
     fun navigateToUpdateStock() = viewModelScope.launch {
-        navigator.navigate(Destination.ProductUpdateStock)
+        navigator.navigate(Destination.ProductStockUpdater)
     }
 
     fun openDrawer() = viewModelScope.launch {

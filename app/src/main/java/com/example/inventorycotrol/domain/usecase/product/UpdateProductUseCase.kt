@@ -1,6 +1,6 @@
 package com.example.inventorycotrol.domain.usecase.product
 
-import com.example.inventorycotrol.data.local.mappers.mapToEntity
+import com.example.inventorycotrol.data.remote.mappers.mapToEntity
 import com.example.inventorycotrol.data.remote.mappers.mapToRequest
 import com.example.inventorycotrol.domain.model.product.Product
 import com.example.inventorycotrol.domain.repository.local.ProductLocalDataSource
@@ -13,7 +13,9 @@ class UpdateProductUseCase(
 ) {
     operator fun invoke(product: Product) = performNetworkOperation(
         remoteCall = { remote.update(product.id, product.mapToRequest()) },
-        localUpdate = { local.update(product.mapToEntity()) }
+        localUpdate = { productDto ->
+            local.update(productDto.mapToEntity())
+        }
     )
 
 }

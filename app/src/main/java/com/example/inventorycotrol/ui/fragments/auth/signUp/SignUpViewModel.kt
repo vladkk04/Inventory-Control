@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.inventorycotrol.common.ApiResponseResult
 import com.example.inventorycotrol.data.local.entities.UserEntity
-import com.example.inventorycotrol.domain.model.auth.SignInRequest
-import com.example.inventorycotrol.domain.model.auth.SignUpRequest
+import com.example.inventorycotrol.domain.model.auth.requests.SignInRequest
+import com.example.inventorycotrol.domain.model.auth.requests.SignUpRequest
 import com.example.inventorycotrol.domain.model.validator.InputValidator
 import com.example.inventorycotrol.domain.repository.remote.AuthRemoteDataSource
 import com.example.inventorycotrol.domain.usecase.user.UserUseCases

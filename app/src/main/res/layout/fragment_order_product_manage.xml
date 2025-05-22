@@ -82,7 +82,7 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/margin_vertical_between_items"
+            android:layout_marginVertical="@dimen/margin_normal"
             android:clipToPadding="false"
             android:minHeight="140dp"
             android:orientation="horizontal"
@@ -104,7 +104,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_medium"
-        android:layout_marginVertical="@dimen/margin_vertical_between_items"
+        android:layout_marginVertical="@dimen/margin_normal"
         android:hint="@string/hint_price"
         android:visibility="gone">
 
@@ -122,7 +122,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_medium"
-        android:layout_marginVertical="@dimen/margin_vertical_between_items"
+        android:layout_marginVertical="@dimen/margin_normal"
         android:hint="@string/hint_quantity"
         android:visibility="gone">
 
@@ -140,7 +140,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_normal"
-        android:layout_marginVertical="@dimen/margin_vertical_between_items"
+        android:layout_marginVertical="@dimen/margin_normal"
         android:visibility="gone"
         android:text="@string/text_add_product" />
 

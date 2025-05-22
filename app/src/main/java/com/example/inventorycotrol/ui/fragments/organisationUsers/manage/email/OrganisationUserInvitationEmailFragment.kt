@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.inventorycotrol.R
 import com.example.inventorycotrol.databinding.FragmentOrganisationUserInvitationEmailBinding
 import com.example.inventorycotrol.domain.model.organisation.OrganisationRole
-import com.example.inventorycotrol.ui.fragments.organisationUsers.manage.OrganisationUserManageViewModel
-import com.example.inventorycotrol.ui.model.organisationUser.OrganisationUserManageUiState
+import com.example.inventorycotrol.ui.MainViewModel
 import com.example.inventorycotrol.ui.model.organisationUser.invitationEmail.OrganisationUserInvitationEmailFormEvent
 import com.example.inventorycotrol.ui.model.organisationUser.invitationEmail.OrganisationUserInvitationEmailFormState
 import com.example.inventorycotrol.ui.model.organisationUser.invitationEmail.OrganisationUserInvitationEmailUiState
@@ -22,6 +23,8 @@ import com.github.razir.progressbutton.hideProgress
 import com.github.razir.progressbutton.showProgress
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -32,19 +35,22 @@ class OrganisationUserInvitationEmailFragment :
 
     private val viewModel: OrganisationUserInvitationEmailViewModel by viewModels()
 
-    private val sharedViewModel: OrganisationUserManageViewModel by viewModels({ requireParentFragment() })
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         InsetHandler.adaptToEdgeWithPadding(binding.root)
-
         SnackbarController.observeSnackbarEvents(viewLifecycleOwner, binding.root)
+
+        setupAutoCompleteTextViewUserRole()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            mainViewModel.isConnected.collectLatest {
+                binding.buttonInvite.isEnabled = it
+            }
+        }
 
         setupEditTextChanges()
         setupInviteButton()
-
-        collectInLifecycle(sharedViewModel.uiState) { uiState ->
-            updateSharedUiState(uiState)
-        }
 
         collectInLifecycle(viewModel.uiState) { uiState ->
             updateUiState(uiState)
@@ -59,10 +65,20 @@ class OrganisationUserInvitationEmailFragment :
         }
 
         collectInLifecycle(viewModel.canInvite) {
-            binding.buttonInvite.isEnabled = it
+            binding.buttonInvite.isEnabled = it && mainViewModel.isConnected.value
         }
 
     }
+
+
+    private fun setupAutoCompleteTextViewUserRole() {
+        (binding.autoCompleteRole as MaterialAutoCompleteTextView).apply {
+            setSimpleItems(OrganisationRole.entries.map { it.name }.toTypedArray())
+        }.setOnItemClickListener { _, _, i, _ ->
+            viewModel.onEvent(OrganisationUserInvitationEmailFormEvent.RoleChanged(OrganisationRole.entries[i]))
+        }
+    }
+
 
     private fun setupInviteButton() {
         bindProgressButton(binding.buttonInvite)
@@ -98,11 +114,4 @@ class OrganisationUserInvitationEmailFragment :
         }
     }
 
-    private fun updateSharedUiState(uiState: OrganisationUserManageUiState) {
-        (binding.autoCompleteRole as MaterialAutoCompleteTextView).apply {
-            setSimpleItems(OrganisationRole.entries.map { it.name }.toTypedArray())
-        }.setOnItemClickListener { _, _, i, _ ->
-            viewModel.onEvent(OrganisationUserInvitationEmailFormEvent.RoleChanged(OrganisationRole.entries[i]))
-        }
-    }
 }

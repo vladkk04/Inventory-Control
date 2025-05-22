@@ -1,9 +1,8 @@
 package com.example.inventorycotrol.ui.navigation
 
-import android.util.Log
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.createGraph
 import androidx.navigation.fragment.dialog
@@ -23,7 +22,6 @@ import com.example.inventorycotrol.ui.fragments.orders.detail.OrderDetailFragmen
 import com.example.inventorycotrol.ui.fragments.orders.manage.addProductToOrder.OrderAddProductFragment
 import com.example.inventorycotrol.ui.fragments.orders.manage.create.OrderCreateFragment
 import com.example.inventorycotrol.ui.fragments.orders.manage.discount.OrderManageDiscountFragment
-import com.example.inventorycotrol.ui.fragments.orders.manage.edit.OrderEditFragment
 import com.example.inventorycotrol.ui.fragments.orders.orderList.OrderListFragment
 import com.example.inventorycotrol.ui.fragments.organisation.OrganisationListFragment
 import com.example.inventorycotrol.ui.fragments.organisation.afterSignUp.InvitationListAfterSignUpFragment
@@ -35,20 +33,20 @@ import com.example.inventorycotrol.ui.fragments.organisationSettings.Organisatio
 import com.example.inventorycotrol.ui.fragments.organisationUsers.assignRole.OrganisationUserAssignRoleFragment
 import com.example.inventorycotrol.ui.fragments.organisationUsers.edit.OrganisationUserEditFragment
 import com.example.inventorycotrol.ui.fragments.organisationUsers.list.OrganisationUserListFragment
-import com.example.inventorycotrol.ui.fragments.organisationUsers.manage.OrganisationUserManageFragment
+import com.example.inventorycotrol.ui.fragments.organisationUsers.manage.OrganisationInvitationManagerFragment
 import com.example.inventorycotrol.ui.fragments.productUpdateStock.ProductUpdateStockFragment
 import com.example.inventorycotrol.ui.fragments.profile.ProfileFragment
 import com.example.inventorycotrol.ui.fragments.profile.edit.ProfileEditFragment
 import com.example.inventorycotrol.ui.fragments.reports.ReportsFragment
 import com.example.inventorycotrol.ui.fragments.selectDatePeriod.SelectDatePeriodFragment
-import com.example.inventorycotrol.ui.fragments.settings.SettingsFragment
 import com.example.inventorycotrol.ui.fragments.warehouse.filters.WarehouseFilterFragment
 import com.example.inventorycotrol.ui.fragments.warehouse.productDetail.ProductDetailFragment
 import com.example.inventorycotrol.ui.fragments.warehouse.productList.ProductListFragment
 import com.example.inventorycotrol.ui.fragments.warehouse.productManage.productCreate.ProductCreateFragment
 import com.example.inventorycotrol.ui.fragments.warehouse.productManage.productEdit.ProductEditFragment
-import com.example.inventorycotrol.ui.utils.extensions.collectInLifecycle
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 
 class AppNavigationGraph(
@@ -63,74 +61,81 @@ class AppNavigationGraph(
     }
 
     private fun createGraph() {
-        lifecycleOwner.collectInLifecycle(navigator.startDestination()) { startDestination ->
-            navController.graph = navController.createGraph(
-                startDestination = startDestination,
-            ) {
-                //Bottom Navigation View
-                fragment<HomeFragment, Destination.Home>()
-                fragment<ProductListFragment, Destination.Warehouse>()
-                fragment<OrderListFragment, Destination.Orders>()
-                dialog<MoreFragment, Destination.More>()
+        lifecycleOwner.lifecycleScope.launch {
+            navigator.startDestination().collectLatest { startDestination ->
+                navController.graph = navController.createGraph(
+                    startDestination = startDestination,
+                ) {
+                    //Bottom Navigation
+                    fragment<ProductListFragment, Destination.Warehouse>()
+                    fragment<OrderListFragment, Destination.Orders>()
+                    fragment<HomeFragment, Destination.Home>()
+                    dialog<MoreFragment, Destination.More>()
 
-                //More Additional Fragments
-                fragment<OrganisationUserListFragment, Destination.ManageUsers>()
+                    //Auth Destinations
+                    fragment<VerificationOtpFragment, Destination.VerificationOtp>()
+                    fragment<AuthenticationFragment, Destination.Authentication>()
+                    fragment<ForgotPasswordFragment, Destination.ForgotPassword>()
+                    fragment<ResetPasswordFragment, Destination.ResetPassword>()
+                    fragment<SignUpFragment, Destination.SignUp>()
+                    fragment<SignInFragment, Destination.SignIn>()
 
-                //Product
-                fragment<ProductDetailFragment, Destination.ProductDetail>()
-                dialog<ProductCreateFragment, Destination.CreateProduct>()
-                dialog<ProductEditFragment, Destination.EditProduct>()
+                    //Profile
 
-                //Reports
-                fragment<ReportsFragment, Destination.Reports>()
+                    //Warehouse
+                    fragment<WarehouseFilterFragment, Destination.WarehouseFilters>()
+                    fragment<ProductDetailFragment, Destination.ProductDetail>()
+                    dialog<ProductCreateFragment, Destination.CreateProduct>()
+                    dialog<ProductEditFragment, Destination.EditProduct>()
 
-                //Order
-                fragment<OrderDetailFragment, Destination.OrderDetail>()
-                dialog<OrderCreateFragment, Destination.CreateOrder>()
-                dialog<OrderEditFragment, Destination.EditOrder>()
-                dialog<OrderAddProductFragment, Destination.OrderAddProduct>()
-                dialog<OrderManageDiscountFragment, Destination.OrderManageDiscount>()
 
-                //Warehouse
-                fragment<WarehouseFilterFragment, Destination.WarehouseFilters>()
+                    //More Additional Fragments
+                    fragment<OrganisationUserListFragment, Destination.ManageOrganisationUsers>()
 
-                dialog<ProductUpdateStockFragment, Destination.ProductUpdateStock>()
+                    //Side drawer
+                    fragment<ReportsFragment, Destination.Reports>()
 
-                //Organisation User
-                dialog<OrganisationUserManageFragment, Destination.OrganisationManageUser>()
-                dialog<OrganisationUserEditFragment, Destination.EditOrganisationUser>()
-                dialog<OrganisationUserAssignRoleFragment, Destination.AssignRoleOrganisationUser>()
+                    //Order
+                    dialog<OrderManageDiscountFragment, Destination.OrderManageDiscount>()
+                    dialog<OrderAddProductFragment, Destination.OrderProductSelector>()
+                    fragment<OrderDetailFragment, Destination.OrderDetail>()
+                    dialog<OrderCreateFragment, Destination.CreateOrder>()
 
-                dialog<SelectDatePeriodFragment, Destination.SelectDatePeriod>()
 
-                fragment<ProfileEditFragment, Destination.ProfileEdit>()
 
-                //Organization
-                fragment<CreateOrganisationFragment, Destination.CreateOrganisation>()
-                fragment<OrganisationSettingsFragment, Destination.OrganisationSettings>()
-                fragment<OrganisationEditFragment, Destination.OrganisationEdit>()
+                    dialog<ProductUpdateStockFragment, Destination.ProductStockUpdater>()
 
-                fragment<InvitationListAfterSignUpFragment, Destination.InvitationListAfterSignUp>()
+                    //Organisation User
+                    dialog<OrganisationInvitationManagerFragment, Destination.OrganisationInvitationManager>()
+                    dialog<OrganisationUserEditFragment, Destination.EditOrganisationUser>()
+                    dialog<OrganisationUserAssignRoleFragment, Destination.AssignRoleOrganisationUser>()
 
-                fragment<ProfileFragment, Destination.Profile>()
+                    dialog<SelectDatePeriodFragment, Destination.SelectDatePeriod>()
 
-                fragment<ChangePasswordFragment, Destination.ChangePassword>()
-                fragment<ChangeEmailFragment, Destination.ChangeEmail>()
+                    fragment<ProfileEditFragment, Destination.EditProfile>()
 
-                fragment<InvitationListFragment, Destination.Invitations>()
+                    //Organization
+                    fragment<CreateOrganisationFragment, Destination.CreateOrganisation>()
+                    fragment<OrganisationSettingsFragment, Destination.ManageOrganisationSettings>()
+                    fragment<OrganisationEditFragment, Destination.EditOrganisation>()
 
-                fragment<SettingsFragment, Destination.Settings>()
+                    fragment<InvitationListAfterSignUpFragment, Destination.InvitationListAfterSignUp>()
 
-                fragment<OrganisationListFragment, Destination.OrganisationList>()
+                    fragment<ProfileFragment, Destination.Profile>()
 
-                fragment<OrganisationManageFragment, Destination.ManageOrganisation>()
-                //Authentication
-                fragment<AuthenticationFragment, Destination.Authentication>()
-                fragment<SignUpFragment, Destination.SignUp>()
-                fragment<SignInFragment, Destination.SignIn>()
-                fragment<ForgotPasswordFragment, Destination.ForgotPassword>()
-                fragment<VerificationOtpFragment, Destination.VerificationOtp>()
-                fragment<ResetPasswordFragment, Destination.ResetPassword>()
+                    fragment<ChangePasswordFragment, Destination.ChangePassword>()
+                    fragment<ChangeEmailFragment, Destination.ChangeEmail>()
+
+                    fragment<InvitationListFragment, Destination.Invitations>()
+
+
+                    fragment<OrganisationListFragment, Destination.OrganisationList>()
+
+                    fragment<OrganisationManageFragment, Destination.ManageOrganisation>()
+
+                    //Auth
+
+                }
             }
         }
     }
@@ -140,73 +145,73 @@ class AppNavigationGraph(
         navigator: AppNavigator,
         navController: NavController
     ) {
-        lifecycleOwner.collectInLifecycle(
-            navigator.navigationActions,
-            Lifecycle.State.STARTED,
-            Dispatchers.Main.immediate
-        ) { action ->
-            when (action) {
-                is NavigationAction.Navigate -> {
-                    navController.navigate(
-                        route = action.destination,
-                    ) {
-                        val isAnyMoreDestination =
-                            Destination.getMoreDestinations().any { action.destination == it }
+        lifecycleOwner.lifecycleScope.launch(Dispatchers.Main.immediate) {
+            navigator.navigationActions.collectLatest { action ->
+                when (action) {
+                    is NavigationAction.Navigate -> {
+                        navController.navigate(
+                            route = action.destination,
+                        ) {
+                            val isAnyMoreDestination =
+                                Destination.getMoreDestinations().any { action.destination == it }
 
 
-                        val isDrawerDestinations =
-                            Destination.getDrawerDestinations().any { action.destination == it || action.destination::class.simpleName == it::class.simpleName }
+                            val isDrawerDestinations =
+                                Destination.getDrawerDestinations()
+                                    .any { action.destination == it || action.destination::class.simpleName == it::class.simpleName }
 
-                        Log.d("debug", Destination.getDrawerDestinations().toString())
+                            anim {
+                                this.enter =
+                                    if (isAnyMoreDestination)
+                                        R.anim.from_bottom
+                                    else if (isDrawerDestinations)
+                                        0
+                                    else
+                                        R.anim.from_right
 
-                        anim {
-                            this.enter =
-                                if (isAnyMoreDestination)
-                                    R.anim.from_bottom
-                                else if (isDrawerDestinations)
-                                    0
-                                else
-                                    R.anim.from_right
+                                this.exit =
+                                    if (isAnyMoreDestination)
+                                        R.anim.from_alpha
+                                    else if (isDrawerDestinations)
+                                        0
+                                    else R.anim.to_left
 
-                            this.exit =
-                                if (isAnyMoreDestination)
-                                    R.anim.from_alpha
-                                else if (isDrawerDestinations)
-                                    0
-                                else R.anim.to_left
+                                this.popEnter =
+                                    if (isAnyMoreDestination)
+                                        R.anim.to_alpha
+                                    else if (isDrawerDestinations)
+                                        0
+                                    else R.anim.from_left
 
-                            this.popEnter =
-                                if (isAnyMoreDestination)
-                                    R.anim.to_alpha
-                                else if (isDrawerDestinations)
-                                    0
-                                else R.anim.from_left
-
-                            this.popExit =
-                                if (isAnyMoreDestination)
-                                    R.anim.from_alpha
-                                else if (isDrawerDestinations)
-                                    0
-                                else R.anim.to_right
+                                this.popExit =
+                                    if (isAnyMoreDestination)
+                                        R.anim.from_alpha
+                                    else if (isDrawerDestinations)
+                                        0
+                                    else R.anim.to_right
+                            }
+                            action.navOptions(this)
                         }
-                        action.navOptions(this)
-                    }
-                }
-
-                is NavigationAction.NavigateUp -> {
-                    try {
-                        action.args.forEach { (key, value) ->
-                            navController.previousBackStackEntry?.savedStateHandle?.set(key, value)
-                        }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
                     }
 
-                    navController.navigateUp()
-                }
+                    is NavigationAction.NavigateUp -> {
+                        try {
+                            action.args.forEach { (key, value) ->
+                                navController.previousBackStackEntry?.savedStateHandle?.set(
+                                    key,
+                                    value
+                                )
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
 
-                NavigationAction.OpenNavigationDrawer -> {
-                    drawerLayout?.open()
+                        navController.navigateUp()
+                    }
+
+                    NavigationAction.OpenNavigationDrawer -> {
+                        drawerLayout?.open()
+                    }
                 }
             }
         }

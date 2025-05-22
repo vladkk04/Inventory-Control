@@ -109,6 +109,5 @@ class CategoriesViewModel @Inject constructor(
 
     fun selectCategory(category: ProductCategory) {
         _uiState.update { it.copy(currentCategory = category) }
-
     }
 }

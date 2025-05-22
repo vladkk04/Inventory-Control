@@ -1,6 +1,7 @@
 package com.example.inventorycotrol.ui.fragments.warehouse.productDetail
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.inventorycotrol.common.Resource
 import com.example.inventorycotrol.di.IoDispatcher
@@ -14,7 +15,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -27,33 +29,57 @@ class ProductDetailViewModel @Inject constructor(
     private val productUseCases: ProductUseCases,
     private val navigator: AppNavigator,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
-): BaseDetailViewModel(savedStateHandle, productUseCases, dispatcher) {
+): ViewModel() {
 
+    private val productRoute = Destination.from<Destination.ProductDetail>(savedStateHandle)
 
     private val _uiState = MutableStateFlow(ProductDetailUIState())
     val uiState = _uiState.asStateFlow()
+
+    init { getProductDetail() }
+
+    private fun getProductDetail() = viewModelScope.launch {
+        productUseCases.getProducts.getById(productRoute.id).distinctUntilChanged().collectLatest { response ->
+            //Log.d("debug", response.toString())
+            when (response) {
+                Resource.Loading -> {
+                    _uiState.update { it.copy(isLoading = true) }
+                }
+
+                is Resource.Error -> {
+                    _uiState.update { it.copy(isLoading = false, product = response.data) }
+                    sendSnackbarEvent(SnackbarEvent(response.errorMessage))
+                }
+
+                is Resource.Success -> {
+                    _uiState.update { it.copy(isLoading = false, product = response.data) }
+                }
+            }
+        }
+    }
+
 
     fun editProduct() = viewModelScope.launch {
         navigator.navigate(Destination.EditProduct(productRoute.id))
     }
 
     fun deleteProduct() = viewModelScope.launch {
-        productUseCases.deleteProduct(productRoute.id).onEach { response ->
+        productUseCases.deleteProduct(productRoute.id).distinctUntilChanged().onEach { response ->
             when (response) {
                 Resource.Loading -> {
-                    _isLoading.update { true }
+                    _uiState.update { it.copy(isLoading = true) }
                 }
                 is Resource.Error -> {
                     sendSnackbarEvent(SnackbarEvent(response.errorMessage))
-                    _isLoading.update { false }
+                    _uiState.update { it.copy(isLoading = false) }
                 }
                 is Resource.Success -> {
+                    _uiState.update { it.copy(isLoading = false) }
                     sendSnackbarEvent(SnackbarEvent("Product deleted"))
-                    _isLoading.update { false }
                     navigator.navigateUp()
                 }
             }
-        }.flowOn(dispatcher).launchIn(viewModelScope)
+        }.launchIn(viewModelScope)
     }
 
     fun navigateBack() = viewModelScope.launch{

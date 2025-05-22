@@ -34,8 +34,7 @@ class OrganisationListFragment : Fragment(R.layout.fragment_organisation_list) {
 
         bind { organisation ->
             Glide.with(requireContext())
-                .load("${AppConstants.BASE_URL_CLOUD_FRONT}/${organisation.logoUrl}")
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .load("${AppConstants.BASE_URL_CLOUD_FRONT}${organisation.logoUrl}")
                 .placeholder(R.drawable.ic_building)
                 .fallback(R.drawable.ic_building)
                 .error(R.drawable.ic_building)
@@ -56,6 +55,10 @@ class OrganisationListFragment : Fragment(R.layout.fragment_organisation_list) {
 
         setupRecyclerView()
         setupSwipeRefreshLayout()
+
+        binding.toolbar.setNavigationOnClickListener {
+            viewModel.navigateBack()
+        }
 
         collectInLifecycle(viewModel.uiState) { state ->
             updateUiState(state)

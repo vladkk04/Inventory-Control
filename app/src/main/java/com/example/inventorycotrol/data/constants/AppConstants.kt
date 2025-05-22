@@ -13,6 +13,16 @@ object AppConstants {
         "ISK", "RSD", "UAH", "USD"
     )
 
+    val SUPPORTED_MIME_TYPES_FOR_PICKER = arrayOf(
+        "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "text/plain",
+        "image/*"
+    )
+
     val CURRENCY_SYMBOLS = mapOf(
         "EUR" to "€",
         "GBP" to "£",
@@ -42,6 +52,7 @@ object AppConstants {
     val SELECTED_ORGANISATION_ID = stringPreferencesKey("selected_organisation_id")
 
     val NOTIFICATION_DAYS = stringSetPreferencesKey("notification_days")
+    val NOTIFY_ONLY = stringSetPreferencesKey("notification_only")
     val NOTIFICATION_TIME = stringPreferencesKey("notification_time")
 
     val ORGANISATION_CURRENCY = stringPreferencesKey("organisation_currency")
@@ -50,6 +61,6 @@ object AppConstants {
     val MEDIUM_THRESHOLD_PERCENTAGE = doublePreferencesKey("medium_threshold_percentage")
     val CRITICAL_THRESHOLD_PERCENTAGE = doublePreferencesKey("critical_threshold_percentage")
 
-    const val BASE_URL = "http://inventory-app.eu-north-1.elasticbeanstalk.com"
+    const val BASE_URL = "http://inventory-control.click" //
     const val BASE_URL_CLOUD_FRONT = "https://d27ms6sfcj15c2.cloudfront.net"
 }

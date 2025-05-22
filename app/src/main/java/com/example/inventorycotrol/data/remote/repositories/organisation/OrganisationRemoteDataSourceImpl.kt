@@ -8,7 +8,7 @@ import com.example.inventorycotrol.domain.manager.DataStoreManager
 import com.example.inventorycotrol.domain.model.organisation.OrganisationRequest
 import com.example.inventorycotrol.domain.repository.remote.OrganisationRemoteDataSource
 import com.example.inventorycotrol.ui.utils.extensions.safeApiCallFlow
-import com.example.inventorycotrol.ui.utils.extensions.safeResponseApiCallFlow
+import com.example.inventorycotrol.ui.utils.extensions.safeSuspendResponseApiCallFlow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 
@@ -20,9 +20,8 @@ class OrganisationRemoteDataSourceImpl(
     override suspend fun selectedOrganisationId(): String? =
         dataStoreManager.getPreference(AppConstants.SELECTED_ORGANISATION_ID).firstOrNull()
 
-
     override suspend fun create(request: OrganisationRequest): Flow<ApiResponseResult<OrganisationDto>> {
-        return safeResponseApiCallFlow {
+        return safeSuspendResponseApiCallFlow {
             api.create(request).also { request ->
                 request.body()?.let { organisationId ->
                     dataStoreManager.savePreference(AppConstants.SELECTED_ORGANISATION_ID to organisationId.id)
@@ -39,17 +38,17 @@ class OrganisationRemoteDataSourceImpl(
     }
 
     override suspend fun getById(organisationId: String): Flow<ApiResponseResult<OrganisationDto>> =
-        safeResponseApiCallFlow { api.get(organisationId) }
+        safeSuspendResponseApiCallFlow { api.get(organisationId) }
 
     override suspend fun get(): Flow<ApiResponseResult<OrganisationDto>> =
-        safeResponseApiCallFlow { api.get(selectedOrganisationId() ?: "") }
+        safeSuspendResponseApiCallFlow { api.get(selectedOrganisationId() ?: "") }
 
     override suspend fun switchOrganisation(organisationId: String) {
         dataStoreManager.savePreference(AppConstants.SELECTED_ORGANISATION_ID to organisationId)
     }
 
     override suspend fun getAll(): Flow<ApiResponseResult<List<OrganisationDto>>> =
-        safeResponseApiCallFlow { api.getAll() }
+        safeSuspendResponseApiCallFlow { api.getAll() }
 
     override suspend fun leave(): Flow<ApiResponseResult<Unit>> =
         safeApiCallFlow { api.leave(selectedOrganisationId() ?: "") }

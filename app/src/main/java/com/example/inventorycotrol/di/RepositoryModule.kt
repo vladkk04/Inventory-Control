@@ -342,11 +342,7 @@ object RepositoryModule {
     fun provideProfileUseCases(
         userLocalDataSource: UserLocalDataSource,
         userRemoteDataSource: UserRemoteDataSource,
-        organisationUserLocal: OrganisationUserLocalDataSource,
-        organisationUserRemote: OrganisationUserRemoteDataSource,
         profileRemoteDataSource: ProfileRemoteDataSource,
-        organisationRemoteDataSource: OrganisationRemoteDataSource,
-        dataStoreManager: DataStoreManager
     ): ProfileUseCases =
         ProfileUseCases(
             getProfile = GetProfileUseCase(

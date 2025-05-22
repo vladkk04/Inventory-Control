@@ -45,7 +45,7 @@ fun Fragment.requestImagePermissions(
                 "Allow",
                 "Deny"
             )
-        }.request { allGranted, grantedList, deniedList ->
+        }.request { _, grantedList, _ ->
             if (grantedList.any { it == Manifest.permission.READ_MEDIA_IMAGES || it == Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED }) {
                 isAllGranted()
             }

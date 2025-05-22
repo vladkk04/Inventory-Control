@@ -13,7 +13,6 @@ import com.example.inventorycotrol.ui.model.auth.signIn.SignInUiEvent
 import com.example.inventorycotrol.ui.model.auth.signIn.SignInUiFormState
 import com.example.inventorycotrol.ui.utils.extensions.collectInLifecycle
 import com.example.inventorycotrol.ui.utils.extensions.viewBinding
-import com.example.inventorycotrol.ui.utils.screen.InsetHandler
 import com.github.razir.progressbutton.bindProgressButton
 import com.github.razir.progressbutton.hideProgress
 import com.github.razir.progressbutton.showProgress
@@ -27,7 +26,6 @@ class SignInFragment: Fragment(R.layout.fragment_sign_in) {
     private val viewModel: SignInViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        InsetHandler.adaptToEdgeWithPadding(binding.root)
 
         setupBackButton()
         setupOnInputsEditTextChange()

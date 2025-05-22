@@ -8,8 +8,8 @@ data class ProductUpdateStockItem(
     val stockOnHand: Double,
     val minStockLevel: Double,
     val unit: ProductUnit,
-    val adjustmentAmount: Double = 0.0,
-    val currentInputValue: Double = 0.0
+    val currentInputValue: Double = stockOnHand
 ) {
-
+    val adjustmentAmount: Double
+        get() = currentInputValue - stockOnHand
 }

@@ -11,10 +11,11 @@ import com.example.inventorycotrol.ui.fragments.warehouse.productManage.BaseProd
 import com.example.inventorycotrol.ui.navigation.AppNavigator
 import com.example.inventorycotrol.ui.snackbar.SnackbarController.sendSnackbarEvent
 import com.example.inventorycotrol.ui.snackbar.SnackbarEvent
-import com.example.inventorycotrol.ui.utils.FileMimeType
+import com.example.inventorycotrol.domain.model.file.FileMimeType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -30,13 +31,15 @@ class ProductCreateViewModel @Inject constructor(
 ) : BaseProductManageViewModel(barcodeScannerUseCase) {
 
     fun createProduct() = viewModelScope.launch {
+        if (!isValidateInputs()) {
+            return@launch
+        }
+
         _uiState.update { it.copy(isLoading = true) }
 
         val url = image.value?.let {
             fileUseCases.uploadFileUseCase(it, FileMimeType.PNG)
         }?.first()
-
-        if (!isValidateInputs()) return@launch
 
         val newProduct = ProductRequest(
             imageUrl = url,
@@ -50,7 +53,7 @@ class ProductCreateViewModel @Inject constructor(
             tags = uiFormState.value.tags
         )
 
-        productUseCase.createProduct.invoke(newProduct).collectLatest { result ->
+        productUseCase.createProduct.invoke(newProduct).distinctUntilChanged().collectLatest { result ->
             when (result) {
                 Resource.Loading -> {
                 }

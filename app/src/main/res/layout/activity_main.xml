@@ -8,31 +8,56 @@
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
 
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/nav_host_fragment"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/bottom_navigation_view"
-            android:layout_gravity="center"
-            app:defaultNavHost="true" />
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation_view"
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom"
-            android:visibility="gone"
-            app:labelVisibilityMode="labeled"
-            app:menu="@menu/bottom_navigation_menu" />
+            android:orientation="horizontal">
 
-    </RelativeLayout>
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/nav_host_fragment"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/bottom_navigation_view_container"
+                android:layout_gravity="center"
+                app:defaultNavHost="true" />
+
+            <LinearLayout
+                android:id="@+id/bottom_navigation_view_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text_view_internet_connection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_top_corner_rounded"
+                    android:gravity="center"
+                    android:padding="@dimen/padding_extra_small"
+                    android:visibility="gone"
+                    tools:text="@string/no_internet_connection" />
+
+                <com.google.android.material.bottomnavigation.BottomNavigationView
+                    android:id="@+id/bottom_navigation_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:labelVisibilityMode="labeled"
+                    app:menu="@menu/bottom_navigation_menu" />
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+
+    </FrameLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"

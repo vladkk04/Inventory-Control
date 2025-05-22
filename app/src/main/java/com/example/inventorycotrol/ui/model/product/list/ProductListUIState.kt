@@ -16,7 +16,8 @@ data class ProductListUIState(
     val sortOptions: ProductSortOptions = ProductSortOptions(),
     val isRefreshing: Boolean = false,
     val isLoading: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
+    val isEnableCreateButton: Boolean = true,
 )
 fun List<Product>.sortBy(sortOptions: ProductSortOptions): List<Product> {
     return when (sortOptions.sortBy) {

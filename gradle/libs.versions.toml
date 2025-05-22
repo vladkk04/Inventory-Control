@@ -25,11 +25,9 @@ ksp = "1.9.0-1.0.12"
 serialization = "1.8.20"
 serialization-json = "1.6.0"
 element-adapter = "0.7"
-paging = "3.3.5"
 hilt-navigation = "1.2.0"
 hilt-worker = "1.2.0"
 google-services = "4.4.2"
-firebase-boom = "33.8.0"
 ucrop = "2.2.9"
 okhttp3 = "4.12.0"
 retrofit = "2.11.0"
@@ -37,7 +35,6 @@ datastore-preferences = "1.1.3"
 converter-kotlinx-serialization = "2.11.0"
 progress-button = "2.1.0"
 permissionsx = "1.8.1"
-animated-theme-manager = "1.1.4"
 work-manager = "2.10.0"
 jwtdecode = "2.0.2"
 
@@ -66,9 +63,6 @@ androidx-navigation-fragment = { group = "androidx.navigation", name = "navigati
 androidx-navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigation" }
 hilt-navigation =  { group = "androidx.hilt", name = "hilt-navigation-fragment", version.ref = "hilt-navigation"}
 
-#Paging 3
-androidx-paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging"}
-
 #Barcode Scanner
 android-gms-codeScanner = { group = "com.google.android.gms", name = "play-services-code-scanner", version.ref = "playServicesCodeScanner" }
 
@@ -88,10 +82,6 @@ serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serializ
 
 #Simple Recycler View Adapter
 element-adapter =  { group = "com.elveum", name = "element-adapter", version.ref = "element-adapter"}
-
-#Firebase
-firebase-boom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-boom"}
-firebase-auth = { group = "com.google.firebase", name = "firebase-auth"}
 
 #Ucrop - Image Cropping
 ucrop = { group = "com.github.yalantis", name = "ucrop", version.ref = "ucrop"}
@@ -118,9 +108,6 @@ work-manager = { group = "androidx.work", name = "work-runtime-ktx", version.ref
 
 #Jwt Decode
 jwt-decode = { group = "com.auth0.android", name = "jwtdecode", version.ref = "jwtdecode"}
-
-#Theme
-theme-manager = { group = "com.dolatkia", name = "animated-theme-manager", version.ref = "animated-theme-manager" }
 
 #Tests
 junit = { group = "junit", name = "junit", version.ref = "junit" }

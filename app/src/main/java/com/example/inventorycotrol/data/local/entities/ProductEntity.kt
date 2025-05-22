@@ -8,15 +8,6 @@ import com.example.inventorycotrol.domain.model.product.ProductUnit
 import com.example.inventorycotrol.domain.model.product.ProductUpdateHistory
 import kotlinx.serialization.SerialName
 
-/*foreignKeys = [
-    ForeignKey(
-        entity = ProductCategoryEntity::class,
-        parentColumns = [ProductCategoryEntity.COLUMN_ID],
-        childColumns = [CHILD_COLUMN_CATEGORY_ID],
-        onDelete = ForeignKey.SET_DEFAULT,
-        onUpdate = ForeignKey.CASCADE
-    )
-]*/
 @Entity(
     tableName = ProductEntity.TABLE_NAME
 )

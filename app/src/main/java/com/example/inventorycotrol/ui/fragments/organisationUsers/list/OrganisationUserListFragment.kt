@@ -1,31 +1,39 @@
 package com.example.inventorycotrol.ui.fragments.organisationUsers.list
 
+import android.content.res.ColorStateList
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.elveum.elementadapter.getColor
 import com.elveum.elementadapter.simpleAdapter
 import com.example.inventorycotrol.R
 import com.example.inventorycotrol.databinding.FragmentOrganisationUserListBinding
 import com.example.inventorycotrol.databinding.OrganisationUserItemBinding
 import com.example.inventorycotrol.domain.model.organisation.user.OrganisationUser
 import com.example.inventorycotrol.domain.model.organisation.user.OrganisationUserStatus
+import com.example.inventorycotrol.ui.MainViewModel
 import com.example.inventorycotrol.ui.model.organisationUser.OrganisationUserListUiState
-import com.example.inventorycotrol.ui.utils.extensions.viewBinding
 import com.example.inventorycotrol.ui.utils.menu.createPopupMenu
-import com.example.inventorycotrol.ui.utils.screen.InsetHandler
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class OrganisationUserListFragment : Fragment(R.layout.fragment_organisation_user_list) {
+class OrganisationUserListFragment : Fragment() {
 
-    private val binding by viewBinding(FragmentOrganisationUserListBinding::bind)
+    private var _binding: FragmentOrganisationUserListBinding? = null
+    private val binding get() = _binding!!
 
     private val viewModel: OrganisationUserListViewModel by viewModels()
+
+    private val mainViewModel: MainViewModel by activityViewModels()
+
 
     private val adapter = simpleAdapter<OrganisationUser, OrganisationUserItemBinding> {
         areItemsSame = { old, new -> old.id == new.id }
@@ -39,6 +47,20 @@ class OrganisationUserListFragment : Fragment(R.layout.fragment_organisation_use
             this.textViewFullName.text = organisationUser.organisationUserName
             this.textViewRole.text = organisationUser.organisationRole.name
             this.textViewStatus.text = organisationUser.organisationUserStatus.name
+            this.checkBoxManage.isEnabled = organisationUser.isCanEdit
+
+            when (organisationUser.organisationUserStatus) {
+                OrganisationUserStatus.ACTIVE -> {
+                    this.textViewStatus.backgroundTintList = ColorStateList.valueOf(getColor(R.color.colorMinStockLevelNormalLevel))
+                }
+                OrganisationUserStatus.INACTIVE -> {}
+                OrganisationUserStatus.DECLINED -> {
+                    this.textViewStatus.backgroundTintList = ColorStateList.valueOf(getColor(R.color.colorMinStockLevelLowLevel))
+                }
+                OrganisationUserStatus.PENDING -> {
+                    this.textViewStatus.backgroundTintList = ColorStateList.valueOf(getColor(R.color.colorMinStockLevelMediumLevel))
+                }
+            }
         }
         listeners {
             this.checkBoxManage.onClick { item ->
@@ -53,19 +75,13 @@ class OrganisationUserListFragment : Fragment(R.layout.fragment_organisation_use
                         else -> R.menu.popup_manage_active_user_menu
                     }
 
-                val isUserInactive = item.organisationUserStatus == OrganisationUserStatus.INACTIVE
-
                 createPopupMenu(
                     requireContext(),
                     this@listeners.checkBoxManage,
                     menu
                 ).apply {
-                    /*this.menu.findItem(R.id.make_active)?.setVisible(isUserInactive)
-                    this.menu.findItem(R.id.make_inactive)?.setVisible(!isUserInactive)*/
-
                     setOnMenuItemClickListener {
                         when (it.itemId) {
-
                             R.id.assign_role  -> {
                                 viewModel.navigateToAssignRole(item)
                                 true
@@ -100,11 +116,24 @@ class OrganisationUserListFragment : Fragment(R.layout.fragment_organisation_use
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        InsetHandler.adaptToEdgeWithMargin(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentOrganisationUserListBinding.inflate(inflater, container, false)
+
         setupFabButton()
         setupRecyclerView()
         setupToolbar()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            mainViewModel.isConnected.collectLatest {
+                binding.fabCreateUser.isEnabled = it
+                viewModel.getOrganisationUsers()
+                //adapter.submitList(adapter.currentList.map { user -> user.copy(isCanEdit = it) })
+            }
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collectLatest {
@@ -115,7 +144,10 @@ class OrganisationUserListFragment : Fragment(R.layout.fragment_organisation_use
         binding.swipeRefreshLayout.setOnRefreshListener {
             viewModel.refresh()
         }
+
+        return binding.root
     }
+
 
     private fun setupFabButton() {
         binding.fabCreateUser.setOnClickListener {

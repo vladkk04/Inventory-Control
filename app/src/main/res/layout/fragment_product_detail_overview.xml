@@ -38,6 +38,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.4"
                     android:text="@string/text_product_id_value"
+                    android:layout_marginBottom="@dimen/margin_extra_small"
                     android:textSize="@dimen/text_size_small" />
 
                 <TextView
@@ -46,6 +47,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.6"
                     android:gravity="center"
+                    android:layout_marginBottom="@dimen/margin_extra_small"
                     android:text="@string/text_category"
                     android:textSize="@dimen/text_size_small" />
 
@@ -53,7 +55,6 @@
                     android:id="@+id/text_view_unit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/margin_vertical_between_items"
                     android:text="@string/text_measurement_unit_value"
                     android:textSize="@dimen/text_size_small" />
 
@@ -86,24 +87,21 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:weightSum="1">
 
                     <TextView
                         android:id="@+id/text_view_quantity"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.4"
-                        android:text="@string/text_quantity_value"
+                        android:text="@string/text_quantity_current_value"
+                        android:layout_marginBottom="@dimen/margin_extra_small"
                         android:textSize="@dimen/text_size_small" />
 
                     <TextView
                         android:id="@+id/text_view_minimum_stock_level"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_small"
-                        android:layout_weight="0.6"
                         android:text="@string/text_product_item_minimal_stock_level"
                         android:textSize="@dimen/text_size_small" />
 
@@ -143,7 +141,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.2"
-                        android:text="@string/text_tags"
+                        android:text="Tags:"
+                        android:layout_marginBottom="@dimen/margin_extra_small"
                         android:textSize="@dimen/text_size_small" />
 
                     <com.google.android.material.chip.ChipGroup
@@ -156,7 +155,8 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/text_description"
+                        android:text="Description:"
+                        android:layout_marginBottom="@dimen/margin_extra_small"
                         android:textSize="@dimen/text_size_small" />
 
                     <TextView

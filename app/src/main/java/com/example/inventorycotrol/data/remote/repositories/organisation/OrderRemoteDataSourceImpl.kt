@@ -9,7 +9,7 @@ import com.example.inventorycotrol.domain.manager.DataStoreManager
 import com.example.inventorycotrol.domain.model.order.OrderRequest
 import com.example.inventorycotrol.domain.repository.remote.OrderRemoteDataSource
 import com.example.inventorycotrol.ui.utils.extensions.safeApiCallFlow
-import com.example.inventorycotrol.ui.utils.extensions.safeResponseApiCallFlow
+import com.example.inventorycotrol.ui.utils.extensions.safeSuspendResponseApiCallFlow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 
@@ -23,7 +23,7 @@ class OrderRemoteDataSourceImpl(
             ?: throw NotFoundException("Organisation ID not found")
 
     override suspend fun create(request: OrderRequest): Flow<ApiResponseResult<OrderDto>> =
-        safeResponseApiCallFlow { api.create(organisationId(), request) }
+        safeSuspendResponseApiCallFlow { api.create(organisationId(), request) }
 
     override suspend fun update(
         orderId: String,
@@ -35,8 +35,8 @@ class OrderRemoteDataSourceImpl(
         safeApiCallFlow { api.delete(organisationId(), orderId) }
 
     override suspend fun get(orderId: String): Flow<ApiResponseResult<OrderDto>> =
-        safeResponseApiCallFlow { api.get(organisationId(), orderId) }
+        safeSuspendResponseApiCallFlow { api.get(organisationId(), orderId) }
 
     override suspend fun getAll(): Flow<ApiResponseResult<List<OrderDto>>> =
-        safeResponseApiCallFlow { api.getAll(organisationId()) }
+        safeSuspendResponseApiCallFlow { api.getAll(organisationId()) }
 }

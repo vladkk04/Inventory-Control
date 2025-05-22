@@ -15,6 +15,8 @@ data class HomeUiState(
     val filterCriticalItems: FilterCriticalItems = FilterCriticalItems.LAST_10,
     val isRefreshing: Boolean = false,
     val isLoading: Boolean = false,
+    val isLoadingCriticalStock: Boolean = false,
+    val isLoadingLastStock: Boolean = false,
 )
 
 enum class FilterCriticalItems {

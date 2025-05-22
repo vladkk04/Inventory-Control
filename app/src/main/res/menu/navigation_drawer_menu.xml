@@ -23,7 +23,6 @@
         android:checkable="true"
         app:showAsAction="ifRoom"/>
 
-
     <item
         android:id="@+id/menu_none"
         android:title=""

@@ -1,14 +1,11 @@
 package com.example.inventorycotrol.ui.fragments.warehouse.productDetail.analytics
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.inventorycotrol.common.ApiResponseResult
 import com.example.inventorycotrol.data.remote.dto.ChangeStockProductDto
 import com.example.inventorycotrol.domain.model.TimePeriod
-import com.example.inventorycotrol.domain.usecase.order.OrderUseCases
-import com.example.inventorycotrol.domain.usecase.product.ProductUseCases
 import com.example.inventorycotrol.domain.usecase.productUpdateStock.ProductUpdateStockUseCases
 import com.example.inventorycotrol.ui.model.order.detail.OrderDetailAnalyticsUiState
 import com.example.inventorycotrol.ui.model.order.detail.StockChangeChartData
@@ -16,10 +13,13 @@ import com.example.inventorycotrol.ui.model.order.detail.StockVolumeChartData
 import com.example.inventorycotrol.ui.model.productUpdateStock.StockHistory
 import com.example.inventorycotrol.ui.navigation.AppNavigator
 import com.example.inventorycotrol.ui.navigation.Destination
+import com.example.inventorycotrol.ui.snackbar.SnackbarController.sendSnackbarEvent
+import com.example.inventorycotrol.ui.snackbar.SnackbarEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -33,10 +33,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductDetailAnalyticsViewModel @Inject constructor(
     private val navigator: AppNavigator,
-    private val orderUseCase: OrderUseCases,
-    private val productUseCase: ProductUseCases,
     private val productStockUpdate: ProductUpdateStockUseCases,
-    savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(OrderDetailAnalyticsUiState())
@@ -44,9 +42,9 @@ class ProductDetailAnalyticsViewModel @Inject constructor(
 
     private val productRouteArg = Destination.from<Destination.ProductDetail>(savedStateHandle)
 
-    init {
+    /*init {
         getChartsDate()
-    }
+    }*/
 
     fun changeStockDatePeriod(period: TimePeriod) {
         _uiState.update { it.copy(
@@ -62,32 +60,47 @@ class ProductDetailAnalyticsViewModel @Inject constructor(
     }
 
     private fun getChartsDate() = viewModelScope.launch {
-        productStockUpdate.getStock.getAllByProductId(productRouteArg.id).collectLatest { result ->
+        productStockUpdate.getStock.getAllByProductId(productRouteArg.id).distinctUntilChanged().collectLatest { result ->
             when (result) {
                 ApiResponseResult.Loading -> {
                     _uiState.update { it.copy(isLoading = true) }
                 }
-                is ApiResponseResult.Failure -> {
 
+                is ApiResponseResult.Failure -> {
+                    _uiState.update { it.copy(isLoading = false) }
+                    sendSnackbarEvent(SnackbarEvent(result.errorMessage))
                 }
+
                 is ApiResponseResult.Success -> {
                     if (result.data.isEmpty()) {
-                        _uiState.update { it.copy(isLoading = false) }
+                        _uiState.update {
+                            it.copy(
+                                isLoading = false,
+                            )
+                        }
                         return@collectLatest
                     }
 
                     val allTransactions = result.data.sortedBy { it.updateAt }
                     val filteredTransactions = filterTransactions(allTransactions, _uiState.value.datePeriodChangeStock)
+
                     if (filteredTransactions.isEmpty()) {
-                        _uiState.update { it.copy(isLoading = false) }
+                        _uiState.update {
+                            it.copy(
+                                isLoading = false,
+                                stockChangeChartData = StockChangeChartData(emptyMap()),
+                                volumeStockChartData = StockVolumeChartData(emptyList(), emptyMap())
+                            )
+                        }
                         return@collectLatest
                     }
 
                     val initialStock = getInitialStockForPeriod(allTransactions, _uiState.value.datePeriodChangeStock)
+
                     val stockHistory = buildStockHistory(filteredTransactions, initialStock)
                     val chartData = createChartData(stockHistory, _uiState.value.datePeriodChangeStock)
 
-                    val volumeData = createVolumeData(filteredTransactions)
+                    val volumeData = createVolumeData(_uiState.value.datePeriodChangeStock, filteredTransactions)
 
                     _uiState.update {
                         it.copy(
@@ -118,7 +131,8 @@ class ProductDetailAnalyticsViewModel @Inject constructor(
         return allTransactions
             .filter { it.updateAt < periodStart }
             .maxByOrNull { it.updateAt }
-            ?.let { lastTx -> lastTx.previousStock + lastTx.adjustmentValue
+            ?.let { lastTx ->
+                lastTx.previousStock + lastTx.adjustmentValue
             } ?: allTransactions.first().previousStock
     }
 
@@ -181,14 +195,13 @@ class ProductDetailAnalyticsViewModel @Inject constructor(
 
 
     private fun createVolumeData(
+        period: TimePeriod,
         transactions: List<ChangeStockProductDto>,
     ): StockVolumeChartData {
-        val (startMillis, endMillis) = getPeriodRange(_uiState.value.datePeriodVolumeStock)
+        val (startMillis, endMillis) = getPeriodRange(period)
 
-        Log.d("debug", _uiState.value.datePeriodVolumeStock.toString())
         val periodTransactions = transactions.filter { it.updateAt in startMillis..endMillis }
 
-        // Calculate totals for the entire period
         var totalIn = 0.0
         var totalOut = 0.0
 
@@ -223,6 +236,7 @@ class ProductDetailAnalyticsViewModel @Inject constructor(
                     .toEpochMilli()
                 Pair(startOfDay, now)
             }
+
             TimePeriod.LAST_3_DAYS -> {
                 val start = Instant.now().atZone(ZoneId.systemDefault())
                     .minusDays(3)
@@ -231,6 +245,7 @@ class ProductDetailAnalyticsViewModel @Inject constructor(
                     .toEpochMilli()
                 Pair(start, now)
             }
+
             TimePeriod.LAST_7_DAYS -> {
                 val start = Instant.now().atZone(ZoneId.systemDefault())
                     .minusDays(7)
@@ -239,6 +254,7 @@ class ProductDetailAnalyticsViewModel @Inject constructor(
                     .toEpochMilli()
                 Pair(start, now)
             }
+
             TimePeriod.LAST_MONTH -> {
                 val start = Instant.now().atZone(ZoneId.systemDefault())
                     .minusDays(30)
@@ -247,6 +263,7 @@ class ProductDetailAnalyticsViewModel @Inject constructor(
                     .toEpochMilli()
                 Pair(start, now)
             }
+
             TimePeriod.LAST_90_DAYS -> {
                 val start = Instant.now().atZone(ZoneId.systemDefault())
                     .minusDays(90)
@@ -255,6 +272,7 @@ class ProductDetailAnalyticsViewModel @Inject constructor(
                     .toEpochMilli()
                 Pair(start, now)
             }
+
             TimePeriod.LAST_YEAR -> {
                 val start = Instant.now().atZone(ZoneId.systemDefault())
                     .minusDays(365)

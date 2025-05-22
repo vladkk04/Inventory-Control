@@ -10,7 +10,8 @@ class DeleteProductUseCase(
 ) {
 
     operator fun invoke(productId: String) =
-        performNetworkOperation(remoteCall = { remote.delete(productId) },
-            localUpdate = { local.deleteById(productId) })
-
+        performNetworkOperation(
+            remoteCall = { remote.delete(productId) },
+            localUpdate = { local.deleteById(productId) }
+        )
 }

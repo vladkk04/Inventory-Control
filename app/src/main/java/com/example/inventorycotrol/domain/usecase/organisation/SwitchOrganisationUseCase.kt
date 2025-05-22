@@ -23,8 +23,6 @@ class SwitchOrganisationUseCase(
     private val dataStoreManager: DataStoreManager,
 ) {
     operator fun invoke(organisationId: String) = flow {
-        organisationRemote.switchOrganisation(organisationId)
-
         val organisationUser = organisationUserRemote.getByUserId().lastOrNull()
             ?: throw Exception("Organisation user not found")
 
@@ -56,6 +54,7 @@ class SwitchOrganisationUseCase(
 
             is ApiResponseResult.Success -> {
                 userLocal.upsert(user.data.mapToEntity())
+                organisationRemote.switchOrganisation(organisationId)
                 emit(Resource.Success(Unit))
             }
         }

@@ -5,23 +5,25 @@ import androidx.lifecycle.viewModelScope
 import com.example.inventorycotrol.common.Resource
 import com.example.inventorycotrol.data.constants.AppConstants
 import com.example.inventorycotrol.domain.manager.DataStoreManager
-import com.example.inventorycotrol.domain.model.organisation.OrganisationItem
 import com.example.inventorycotrol.domain.model.organisation.OrganisationRole
+import com.example.inventorycotrol.domain.repository.ConnectivityObserver
 import com.example.inventorycotrol.domain.usecase.organisation.OrganisationUseCases
 import com.example.inventorycotrol.domain.usecase.profile.ProfileUseCases
+import com.example.inventorycotrol.ui.model.organisation.OrganisationItem
 import com.example.inventorycotrol.ui.navigation.AppNavigator
 import com.example.inventorycotrol.ui.navigation.Destination
 import com.example.inventorycotrol.ui.snackbar.SnackbarController.sendSnackbarEvent
 import com.example.inventorycotrol.ui.snackbar.SnackbarEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,6 +34,7 @@ class MainViewModel @Inject constructor(
     private val organisationUseCase: OrganisationUseCases,
     private val navigator: AppNavigator,
     private val dataStoreManager: DataStoreManager,
+    private val connectivityObserver: ConnectivityObserver,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MainUiState())
@@ -39,6 +42,12 @@ class MainViewModel @Inject constructor(
 
     private val _organisationRole = MutableStateFlow<OrganisationRole?>(null)
     val organisationRole = _organisationRole.asStateFlow()
+
+    val isConnected = connectivityObserver.isConnected.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
+        false
+    )
 
     private val timeDelay = 2000L
     private var lastBackPressed = 0L
@@ -50,21 +59,25 @@ class MainViewModel @Inject constructor(
                     OrganisationRole.valueOf(gg)
                 }
             }
-            dataStoreManager.getPreference(AppConstants.SELECTED_ORGANISATION_ID).collectLatest { value ->
-                value?.let {  _uiState.update { it.copy(selectedOrganisationId = value) } }
+            dataStoreManager.getPreference(AppConstants.SELECTED_ORGANISATION_ID)
+                .distinctUntilChanged().collectLatest { value ->
+                value?.let { _uiState.update { it.copy(selectedOrganisationId = value) } }
             }
         }
     }
 
     fun getProfile() {
         viewModelScope.launch {
-            profileUseCases.getProfile.getProfile().onEach { result ->
+            profileUseCases.getProfile.getProfile().distinctUntilChanged().onEach { result ->
                 when (result) {
                     Resource.Loading -> {
 
                     }
 
                     is Resource.Error -> {
+                        _uiState.update {
+                            it.copy(profile = result.data)
+                        }
                         sendSnackbarEvent(SnackbarEvent(result.errorMessage))
                     }
 
@@ -78,10 +91,11 @@ class MainViewModel @Inject constructor(
                                 profile = result.data,
                             )
                         }
-                        getOrganisations()
                     }
                 }
-            }.flowOn(Dispatchers.IO).launchIn(viewModelScope)
+            }.launchIn(viewModelScope)
+
+            getOrganisations()
         }
     }
 
@@ -97,7 +111,10 @@ class MainViewModel @Inject constructor(
     }
 
     fun switchOrganisation(organisationId: String) {
-        organisationUseCase.switch.invoke(organisationId).onEach { result ->
+        if (uiState.value.selectedOrganisationId == organisationId) {
+            return
+        }
+        organisationUseCase.switch.invoke(organisationId).distinctUntilChanged().onEach { result ->
             when (result) {
                 Resource.Loading -> {
 
@@ -125,7 +142,7 @@ class MainViewModel @Inject constructor(
     }
 
     private fun getOrganisations() = viewModelScope.launch {
-        organisationUseCase.get.invoke().onEach { result ->
+        organisationUseCase.get.invoke().distinctUntilChanged().onEach { result ->
             when (result) {
                 Resource.Loading -> {
 

@@ -23,6 +23,8 @@ import com.example.inventorycotrol.ui.snackbar.SnackbarEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -55,7 +57,7 @@ class ProductListViewModel @Inject constructor(
         getThresholdSettings()
         getProducts()
         viewModelScope.launch {
-            userUseCases.getUserUseCase.get().onEach { response ->
+            userUseCases.getUserUseCase.get().distinctUntilChanged().onEach { response ->
                 when (response) {
                     Resource.Loading -> {
                         _uiState.update { it.copy(isLoading = true) }
@@ -165,13 +167,18 @@ class ProductListViewModel @Inject constructor(
         navigator.openNavigationDrawer()
     }
 
-
     private fun getProducts() = viewModelScope.launch {
-        productUseCases.getProducts.getAll().onEach { response ->
+        productUseCases.getProducts.getAll().distinctUntilChanged().collectLatest { response ->
             when (response) {
                 Resource.Loading -> _uiState.update { it.copy(isLoading = true) }
                 is Resource.Error -> {
-                    _uiState.update { it.copy(isLoading = false, isRefreshing = false) }
+                    _uiState.update {
+                        it.copy(
+                            products = (response.data ?: emptyList()).sortBy(_uiState.value.sortOptions).moreFilters(currentFilters),
+                            isLoading = false,
+                            isRefreshing = false,
+                        )
+                    }
                     sendSnackbarEvent(SnackbarEvent(response.errorMessage))
                 }
 
@@ -180,7 +187,7 @@ class ProductListViewModel @Inject constructor(
                         it.copy(
                             isLoading = false,
                             isRefreshing = false,
-                            products = response.data.moreFilters(currentFilters)
+                            products = response.data.sortBy(_uiState.value.sortOptions).moreFilters(currentFilters)
                         )
                     }
 
@@ -189,7 +196,7 @@ class ProductListViewModel @Inject constructor(
                     }
                 }
             }
-        }.launchIn(viewModelScope)
+        }
     }
 
     fun clearFilters() {
@@ -221,6 +228,12 @@ class ProductListViewModel @Inject constructor(
             uiState.copy(
                 filtersCount = filterCount,
             )
+        }
+
+        if (sharedWarehouseFilterUiState.categoryFilters.isEmpty()
+            && sharedWarehouseFilterUiState.tags.isEmpty()
+            && sharedWarehouseFilterUiState.stockFilters.isEmpty()){
+            return
         }
 
         getProducts()

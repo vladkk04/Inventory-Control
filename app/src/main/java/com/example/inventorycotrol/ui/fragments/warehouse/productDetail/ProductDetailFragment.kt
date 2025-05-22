@@ -49,6 +49,10 @@ class ProductDetailFragment : Fragment() {
 
         _binding = FragmentProductDetailBinding.inflate(inflater, container, false)
 
+        setupViewPagerWithTabLayout()
+        setupAppBarLayoutAnimation()
+        setupToolbarMenuOnClickListener()
+
         when (mainActivityViewModel.organisationRole.value) {
             OrganisationRole.ADMIN -> {
                 //binding.toolbar.menu.removeItem(R.id.product_edit)
@@ -62,29 +66,28 @@ class ProductDetailFragment : Fragment() {
             }
         }
 
-
-        setupViewPagerWithTabLayout()
-        setupAppBarLayoutAnimation()
-        setupToolbarMenuOnClickListener()
-
-
-
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.product.collectLatest { product ->
-                    product?.let {
-                        updateUI(it)
+                mainActivityViewModel.isConnected.collectLatest { isConnected ->
+                    binding.toolbar.menu.findItem(R.id.product_delete)?.let {
+                        it.isEnabled = isConnected
+                        it.icon?.mutate()?.alpha = if (isConnected) 255 else 100
+                    }
+                    binding.toolbar.menu.findItem(R.id.product_edit)?.let {
+                        it.isEnabled = isConnected
+                        it.icon?.mutate()?.alpha = if (isConnected) 255 else 100
                     }
                 }
             }
         }
 
+
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.isLoading.collectLatest { isLoading ->
-                binding.progressBar.isVisible = isLoading
+            viewModel.uiState.collectLatest { uiState  ->
+                uiState.product?.let { updateUI(it) }
+                binding.progressBar.isVisible = uiState.isLoading
             }
         }
-
 
         return binding.root
     }
@@ -102,9 +105,10 @@ class ProductDetailFragment : Fragment() {
                     }
 
                     R.id.product_delete -> {
-                        AppDialogs.createDeleteDialog(requireContext()) {
-                            viewModel.deleteProduct()
-                        }.show()
+                        AppDialogs.createDeleteDialog(
+                            requireContext(),
+                            deleteItemTitle = "product ${viewModel.uiState.value.product?.name}",
+                        ) { viewModel.deleteProduct() }.show()
                         true
                     }
 

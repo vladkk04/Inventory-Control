@@ -1,6 +1,6 @@
 package com.example.inventorycotrol.domain.usecase.organisatonSettings
 
-import OrganisationSettingsRequest
+import com.example.inventorycotrol.domain.model.organisation.settings.OrganisationSettingsRequest
 import com.example.inventorycotrol.domain.repository.remote.OrganisationSettingsRemoteDataSource
 
 class UpdateOrganisationSettingsUseCase(

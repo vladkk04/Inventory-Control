@@ -9,12 +9,12 @@ interface ProductRemoteDataSource {
 
     suspend fun create(request: ProductRequest): Flow<ApiResponseResult<ProductDto>>
 
-    suspend fun update(productId: String, request: ProductRequest): Flow<ApiResponseResult<Unit>>
+    suspend fun update(productId: String, request: ProductRequest): Flow<ApiResponseResult<ProductDto>>
 
     suspend fun delete(productId: String): Flow<ApiResponseResult<Unit>>
 
     suspend fun get(productId: String): Flow<ApiResponseResult<ProductDto>>
 
-    suspend fun getAll(): Flow<ApiResponseResult<List<ProductDto>>>
+    fun getAll(): Flow<ApiResponseResult<List<ProductDto>>>
 
 }

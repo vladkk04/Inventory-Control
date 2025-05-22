@@ -8,10 +8,9 @@ import com.example.inventorycotrol.domain.usecase.productCategory.ProductCategor
 import com.example.inventorycotrol.ui.model.filters.WarehouseFilterUiState
 import com.example.inventorycotrol.ui.navigation.AppNavigator
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -33,7 +32,7 @@ class WarehouseFilterViewModel @Inject constructor(
     }
 
     private fun getAllCategories() = viewModelScope.launch {
-        categoryUseCases.getCategories.getAll().onEach { result ->
+        categoryUseCases.getCategories.getAll().distinctUntilChanged().onEach { result ->
             when (result) {
                 Resource.Loading -> {
 
@@ -45,7 +44,7 @@ class WarehouseFilterViewModel @Inject constructor(
                     _uiState.update { it.copy(categories = result.data) }
                 }
             }
-        }.flowOn(Dispatchers.IO).launchIn(viewModelScope)
+        }.launchIn(viewModelScope)
     }
 
     fun navigateBack (selectedFiltersCount: Int) = viewModelScope.launch {
